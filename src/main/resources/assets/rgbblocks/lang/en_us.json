@@ -1,0 +1,23 @@
+{
+  "itemGroup.rgbblocks": "RGB Stuff",
+
+
+  "item.rgbblocks.paintbucket": "Paintbucket",
+
+
+  "block.rgbblocks.rgb_flat": "Plain RGB Block",
+  "block.rgbblocks.rgb_flat_slab": "Plain RGB Slab",
+  "block.rgbblocks.rgb_flat_stairs": "Plain RGB Stairs",
+
+  "block.rgbblocks.rgb_glass_flat": "Plain RGB Glass",
+  "block.rgbblocks.rgb_glass_flat_slab": "Plain RGB Glass Slab",
+  "block.rgbblocks.rgb_glass_flat_stairs": "Plain RGB Glass Stairs",
+
+  "block.rgbblocks.rgb_lamp_flat": "Plain RGB Lamp",
+  "block.rgbblocks.rgb_lamp_flat_slab": "Plain RGB Slab Lamp",
+  "block.rgbblocks.rgb_lamp_flat_stairs": "Plain RGB Stairs Lamp",
+
+  "block.rgbblocks.rgb_lamp_glass_flat": "Plain RGB Glass Lamp",
+  "block.rgbblocks.rgb_lamp_glass_flat_slab": "Plain RGB Glass Slab Lamp",
+  "block.rgbblocks.rgb_lamp_glass_flat_stairs": "Plain RGB Glass Stairs Lamp"
+}

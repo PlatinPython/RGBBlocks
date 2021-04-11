@@ -1,0 +1,6 @@
+{
+  "parent": "modserver2mod:block/stairs",
+  "textures": {
+    "all": "modserver2mod:blocks/rgb/rgb_flat"
+  }
+}

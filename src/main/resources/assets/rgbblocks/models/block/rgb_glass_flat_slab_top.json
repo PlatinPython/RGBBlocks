@@ -1,0 +1,6 @@
+{
+  "parent": "modserver2mod:block/slab_top",
+  "textures": {
+    "all": "modserver2mod:blocks/rgb/rgb_glass_flat"
+  }
+}
