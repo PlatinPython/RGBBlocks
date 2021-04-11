@@ -1,7 +1,7 @@
 {
   "variants": {
-    "type=bottom": {"model": "modserver2mod:block/rgb_glass_flat_slab"},
-    "type=top": {"model": "modserver2mod:block/rgb_glass_flat_slab_top"},
-    "type=double": {"model": "modserver2mod:block/rgb_glass_flat"}
+    "type=bottom": {"model": "rgbblocks:block/rgb_glass_flat_slab"},
+    "type=top": {"model": "rgbblocks:block/rgb_glass_flat_slab_top"},
+    "type=double": {"model": "rgbblocks:block/rgb_glass_flat"}
   }
 }

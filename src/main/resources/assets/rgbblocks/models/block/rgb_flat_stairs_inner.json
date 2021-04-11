@@ -1,6 +1,6 @@
 {
-  "parent": "modserver2mod:block/inner_stairs",
+  "parent": "rgbblocks:block/inner_stairs",
   "textures": {
-    "all": "modserver2mod:blocks/rgb/rgb_flat"
+    "all": "rgbblocks:blocks/rgb/rgb_flat"
   }
 }

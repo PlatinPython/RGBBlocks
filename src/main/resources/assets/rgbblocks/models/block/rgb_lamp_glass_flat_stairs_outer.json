@@ -1,6 +1,6 @@
 {
-  "parent": "modserver2mod:block/outer_stairs",
+  "parent": "rgbblocks:block/outer_stairs",
   "textures": {
-    "all": "modserver2mod:blocks/rgb/rgb_glass_flat"
+    "all": "rgbblocks:blocks/rgb/rgb_glass_flat"
   }
 }

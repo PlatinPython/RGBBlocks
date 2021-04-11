@@ -12,6 +12,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.client.colorhandlers.PaintbucketItemColor;
 import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockColor;
+import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockItemColor;
+import platinpython.rgbblocks.util.network.PacketHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
@@ -29,7 +31,7 @@ public class RGBBlocks {
 	}
 	
 	public void setup(final FMLClientSetupEvent event) {
-		//PacketHandler.register();
+		PacketHandler.register();
 	}
 	
 	public void doClientStuff(final FMLClientSetupEvent event) {
@@ -47,8 +49,8 @@ public class RGBBlocks {
 				BlockRegistry.RGB_LAMP_FLAT_SLAB.get(), BlockRegistry.RGB_LAMP_FLAT_STAIRS.get(),
 				BlockRegistry.RGB_LAMP_GLASS_FLAT.get(), BlockRegistry.RGB_LAMP_GLASS_FLAT_SLAB.get(),
 				BlockRegistry.RGB_LAMP_GLASS_FLAT_STAIRS.get());
-		//RGBBlockItemColor blockItemColor = new RGBBlockItemColor();
-		//RegistryHandler.ITEMS.getEntries().forEach(blockItem -> Minecraft.getInstance().getItemColors().register(blockItemColor, blockItem.get()));
+		RGBBlockItemColor blockItemColor = new RGBBlockItemColor();
+		RegistryHandler.ITEMS.getEntries().forEach(blockItem -> Minecraft.getInstance().getItemColors().register(blockItemColor, blockItem.get()));
 		Minecraft.getInstance().getItemColors().register(new PaintbucketItemColor(), ItemRegistry.PAINTBUCKET.get());
 	}
 	

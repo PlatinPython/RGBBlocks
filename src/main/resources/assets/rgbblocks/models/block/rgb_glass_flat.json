@@ -1,8 +1,8 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "modserver2mod:blocks/rgb/rgb_glass_flat",
-    "particle": "modserver2mod:blocks/rgb/rgb_glass_flat"
+    "all": "rgbblocks:blocks/rgb/rgb_glass_flat",
+    "particle": "rgbblocks:blocks/rgb/rgb_glass_flat"
   },
   "elements": [
     {

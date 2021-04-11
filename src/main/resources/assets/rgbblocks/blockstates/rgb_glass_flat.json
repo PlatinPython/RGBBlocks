@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "modserver2mod:block/rgb_glass_flat" }
+    "": { "model": "rgbblocks:block/rgb_glass_flat" }
   }
 }

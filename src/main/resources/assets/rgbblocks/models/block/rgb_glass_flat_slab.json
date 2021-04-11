@@ -1,6 +1,6 @@
 {
-  "parent": "modserver2mod:block/slab",
+  "parent": "rgbblocks:block/slab",
   "textures": {
-    "all": "modserver2mod:blocks/rgb/rgb_glass_flat"
+    "all": "rgbblocks:blocks/rgb/rgb_glass_flat"
   }
 }

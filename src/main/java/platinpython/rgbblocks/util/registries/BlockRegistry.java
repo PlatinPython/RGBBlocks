@@ -20,28 +20,28 @@ import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.RegistryHandler;
 
 public class BlockRegistry {
-	public static final RegistryObject<Block> RGB_FLAT = registerNoItem("rgb_flat", RGBFlatBlock::new);
-	public static final RegistryObject<Block> RGB_FLAT_SLAB = registerNoItem("rgb_flat_slab", RGBFlatSlabBlock::new);
-	public static final RegistryObject<Block> RGB_FLAT_STAIRS = registerNoItem("rgb_flat_stairs",
+	public static final RegistryObject<Block> RGB_FLAT = register("rgb_flat", RGBFlatBlock::new);
+	public static final RegistryObject<Block> RGB_FLAT_SLAB = register("rgb_flat_slab", RGBFlatSlabBlock::new);
+	public static final RegistryObject<Block> RGB_FLAT_STAIRS = register("rgb_flat_stairs",
 			RGBFlatStairsBlock::new);
 
-	public static final RegistryObject<Block> RGB_GLASS_FLAT = registerNoItem("rgb_glass_flat", RGBGlassFlatBlock::new);
-	public static final RegistryObject<Block> RGB_GLASS_FLAT_SLAB = registerNoItem("rgb_glass_flat_slab",
+	public static final RegistryObject<Block> RGB_GLASS_FLAT = register("rgb_glass_flat", RGBGlassFlatBlock::new);
+	public static final RegistryObject<Block> RGB_GLASS_FLAT_SLAB = register("rgb_glass_flat_slab",
 			RGBGlassFlatSlabBlock::new);
-	public static final RegistryObject<Block> RGB_GLASS_FLAT_STAIRS = registerNoItem("rgb_glass_flat_stairs",
+	public static final RegistryObject<Block> RGB_GLASS_FLAT_STAIRS = register("rgb_glass_flat_stairs",
 			RGBGlassFlatStairsBlock::new);
 
-	public static final RegistryObject<Block> RGB_LAMP_FLAT = registerNoItem("rgb_lamp_flat", RGBLampFlatBlock::new);
-	public static final RegistryObject<Block> RGB_LAMP_FLAT_SLAB = registerNoItem("rgb_lamp_flat_slab",
+	public static final RegistryObject<Block> RGB_LAMP_FLAT = register("rgb_lamp_flat", RGBLampFlatBlock::new);
+	public static final RegistryObject<Block> RGB_LAMP_FLAT_SLAB = register("rgb_lamp_flat_slab",
 			RGBLampFlatSlabBlock::new);
-	public static final RegistryObject<Block> RGB_LAMP_FLAT_STAIRS = registerNoItem("rgb_lamp_flat_stairs",
+	public static final RegistryObject<Block> RGB_LAMP_FLAT_STAIRS = register("rgb_lamp_flat_stairs",
 			RGBLampFlatStairsBlock::new);
 
-	public static final RegistryObject<Block> RGB_LAMP_GLASS_FLAT = registerNoItem("rgb_lamp_glass_flat",
+	public static final RegistryObject<Block> RGB_LAMP_GLASS_FLAT = register("rgb_lamp_glass_flat",
 			RGBLampGlassFlatBlock::new);
-	public static final RegistryObject<Block> RGB_LAMP_GLASS_FLAT_SLAB = registerNoItem("rgb_lamp_glass_flat_slab",
+	public static final RegistryObject<Block> RGB_LAMP_GLASS_FLAT_SLAB = register("rgb_lamp_glass_flat_slab",
 			RGBLampGlassFlatSlabBlock::new);
-	public static final RegistryObject<Block> RGB_LAMP_GLASS_FLAT_STAIRS = registerNoItem("rgb_lamp_glass_flat_stairs",
+	public static final RegistryObject<Block> RGB_LAMP_GLASS_FLAT_STAIRS = register("rgb_lamp_glass_flat_stairs",
 			RGBLampGlassFlatStairsBlock::new);
 
 	public static void register() {
