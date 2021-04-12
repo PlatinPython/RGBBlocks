@@ -29,7 +29,8 @@ import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
 public class RGBLampGlassFlatBlock extends AbstractGlassBlock {
 	public RGBLampGlassFlatBlock() {
-		super(Block.Properties.create(new Material.Builder(MaterialColor.AIR).build()).sound(SoundType.GLASS).notSolid());
+		super(Block.Properties.create(new Material.Builder(MaterialColor.AIR).build()).sound(SoundType.GLASS)
+				.notSolid());
 	}
 
 	@Override
