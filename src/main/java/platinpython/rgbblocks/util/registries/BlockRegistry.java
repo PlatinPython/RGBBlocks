@@ -14,11 +14,7 @@ import platinpython.rgbblocks.block.GenericRGBGlassStairsBlock;
 import platinpython.rgbblocks.block.GenericRGBSlabBlock;
 import platinpython.rgbblocks.block.GenericRGBStairsBlock;
 import platinpython.rgbblocks.block.RGBLampFlatBlock;
-import platinpython.rgbblocks.block.RGBLampFlatSlabBlock;
-import platinpython.rgbblocks.block.RGBLampFlatStairsBlock;
 import platinpython.rgbblocks.block.RGBLampGlassFlatBlock;
-import platinpython.rgbblocks.block.RGBLampGlassFlatSlabBlock;
-import platinpython.rgbblocks.block.RGBLampGlassFlatStairsBlock;
 import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.RegistryHandler;
 
@@ -40,17 +36,17 @@ public class BlockRegistry {
 			() -> new GenericRGBGlassStairsBlock(() -> RGB_GLASS_FLAT.get().getDefaultState(), glass));
 
 	public static final RegistryObject<Block> RGB_LAMP_FLAT = register("rgb_lamp_flat", RGBLampFlatBlock::new);
-	public static final RegistryObject<Block> RGB_LAMP_FLAT_SLAB = register("rgb_lamp_flat_slab",
-			RGBLampFlatSlabBlock::new);
-	public static final RegistryObject<Block> RGB_LAMP_FLAT_STAIRS = register("rgb_lamp_flat_stairs",
-			RGBLampFlatStairsBlock::new);
-
+//	public static final RegistryObject<Block> RGB_LAMP_FLAT_SLAB = register("rgb_lamp_flat_slab",
+//			RGBLampFlatSlabBlock::new);
+//	public static final RegistryObject<Block> RGB_LAMP_FLAT_STAIRS = register("rgb_lamp_flat_stairs",
+//			RGBLampFlatStairsBlock::new);
+//
 	public static final RegistryObject<Block> RGB_LAMP_GLASS_FLAT = register("rgb_lamp_glass_flat",
 			RGBLampGlassFlatBlock::new);
-	public static final RegistryObject<Block> RGB_LAMP_GLASS_FLAT_SLAB = register("rgb_lamp_glass_flat_slab",
-			RGBLampGlassFlatSlabBlock::new);
-	public static final RegistryObject<Block> RGB_LAMP_GLASS_FLAT_STAIRS = register("rgb_lamp_glass_flat_stairs",
-			RGBLampGlassFlatStairsBlock::new);
+//	public static final RegistryObject<Block> RGB_LAMP_GLASS_FLAT_SLAB = register("rgb_lamp_glass_flat_slab",
+//			RGBLampGlassFlatSlabBlock::new);
+//	public static final RegistryObject<Block> RGB_LAMP_GLASS_FLAT_STAIRS = register("rgb_lamp_glass_flat_stairs",
+//			RGBLampGlassFlatStairsBlock::new);
 
 	public static void register() {
 	}

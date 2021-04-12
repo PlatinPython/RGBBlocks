@@ -40,8 +40,8 @@ public class RGBBlocks {
 		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_FLAT_SLAB.get(), RenderType.getTranslucent());
 		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_FLAT_STAIRS.get(), RenderType.getTranslucent());
 		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_LAMP_GLASS_FLAT.get(), RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_LAMP_GLASS_FLAT_SLAB.get(), RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_LAMP_GLASS_FLAT_STAIRS.get(), RenderType.getTranslucent());
+//		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_LAMP_GLASS_FLAT_SLAB.get(), RenderType.getTranslucent());
+//		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_LAMP_GLASS_FLAT_STAIRS.get(), RenderType.getTranslucent());
 
 		RGBBlockColor blockColor = new RGBBlockColor();
 		RegistryHandler.BLOCKS.getEntries()
