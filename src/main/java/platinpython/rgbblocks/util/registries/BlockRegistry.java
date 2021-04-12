@@ -22,8 +22,7 @@ import platinpython.rgbblocks.util.RegistryHandler;
 public class BlockRegistry {
 	public static final RegistryObject<Block> RGB_FLAT = register("rgb_flat", RGBFlatBlock::new);
 	public static final RegistryObject<Block> RGB_FLAT_SLAB = register("rgb_flat_slab", RGBFlatSlabBlock::new);
-	public static final RegistryObject<Block> RGB_FLAT_STAIRS = register("rgb_flat_stairs",
-			RGBFlatStairsBlock::new);
+	public static final RegistryObject<Block> RGB_FLAT_STAIRS = register("rgb_flat_stairs", RGBFlatStairsBlock::new);
 
 	public static final RegistryObject<Block> RGB_GLASS_FLAT = register("rgb_glass_flat", RGBGlassFlatBlock::new);
 	public static final RegistryObject<Block> RGB_GLASS_FLAT_SLAB = register("rgb_glass_flat_slab",
@@ -51,7 +50,6 @@ public class BlockRegistry {
 		return RegistryHandler.BLOCKS.register(name, block);
 	}
 
-	@SuppressWarnings("unused")
 	private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block) {
 		RegistryObject<T> ret = registerNoItem(name, block);
 		RegistryHandler.ITEMS.register(name, () -> new RGBBlockItem(ret.get()));

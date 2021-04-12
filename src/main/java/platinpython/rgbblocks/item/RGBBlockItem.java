@@ -16,14 +16,13 @@ public class RGBBlockItem extends BlockItem {
 
 	@Override
 	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-		if (group != RGBBlocks.ITEM_GROUP_RGB) {
-			return;
+		if (group == RGBBlocks.ITEM_GROUP_RGB || group == ItemGroup.SEARCH) {
+			ItemStack stack = new ItemStack(this);
+			CompoundNBT compound = stack.getOrCreateTag();
+			compound.putInt("red", 255);
+			compound.putInt("green", 255);
+			compound.putInt("blue", 255);
+			items.add(stack);
 		}
-		ItemStack stack = new ItemStack(this);
-		CompoundNBT compound = stack.getOrCreateTag();
-		compound.putInt("red", 255);
-		compound.putInt("green", 255);
-		compound.putInt("blue", 255);
-		items.add(stack);
 	}
 }
