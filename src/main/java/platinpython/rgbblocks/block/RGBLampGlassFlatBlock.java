@@ -39,7 +39,7 @@ public class RGBLampGlassFlatBlock extends AbstractGlassBlock {
 		if (tileEntity instanceof RGBLampTileEntity) {
 			return tileEntity.serializeNBT().getBoolean("isOn") ? 15 : 0;
 		}
-		return 0;
+		return state.getLightValue();
 	}
 
 	@Override

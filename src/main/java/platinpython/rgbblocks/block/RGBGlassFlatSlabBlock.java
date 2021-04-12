@@ -25,7 +25,8 @@ import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
 public class RGBGlassFlatSlabBlock extends SlabBlock {
 	public RGBGlassFlatSlabBlock() {
-		super(Block.Properties.create(new Material.Builder(MaterialColor.AIR).build()).sound(SoundType.GLASS).notSolid());
+		super(Block.Properties.create(new Material.Builder(MaterialColor.AIR).build()).sound(SoundType.GLASS)
+				.notSolid());
 	}
 
 	@Override
@@ -108,23 +109,25 @@ public class RGBGlassFlatSlabBlock extends SlabBlock {
 		if (side == Direction.UP && adjacentBlockState.get(StairsBlock.HALF) == Half.BOTTOM) {
 			return true;
 		}
-		
+
 		if (side == Direction.DOWN && adjacentBlockState.get(StairsBlock.HALF) == Half.TOP) {
 			return true;
 		}
-		
-		if(adjacentBlockState.get(StairsBlock.FACING) == side.getOpposite()) {
+
+		if (adjacentBlockState.get(StairsBlock.FACING) == side.getOpposite()) {
 			return true;
 		}
-		
-		if(side.getHorizontalIndex() != -1) {
-			if(state.get(SlabBlock.TYPE) == SlabType.BOTTOM && adjacentBlockState.get(StairsBlock.HALF) == Half.BOTTOM) {
+
+		if (side.getHorizontalIndex() != -1) {
+			if (state.get(SlabBlock.TYPE) == SlabType.BOTTOM
+					&& adjacentBlockState.get(StairsBlock.HALF) == Half.BOTTOM) {
 				return true;
-			} else if (state.get(SlabBlock.TYPE) == SlabType.TOP && adjacentBlockState.get(StairsBlock.HALF) == Half.TOP) {
+			} else if (state.get(SlabBlock.TYPE) == SlabType.TOP
+					&& adjacentBlockState.get(StairsBlock.HALF) == Half.TOP) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 }

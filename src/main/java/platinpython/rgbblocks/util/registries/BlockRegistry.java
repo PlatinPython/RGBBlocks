@@ -3,13 +3,16 @@ package platinpython.rgbblocks.util.registries;
 import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Block.Properties;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraftforge.fml.RegistryObject;
-import platinpython.rgbblocks.block.RGBFlatBlock;
-import platinpython.rgbblocks.block.RGBFlatSlabBlock;
-import platinpython.rgbblocks.block.RGBFlatStairsBlock;
-import platinpython.rgbblocks.block.RGBGlassFlatBlock;
-import platinpython.rgbblocks.block.RGBGlassFlatSlabBlock;
-import platinpython.rgbblocks.block.RGBGlassFlatStairsBlock;
+import platinpython.rgbblocks.block.GenericRGBBlock;
+import platinpython.rgbblocks.block.GenericRGBGlassBlock;
+import platinpython.rgbblocks.block.GenericRGBGlassSlabBlock;
+import platinpython.rgbblocks.block.GenericRGBGlassStairsBlock;
+import platinpython.rgbblocks.block.GenericRGBSlabBlock;
+import platinpython.rgbblocks.block.GenericRGBStairsBlock;
 import platinpython.rgbblocks.block.RGBLampFlatBlock;
 import platinpython.rgbblocks.block.RGBLampFlatSlabBlock;
 import platinpython.rgbblocks.block.RGBLampFlatStairsBlock;
@@ -20,15 +23,21 @@ import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.RegistryHandler;
 
 public class BlockRegistry {
-	public static final RegistryObject<Block> RGB_FLAT = register("rgb_flat", RGBFlatBlock::new);
-	public static final RegistryObject<Block> RGB_FLAT_SLAB = register("rgb_flat_slab", RGBFlatSlabBlock::new);
-	public static final RegistryObject<Block> RGB_FLAT_STAIRS = register("rgb_flat_stairs", RGBFlatStairsBlock::new);
+	private static final Properties rock = Properties.create(Material.ROCK);
+	private static final Properties glass = Properties.create(Material.GLASS).sound(SoundType.GLASS).notSolid();
 
-	public static final RegistryObject<Block> RGB_GLASS_FLAT = register("rgb_glass_flat", RGBGlassFlatBlock::new);
+	public static final RegistryObject<Block> RGB_FLAT = register("rgb_flat", () -> new GenericRGBBlock(rock));
+	public static final RegistryObject<Block> RGB_FLAT_SLAB = register("rgb_flat_slab",
+			() -> new GenericRGBSlabBlock(rock));
+	public static final RegistryObject<Block> RGB_FLAT_STAIRS = register("rgb_flat_stairs",
+			() -> new GenericRGBStairsBlock(() -> RGB_FLAT.get().getDefaultState(), rock));
+
+	public static final RegistryObject<Block> RGB_GLASS_FLAT = register("rgb_glass_flat",
+			() -> new GenericRGBGlassBlock(glass));
 	public static final RegistryObject<Block> RGB_GLASS_FLAT_SLAB = register("rgb_glass_flat_slab",
-			RGBGlassFlatSlabBlock::new);
+			() -> new GenericRGBGlassSlabBlock(glass));
 	public static final RegistryObject<Block> RGB_GLASS_FLAT_STAIRS = register("rgb_glass_flat_stairs",
-			RGBGlassFlatStairsBlock::new);
+			() -> new GenericRGBGlassStairsBlock(() -> RGB_GLASS_FLAT.get().getDefaultState(), glass));
 
 	public static final RegistryObject<Block> RGB_LAMP_FLAT = register("rgb_lamp_flat", RGBLampFlatBlock::new);
 	public static final RegistryObject<Block> RGB_LAMP_FLAT_SLAB = register("rgb_lamp_flat_slab",

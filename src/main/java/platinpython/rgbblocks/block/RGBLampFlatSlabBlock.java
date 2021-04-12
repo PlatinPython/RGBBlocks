@@ -21,7 +21,6 @@ import platinpython.rgbblocks.tileentity.RGBLampTileEntity;
 import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
 public class RGBLampFlatSlabBlock extends SlabBlock {
-
 	public RGBLampFlatSlabBlock() {
 		super(Block.Properties.create(new Material.Builder(MaterialColor.AIR).build()));
 	}

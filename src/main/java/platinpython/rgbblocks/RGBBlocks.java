@@ -43,18 +43,16 @@ public class RGBBlocks {
 		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_LAMP_GLASS_FLAT_SLAB.get(), RenderType.getTranslucent());
 		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_LAMP_GLASS_FLAT_STAIRS.get(), RenderType.getTranslucent());
 
-		Minecraft.getInstance().getBlockColors().register(new RGBBlockColor(), BlockRegistry.RGB_FLAT.get(),
-				BlockRegistry.RGB_FLAT_SLAB.get(), BlockRegistry.RGB_FLAT_STAIRS.get(),
-				BlockRegistry.RGB_GLASS_FLAT.get(), BlockRegistry.RGB_GLASS_FLAT_SLAB.get(),
-				BlockRegistry.RGB_GLASS_FLAT_STAIRS.get(), BlockRegistry.RGB_LAMP_FLAT.get(),
-				BlockRegistry.RGB_LAMP_FLAT_SLAB.get(), BlockRegistry.RGB_LAMP_FLAT_STAIRS.get(),
-				BlockRegistry.RGB_LAMP_GLASS_FLAT.get(), BlockRegistry.RGB_LAMP_GLASS_FLAT_SLAB.get(),
-				BlockRegistry.RGB_LAMP_GLASS_FLAT_STAIRS.get());
+		RGBBlockColor blockColor = new RGBBlockColor();
+		RegistryHandler.BLOCKS.getEntries()
+				.forEach(block -> Minecraft.getInstance().getBlockColors().register(blockColor, block.get()));
+		
 		RGBBlockItemColor blockItemColor = new RGBBlockItemColor();
 		RegistryHandler.ITEMS.getEntries().forEach(item -> {
 			if (item.get() instanceof RGBBlockItem)
 				Minecraft.getInstance().getItemColors().register(blockItemColor, item.get());
 		});
+		
 		Minecraft.getInstance().getItemColors().register(new PaintbucketItemColor(), ItemRegistry.PAINTBUCKET.get());
 	}
 

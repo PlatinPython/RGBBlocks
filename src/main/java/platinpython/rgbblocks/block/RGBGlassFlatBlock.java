@@ -25,7 +25,8 @@ import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
 public class RGBGlassFlatBlock extends Block {
 	public RGBGlassFlatBlock() {
-		super(Block.Properties.create(new Material.Builder(MaterialColor.AIR).build()).sound(SoundType.GLASS).notSolid());
+		super(Block.Properties.create(new Material.Builder(MaterialColor.AIR).build()).sound(SoundType.GLASS)
+				.notSolid());
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class RGBGlassFlatBlock extends Block {
 		return new float[] { (float) compound.getInt("red") / 255.0F, (float) compound.getInt("green") / 255.0F,
 				(float) compound.getInt("blue") / 255.0F };
 	}
-	
+
 	@Override
 	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (adjacentBlockState.getBlock() instanceof RGBGlassFlatBlock
