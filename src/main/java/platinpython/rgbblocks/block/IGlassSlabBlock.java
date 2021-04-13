@@ -15,11 +15,9 @@ public interface IGlassSlabBlock extends IGlassBlock {
 		if (adjacentBlockState.getBlock() instanceof GenericRGBGlassBlock
 				|| adjacentBlockState.getBlock() instanceof RGBLampGlassFlatBlock) {
 			return true;
-		} else if (adjacentBlockState.getBlock() instanceof GenericRGBGlassSlabBlock
-				|| adjacentBlockState.getBlock() instanceof RGBLampGlassFlatSlabBlock) {
+		} else if (adjacentBlockState.getBlock() instanceof GenericRGBGlassSlabBlock) {
 			return isInvisibleToGlassSlab(state, adjacentBlockState, side);
-		} else if (adjacentBlockState.getBlock() instanceof GenericRGBGlassStairsBlock
-				|| adjacentBlockState.getBlock() instanceof RGBLampGlassFlatStairsBlock) {
+		} else if (adjacentBlockState.getBlock() instanceof GenericRGBGlassStairsBlock) {
 			return isInvisibleToGlassStairs(state, adjacentBlockState, side);
 		} else {
 			return false;

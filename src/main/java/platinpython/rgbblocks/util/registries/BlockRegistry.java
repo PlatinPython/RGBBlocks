@@ -1,52 +1,70 @@
 package platinpython.rgbblocks.util.registries;
 
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Block.Properties;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.Blocks;
 import net.minecraftforge.fml.RegistryObject;
 import platinpython.rgbblocks.block.GenericRGBBlock;
-import platinpython.rgbblocks.block.GenericRGBGlassBlock;
-import platinpython.rgbblocks.block.GenericRGBGlassSlabBlock;
-import platinpython.rgbblocks.block.GenericRGBGlassStairsBlock;
 import platinpython.rgbblocks.block.GenericRGBSlabBlock;
 import platinpython.rgbblocks.block.GenericRGBStairsBlock;
-import platinpython.rgbblocks.block.RGBLampFlatBlock;
-import platinpython.rgbblocks.block.RGBLampGlassFlatBlock;
+import platinpython.rgbblocks.block.RGBCarpetBlock;
+import platinpython.rgbblocks.block.RGBConcretePowderBlock;
 import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.RegistryHandler;
 
 public class BlockRegistry {
-	private static final Properties rock = Properties.create(Material.ROCK);
-	private static final Properties glass = Properties.create(Material.GLASS).sound(SoundType.GLASS).notSolid();
+	public static final RegistryObject<Block> RGB_CONCRETE = register("concrete",
+			() -> new GenericRGBBlock(Properties.from(Blocks.WHITE_CONCRETE)), false);
+	public static final RegistryObject<Block> RGB_CONCRETE_STAIRS = register("concrete_stairs",
+			() -> new GenericRGBStairsBlock(() -> RGB_CONCRETE.get().getDefaultState(),
+					Properties.from(Blocks.WHITE_CONCRETE)),
+			false);
+	public static final RegistryObject<Block> RGB_CONCRETE_SLAB = register("concrete_slab",
+			() -> new GenericRGBSlabBlock(Properties.from(Blocks.WHITE_CONCRETE)), false);
+	
+	public static final RegistryObject<Block> RGB_CONCRETE_POWDER = register("concrete_powder",
+			RGBConcretePowderBlock::new, false);
 
-	public static final RegistryObject<Block> RGB_FLAT = register("rgb_flat", () -> new GenericRGBBlock(rock));
-	public static final RegistryObject<Block> RGB_FLAT_SLAB = register("rgb_flat_slab",
-			() -> new GenericRGBSlabBlock(rock));
-	public static final RegistryObject<Block> RGB_FLAT_STAIRS = register("rgb_flat_stairs",
-			() -> new GenericRGBStairsBlock(() -> RGB_FLAT.get().getDefaultState(), rock));
+	public static final RegistryObject<Block> RGB_WOOL = register("wool",
+			() -> new GenericRGBBlock(Properties.from(Blocks.WHITE_WOOL)), false);
+	public static final RegistryObject<Block> RGB_WOOL_STAIRS = register("wool_stairs",
+			() -> new GenericRGBStairsBlock(() -> RGB_WOOL.get().getDefaultState(), Properties.from(Blocks.WHITE_WOOL)),
+			false);
+	public static final RegistryObject<Block> RGB_WOOL_SLAB = register("wool_slab",
+			() -> new GenericRGBSlabBlock(Properties.from(Blocks.WHITE_WOOL)), false);
+	
+	public static final RegistryObject<Block> RGB_CARPET = register("carpet", RGBCarpetBlock::new, false);
 
-	public static final RegistryObject<Block> RGB_GLASS_FLAT = register("rgb_glass_flat",
-			() -> new GenericRGBGlassBlock(glass));
-	public static final RegistryObject<Block> RGB_GLASS_FLAT_SLAB = register("rgb_glass_flat_slab",
-			() -> new GenericRGBGlassSlabBlock(glass));
-	public static final RegistryObject<Block> RGB_GLASS_FLAT_STAIRS = register("rgb_glass_flat_stairs",
-			() -> new GenericRGBGlassStairsBlock(() -> RGB_GLASS_FLAT.get().getDefaultState(), glass));
+	public static final RegistryObject<Block> RGB_PLANKS = register("planks",
+			() -> new GenericRGBBlock(Properties.from(Blocks.BIRCH_PLANKS)), false);
+	public static final RegistryObject<Block> RGB_PLANKS_STAIRS = register("planks_stairs",
+			() -> new GenericRGBStairsBlock(() -> RGB_PLANKS.get().getDefaultState(),
+					Properties.from(Blocks.BIRCH_PLANKS)),
+			false);
+	public static final RegistryObject<Block> RGB_PLANKS_SLAB = register("planks_slab",
+			() -> new GenericRGBSlabBlock(Properties.from(Blocks.BIRCH_PLANKS)), false);
 
-	public static final RegistryObject<Block> RGB_LAMP_FLAT = register("rgb_lamp_flat", RGBLampFlatBlock::new);
-//	public static final RegistryObject<Block> RGB_LAMP_FLAT_SLAB = register("rgb_lamp_flat_slab",
-//			RGBLampFlatSlabBlock::new);
-//	public static final RegistryObject<Block> RGB_LAMP_FLAT_STAIRS = register("rgb_lamp_flat_stairs",
-//			RGBLampFlatStairsBlock::new);
-//
-	public static final RegistryObject<Block> RGB_LAMP_GLASS_FLAT = register("rgb_lamp_glass_flat",
-			RGBLampGlassFlatBlock::new);
-//	public static final RegistryObject<Block> RGB_LAMP_GLASS_FLAT_SLAB = register("rgb_lamp_glass_flat_slab",
-//			RGBLampGlassFlatSlabBlock::new);
-//	public static final RegistryObject<Block> RGB_LAMP_GLASS_FLAT_STAIRS = register("rgb_lamp_glass_flat_stairs",
-//			RGBLampGlassFlatStairsBlock::new);
+	public static final RegistryObject<Block> RGB_TERRACOTTA = register("terracotta",
+			() -> new GenericRGBBlock(Properties.from(Blocks.TERRACOTTA)), false);
+	public static final RegistryObject<Block> RGB_TERRACOTTA_STAIRS = register("terracotta_stairs",
+			() -> new GenericRGBStairsBlock(() -> RGB_TERRACOTTA.get().getDefaultState(),
+					Properties.from(Blocks.TERRACOTTA)),
+			false);
+	public static final RegistryObject<Block> RGB_TERRACOTTA_SLAB = register("terracotta_slab",
+			() -> new GenericRGBSlabBlock(Properties.from(Blocks.TERRACOTTA)), false);
+
+	public static final RegistryObject<Block> RGB_GLASS = register("glass",
+			() -> new GenericRGBBlock(Properties.from(Blocks.GLASS)), false);
+	public static final RegistryObject<Block> RGB_GLASS_STAIRS = register("glass_stairs",
+			() -> new GenericRGBStairsBlock(() -> RGB_GLASS.get().getDefaultState(), Properties.from(Blocks.GLASS)),
+			false);
+	public static final RegistryObject<Block> RGB_GLASS_SLAB = register("glass_slab",
+			() -> new GenericRGBSlabBlock(Properties.from(Blocks.GLASS)), false);
+
+	public static ArrayList<Block> nonGlowingBlocks = new ArrayList<>();
 
 	public static void register() {
 	}
@@ -55,8 +73,12 @@ public class BlockRegistry {
 		return RegistryHandler.BLOCKS.register(name, block);
 	}
 
-	private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block) {
+	private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block, boolean isGlowing) {
 		RegistryObject<T> ret = registerNoItem(name, block);
+		ret.ifPresent(obj -> {
+			if (!isGlowing)
+				nonGlowingBlocks.add(ret.get());
+		});
 		RegistryHandler.ITEMS.register(name, () -> new RGBBlockItem(ret.get()));
 		return ret;
 	}

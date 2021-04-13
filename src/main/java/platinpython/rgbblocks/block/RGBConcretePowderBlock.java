@@ -1,22 +1,21 @@
 package platinpython.rgbblocks.block;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.CarpetBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.ConcretePowderBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import platinpython.rgbblocks.util.registries.BlockRegistry;
 
-public class GenericRGBCarpetBlock extends CarpetBlock implements IRGBBlock {
-	public GenericRGBCarpetBlock() {
-		super(DyeColor.WHITE, Properties.create(Material.CARPET).sound(SoundType.CLOTH));
+public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBBlock {
+	public RGBConcretePowderBlock() {
+		super(BlockRegistry.RGB_CONCRETE.get(), Properties.from(Blocks.WHITE_CONCRETE_POWDER));
 	}
 
 	@Override

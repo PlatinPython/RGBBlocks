@@ -33,33 +33,32 @@ public class RGBBlocks {
 
 	public void setup(final FMLClientSetupEvent event) {
 		PacketHandler.register();
+
 	}
 
 	public void doClientStuff(final FMLClientSetupEvent event) {
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_FLAT.get(), RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_FLAT_SLAB.get(), RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_FLAT_STAIRS.get(), RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_LAMP_GLASS_FLAT.get(), RenderType.getTranslucent());
-//		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_LAMP_GLASS_FLAT_SLAB.get(), RenderType.getTranslucent());
-//		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_LAMP_GLASS_FLAT_STAIRS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.getTranslucent());
 
 		RGBBlockColor blockColor = new RGBBlockColor();
 		RegistryHandler.BLOCKS.getEntries()
 				.forEach(block -> Minecraft.getInstance().getBlockColors().register(blockColor, block.get()));
-		
+
 		RGBBlockItemColor blockItemColor = new RGBBlockItemColor();
 		RegistryHandler.ITEMS.getEntries().forEach(item -> {
 			if (item.get() instanceof RGBBlockItem)
 				Minecraft.getInstance().getItemColors().register(blockItemColor, item.get());
 		});
-		
-		Minecraft.getInstance().getItemColors().register(new PaintbucketItemColor(), ItemRegistry.PAINTBUCKET.get());
+
+		Minecraft.getInstance().getItemColors().register(new PaintbucketItemColor(),
+				ItemRegistry.BUCKET_OF_PAINT.get());
 	}
 
 	public static final ItemGroup ITEM_GROUP_RGB = new ItemGroup("rgbBlocks") {
 		@Override
 		public ItemStack createIcon() {
-			return new ItemStack(ItemRegistry.PAINTBUCKET.get());
+			return new ItemStack(ItemRegistry.BUCKET_OF_PAINT.get());
 		}
 	};
 }

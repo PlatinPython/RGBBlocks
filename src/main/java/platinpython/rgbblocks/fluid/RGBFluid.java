@@ -1,18 +1,54 @@
 package platinpython.rgbblocks.fluid;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.Item;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
+import net.minecraftforge.fluids.FluidAttributes;
 
-public class RGBFluid extends Fluid{
-	public RGBFluid() {
+public class RGBFluid extends FlowingFluid {
+
+	@Override
+	public Fluid getFlowingFluid() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Fluid getStillFluid() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected boolean canSourcesMultiply() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected void beforeReplacingBlock(IWorld worldIn, BlockPos pos, BlockState state) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected int getSlopeFindDistance(IWorldReader worldIn) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected int getLevelDecreasePerBlock(IWorldReader worldIn) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
@@ -22,16 +58,10 @@ public class RGBFluid extends Fluid{
 	}
 
 	@Override
-	protected boolean canDisplace(IFluidState p_215665_1_, IBlockReader p_215665_2_, BlockPos p_215665_3_,
-			Fluid p_215665_4_, Direction p_215665_5_) {
+	protected boolean canDisplace(IFluidState fluidStateIn, IBlockReader blockReader, BlockPos pos, Fluid fluidIn,
+			Direction directionIn) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	protected Vec3d getFlow(IBlockReader p_215663_1_, BlockPos p_215663_2_, IFluidState p_215663_3_) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -42,18 +72,6 @@ public class RGBFluid extends Fluid{
 
 	@Override
 	protected float getExplosionResistance() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float getActualHeight(IFluidState p_215662_1_, IBlockReader p_215662_2_, BlockPos p_215662_3_) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float getHeight(IFluidState p_223407_1_) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -75,11 +93,9 @@ public class RGBFluid extends Fluid{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	@Override
-	public VoxelShape func_215664_b(IFluidState p_215664_1_, IBlockReader p_215664_2_, BlockPos p_215664_3_) {
-		// TODO Auto-generated method stub
-		return null;
+	protected FluidAttributes createAttributes() {
+		return FluidAttributes.builder(new ResourceLocation("rgb_glass_flat"), new ResourceLocation("rgb_glass_flat")).build(getFlowingFluid());
 	}
-
 }

@@ -34,7 +34,7 @@ public class RGBBlockColor implements IBlockColor {
 			}
 			return color.getRGB();
 		} else {
-			return 0;
+			return Color.WHITE.getRGB();
 		}
 	}
 }
