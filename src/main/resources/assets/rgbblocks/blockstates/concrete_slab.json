@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "type=bottom": {"model": "rgbblocks:block/concrete_slab"},
+    "type=top": {"model": "rgbblocks:block/concrete_slab_top"},
+    "type=double": {"model": "rgbblocks:block/concrete"}
+  }
+}

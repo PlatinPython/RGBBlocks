@@ -1,0 +1,6 @@
+{
+  "parent": "rgbblocks:block/stairs_inner",
+  "textures": {
+    "all": "blocks/white_concrete"
+  }
+}

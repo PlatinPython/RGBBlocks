@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "type=bottom": {"model": "rgbblocks:block/glass_slab"},
+    "type=top": {"model": "rgbblocks:block/glass_slab_top"},
+    "type=double": {"model": "rgbblocks:block/glass"}
+  }
+}

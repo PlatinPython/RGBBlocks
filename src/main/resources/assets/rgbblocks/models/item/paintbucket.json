@@ -1,7 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "rgbblocks:items/paintbucket",
-    "layer1": "rgbblocks:items/paintbucket_color"
-  }
-}

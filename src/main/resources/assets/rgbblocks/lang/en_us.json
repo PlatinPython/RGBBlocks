@@ -1,23 +1,31 @@
 {
-  "itemGroup.rgbBlocks": "RGB Stuff",
+  "itemGroup.rgbBlocks": "RGB Blocks",
 
 
-  "item.rgbblocks.paintbucket": "Paintbucket",
+  "item.rgbblocks.bucket_of_paint": "Bucket of Paint",
 
 
-  "block.rgbblocks.rgb_flat": "Plain RGB Block",
-  "block.rgbblocks.rgb_flat_slab": "Plain RGB Slab",
-  "block.rgbblocks.rgb_flat_stairs": "Plain RGB Stairs",
+  "block.rgbblocks.concrete": "RGB Concrete",
+  "block.rgbblocks.concrete_stairs": "RGB Concrete Stairs",
+  "block.rgbblocks.concrete_slab": "RGB Concrete Slab",
 
-  "block.rgbblocks.rgb_glass_flat": "Plain RGB Glass",
-  "block.rgbblocks.rgb_glass_flat_slab": "Plain RGB Glass Slab",
-  "block.rgbblocks.rgb_glass_flat_stairs": "Plain RGB Glass Stairs",
+  "block.rgbblocks.concrete_powder": "RGB Concrete Powder",
 
-  "block.rgbblocks.rgb_lamp_flat": "Plain RGB Lamp",
-  "block.rgbblocks.rgb_lamp_flat_slab": "Plain RGB Slab Lamp",
-  "block.rgbblocks.rgb_lamp_flat_stairs": "Plain RGB Stairs Lamp",
+  "block.rgbblocks.wool": "RGB Wool",
+  "block.rgbblocks.wool_stairs": "RGB Wool Stairs",
+  "block.rgbblocks.wool_slab": "RGB Wool Slab",
 
-  "block.rgbblocks.rgb_lamp_glass_flat": "Plain RGB Glass Lamp",
-  "block.rgbblocks.rgb_lamp_glass_flat_slab": "Plain RGB Glass Slab Lamp",
-  "block.rgbblocks.rgb_lamp_glass_flat_stairs": "Plain RGB Glass Stairs Lamp"
+  "block.rgbblocks.carpet": "RGB Carpet",
+
+  "block.rgbblocks.planks": "RGB Planks",
+  "block.rgbblocks.planks_stairs": "RGB Plank Stairs",
+  "block.rgbblocks.planks_slab": "RGB Plank Slab",
+
+  "block.rgbblocks.terracotta": "RGB Terracotta",
+  "block.rgbblocks.terracotta_stairs": "RGB Terracotta Stairs",
+  "block.rgbblocks.terracotta_slab": "RGB Terracotta Slab",
+
+  "block.rgbblocks.glass": "RGB Glass",
+  "block.rgbblocks.glass_stairs": "RGB Glass Stairs",
+  "block.rgbblocks.glass_slab": "RGB Glass Slab"
 }
