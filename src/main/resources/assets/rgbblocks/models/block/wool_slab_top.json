@@ -1,6 +1,6 @@
 {
   "parent": "rgbblocks:block/slab_top",
   "textures": {
-    "all": "blocks/white_wool"
+    "all": "block/white_wool"
   }
 }

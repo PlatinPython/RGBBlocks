@@ -1,6 +1,6 @@
 {
   "parent": "rgbblocks:block/stairs",
   "textures": {
-    "all": "blocks/white_glass"
+    "all": "block/white_glass"
   }
 }

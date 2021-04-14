@@ -1,6 +1,6 @@
 {
   "parent": "rgbblocks:block/slab",
   "textures": {
-    "all": "rgbblocks:blocks/planks"
+    "all": "rgbblocks:block/planks"
   }
 }

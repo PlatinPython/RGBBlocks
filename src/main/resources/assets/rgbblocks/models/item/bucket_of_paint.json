@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rgbblocks:items/bucket_of_paint",
-    "layer1": "rgbblocks:items/bucket_of_paint_color"
+    "layer0": "rgbblocks:item/bucket_of_paint",
+    "layer1": "rgbblocks:item/bucket_of_paint_color"
   }
 }

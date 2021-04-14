@@ -8,6 +8,9 @@ import net.minecraft.block.Block.Properties;
 import net.minecraft.block.Blocks;
 import net.minecraftforge.fml.RegistryObject;
 import platinpython.rgbblocks.block.GenericRGBBlock;
+import platinpython.rgbblocks.block.GenericRGBGlassBlock;
+import platinpython.rgbblocks.block.GenericRGBGlassSlabBlock;
+import platinpython.rgbblocks.block.GenericRGBGlassStairsBlock;
 import platinpython.rgbblocks.block.GenericRGBSlabBlock;
 import platinpython.rgbblocks.block.GenericRGBStairsBlock;
 import platinpython.rgbblocks.block.RGBCarpetBlock;
@@ -57,12 +60,12 @@ public class BlockRegistry {
 			() -> new GenericRGBSlabBlock(Properties.from(Blocks.TERRACOTTA)), false);
 
 	public static final RegistryObject<Block> RGB_GLASS = register("glass",
-			() -> new GenericRGBBlock(Properties.from(Blocks.GLASS)), false);
+			() -> new GenericRGBGlassBlock(Properties.from(Blocks.GLASS)), false);
 	public static final RegistryObject<Block> RGB_GLASS_STAIRS = register("glass_stairs",
-			() -> new GenericRGBStairsBlock(() -> RGB_GLASS.get().getDefaultState(), Properties.from(Blocks.GLASS)),
+			() -> new GenericRGBGlassStairsBlock(() -> RGB_GLASS.get().getDefaultState(), Properties.from(Blocks.GLASS)),
 			false);
 	public static final RegistryObject<Block> RGB_GLASS_SLAB = register("glass_slab",
-			() -> new GenericRGBSlabBlock(Properties.from(Blocks.GLASS)), false);
+			() -> new GenericRGBGlassSlabBlock(Properties.from(Blocks.GLASS)), false);
 
 	public static ArrayList<Block> nonGlowingBlocks = new ArrayList<>();
 

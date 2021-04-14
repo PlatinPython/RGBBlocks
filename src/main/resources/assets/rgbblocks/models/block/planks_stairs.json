@@ -1,6 +1,6 @@
 {
   "parent": "rgbblocks:block/stairs",
   "textures": {
-    "all": "rgbblocks:blocks/planks"
+    "all": "rgbblocks:block/planks"
   }
 }
