@@ -1,6 +1,20 @@
 {
-  "parent": "block/carpet",
-  "textures": {
-    "wool": "block/white_wool"
-  }
+	"parent": "block/thin_block",
+	"textures": {
+		"wool":"block/white_wool",
+        "particle": "block/white_wool"
+    },
+    "elements": [
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 1, 16 ],
+            "faces": {
+                "down":  { "uv": [ 0,  0, 16, 16 ], "tintindex": 0, "texture": "#wool", "cullface": "down" },
+                "up":    { "uv": [ 0,  0, 16, 16 ], "tintindex": 0, "texture": "#wool" },
+                "north": { "uv": [ 0, 15, 16, 16 ], "tintindex": 0, "texture": "#wool", "cullface": "north" },
+                "south": { "uv": [ 0, 15, 16, 16 ], "tintindex": 0, "texture": "#wool", "cullface": "south" },
+                "west":  { "uv": [ 0, 15, 16, 16 ], "tintindex": 0, "texture": "#wool", "cullface": "west" },
+                "east":  { "uv": [ 0, 15, 16, 16 ], "tintindex": 0, "texture": "#wool", "cullface": "east" }
+            }
+        }
+    ]
 }

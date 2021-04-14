@@ -1,6 +1,6 @@
 {
   "parent": "rgbblocks:block/block",
   "textures": {
-    "all": "block/white_glass"
+    "all": "block/white_stained_glass"
   }
 }

@@ -25,12 +25,12 @@ public class RegistryHandler {
 	public static void register() {
 		ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
 		BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-		TILE_ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
 		FLUIDS.register(FMLJavaModLoadingContext.get().getModEventBus());
+		TILE_ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
 		ItemRegistry.register();
 		BlockRegistry.register();
-		TileEntityRegistry.register();
 		FluidRegistry.register();
+		TileEntityRegistry.register();
 	}
 }

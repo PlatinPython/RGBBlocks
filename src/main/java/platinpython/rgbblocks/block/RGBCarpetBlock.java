@@ -19,7 +19,7 @@ public class RGBCarpetBlock extends CarpetBlock implements IRGBBlock {
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state) {
+	public boolean hasTileEntity(final BlockState state) {
 		return IRGBBlock.hasTileEntity(state);
 	}
 
