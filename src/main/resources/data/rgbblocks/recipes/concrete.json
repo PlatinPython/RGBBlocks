@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:white_concrete"
+		},
+		{
+			"item": "minecraft:white_dye"
+		}
+	],
+	"result": {
+		"item": "rgbblocks:concrete",
+		"nbt": "{red: 255, green: 255, blue: 255}",
+		"count": 1
+	}
+}

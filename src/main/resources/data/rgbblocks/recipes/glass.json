@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:white_stained_glass"
+		},
+		{
+			"item": "minecraft:white_dye"
+		}
+	],
+	"result": {
+		"item": "rgbblocks:glass",
+		"nbt": "{red: 255, green: 255, blue: 255}",
+		"count": 1
+	}
+}

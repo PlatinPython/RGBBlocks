@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#  ",
+        "## ",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "rgbblocks:glass"
+        }
+    },
+    "result": {
+        "item": "rgbblocks:glass_stairs",
+		"nbt": "{red: 255, green: 255, blue: 255}",
+        "count": 1
+    }
+}

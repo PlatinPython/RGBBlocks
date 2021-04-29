@@ -1,0 +1,42 @@
+{
+	"type": "minecraft:block",
+	"pools": [
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "rgbblocks:glass_stairs",
+					"functions": [
+						{
+							"function": "minecraft:copy_nbt",
+							"source": "block_entity",
+							"ops": [
+								{
+									"source": "red",
+									"target": "red",
+									"op": "replace"
+								},
+								{
+									"source": "green",
+									"target": "green",
+									"op": "replace"
+								},
+								{
+									"source": "blue",
+									"target": "blue",
+									"op": "replace"
+								}
+							],
+							"conditions": [
+								{
+									"condition": "minecraft:survives_explosion"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

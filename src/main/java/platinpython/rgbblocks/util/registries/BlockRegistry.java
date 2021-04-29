@@ -14,7 +14,6 @@ import platinpython.rgbblocks.block.GenericRGBGlassStairsBlock;
 import platinpython.rgbblocks.block.GenericRGBSlabBlock;
 import platinpython.rgbblocks.block.GenericRGBStairsBlock;
 import platinpython.rgbblocks.block.RGBCarpetBlock;
-import platinpython.rgbblocks.block.RGBConcretePowderBlock;
 import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.RegistryHandler;
 
@@ -27,9 +26,9 @@ public class BlockRegistry {
 			false);
 	public static final RegistryObject<Block> RGB_CONCRETE_SLAB = register("concrete_slab",
 			() -> new GenericRGBSlabBlock(Properties.from(Blocks.WHITE_CONCRETE)), false);
-	
+
 	public static final RegistryObject<Block> RGB_CONCRETE_POWDER = register("concrete_powder",
-			RGBConcretePowderBlock::new, false);
+			() -> new GenericRGBBlock(Properties.from(Blocks.WHITE_CONCRETE_POWDER)), false);
 
 	public static final RegistryObject<Block> RGB_WOOL = register("wool",
 			() -> new GenericRGBBlock(Properties.from(Blocks.WHITE_WOOL)), false);
@@ -38,7 +37,7 @@ public class BlockRegistry {
 			false);
 	public static final RegistryObject<Block> RGB_WOOL_SLAB = register("wool_slab",
 			() -> new GenericRGBSlabBlock(Properties.from(Blocks.WHITE_WOOL)), false);
-	
+
 	public static final RegistryObject<Block> RGB_CARPET = register("carpet", RGBCarpetBlock::new, false);
 
 	public static final RegistryObject<Block> RGB_PLANKS = register("planks",
@@ -62,7 +61,8 @@ public class BlockRegistry {
 	public static final RegistryObject<Block> RGB_GLASS = register("glass",
 			() -> new GenericRGBGlassBlock(Properties.from(Blocks.GLASS)), false);
 	public static final RegistryObject<Block> RGB_GLASS_STAIRS = register("glass_stairs",
-			() -> new GenericRGBGlassStairsBlock(() -> RGB_GLASS.get().getDefaultState(), Properties.from(Blocks.GLASS)),
+			() -> new GenericRGBGlassStairsBlock(() -> RGB_GLASS.get().getDefaultState(),
+					Properties.from(Blocks.GLASS)),
 			false);
 	public static final RegistryObject<Block> RGB_GLASS_SLAB = register("glass_slab",
 			() -> new GenericRGBGlassSlabBlock(Properties.from(Blocks.GLASS)), false);
