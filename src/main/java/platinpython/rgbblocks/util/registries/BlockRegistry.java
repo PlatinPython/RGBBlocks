@@ -14,6 +14,7 @@ import platinpython.rgbblocks.block.GenericRGBGlassStairsBlock;
 import platinpython.rgbblocks.block.GenericRGBSlabBlock;
 import platinpython.rgbblocks.block.GenericRGBStairsBlock;
 import platinpython.rgbblocks.block.RGBCarpetBlock;
+import platinpython.rgbblocks.block.RGBConcretePowderBlock;
 import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.RegistryHandler;
 
@@ -27,8 +28,7 @@ public class BlockRegistry {
 	public static final RegistryObject<Block> RGB_CONCRETE_SLAB = register("concrete_slab",
 			() -> new GenericRGBSlabBlock(Properties.from(Blocks.WHITE_CONCRETE)), false);
 
-	public static final RegistryObject<Block> RGB_CONCRETE_POWDER = register("concrete_powder",
-			() -> new GenericRGBBlock(Properties.from(Blocks.WHITE_CONCRETE_POWDER)), false);
+	public static final RegistryObject<Block> RGB_CONCRETE_POWDER = register("concrete_powder", RGBConcretePowderBlock::new, false);
 
 	public static final RegistryObject<Block> RGB_WOOL = register("wool",
 			() -> new GenericRGBBlock(Properties.from(Blocks.WHITE_WOOL)), false);
