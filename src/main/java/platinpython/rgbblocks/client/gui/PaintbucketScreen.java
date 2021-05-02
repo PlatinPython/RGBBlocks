@@ -1,5 +1,7 @@
 package platinpython.rgbblocks.client.gui;
 
+import java.awt.Color;
+
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
@@ -13,11 +15,12 @@ public class PaintbucketScreen extends Screen {
 	private double red, green, blue;
 	private Slider redSlider, greenSlider, blueSlider;
 
-	public PaintbucketScreen(int red, int green, int blue) {
+	public PaintbucketScreen(int colorIn) {
 		super(new StringTextComponent("Paintbucket"));
-		this.red = (double) red;
-		this.green = (double) green;
-		this.blue = (double) blue;
+		Color color = new Color(colorIn);
+		this.red = (double) color.getRed();
+		this.green = (double) color.getGreen();
+		this.blue = (double) color.getBlue();
 	}
 
 	@Override
@@ -65,9 +68,8 @@ public class PaintbucketScreen extends Screen {
 	public void onClose() {
 		super.onClose();
 		CompoundNBT compound = new CompoundNBT();
-		compound.putInt("red", this.redSlider.getValueInt());
-		compound.putInt("green", this.greenSlider.getValueInt());
-		compound.putInt("blue", this.blueSlider.getValueInt());
+		Color color = new Color(this.redSlider.getValueInt(), this.greenSlider.getValueInt(), this.blueSlider.getValueInt());
+		compound.putInt("color", color.getRGB());
 		PacketHandler.sendToServer(new PaintbucketSyncPKT(compound));
 	}
 }

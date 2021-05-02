@@ -1,5 +1,7 @@
 package platinpython.rgbblocks.item;
 
+import java.awt.Color;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -19,9 +21,7 @@ public class RGBBlockItem extends BlockItem {
 		if (group == RGBBlocks.ITEM_GROUP_RGB || group == ItemGroup.SEARCH) {
 			ItemStack stack = new ItemStack(this);
 			CompoundNBT compound = stack.getOrCreateTag();
-			compound.putInt("red", 255);
-			compound.putInt("green", 255);
-			compound.putInt("blue", 255);
+			compound.putInt("color", Color.WHITE.getRGB());
 			items.add(stack);
 		}
 	}

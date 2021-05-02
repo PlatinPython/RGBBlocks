@@ -1,17 +1,20 @@
 package platinpython.rgbblocks.block;
 
+import java.awt.Color;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
-import platinpython.rgbblocks.tileentity.RGBTileEntity;
 
 public interface IGlassBlock {
 	public static float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos,
 			BlockPos beaconPos) {
-		RGBTileEntity tileEntity = (RGBTileEntity) world.getTileEntity(pos);
-		CompoundNBT compound = tileEntity.getUpdateTag();
-		return new float[] { (float) compound.getInt("red") / 255.0F, (float) compound.getInt("green") / 255.0F,
-				(float) compound.getInt("blue") / 255.0F };
+		CompoundNBT compound = world.getTileEntity(pos).getUpdateTag();
+		if (compound.contains("color")) {
+			return new Color(compound.getInt("color")).getRGBColorComponents(null);
+		} else {
+			return Color.WHITE.getRGBColorComponents(null);
+		}
 	}
 }

@@ -6,11 +6,8 @@ import net.minecraft.block.StairsBlock;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.Direction;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public interface IGlassSlabBlock extends IGlassBlock {
-	@OnlyIn(Dist.CLIENT)
 	static boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (adjacentBlockState.getBlock() instanceof GenericRGBGlassBlock
 				|| adjacentBlockState.getBlock() instanceof RGBLampGlassFlatBlock) {

@@ -6,8 +6,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class GenericRGBGlassSlabBlock extends GenericRGBSlabBlock implements IGlassBlock, IGlassSlabBlock {
 	public GenericRGBGlassSlabBlock(Properties properties) {
@@ -24,7 +22,6 @@ public class GenericRGBGlassSlabBlock extends GenericRGBSlabBlock implements IGl
 		return IGlassSlabBlock.isSideInvisible(state, adjacentBlockState, side);
 	}
 	
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return 1.0F;

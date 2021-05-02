@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntityType;
 import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
 public class RGBTileEntity extends TileEntity {
-	public int red, green, blue;
+	public int color;
 
 	public RGBTileEntity(final TileEntityType<?> tileEntityTypeIn) {
 		super(tileEntityTypeIn);
@@ -20,18 +20,14 @@ public class RGBTileEntity extends TileEntity {
 
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
-		compound.putInt("red", Math.min(Math.max(this.red, 0), 255));
-		compound.putInt("green", Math.min(Math.max(this.green, 0), 255));
-		compound.putInt("blue", Math.min(Math.max(this.blue, 0), 255));
+		compound.putInt("color", color);
 		return super.write(compound);
 	}
 
 	@Override
 	public void read(CompoundNBT compound) {
 		super.read(compound);
-		this.red = compound.getInt("red");
-		this.green = compound.getInt("green");
-		this.blue = compound.getInt("blue");
+		this.color = compound.getInt("color");
 	}
 
 	@Override
@@ -47,6 +43,6 @@ public class RGBTileEntity extends TileEntity {
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
 		this.read(packet.getNbtCompound());
-		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), -1);
+		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
 	}
 }

@@ -1,7 +1,5 @@
 package platinpython.rgbblocks.util.client.colorhandlers;
 
-import java.awt.Color;
-
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -14,9 +12,11 @@ public class RGBBlockItemColor implements IItemColor {
 	public int getColor(ItemStack stack, int tintindex) {
 		if (stack.getItem() instanceof RGBBlockItem) {
 			CompoundNBT compound = stack.getTag();
-			Color color;
-			color = new Color(compound.getInt("red"), compound.getInt("green"), compound.getInt("blue"));
-			return color.getRGB();
+			if(compound.contains("color")) {
+				return compound.getInt("color");
+			} else {
+				return 0;
+			}
 		} else {
 			return 0;
 		}

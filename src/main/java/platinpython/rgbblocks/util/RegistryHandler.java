@@ -4,10 +4,16 @@ import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import platinpython.rgbblocks.RGBBlocks;
+import platinpython.rgbblocks.util.client.colorhandlers.PaintbucketItemColor;
+import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockColor;
+import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockItemColor;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.FluidRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
@@ -32,5 +38,15 @@ public class RegistryHandler {
 		BlockRegistry.register();
 		FluidRegistry.register();
 		TileEntityRegistry.register();
+	}
+
+	@SubscribeEvent
+	public void registerRGBColors(ColorHandlerEvent.Item event) {
+		event.getBlockColors().register(new RGBBlockColor(),
+				RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
+		event.getItemColors().register(new RGBBlockItemColor(),
+				RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
+		
+		event.getItemColors().register(new PaintbucketItemColor(), ItemRegistry.BUCKET_OF_PAINT.get());
 	}
 }
