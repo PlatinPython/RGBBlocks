@@ -12,7 +12,7 @@
     },
     "result": {
         "item": "rgbblocks:planks_stairs",
-		"nbt": "{red: 255, green: 255, blue: 255}",
+		"nbt": "{color:-1}",
         "count": 1
     }
 }

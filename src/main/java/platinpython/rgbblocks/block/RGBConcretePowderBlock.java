@@ -6,7 +6,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ConcretePowderBlock;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -18,6 +17,7 @@ import net.minecraft.world.server.ServerWorld;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
 public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBBlock {
+//	TileEntity tileEntity;
 	public RGBConcretePowderBlock() {
 		super(BlockRegistry.RGB_CONCRETE.get(), Properties.from(Blocks.WHITE_CONCRETE_POWDER));
 	}
@@ -45,33 +45,23 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBB
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		if (worldIn.isAirBlock(pos.down()) || canFallThrough(worldIn.getBlockState(pos.down())) && pos.getY() >= 0) {
-//			CompoundNBT tag = worldIn.getTileEntity(pos).getUpdateTag();
-//			red = tag.getInt("red");
-//			green = tag.getInt("green");
-//			blue = tag.getInt("blue");
-			FallingBlockEntity fallingblockentity = new FallingBlockEntity(worldIn, (double) pos.getX() + 0.5D,
-					(double) pos.getY(), (double) pos.getZ() + 0.5D, worldIn.getBlockState(pos));
-			this.onStartFalling(fallingblockentity);
-
-			// Deactivated until I can find a method to keep the color of the block
-			// throughout the fall and after the fall
-
-			// worldIn.addEntity(fallingblockentity);
-		}
+//		if (worldIn.isAirBlock(pos.down()) || canFallThrough(worldIn.getBlockState(pos.down())) && pos.getY() >= 0) {
+//			tileEntity = worldIn.getTileEntity(pos);
+//			FallingBlockEntity fallingblockentity = new FallingBlockEntity(worldIn, (double) pos.getX() + 0.5D,
+//					(double) pos.getY(), (double) pos.getZ() + 0.5D, worldIn.getBlockState(pos));
+//			this.onStartFalling(fallingblockentity);
+//
+//			 Deactivated until I can find a method to keep the color of the block
+//			 throughout the fall and after the fall
+//
+//			 worldIn.addEntity(fallingblockentity);
+//		}
 	}
 
 	@Override
 	public void onEndFalling(World worldIn, BlockPos pos, BlockState fallingState, BlockState hitState) {
 		super.onEndFalling(worldIn, pos, fallingState, hitState);
-//		CompoundNBT tag = worldIn.getTileEntity(pos).getUpdateTag();
-//		tag.remove("red");
-//		tag.remove("green");
-//		tag.remove("blue");
-//		tag.putInt("red", red);
-//		tag.putInt("green", green);
-//		tag.putInt("blue", blue);
-//		worldIn.notifyBlockUpdate(pos, fallingState, hitState, -1);
+//		worldIn.setTileEntity(pos, this.tileEntity);
 	}
 
 	// Currently needed as particle creation seems to crash the game
@@ -84,7 +74,7 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBB
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.hasTileEntity() && (newState.getBlock() == BlockRegistry.RGB_CONCRETE.get())) {
+		if (state.getBlock() == BlockRegistry.RGB_CONCRETE_POWDER.get() && newState.getBlock() == BlockRegistry.RGB_CONCRETE.get()) {
 		} else {
 			super.onReplaced(state, worldIn, pos, newState, isMoving);
 		}

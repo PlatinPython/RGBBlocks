@@ -17,17 +17,15 @@ public interface IRGBBlock {
 	public static boolean hasTileEntity(final BlockState state) {
 		return true;
 	}
-	
+
 	public static TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return TileEntityRegistry.RGB.get().create();
 	}
 
-	public static void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public static void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer,
+			ItemStack stack) {
 		if (stack.hasTag() == true) {
-			RGBTileEntity tileEntity = (RGBTileEntity) worldIn.getTileEntity(pos);
-			tileEntity.red = stack.getTag().getInt("red");
-			tileEntity.green = stack.getTag().getInt("green");
-			tileEntity.blue = stack.getTag().getInt("blue");
+			((RGBTileEntity) worldIn.getTileEntity(pos)).color = stack.getTag().getInt("color");
 		}
 	}
 
@@ -36,9 +34,7 @@ public interface IRGBBlock {
 		ItemStack stack = new ItemStack(state.getBlock().asItem());
 		RGBTileEntity tileEntity = (RGBTileEntity) world.getTileEntity(pos);
 		CompoundNBT tag = new CompoundNBT();
-		tag.putInt("red", tileEntity.red);
-		tag.putInt("green", tileEntity.green);
-		tag.putInt("blue", tileEntity.blue);
+		tag.putInt("color", tileEntity.getUpdateTag().getInt("color"));
 		stack.setTag(tag);
 		return stack;
 	}

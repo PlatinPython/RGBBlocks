@@ -13,18 +13,8 @@
 							"source": "block_entity",
 							"ops": [
 								{
-									"source": "red",
-									"target": "red",
-									"op": "replace"
-								},
-								{
-									"source": "green",
-									"target": "green",
-									"op": "replace"
-								},
-								{
-									"source": "blue",
-									"target": "blue",
+									"source": "color",
+									"target": "color",
 									"op": "replace"
 								}
 							],
