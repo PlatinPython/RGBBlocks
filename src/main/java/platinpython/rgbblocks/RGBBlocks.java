@@ -8,14 +8,16 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import platinpython.rgbblocks.client.renderer.RGBFallingBlockRenderer;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.network.PacketHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
+import platinpython.rgbblocks.util.registries.EntityRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
-import platinpython.rgbblocks.util.registries.client.ColorHandlerRegistry;
 
 @Mod("rgbblocks")
 public class RGBBlocks {
@@ -35,7 +37,8 @@ public class RGBBlocks {
 	public void setup(final FMLClientSetupEvent event) {
 		PacketHandler.register();
 
-		FMLJavaModLoadingContext.get().getModEventBus().register(new ColorHandlerRegistry());
+		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.RGB_FALLING_BLOCK.get(),
+				RGBFallingBlockRenderer::new);
 	}
 
 	public void doClientStuff(final FMLClientSetupEvent event) {
@@ -47,7 +50,9 @@ public class RGBBlocks {
 	public static final ItemGroup ITEM_GROUP_RGB = new ItemGroup("rgbBlocks") {
 		@Override
 		public ItemStack makeIcon() {
-			return new ItemStack(ItemRegistry.BUCKET_OF_PAINT.get());
+			ItemStack stack = new ItemStack(ItemRegistry.BUCKET_OF_PAINT.get());
+			stack.getOrCreateTag().putInt("color", -1);
+			return stack;
 		}
 	};
 }

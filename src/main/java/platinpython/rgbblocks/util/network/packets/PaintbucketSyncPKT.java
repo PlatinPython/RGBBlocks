@@ -3,24 +3,23 @@ package platinpython.rgbblocks.util.network.packets;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 import platinpython.rgbblocks.item.PaintbucketItem;
 
 public class PaintbucketSyncPKT {
-	private final CompoundNBT compound;
+	private final int color;
 	
-	public PaintbucketSyncPKT(CompoundNBT compound) {
-		this.compound = compound;
+	public PaintbucketSyncPKT(int color) {
+		this.color = color;
 	}
 	
 	public static void encode(PaintbucketSyncPKT message, PacketBuffer buffer) {
-		buffer.writeNbt(message.compound);
+		buffer.writeInt(message.color);
 	}
 
 	public static PaintbucketSyncPKT decode(PacketBuffer buffer) {
-		return new PaintbucketSyncPKT(buffer.readNbt());
+		return new PaintbucketSyncPKT(buffer.readInt());
 	}
 	
 	public static class Handler{
@@ -28,7 +27,7 @@ public class PaintbucketSyncPKT {
 			context.get().enqueueWork(() -> {
 				ItemStack stack = context.get().getSender().getMainHandItem();
 				if(stack.getItem() instanceof PaintbucketItem) {
-					stack.setTag(message.compound);
+					stack.getOrCreateTag().putInt("color", message.color);
 				}
 			});
 			context.get().setPacketHandled(true);

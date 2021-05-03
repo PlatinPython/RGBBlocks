@@ -6,7 +6,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 import platinpython.rgbblocks.util.network.PacketHandler;
@@ -68,10 +67,8 @@ public class PaintbucketScreen extends Screen {
 	@Override
 	public void onClose() {
 		super.onClose();
-		CompoundNBT compound = new CompoundNBT();
 		Color color = new Color(this.redSlider.getValueInt(), this.greenSlider.getValueInt(),
 				this.blueSlider.getValueInt());
-		compound.putInt("color", color.getRGB());
-		PacketHandler.sendToServer(new PaintbucketSyncPKT(compound));
+		PacketHandler.sendToServer(new PaintbucketSyncPKT(color.getRGB()));
 	}
 }

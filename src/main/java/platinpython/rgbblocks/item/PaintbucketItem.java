@@ -38,7 +38,7 @@ public class PaintbucketItem extends Item {
 	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		if (playerIn.isShiftKeyDown() && handIn == Hand.MAIN_HAND) {
 			if (worldIn.isClientSide) {
-				ClientHandler.openGUI(playerIn.getMainHandItem());
+				ClientHandler.openPaintbucketGUI(playerIn.getMainHandItem());
 				return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getMainHandItem());
 			}
 		}

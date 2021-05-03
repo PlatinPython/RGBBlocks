@@ -16,10 +16,10 @@ public class PaintbucketItemColor implements IItemColor {
 			if (tintindex == 1) {
 				return stack.getTag().getInt("color");
 			} else {
-				return Color.WHITE.getRGB();
+				return -1;
 			}
 		} else {
-			return Color.WHITE.getRGB();
+			return 0;
 		}
 	}
 }
