@@ -22,12 +22,12 @@ import platinpython.rgbblocks.tileentity.RGBTileEntity;
 
 public class PaintbucketItem extends Item {
 	public PaintbucketItem() {
-		super(new Properties().group(RGBBlocks.ITEM_GROUP_RGB).maxStackSize(1));
+		super(new Properties().tab(RGBBlocks.ITEM_GROUP_RGB).stacksTo(1));
 	}
 
 	@Override
-	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-		if (group == RGBBlocks.ITEM_GROUP_RGB || group == ItemGroup.SEARCH) {
+	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
+		if (group == RGBBlocks.ITEM_GROUP_RGB || group == ItemGroup.TAB_SEARCH) {
 			ItemStack stack = new ItemStack(this);
 			CompoundNBT compound = stack.getOrCreateTag();
 			compound.putInt("color", Color.WHITE.getRGB());
@@ -36,21 +36,21 @@ public class PaintbucketItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		if (playerIn.isSneaking() && handIn == Hand.MAIN_HAND) {
+	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+		if (playerIn.isShiftKeyDown() && handIn == Hand.MAIN_HAND) {
 			Minecraft.getInstance()
-					.displayGuiScreen(new PaintbucketScreen(playerIn.getHeldItemMainhand().getTag().getInt("color")));
-			return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getHeldItemMainhand());
+					.setScreen(new PaintbucketScreen(playerIn.getMainHandItem().getTag().getInt("color")));
+			return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getMainHandItem());
 		}
-		return new ActionResult<ItemStack>(ActionResultType.PASS, playerIn.getHeldItemMainhand());
+		return new ActionResult<ItemStack>(ActionResultType.PASS, playerIn.getMainHandItem());
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		TileEntity tileEntity = context.getWorld().getTileEntity(context.getPos());
+	public ActionResultType useOn(ItemUseContext context) {
+		TileEntity tileEntity = context.getLevel().getBlockEntity(context.getClickedPos());
 		if (tileEntity instanceof RGBTileEntity || tileEntity instanceof RGBLampTileEntity) {
-			((RGBTileEntity) tileEntity).color = context.getItem().getTag().getInt("color");
-			context.getWorld().notifyBlockUpdate(context.getPos(), tileEntity.getBlockState(),
+			((RGBTileEntity) tileEntity).color = context.getItemInHand().getTag().getInt("color");
+			context.getLevel().sendBlockUpdated(context.getClickedPos(), tileEntity.getBlockState(),
 					tileEntity.getBlockState(), -1);
 			return ActionResultType.SUCCESS;
 		} else {

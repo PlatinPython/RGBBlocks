@@ -16,17 +16,17 @@ public class PaintbucketSyncPKT {
 	}
 	
 	public static void encode(PaintbucketSyncPKT message, PacketBuffer buffer) {
-		buffer.writeCompoundTag(message.compound);
+		buffer.writeNbt(message.compound);
 	}
 
 	public static PaintbucketSyncPKT decode(PacketBuffer buffer) {
-		return new PaintbucketSyncPKT(buffer.readCompoundTag());
+		return new PaintbucketSyncPKT(buffer.readNbt());
 	}
 	
 	public static class Handler{
 		public static void handle(PaintbucketSyncPKT message, Supplier<NetworkEvent.Context> context) {
 			context.get().enqueueWork(() -> {
-				ItemStack stack = context.get().getSender().getHeldItemMainhand();
+				ItemStack stack = context.get().getSender().getMainHandItem();
 				if(stack.getItem() instanceof PaintbucketItem) {
 					stack.setTag(message.compound);
 				}

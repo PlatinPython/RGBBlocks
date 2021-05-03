@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ConcretePowderBlock;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +20,7 @@ import platinpython.rgbblocks.util.registries.BlockRegistry;
 public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBBlock {
 //	TileEntity tileEntity;
 	public RGBConcretePowderBlock() {
-		super(BlockRegistry.RGB_CONCRETE.get(), Properties.from(Blocks.WHITE_CONCRETE_POWDER));
+		super(BlockRegistry.RGB_CONCRETE.get(), Properties.copy(Blocks.WHITE_CONCRETE_POWDER));
 	}
 
 	@Override
@@ -33,8 +34,8 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBB
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		IRGBBlock.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		IRGBBlock.setPlacedBy(worldIn, pos, state, placer, stack);
 	}
 
 	@Override
@@ -59,8 +60,8 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBB
 	}
 
 	@Override
-	public void onEndFalling(World worldIn, BlockPos pos, BlockState fallingState, BlockState hitState) {
-		super.onEndFalling(worldIn, pos, fallingState, hitState);
+	public void onLand(World worldIn, BlockPos pos, BlockState fallingState, BlockState hitState, FallingBlockEntity fallingBlockEntity) {
+		super.onLand(worldIn, pos, fallingState, hitState, fallingBlockEntity);
 //		worldIn.setTileEntity(pos, this.tileEntity);
 	}
 
@@ -71,12 +72,11 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBB
 		// super.animateTick(stateIn, worldIn, pos, rand);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
-	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() == BlockRegistry.RGB_CONCRETE_POWDER.get() && newState.getBlock() == BlockRegistry.RGB_CONCRETE.get()) {
 		} else {
-			super.onReplaced(state, worldIn, pos, newState, isMoving);
+			state.onRemove(worldIn, pos, newState, isMoving);
 		}
 	}
 }

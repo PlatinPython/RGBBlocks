@@ -10,9 +10,9 @@ import platinpython.rgbblocks.util.RegistryHandler;
 public class TileEntityRegistry {
 	public static final RegistryObject<TileEntityType<RGBTileEntity>> RGB = RegistryHandler.TILE_ENTITY_TYPES
 			.register("rgb", () -> TileEntityType.Builder
-					.create(RGBTileEntity::new, BlockRegistry.nonGlowingBlocks.toArray(new Block[0])).build(null));
+					.of(RGBTileEntity::new, BlockRegistry.nonGlowingBlocks.toArray(new Block[0])).build(null));
 	public static final RegistryObject<TileEntityType<RGBLampTileEntity>> RGB_LAMP = RegistryHandler.TILE_ENTITY_TYPES
-			.register("rgb_lamp", () -> TileEntityType.Builder.create(RGBLampTileEntity::new).build(null));
+			.register("rgb_lamp", () -> TileEntityType.Builder.of(RGBLampTileEntity::new).build(null));
 
 	public static void register() {
 	}

@@ -22,12 +22,12 @@ import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 public class RGBLampFlatBlock extends Block {
 
 	public RGBLampFlatBlock() {
-		super(Block.Properties.create(new Material.Builder(MaterialColor.AIR).build()));
+		super(Block.Properties.of(new Material.Builder(MaterialColor.NONE).build()));
 	}
 
 	@Override
 	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
-		TileEntity tileEntity = world.getTileEntity(pos);
+		TileEntity tileEntity = world.getBlockEntity(pos);
 		if (tileEntity instanceof RGBLampTileEntity) {
 			return tileEntity.serializeNBT().getBoolean("isOn") ? 15 : 0;
 		}
@@ -45,9 +45,9 @@ public class RGBLampFlatBlock extends Block {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (stack.hasTag() == true) {
-			RGBLampTileEntity tileEntity = (RGBLampTileEntity) worldIn.getTileEntity(pos);
+			RGBLampTileEntity tileEntity = (RGBLampTileEntity) worldIn.getBlockEntity(pos);
 			tileEntity.red = stack.getTag().getInt("red");
 			tileEntity.green = stack.getTag().getInt("green");
 			tileEntity.blue = stack.getTag().getInt("blue");
@@ -59,7 +59,7 @@ public class RGBLampFlatBlock extends Block {
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos,
 			PlayerEntity player) {
 		ItemStack stack = new ItemStack(this.asItem());
-		RGBLampTileEntity tileEntity = (RGBLampTileEntity) world.getTileEntity(pos);
+		RGBLampTileEntity tileEntity = (RGBLampTileEntity) world.getBlockEntity(pos);
 		CompoundNBT tag = new CompoundNBT();
 		tag.putInt("red", tileEntity.red);
 		tag.putInt("green", tileEntity.green);
@@ -69,11 +69,11 @@ public class RGBLampFlatBlock extends Block {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
 			Hand handIn, BlockRayTraceResult hit) {
-		ItemStack stack = player.getHeldItemMainhand();
+		ItemStack stack = player.getMainHandItem();
 		if (handIn == Hand.MAIN_HAND && stack.isEmpty()) {
-			TileEntity tileEntity = worldIn.getTileEntity(pos);
+			TileEntity tileEntity = worldIn.getBlockEntity(pos);
 			if (tileEntity instanceof RGBLampTileEntity) {
 				((RGBLampTileEntity) tileEntity).lampToggle();
 				return ActionResultType.SUCCESS;

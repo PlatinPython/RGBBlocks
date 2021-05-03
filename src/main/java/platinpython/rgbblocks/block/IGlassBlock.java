@@ -10,7 +10,7 @@ import net.minecraft.world.IWorldReader;
 public interface IGlassBlock {
 	public static float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos,
 			BlockPos beaconPos) {
-		CompoundNBT compound = world.getTileEntity(pos).getUpdateTag();
+		CompoundNBT compound = world.getBlockEntity(pos).getUpdateTag();
 		if (compound.contains("color")) {
 			return new Color(compound.getInt("color")).getRGBColorComponents(null);
 		} else {

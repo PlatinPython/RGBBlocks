@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class RGBCarpetBlock extends CarpetBlock implements IRGBBlock {
 	public RGBCarpetBlock() {
-		super(DyeColor.WHITE, Properties.from(Blocks.WHITE_CARPET));
+		super(DyeColor.WHITE, Properties.copy(Blocks.WHITE_CARPET));
 	}
 
 	@Override
@@ -29,8 +29,8 @@ public class RGBCarpetBlock extends CarpetBlock implements IRGBBlock {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		IRGBBlock.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		IRGBBlock.setPlacedBy(worldIn, pos, state, placer, stack);
 	}
 
 	@Override

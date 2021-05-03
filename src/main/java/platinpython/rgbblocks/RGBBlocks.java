@@ -37,14 +37,14 @@ public class RGBBlocks {
 	}
 
 	public void doClientStuff(final FMLClientSetupEvent event) {
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.translucent());
 	}
 
 	public static final ItemGroup ITEM_GROUP_RGB = new ItemGroup("rgbBlocks") {
 		@Override
-		public ItemStack createIcon() {
+		public ItemStack makeIcon() {
 			return new ItemStack(ItemRegistry.BUCKET_OF_PAINT.get());
 		}
 	};

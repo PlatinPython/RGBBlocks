@@ -27,8 +27,8 @@ public class GenericRGBStairsBlock extends StairsBlock implements IRGBBlock {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		IRGBBlock.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		IRGBBlock.setPlacedBy(worldIn, pos, state, placer, stack);
 	}
 
 	@Override

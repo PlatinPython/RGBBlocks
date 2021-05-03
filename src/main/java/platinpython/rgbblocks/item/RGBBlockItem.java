@@ -13,12 +13,12 @@ import platinpython.rgbblocks.RGBBlocks;
 
 public class RGBBlockItem extends BlockItem {
 	public RGBBlockItem(Block blockIn) {
-		super(blockIn, new Item.Properties().group(RGBBlocks.ITEM_GROUP_RGB));
+		super(blockIn, new Item.Properties().tab(RGBBlocks.ITEM_GROUP_RGB));
 	}
 
 	@Override
-	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-		if (group == RGBBlocks.ITEM_GROUP_RGB || group == ItemGroup.SEARCH) {
+	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
+		if (group == RGBBlocks.ITEM_GROUP_RGB || group == ItemGroup.TAB_SEARCH) {
 			ItemStack stack = new ItemStack(this);
 			CompoundNBT compound = stack.getOrCreateTag();
 			compound.putInt("color", Color.WHITE.getRGB());

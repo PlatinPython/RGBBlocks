@@ -22,43 +22,43 @@ public interface IGlassSlabBlock extends IGlassBlock {
 	}
 
 	static boolean isInvisibleToGlassSlab(BlockState state, BlockState adjacentBlockState, Direction side) {
-		if (adjacentBlockState.get(SlabBlock.TYPE) == SlabType.DOUBLE) {
+		if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.DOUBLE) {
 			return true;
 		}
 
 		switch (side) {
 		case UP:
 		case DOWN:
-			return (state.get(SlabBlock.TYPE) != adjacentBlockState.get(SlabBlock.TYPE));
+			return (state.getValue(SlabBlock.TYPE) != adjacentBlockState.getValue(SlabBlock.TYPE));
 		case NORTH:
 		case EAST:
 		case SOUTH:
 		case WEST:
-			return (state.get(SlabBlock.TYPE) == adjacentBlockState.get(SlabBlock.TYPE));
+			return (state.getValue(SlabBlock.TYPE) == adjacentBlockState.getValue(SlabBlock.TYPE));
 		}
 
 		return false;
 	}
 
 	static boolean isInvisibleToGlassStairs(BlockState state, BlockState adjacentBlockState, Direction side) {
-		if (side == Direction.UP && adjacentBlockState.get(StairsBlock.HALF) == Half.BOTTOM) {
+		if (side == Direction.UP && adjacentBlockState.getValue(StairsBlock.HALF) == Half.BOTTOM) {
 			return true;
 		}
 
-		if (side == Direction.DOWN && adjacentBlockState.get(StairsBlock.HALF) == Half.TOP) {
+		if (side == Direction.DOWN && adjacentBlockState.getValue(StairsBlock.HALF) == Half.TOP) {
 			return true;
 		}
 
-		if (adjacentBlockState.get(StairsBlock.FACING) == side.getOpposite()) {
+		if (adjacentBlockState.getValue(StairsBlock.FACING) == side.getOpposite()) {
 			return true;
 		}
 
-		if (side.getHorizontalIndex() != -1) {
-			if (state.get(SlabBlock.TYPE) == SlabType.BOTTOM
-					&& adjacentBlockState.get(StairsBlock.HALF) == Half.BOTTOM) {
+		if (side.get2DDataValue() != -1) {
+			if (state.getValue(SlabBlock.TYPE) == SlabType.BOTTOM
+					&& adjacentBlockState.getValue(StairsBlock.HALF) == Half.BOTTOM) {
 				return true;
-			} else if (state.get(SlabBlock.TYPE) == SlabType.TOP
-					&& adjacentBlockState.get(StairsBlock.HALF) == Half.TOP) {
+			} else if (state.getValue(SlabBlock.TYPE) == SlabType.TOP
+					&& adjacentBlockState.getValue(StairsBlock.HALF) == Half.TOP) {
 				return true;
 			}
 		}
