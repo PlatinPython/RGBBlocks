@@ -72,11 +72,12 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBB
 		// super.animateTick(stateIn, worldIn, pos, rand);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() == BlockRegistry.RGB_CONCRETE_POWDER.get() && newState.getBlock() == BlockRegistry.RGB_CONCRETE.get()) {
 		} else {
-			state.onRemove(worldIn, pos, newState, isMoving);
+			super.onRemove(state, worldIn, pos, newState, isMoving);
 		}
 	}
 }

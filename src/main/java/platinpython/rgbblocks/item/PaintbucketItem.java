@@ -2,7 +2,6 @@ package platinpython.rgbblocks.item;
 
 import java.awt.Color;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -16,7 +15,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.client.gui.PaintbucketScreen;
+import platinpython.rgbblocks.client.ClientHandler;
 import platinpython.rgbblocks.tileentity.RGBLampTileEntity;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 
@@ -38,9 +37,10 @@ public class PaintbucketItem extends Item {
 	@Override
 	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		if (playerIn.isShiftKeyDown() && handIn == Hand.MAIN_HAND) {
-			Minecraft.getInstance()
-					.setScreen(new PaintbucketScreen(playerIn.getMainHandItem().getTag().getInt("color")));
-			return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getMainHandItem());
+			if (worldIn.isClientSide) {
+				ClientHandler.openGUI(playerIn.getMainHandItem());
+				return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getMainHandItem());
+			}
 		}
 		return new ActionResult<ItemStack>(ActionResultType.PASS, playerIn.getMainHandItem());
 	}

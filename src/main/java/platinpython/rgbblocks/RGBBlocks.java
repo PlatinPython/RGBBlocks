@@ -15,6 +15,7 @@ import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.network.PacketHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
+import platinpython.rgbblocks.util.registries.client.ColorHandlerRegistry;
 
 @Mod("rgbblocks")
 public class RGBBlocks {
@@ -25,7 +26,6 @@ public class RGBBlocks {
 	public RGBBlocks() {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
-		FMLJavaModLoadingContext.get().getModEventBus().register(new RegistryHandler());
 
 		RegistryHandler.register();
 
@@ -34,6 +34,8 @@ public class RGBBlocks {
 
 	public void setup(final FMLClientSetupEvent event) {
 		PacketHandler.register();
+
+		FMLJavaModLoadingContext.get().getModEventBus().register(new ColorHandlerRegistry());
 	}
 
 	public void doClientStuff(final FMLClientSetupEvent event) {
