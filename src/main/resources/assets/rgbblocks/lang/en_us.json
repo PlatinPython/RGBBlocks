@@ -1,31 +1,35 @@
 {
-  "itemGroup.rgbBlocks": "RGB Blocks",
-
-
-  "item.rgbblocks.bucket_of_paint": "Bucket of Paint",
-
-
-  "block.rgbblocks.concrete": "RGB Concrete",
-  "block.rgbblocks.concrete_stairs": "RGB Concrete Stairs",
-  "block.rgbblocks.concrete_slab": "RGB Concrete Slab",
-
-  "block.rgbblocks.concrete_powder": "RGB Concrete Powder",
-
-  "block.rgbblocks.wool": "RGB Wool",
-  "block.rgbblocks.wool_stairs": "RGB Wool Stairs",
-  "block.rgbblocks.wool_slab": "RGB Wool Slab",
-
-  "block.rgbblocks.carpet": "RGB Carpet",
-
-  "block.rgbblocks.planks": "RGB Planks",
-  "block.rgbblocks.planks_stairs": "RGB Plank Stairs",
-  "block.rgbblocks.planks_slab": "RGB Plank Slab",
-
-  "block.rgbblocks.terracotta": "RGB Terracotta",
-  "block.rgbblocks.terracotta_stairs": "RGB Terracotta Stairs",
-  "block.rgbblocks.terracotta_slab": "RGB Terracotta Slab",
-
-  "block.rgbblocks.glass": "RGB Glass",
-  "block.rgbblocks.glass_stairs": "RGB Glass Stairs",
-  "block.rgbblocks.glass_slab": "RGB Glass Slab"
+	"gui.rgbblocks.bucket_of_paint.red": "Red",
+	"gui.rgbblocks.bucket_of_paint.green": "Green",
+	"gui.rgbblocks.bucket_of_paint.blue": "Blue",
+	
+	"itemGroup.rgbBlocks": "RGB Blocks",
+	
+	
+	"item.rgbblocks.bucket_of_paint": "Bucket of Paint",
+	
+	
+	"block.rgbblocks.concrete": "RGB Concrete",
+	"block.rgbblocks.concrete_stairs": "RGB Concrete Stairs",
+	"block.rgbblocks.concrete_slab": "RGB Concrete Slab",
+	
+	"block.rgbblocks.concrete_powder": "RGB Concrete Powder",
+	
+	"block.rgbblocks.wool": "RGB Wool",
+	"block.rgbblocks.wool_stairs": "RGB Wool Stairs",
+	"block.rgbblocks.wool_slab": "RGB Wool Slab",
+	
+	"block.rgbblocks.carpet": "RGB Carpet",
+	
+	"block.rgbblocks.planks": "RGB Planks",
+	"block.rgbblocks.planks_stairs": "RGB Plank Stairs",
+	"block.rgbblocks.planks_slab": "RGB Plank Slab",
+	
+	"block.rgbblocks.terracotta": "RGB Terracotta",
+	"block.rgbblocks.terracotta_stairs": "RGB Terracotta Stairs",
+	"block.rgbblocks.terracotta_slab": "RGB Terracotta Slab",
+	
+	"block.rgbblocks.glass": "RGB Glass",
+	"block.rgbblocks.glass_stairs": "RGB Glass Stairs",
+	"block.rgbblocks.glass_slab": "RGB Glass Slab"
 }

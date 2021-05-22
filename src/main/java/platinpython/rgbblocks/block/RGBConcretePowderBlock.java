@@ -14,11 +14,9 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import platinpython.rgbblocks.entity.RGBFallingBlockEntity;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
 public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBBlock {
-//	TileEntity tileEntity;
 	public RGBConcretePowderBlock() {
 		super(BlockRegistry.RGB_CONCRETE.get(), Properties.copy(Blocks.WHITE_CONCRETE_POWDER));
 	}
@@ -44,14 +42,15 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBB
 		return IRGBBlock.getPickBlock(state, target, world, pos, player);
 	}
 
+	// FallingBlockRenderer crashes game, so block won't fall for the time being
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		if (worldIn.isEmptyBlock(pos.below()) || isFree(worldIn.getBlockState(pos.below())) && pos.getY() >= 0) {
-			RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(worldIn, (double) pos.getX() + 0.5D,
-					(double) pos.getY(), (double) pos.getZ() + 0.5D, worldIn.getBlockState(pos), pos);
-			this.falling(fallingBlockEntity);
-			worldIn.addFreshEntity(fallingBlockEntity);
-		}
+//		if (worldIn.isEmptyBlock(pos.below()) || isFree(worldIn.getBlockState(pos.below())) && pos.getY() >= 0) {
+//			RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(worldIn, (double) pos.getX() + 0.5D,
+//					(double) pos.getY(), (double) pos.getZ() + 0.5D, worldIn.getBlockState(pos), pos);
+//			this.falling(fallingBlockEntity);
+//			worldIn.addFreshEntity(fallingBlockEntity);
+//		}
 	}
 
 	@SuppressWarnings("deprecation")

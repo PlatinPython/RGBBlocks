@@ -11,6 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import platinpython.rgbblocks.client.renderer.RGBFallingBlockRenderer;
 import platinpython.rgbblocks.util.RegistryHandler;
@@ -34,14 +35,14 @@ public class RGBBlocks {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
-	public void setup(final FMLClientSetupEvent event) {
+	public void setup(final FMLCommonSetupEvent event) {
 		PacketHandler.register();
-
-		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.RGB_FALLING_BLOCK.get(),
-				RGBFallingBlockRenderer::new);
 	}
 
 	public void doClientStuff(final FMLClientSetupEvent event) {
+		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.RGB_FALLING_BLOCK.get(),
+				RGBFallingBlockRenderer::new);
+
 		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.translucent());
 		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.translucent());
 		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.translucent());

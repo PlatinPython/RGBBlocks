@@ -14,6 +14,9 @@ import platinpython.rgbblocks.tileentity.RGBTileEntity;
 public class RGBBlockColor implements IBlockColor {
 	public int getColor(BlockState blockState, IBlockDisplayReader blockDisplayReader, BlockPos blockPos, int tintindex) {
 		TileEntity tileEntity = blockDisplayReader.getBlockEntity(blockPos);
+		if(tileEntity == null) {
+			return 0;
+		}
 		if (tileEntity.getUpdateTag().contains("color")) {
 			if (tileEntity instanceof RGBTileEntity) {
 				return tileEntity.getUpdateTag().getInt("color");

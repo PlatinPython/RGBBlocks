@@ -5,8 +5,8 @@ import java.awt.Color;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 import platinpython.rgbblocks.util.network.PacketHandler;
 import platinpython.rgbblocks.util.network.packets.PaintbucketSyncPKT;
@@ -15,8 +15,14 @@ public class PaintbucketScreen extends Screen {
 	private double red, green, blue;
 	private Slider redSlider, greenSlider, blueSlider;
 
+	private int sliderWidth = 170;
+	private int sliderHeight = 20;
+	private double minValue = 0.0D;
+	private double maxValue = 255.0D;
+	private StringTextComponent emptyText = new StringTextComponent("");
+
 	public PaintbucketScreen(int colorIn) {
-		super(new StringTextComponent("Paintbucket"));
+		super(new TranslationTextComponent("item.rgbblocks.bucket_of_paint"));
 		Color color = new Color(colorIn);
 		this.red = (double) color.getRed();
 		this.green = (double) color.getGreen();
@@ -31,26 +37,34 @@ public class PaintbucketScreen extends Screen {
 	@Override
 	protected void init() {
 		super.init();
-		this.redSlider = new Slider(this.width / 2 - 100, this.height / 6 + 60, 170, 20, new StringTextComponent(""),
-				new StringTextComponent(""), 0.0D, 255.0D, this.red, false, false, (button) -> {
+		this.redSlider = new Slider(this.width / 2 - sliderWidth / 2,
+				this.height / 2 - sliderHeight / 2 - (sliderHeight + 20), sliderWidth, sliderHeight,
+				new TranslationTextComponent("gui.rgbblocks.bucket_of_paint.red").append(": "), emptyText, minValue,
+				maxValue, this.red, false, true, (button) -> {
 				});
-		this.greenSlider = new Slider(this.width / 2 - 100, this.height / 6 + 100, 170, 20, new StringTextComponent(""),
-				new StringTextComponent(""), 0.0D, 255.0D, this.green, false, false, (button) -> {
-				});
-		this.blueSlider = new Slider(this.width / 2 - 100, this.height / 6 + 140, 170, 20, new StringTextComponent(""),
-				new StringTextComponent(""), 0.0D, 255.0D, this.blue, false, false, (button) -> {
-				});
-//		TextFieldWidget hex = new TextFieldWidget(this.font, this.width / 2 - 25, this.height / 6 + 180, 50, 20,
-//				String.format("#%02X%02X%02X", (int) this.red, (int) this.green, (int) this.blue));
-		Button toggleButton = new Button(this.width / 2 - 20, this.height / 6 + 220, 40, 20,
-				new StringTextComponent(""), (button) -> {
 
-				});
+		this.greenSlider = new Slider(this.width / 2 - sliderWidth / 2, this.height / 2 - sliderHeight / 2, sliderWidth,
+				sliderHeight, new TranslationTextComponent("gui.rgbblocks.bucket_of_paint.green").append(": "),
+				emptyText, minValue, maxValue, this.green, false, true, null);
+
+		this.blueSlider = new Slider(this.width / 2 - sliderWidth / 2,
+				this.height / 2 - sliderHeight / 2 + (sliderHeight + 20), sliderWidth, sliderHeight,
+				new TranslationTextComponent("gui.rgbblocks.bucket_of_paint.blue").append(": "), emptyText, minValue,
+				maxValue, this.blue, false, true, null);
+		
+//		TextFieldWidget hex = new TextFieldWidget(font, this.width / 2 - sliderWidth / 2,
+//				this.height / 2 - sliderHeight / 2 + 2 * (sliderHeight + 20), sliderWidth / 4,
+//				sliderHeight, new StringTextComponent("Hex"));
+		
+//		Button toggleButton = new Button(this.width / 2 - 20, this.height / 6 + 220, 40, 20,
+//				new StringTextComponent(""), (button) -> {
+//
+//				});
 		addButton(redSlider);
 		addButton(greenSlider);
 		addButton(blueSlider);
-		// addButton(hex);
-		addButton(toggleButton);
+//		addButton(hex);
+//		addButton(toggleButton);
 	}
 
 	@Override
@@ -58,10 +72,6 @@ public class PaintbucketScreen extends Screen {
 		this.renderBackground(matrixStack);
 		super.render(matrixStack, p_render_1_, p_render_2_, p_render_3_);
 		drawCenteredString(matrixStack, this.font, getTitle().getString(), this.width / 2, 15, 16777215);
-		drawCenteredString(matrixStack, this.font, "Red", this.redSlider.x, this.redSlider.y - 12, 16777215);
-		drawCenteredString(matrixStack, this.font, "" + this.red, this.redSlider.x + 180, this.redSlider.y, 16777215);
-		drawCenteredString(matrixStack, this.font, "Green", this.greenSlider.x, this.greenSlider.y - 12, 16777215);
-		drawCenteredString(matrixStack, this.font, "Blue", this.blueSlider.x, this.blueSlider.y - 12, 16777215);
 	}
 
 	@Override
