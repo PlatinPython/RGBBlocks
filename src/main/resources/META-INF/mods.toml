@@ -4,15 +4,13 @@ license="GPL-3.0 License"
 issueTrackerURL="https://github.com/PlatinPython/RGBBlocks/issues" #optional
 [[mods]] #mandatory
 modId="rgbblocks" #mandatory
-version="0.5" #mandatory
+version="1.0.0" #mandatory
 displayName="RGB Blocks" #mandatory
-updateJSONURL="http://example.com/" #optional
-displayURL="http://example.com/" #optional
-logoFile="" #optional
-credits="" #optional
+logoFile="logo.png" #optional
+credits="Thanks TobiBenzi for the logo" #optional
 authors="PlatinPython" #optional
 description='''
-Blocks in almost every color you can imagine
+Blocks in almost all colors you can imagine.
 '''
 [[dependencies.rgbblocks]] #optional
   modId="forge" #mandatory
@@ -24,6 +22,6 @@ Blocks in almost every color you can imagine
 [[dependencies.rgbblocks]]
   modId="minecraft"
   mandatory=true
-  versionRange="[1.16.5]"
+  versionRange="[1.16.3,)"
   ordering="NONE"
   side="BOTH"
