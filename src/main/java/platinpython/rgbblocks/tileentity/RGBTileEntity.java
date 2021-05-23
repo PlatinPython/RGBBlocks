@@ -18,6 +18,10 @@ public class RGBTileEntity extends TileEntity {
 	public RGBTileEntity() {
 		this(TileEntityRegistry.RGB.get());
 	}
+	
+	public int getColor() {
+		return color;
+	}
 
 	@Override
 	public CompoundNBT save(CompoundNBT compound) {

@@ -38,4 +38,6 @@ public interface IRGBBlock {
 		stack.setTag(tag);
 		return stack;
 	}
+	
+	
 }

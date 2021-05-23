@@ -14,6 +14,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
 public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBBlock {
@@ -61,5 +62,16 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBB
 		} else {
 			super.onRemove(state, worldIn, pos, newState, isMoving);
 		}
+	}
+
+	@Override
+	public int getDustColor(BlockState blockState, IBlockReader blockReader, BlockPos blockPos) {
+		if (blockReader != null) {
+			TileEntity tileEntity = blockReader.getBlockEntity(blockPos.above());
+			if (tileEntity instanceof RGBTileEntity) {
+				return ((RGBTileEntity) tileEntity).getColor();
+			}
+		}
+		return super.getDustColor(blockState, blockReader, blockPos);
 	}
 }
