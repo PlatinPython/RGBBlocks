@@ -1,0 +1,22 @@
+{
+	"type": "rgbblocks:bucket_of_paint_recipe",
+	"ingredients": [
+		{
+			"item": "minecraft:water_bucket"
+		},
+		{
+			"item": "minecraft:red_dye"
+		},
+		{
+			"item": "minecraft:green_dye"
+		},
+		{
+			"item": "minecraft:blue_dye"
+		}
+	],
+	"result": {
+		"item": "rgbblocks:bucket_of_paint",
+		"nbt": "{color:-1}",
+		"count": 1
+	}
+}
