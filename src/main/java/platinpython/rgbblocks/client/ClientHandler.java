@@ -6,6 +6,6 @@ import platinpython.rgbblocks.client.gui.PaintbucketScreen;
 
 public class ClientHandler {
 	public static void openPaintbucketGUI(ItemStack stack) {
-		Minecraft.getInstance().setScreen(new PaintbucketScreen(stack.getTag().getInt("color")));
+		Minecraft.getInstance().setScreen(new PaintbucketScreen(stack.getTag().getInt("color"), stack.getTag().getBoolean("isRGBSelected")));
 	}
 }

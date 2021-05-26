@@ -30,6 +30,7 @@ public class PaintbucketItem extends Item {
 			ItemStack stack = new ItemStack(this);
 			CompoundNBT compound = stack.getOrCreateTag();
 			compound.putInt("color", Color.WHITE.getRGB());
+			compound.putBoolean("isRGBSelected", true);
 			items.add(stack);
 		}
 	}

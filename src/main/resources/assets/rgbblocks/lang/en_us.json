@@ -1,7 +1,15 @@
 {
+	"gui.rgbblocks.bucket_of_paint.useRGB": "Use RGB",
+	"gui.rgbblocks.bucket_of_paint.useHSB": "Use HSB",
+	
 	"gui.rgbblocks.bucket_of_paint.red": "Red",
 	"gui.rgbblocks.bucket_of_paint.green": "Green",
 	"gui.rgbblocks.bucket_of_paint.blue": "Blue",
+	
+	"gui.rgbblocks.bucket_of_paint.hue": "Hue",
+	"gui.rgbblocks.bucket_of_paint.saturation": "Saturation",
+	"gui.rgbblocks.bucket_of_paint.brightness": "Brightness",
+	
 	
 	"itemGroup.rgbBlocks": "RGB Blocks",
 	
