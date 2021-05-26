@@ -25,7 +25,7 @@ public interface IRGBBlock {
 	public static void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer,
 			ItemStack stack) {
 		if (stack.hasTag() == true) {
-			((RGBTileEntity) worldIn.getBlockEntity(pos)).color = stack.getTag().getInt("color");
+			((RGBTileEntity) worldIn.getBlockEntity(pos)).setColor(stack.getTag().getInt("color"));
 		}
 	}
 

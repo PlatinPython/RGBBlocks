@@ -9,7 +9,7 @@ import net.minecraft.tileentity.TileEntityType;
 import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
 public class RGBTileEntity extends TileEntity {
-	public int color;
+	private int color;
 
 	public RGBTileEntity(final TileEntityType<?> tileEntityTypeIn) {
 		super(tileEntityTypeIn);
@@ -19,35 +19,47 @@ public class RGBTileEntity extends TileEntity {
 		this(TileEntityRegistry.RGB.get());
 	}
 	
+	public void setColor(int color) {
+		this.color = color;
+		setChanged();
+	}
+	
 	public int getColor() {
 		return color;
 	}
 
 	@Override
 	public CompoundNBT save(CompoundNBT compound) {
-		compound.putInt("color", color);
+		compound.putInt("color", getColor());
 		return super.save(compound);
 	}
 
 	@Override
 	public void load(BlockState blockState, CompoundNBT compound) {
 		super.load(blockState, compound);
-		this.color = compound.getInt("color");
+		setColor(compound.getInt("color"));
 	}
 
 	@Override
 	public CompoundNBT getUpdateTag() {
 		return this.save(new CompoundNBT());
 	}
+	
+	@Override
+	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+		this.load(state, tag);
+	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(this.getBlockPos(), -1, this.getUpdateTag());
+		CompoundNBT compound = new CompoundNBT();
+		compound.putInt("color", getColor());
+		return new SUpdateTileEntityPacket(this.getBlockPos(), -1, compound);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-		this.load(null, packet.getTag());
+		this.load(getBlockState(), packet.getTag());
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 }
