@@ -59,8 +59,6 @@ public class PaintbucketScreen extends Screen {
 
 	@Override
 	protected void init() {
-		super.init();
-
 		this.redSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 - SPACING,
 				SLIDER_WIDTH, WIDGET_HEIGHT,
 				new TranslationTextComponent("gui.rgbblocks.bucket_of_paint.red").append(": "), EMPTY_TEXT, MIN_VALUE,
@@ -115,16 +113,28 @@ public class PaintbucketScreen extends Screen {
 					Color color = Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
 							(float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
 							(float) (brightnessSlider.getValueInt() / MAX_VALUE_SB));
+					
 					redSlider.setValue(color.getRed());
 					greenSlider.setValue(color.getGreen());
 					blueSlider.setValue(color.getBlue());
+					
+					redSlider.updateSlider();
+					greenSlider.updateSlider();
+					blueSlider.updateSlider();
+					
 					this.setMessage(useHSBText);
 				} else {
 					float[] hsb = Color.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(),
 							blueSlider.getValueInt(), null);
+					
 					hueSlider.setValue(hsb[0] * MAX_VALUE_HUE);
 					saturationSlider.setValue(hsb[1] * MAX_VALUE_SB);
 					brightnessSlider.setValue(hsb[2] * MAX_VALUE_SB);
+					
+					hueSlider.updateSlider();
+					saturationSlider.updateSlider();
+					brightnessSlider.updateSlider();
+					
 					this.setMessage(useRGBText);
 				}
 			}
