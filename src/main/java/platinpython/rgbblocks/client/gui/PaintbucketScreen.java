@@ -52,6 +52,17 @@ public class PaintbucketScreen extends Screen {
 		this.useHSBText = new TranslationTextComponent("gui.rgbblocks.bucket_of_paint.useHSB");
 	}
 
+	private int getColor() {
+		if (isRGBSelected) {
+			return new Color(this.redSlider.getValueInt(), this.greenSlider.getValueInt(),
+					this.blueSlider.getValueInt()).getRGB();
+		} else {
+			return Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
+					(float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
+					(float) (brightnessSlider.getValueInt() / MAX_VALUE_SB)).getRGB();
+		}
+	}
+
 	@Override
 	public boolean isPauseScreen() {
 		return false;
@@ -113,28 +124,28 @@ public class PaintbucketScreen extends Screen {
 					Color color = Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
 							(float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
 							(float) (brightnessSlider.getValueInt() / MAX_VALUE_SB));
-					
+
 					redSlider.setValue(color.getRed());
 					greenSlider.setValue(color.getGreen());
 					blueSlider.setValue(color.getBlue());
-					
+
 					redSlider.updateSlider();
 					greenSlider.updateSlider();
 					blueSlider.updateSlider();
-					
+
 					this.setMessage(useHSBText);
 				} else {
 					float[] hsb = Color.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(),
 							blueSlider.getValueInt(), null);
-					
+
 					hueSlider.setValue(hsb[0] * MAX_VALUE_HUE);
 					saturationSlider.setValue(hsb[1] * MAX_VALUE_SB);
 					brightnessSlider.setValue(hsb[2] * MAX_VALUE_SB);
-					
+
 					hueSlider.updateSlider();
 					saturationSlider.updateSlider();
 					brightnessSlider.updateSlider();
-					
+
 					this.setMessage(useRGBText);
 				}
 			}
@@ -170,20 +181,13 @@ public class PaintbucketScreen extends Screen {
 			((Widget) this.children.get(i)).render(matrixStack, mouseX, mouseY, partialTicks);
 		}
 		drawCenteredString(matrixStack, this.font, getTitle().getString(), this.width / 2, 15, 16777215);
+		fill(matrixStack, width / 2 - 3 * WIDGET_HEIGHT, height / 4 + 3 * WIDGET_HEIGHT, width / 2 + 3 * WIDGET_HEIGHT,
+				height / 4 - 3 * WIDGET_HEIGHT, getColor());
 	}
 
 	@Override
 	public void onClose() {
-		if (isRGBSelected) {
-			Color color = new Color(this.redSlider.getValueInt(), this.greenSlider.getValueInt(),
-					this.blueSlider.getValueInt());
-			PacketHandler.sendToServer(new PaintbucketSyncPKT(color.getRGB(), isRGBSelected));
-		} else {
-			Color color = Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
-					(float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
-					(float) (brightnessSlider.getValueInt() / MAX_VALUE_SB));
-			PacketHandler.sendToServer(new PaintbucketSyncPKT(color.getRGB(), isRGBSelected));
-		}
+		PacketHandler.sendToServer(new PaintbucketSyncPKT(getColor(), isRGBSelected));
 		super.onClose();
 	}
 }
