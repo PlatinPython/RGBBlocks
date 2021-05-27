@@ -1,5 +1,5 @@
 {
-	"type": "rgbblocks:bucket_of_paint_recipe",
+	"type": "rgbblocks:crafting_shapeless_no_return",
 	"ingredients": [
 		{
 			"item": "minecraft:water_bucket"

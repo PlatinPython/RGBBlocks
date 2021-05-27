@@ -15,10 +15,10 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 
-public class PaintbucketRecipe extends ShapelessRecipe {
+public class ShapelessNoReturnRecipe extends ShapelessRecipe {
     public static final Serializer SERIALIZER = new Serializer();
     
-	public PaintbucketRecipe(ResourceLocation id, String group, ItemStack result, NonNullList<Ingredient> ingredients) {
+	public ShapelessNoReturnRecipe(ResourceLocation id, String group, ItemStack result, NonNullList<Ingredient> ingredients) {
 		super(id, group, result, ingredients);
 	}
 	
@@ -33,10 +33,10 @@ public class PaintbucketRecipe extends ShapelessRecipe {
 	}
 
 	public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>>
-			implements IRecipeSerializer<PaintbucketRecipe> {
+			implements IRecipeSerializer<ShapelessNoReturnRecipe> {
 
 		@Override
-		public PaintbucketRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
+		public ShapelessNoReturnRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
 			String s = JSONUtils.getAsString(jsonObject, "group", "");
 			NonNullList<Ingredient> nonnulllist = itemsFromJson(JSONUtils.getAsJsonArray(jsonObject, "ingredients"));
 			if (nonnulllist.isEmpty()) {
@@ -45,7 +45,7 @@ public class PaintbucketRecipe extends ShapelessRecipe {
 				throw new JsonParseException("Too many ingredients for shapeless recipe the max is " + (3 * 3));
 			} else {
 				ItemStack itemstack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(jsonObject, "result"));
-				return new PaintbucketRecipe(resourceLocation, s, itemstack, nonnulllist);
+				return new ShapelessNoReturnRecipe(resourceLocation, s, itemstack, nonnulllist);
 			}
 		}
 
@@ -62,7 +62,7 @@ public class PaintbucketRecipe extends ShapelessRecipe {
 		}
 
 		@Override
-		public PaintbucketRecipe fromNetwork(ResourceLocation resourceLocation, PacketBuffer buffer) {
+		public ShapelessNoReturnRecipe fromNetwork(ResourceLocation resourceLocation, PacketBuffer buffer) {
 			String s = buffer.readUtf(32767);
 			int i = buffer.readVarInt();
 			NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i, Ingredient.EMPTY);
@@ -72,11 +72,11 @@ public class PaintbucketRecipe extends ShapelessRecipe {
 			}
 
 			ItemStack itemstack = buffer.readItem();
-			return new PaintbucketRecipe(resourceLocation, s, itemstack, nonnulllist);
+			return new ShapelessNoReturnRecipe(resourceLocation, s, itemstack, nonnulllist);
 		}
 
 		@Override
-		public void toNetwork(PacketBuffer buffer, PaintbucketRecipe recipe) {
+		public void toNetwork(PacketBuffer buffer, ShapelessNoReturnRecipe recipe) {
 			buffer.writeUtf(recipe.getGroup());
 			buffer.writeVarInt(recipe.getIngredients().size());
 
