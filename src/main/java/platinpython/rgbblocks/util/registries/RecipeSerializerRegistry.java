@@ -7,7 +7,7 @@ import platinpython.rgbblocks.util.RegistryHandler;
 
 public class RecipeSerializerRegistry {
 	public static final RegistryObject<IRecipeSerializer<?>> SHAPELESS_NO_RETURN_RECIPE = RegistryHandler.RECIPE_SERIALIZERS
-			.register("crafting_shapeless_no_return", ShapelessNoReturnRecipe.Serializer::new);
+			.register("crafting_shapeless_no_return", () -> ShapelessNoReturnRecipe.SERIALIZER);
 
 	public static void register() {
 	}

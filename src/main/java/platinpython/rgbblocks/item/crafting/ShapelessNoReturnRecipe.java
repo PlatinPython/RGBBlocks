@@ -34,15 +34,14 @@ public class ShapelessNoReturnRecipe extends ShapelessRecipe {
 
 	public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>>
 			implements IRecipeSerializer<ShapelessNoReturnRecipe> {
-
 		@Override
 		public ShapelessNoReturnRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
 			String s = JSONUtils.getAsString(jsonObject, "group", "");
 			NonNullList<Ingredient> nonnulllist = itemsFromJson(JSONUtils.getAsJsonArray(jsonObject, "ingredients"));
 			if (nonnulllist.isEmpty()) {
 				throw new JsonParseException("No ingredients for shapeless recipe");
-			} else if (nonnulllist.size() > 3 * 3) {
-				throw new JsonParseException("Too many ingredients for shapeless recipe the max is " + (3 * 3));
+			} else if (nonnulllist.size() > 9) {
+				throw new JsonParseException("Too many ingredients for shapeless recipe the max is " + 9);
 			} else {
 				ItemStack itemstack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(jsonObject, "result"));
 				return new ShapelessNoReturnRecipe(resourceLocation, s, itemstack, nonnulllist);
