@@ -55,7 +55,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                rgbblocks {
                     source sourceSets.main
                 }
             }
@@ -77,7 +77,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                rgbblocks {
                     source sourceSets.main
                 }
             }
@@ -102,7 +102,7 @@ minecraft {
             args '--mod', 'rgbblocks', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                examplemod {
+                rgbblocks {
                     source sourceSets.main
                 }
             }

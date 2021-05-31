@@ -14,6 +14,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import platinpython.rgbblocks.client.renderer.RGBFallingBlockRenderer;
+import platinpython.rgbblocks.datagen.DataGatherer;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.network.PacketHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
@@ -29,6 +30,7 @@ public class RGBBlocks {
 	public RGBBlocks() {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(DataGatherer::onGatherData);
 
 		RegistryHandler.register();
 
