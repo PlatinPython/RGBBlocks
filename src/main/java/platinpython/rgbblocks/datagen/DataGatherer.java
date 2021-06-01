@@ -13,7 +13,6 @@ public class DataGatherer {
 			generator.addProvider(new ModLanguageProvider(generator));
 			generator.addProvider(new ModItemModelProvider(generator, helper));
 			generator.addProvider(new ModBlockStateProvider(generator, helper));
-			generator.addProvider(new ModBlockModelProvider(generator, helper));
 		}
 		if(event.includeServer()) {
 			generator.addProvider(new ModLootTableProvider(generator));
