@@ -1,4 +1,4 @@
-# RGBBlocks
+# RGB Blocks (Forge)
 Blocks in almost all colors you can imagine.
 
 ## Known Issues:
