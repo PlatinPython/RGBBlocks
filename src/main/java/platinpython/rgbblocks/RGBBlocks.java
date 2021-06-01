@@ -3,6 +3,7 @@ package platinpython.rgbblocks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.ItemGroup;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import platinpython.rgbblocks.client.renderer.RGBFallingBlockRenderer;
 import platinpython.rgbblocks.datagen.DataGatherer;
+import platinpython.rgbblocks.dispenser.DispensePaintbucketBehaviour;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.network.PacketHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
@@ -39,6 +41,9 @@ public class RGBBlocks {
 
 	public void setup(final FMLCommonSetupEvent event) {
 		PacketHandler.register();
+
+		event.enqueueWork(() -> DispenserBlock.registerBehavior(ItemRegistry.BUCKET_OF_PAINT.get(),
+				new DispensePaintbucketBehaviour()));
 	}
 
 	public void doClientStuff(final FMLClientSetupEvent event) {
