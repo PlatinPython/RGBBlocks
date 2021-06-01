@@ -1,7 +1,0 @@
-{
-  "variants": {
-    "type=bottom": {"model": "rgbblocks:block/wool_slab"},
-    "type=top": {"model": "rgbblocks:block/wool_slab_top"},
-    "type=double": {"model": "rgbblocks:block/wool"}
-  }
-}

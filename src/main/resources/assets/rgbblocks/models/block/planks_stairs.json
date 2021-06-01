@@ -1,6 +1,0 @@
-{
-  "parent": "rgbblocks:block/stairs",
-  "textures": {
-    "all": "rgbblocks:block/planks"
-  }
-}

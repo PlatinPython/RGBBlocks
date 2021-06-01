@@ -1,7 +1,0 @@
-{
-  "variants": {
-    "type=bottom": {"model": "rgbblocks:block/planks_slab"},
-    "type=top": {"model": "rgbblocks:block/planks_slab_top"},
-    "type=double": {"model": "rgbblocks:block/planks"}
-  }
-}

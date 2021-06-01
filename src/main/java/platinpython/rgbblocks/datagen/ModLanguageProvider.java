@@ -48,9 +48,4 @@ public class ModLanguageProvider extends LanguageProvider {
 	private void addGui(String suffix, String text) {
 		add("gui." + RGBBlocks.MOD_ID + "." + suffix, text);
 	}
-	
-	@Override
-	public String getName() {
-		return RGBBlocks.MOD_ID +  "_lang";
-	}
 }

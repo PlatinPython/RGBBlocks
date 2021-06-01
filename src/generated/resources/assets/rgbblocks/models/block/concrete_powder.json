@@ -1,0 +1,6 @@
+{
+  "parent": "rgbblocks:block/block",
+  "textures": {
+    "all": "rgbblocks:block/concrete_powder"
+  }
+}
