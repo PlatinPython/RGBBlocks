@@ -18,12 +18,12 @@ public class RGBTileEntity extends TileEntity {
 	public RGBTileEntity() {
 		this(TileEntityRegistry.RGB.get());
 	}
-
+	
 	public void setColor(int color) {
 		this.color = color;
 		setChanged();
 	}
-
+	
 	public int getColor() {
 		return color;
 	}
@@ -44,7 +44,7 @@ public class RGBTileEntity extends TileEntity {
 	public CompoundNBT getUpdateTag() {
 		return this.save(new CompoundNBT());
 	}
-
+	
 	@Override
 	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
 		this.load(state, tag);

@@ -16,9 +16,9 @@ public class DispensePaintbucketBehaviour extends DefaultDispenseItemBehavior {
 		Direction dispenserFacing = source.getBlockState().getValue(DispenserBlock.FACING);
 		BlockPos blockPos = source.getPos().relative(dispenserFacing);
 		TileEntity tileEntity = source.getLevel().getBlockEntity(blockPos);
-		if(tileEntity instanceof RGBTileEntity) {
+		if (tileEntity instanceof RGBTileEntity) {
 			((RGBTileEntity) tileEntity).setColor(itemStack.getTag().getInt("color"));
-			source.getLevel().sendBlockUpdated(blockPos, tileEntity.getBlockState(), tileEntity.getBlockState(), -1);
+			source.getLevel().sendBlockUpdated(blockPos, tileEntity.getBlockState(), tileEntity.getBlockState(), 2);
 			return itemStack;
 		} else {
 			IPosition iposition = DispenserBlock.getDispensePosition(source);

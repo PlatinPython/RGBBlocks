@@ -52,7 +52,7 @@ public class PaintbucketItem extends Item {
 		if (tileEntity instanceof RGBTileEntity || tileEntity instanceof RGBLampTileEntity) {
 			((RGBTileEntity) tileEntity).setColor(context.getItemInHand().getTag().getInt("color"));
 			context.getLevel().sendBlockUpdated(context.getClickedPos(), tileEntity.getBlockState(),
-					tileEntity.getBlockState(), -1);
+					tileEntity.getBlockState(), 2);
 			return ActionResultType.SUCCESS;
 		} else {
 			return ActionResultType.PASS;
