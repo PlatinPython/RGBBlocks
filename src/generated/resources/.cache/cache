@@ -1,3 +1,4 @@
+ff2aeaeb44ddf7b68fdb21a907ddfc247b4b3235 assets/rgbblocks/blockstates/antiblock.json
 a052fb0f3b413ebfebe0d9fada0ea25526ac7420 assets/rgbblocks/blockstates/carpet.json
 5010378055e976d5a9d578762e77624cae94d0a4 assets/rgbblocks/blockstates/concrete.json
 2c80d34d448df1e10d0f158f3736ca38781c73ed assets/rgbblocks/blockstates/concrete_powder.json
@@ -15,7 +16,8 @@ d669c6f7a9ea6968d1488835588a2e50fd4dc002 assets/rgbblocks/blockstates/terracotta
 e6ed7024cf7c1b5b2f7c6471f33e70f3ce193e35 assets/rgbblocks/blockstates/wool.json
 d40ba91a88e517775fc5165a5c2c6d333fe94fa6 assets/rgbblocks/blockstates/wool_slab.json
 b5e9859ddfeb05e81ebab545be5b761bae63a41e assets/rgbblocks/blockstates/wool_stairs.json
-ed792832e58e8476403ff4dc96abd3658730c4a0 assets/rgbblocks/lang/en_us.json
+a009c2ff2779451f712ead5fff992a52eec6ac77 assets/rgbblocks/lang/en_us.json
+4cf88fe11d26b4740e0cc7b9a913fe90807400c6 assets/rgbblocks/models/block/antiblock.json
 3a4fb210195963f9ba8bf29325dd95678af6d5fc assets/rgbblocks/models/block/carpet.json
 8df58d7e1c24159201fa50db6feb7d9eebc3759f assets/rgbblocks/models/block/concrete.json
 139c59ea138f500550221e630b809af65a64b536 assets/rgbblocks/models/block/concrete_powder.json
@@ -48,6 +50,7 @@ ab754fa3e1a002c1e179f96b99e30b960bcb4948 assets/rgbblocks/models/block/terracott
 8a8801f05912628524bcba297b3d6a5b35754c33 assets/rgbblocks/models/block/wool_stairs.json
 fecac17568d8a665d180ec23ffbc27acafc691cd assets/rgbblocks/models/block/wool_stairs_inner.json
 2c13001c984d5040a121b6651b958c1a81e17b81 assets/rgbblocks/models/block/wool_stairs_outer.json
+7ff526e7465186d9019024edb5d0de2697ae0245 assets/rgbblocks/models/item/antiblock.json
 745c9cc338ab7d915e6af62eeb6a7519ae7b5b01 assets/rgbblocks/models/item/bucket_of_paint.json
 c50daf1e413e22fd7f9a46178c86f014d75c67f5 assets/rgbblocks/models/item/carpet.json
 1cd5e863bf9d39c7ad17cd0e558a97101390fd25 assets/rgbblocks/models/item/concrete.json
@@ -66,6 +69,7 @@ dda4a0026d8f553612d6182d243e0430e0533f0e assets/rgbblocks/models/item/terracotta
 f0044e5f09c937ff25a31e510c7ab2e8cfc35926 assets/rgbblocks/models/item/wool.json
 0464443b25a1328de5c3986b50d52262225793ab assets/rgbblocks/models/item/wool_slab.json
 37d0878aa15ba1233bb16fca07d0b35cdc984d61 assets/rgbblocks/models/item/wool_stairs.json
+feab36a3644d2cec1435735fe8dc9926c9f23428 data/rgbblocks/loot_tables/blocks/antiblock.json
 3c1ef3d9089136eb0d57a01f915b894e1322fd39 data/rgbblocks/loot_tables/blocks/carpet.json
 c8001a2dcefe5d6d22289ec7448bd11f1326ca57 data/rgbblocks/loot_tables/blocks/concrete.json
 c125d5c7a6f441b7710f4170b49885eadf6d74ca data/rgbblocks/loot_tables/blocks/concrete_powder.json

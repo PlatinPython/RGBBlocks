@@ -1,0 +1,6 @@
+{
+  "parent": "rgbblocks:block/emissive_block",
+  "textures": {
+    "all": "rgbblocks:block/antiblock"
+  }
+}

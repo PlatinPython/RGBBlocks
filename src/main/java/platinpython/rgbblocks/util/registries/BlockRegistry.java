@@ -69,6 +69,9 @@ public class BlockRegistry {
 					Properties.copy(Blocks.GLASS)),
 			false);
 
+	public static final RegistryObject<Block> RGB_ANTIBLOCK = register("antiblock",
+			() -> new GenericRGBBlock(Properties.copy(Blocks.STONE)), false);
+
 	public static ArrayList<Block> nonGlowingBlocks = new ArrayList<>();
 
 	public static void register() {

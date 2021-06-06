@@ -18,6 +18,7 @@ import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.client.colorhandlers.PaintbucketItemColor;
 import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockColor;
 import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockItemColor;
+import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
 @EventBusSubscriber(modid = RGBBlocks.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
@@ -35,6 +36,7 @@ public class ClientRegistry {
 
 	@SubscribeEvent
 	public static void onModelBake(ModelBakeEvent event) {
+		makeEmissive(BlockRegistry.RGB_ANTIBLOCK.get(), event);
 	}
 
 	private static void makeEmissive(Block block, ModelBakeEvent event) {
@@ -42,8 +44,8 @@ public class ClientRegistry {
 			ModelResourceLocation modelResourceLocation = BlockModelShapes.stateToModelLocation(blockState);
 			IBakedModel existingModel = event.getModelRegistry().get(modelResourceLocation);
 			if (existingModel == null) {
-				RGBBlocks.LOGGER
-						.warn("Did not find the expected vanilla baked model(s) for" + block.toString() + "in registry");
+				RGBBlocks.LOGGER.warn(
+						"Did not find the expected vanilla baked model(s) for" + block.toString() + "in registry");
 			} else if (existingModel instanceof FullbrightBakedModel) {
 				RGBBlocks.LOGGER.warn("Tried to replace FullbrightModel twice");
 			} else {

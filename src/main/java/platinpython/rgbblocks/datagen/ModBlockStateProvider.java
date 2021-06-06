@@ -24,6 +24,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
 				models().singleTexture(BlockRegistry.RGB_CARPET.get().getRegistryName().getPath(),
 						modLoc(ModelProvider.BLOCK_FOLDER + "/thin_block"), "all",
 						modLoc(ModelProvider.BLOCK_FOLDER + "/wool")));
+		simpleBlock(BlockRegistry.RGB_ANTIBLOCK.get(),
+				models().singleTexture(BlockRegistry.RGB_ANTIBLOCK.getId().getPath(),
+						modLoc(ModelProvider.BLOCK_FOLDER + "/emissive_block"), "all",
+						modLoc(ModelProvider.BLOCK_FOLDER + "/antiblock")));
 
 		blocks(BlockRegistry.RGB_CONCRETE.get());
 		blocks(BlockRegistry.RGB_CONCRETE_POWDER.get());
@@ -45,6 +49,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		stairBlocks(BlockRegistry.RGB_WOOL_STAIRS.get());
 
 		RegistryHandler.BLOCKS.getEntries().forEach((block) -> blockItems(block.get()));
+
 	}
 
 	private void blocks(Block block) {

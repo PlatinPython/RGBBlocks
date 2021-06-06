@@ -17,6 +17,7 @@ public class ModLanguageProvider extends LanguageProvider {
 		
 		add(ItemRegistry.BUCKET_OF_PAINT.get(), "Bucket of Paint");
 		
+		add(BlockRegistry.RGB_ANTIBLOCK.get(), "RGB Antiblock");
 		add(BlockRegistry.RGB_CARPET.get(), "RGB Carpet");
 		add(BlockRegistry.RGB_CONCRETE.get(), "RGB Concrete");
 		add(BlockRegistry.RGB_CONCRETE_POWDER.get(), "RGB Concrete Powder");
