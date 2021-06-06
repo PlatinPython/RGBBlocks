@@ -1,4 +1,4 @@
-package platinpython.rgbblocks.client.renderer;
+package platinpython.rgbblocks.client.renderer.entity;
 
 import java.util.Random;
 

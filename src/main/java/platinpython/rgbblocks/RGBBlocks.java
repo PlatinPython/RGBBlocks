@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import platinpython.rgbblocks.client.renderer.RGBFallingBlockRenderer;
+import platinpython.rgbblocks.client.renderer.entity.RGBFallingBlockRenderer;
 import platinpython.rgbblocks.datagen.DataGatherer;
 import platinpython.rgbblocks.dispenser.DispensePaintbucketBehaviour;
 import platinpython.rgbblocks.util.RegistryHandler;
