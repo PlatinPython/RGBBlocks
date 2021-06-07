@@ -1,5 +1,5 @@
 {
-  "parent": "rgbblocks:block/emissive_block",
+  "parent": "rgbblocks:block/no_shade",
   "textures": {
     "all": "rgbblocks:block/antiblock"
   }

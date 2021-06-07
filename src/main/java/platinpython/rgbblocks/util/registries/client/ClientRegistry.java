@@ -1,24 +1,17 @@
 package platinpython.rgbblocks.util.registries.client;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.BlockModelShapes;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.client.model.FullbrightBakedModel;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.client.colorhandlers.PaintbucketItemColor;
 import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockColor;
 import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockItemColor;
-import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
 @EventBusSubscriber(modid = RGBBlocks.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
@@ -32,26 +25,5 @@ public class ClientRegistry {
 				RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
 
 		event.getItemColors().register(new PaintbucketItemColor(), ItemRegistry.BUCKET_OF_PAINT.get());
-	}
-
-	@SubscribeEvent
-	public static void onModelBake(ModelBakeEvent event) {
-		makeEmissive(BlockRegistry.RGB_ANTIBLOCK.get(), event);
-	}
-
-	private static void makeEmissive(Block block, ModelBakeEvent event) {
-		for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
-			ModelResourceLocation modelResourceLocation = BlockModelShapes.stateToModelLocation(blockState);
-			IBakedModel existingModel = event.getModelRegistry().get(modelResourceLocation);
-			if (existingModel == null) {
-				RGBBlocks.LOGGER.warn(
-						"Did not find the expected vanilla baked model(s) for" + block.toString() + "in registry");
-			} else if (existingModel instanceof FullbrightBakedModel) {
-				RGBBlocks.LOGGER.warn("Tried to replace FullbrightModel twice");
-			} else {
-				FullbrightBakedModel customModel = new FullbrightBakedModel(existingModel);
-				event.getModelRegistry().put(modelResourceLocation, customModel);
-			}
-		}
 	}
 }

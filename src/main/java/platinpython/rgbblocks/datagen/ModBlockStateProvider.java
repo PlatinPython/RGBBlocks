@@ -26,7 +26,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 						modLoc(ModelProvider.BLOCK_FOLDER + "/wool")));
 		simpleBlock(BlockRegistry.RGB_ANTIBLOCK.get(),
 				models().singleTexture(BlockRegistry.RGB_ANTIBLOCK.getId().getPath(),
-						modLoc(ModelProvider.BLOCK_FOLDER + "/emissive_block"), "all",
+						modLoc(ModelProvider.BLOCK_FOLDER + "/no_shade"), "all",
 						modLoc(ModelProvider.BLOCK_FOLDER + "/antiblock")));
 
 		blocks(BlockRegistry.RGB_CONCRETE.get());
