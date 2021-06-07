@@ -135,7 +135,7 @@ dependencies {
 
     // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
     // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-    implementation fg.deobf("team.chisel.ctm:CTM:MC1.16.1-${ctm_version}")
+    runtimeOnly fg.deobf("team.chisel.ctm:CTM:MC${ctm_version}")
 
     // These dependencies get remapped to your current MCP mappings
     // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
