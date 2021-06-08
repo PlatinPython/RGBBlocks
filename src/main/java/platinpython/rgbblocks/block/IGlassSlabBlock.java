@@ -9,8 +9,7 @@ import net.minecraft.util.Direction;
 
 public interface IGlassSlabBlock extends IGlassBlock {
 	static boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
-		if (adjacentBlockState.getBlock() instanceof GenericRGBGlassBlock
-				|| adjacentBlockState.getBlock() instanceof RGBLampGlassFlatBlock) {
+		if (adjacentBlockState.getBlock() instanceof GenericRGBGlassBlock) {
 			return true;
 		} else if (adjacentBlockState.getBlock() instanceof GenericRGBGlassSlabBlock) {
 			return isInvisibleToGlassSlab(state, adjacentBlockState, side);

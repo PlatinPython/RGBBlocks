@@ -10,8 +10,7 @@ import net.minecraft.util.Direction;
 
 public interface IGlassStairsBlock {
 	public static boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
-		if (adjacentBlockState.getBlock() instanceof GenericRGBGlassBlock
-				|| adjacentBlockState.getBlock() instanceof RGBLampGlassFlatBlock) {
+		if (adjacentBlockState.getBlock() instanceof GenericRGBGlassBlock) {
 			return true;
 		} else if (adjacentBlockState.getBlock() instanceof GenericRGBGlassSlabBlock) {
 			return isInvisibleToGlassSlab(state, adjacentBlockState, side);
@@ -36,7 +35,8 @@ public interface IGlassStairsBlock {
 		}
 
 		if (side == state.getValue(StairsBlock.FACING).getOpposite()) {
-			if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.TOP && state.getValue(StairsBlock.HALF) == Half.TOP) {
+			if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.TOP
+					&& state.getValue(StairsBlock.HALF) == Half.TOP) {
 				return true;
 			} else if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.BOTTOM
 					&& state.getValue(StairsBlock.HALF) == Half.BOTTOM) {
@@ -44,8 +44,10 @@ public interface IGlassStairsBlock {
 			}
 		}
 
-		if (side == state.getValue(StairsBlock.FACING).getClockWise() && state.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_LEFT) {
-			if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.TOP && state.getValue(StairsBlock.HALF) == Half.TOP) {
+		if (side == state.getValue(StairsBlock.FACING).getClockWise()
+				&& state.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_LEFT) {
+			if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.TOP
+					&& state.getValue(StairsBlock.HALF) == Half.TOP) {
 				return true;
 			} else if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.BOTTOM
 					&& state.getValue(StairsBlock.HALF) == Half.BOTTOM) {
@@ -55,7 +57,8 @@ public interface IGlassStairsBlock {
 
 		if (side == state.getValue(StairsBlock.FACING).getCounterClockWise()
 				&& state.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_RIGHT) {
-			if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.TOP && state.getValue(StairsBlock.HALF) == Half.TOP) {
+			if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.TOP
+					&& state.getValue(StairsBlock.HALF) == Half.TOP) {
 				return true;
 			} else if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.BOTTOM
 					&& state.getValue(StairsBlock.HALF) == Half.BOTTOM) {
@@ -78,48 +81,56 @@ public interface IGlassStairsBlock {
 					switch (state.getValue(StairsBlock.SHAPE)) {
 					case STRAIGHT:
 						if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.INNER_LEFT
-								&& (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
-										|| adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
-												.getClockWise())) {
+								&& (adjacentBlockState.getValue(StairsBlock.FACING) == state
+										.getValue(StairsBlock.FACING)
+										|| adjacentBlockState.getValue(StairsBlock.FACING) == state
+												.getValue(StairsBlock.FACING).getClockWise())) {
 							return true;
 						} else if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.INNER_RIGHT
-								&& (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
-										|| adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
-												.getCounterClockWise())) {
+								&& (adjacentBlockState.getValue(StairsBlock.FACING) == state
+										.getValue(StairsBlock.FACING)
+										|| adjacentBlockState.getValue(StairsBlock.FACING) == state
+												.getValue(StairsBlock.FACING).getCounterClockWise())) {
 							return true;
 						}
 						break;
 					case INNER_LEFT:
-						if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.INNER_RIGHT && adjacentBlockState
-								.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getCounterClockWise()) {
+						if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.INNER_RIGHT
+								&& adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
+										.getCounterClockWise()) {
 							return true;
 						}
 						break;
 					case INNER_RIGHT:
-						if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.INNER_LEFT && adjacentBlockState
-								.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getClockWise()) {
+						if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.INNER_LEFT
+								&& adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
+										.getClockWise()) {
 							return true;
 						}
 						break;
 					case OUTER_LEFT:
-						if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_RIGHT && adjacentBlockState
-								.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getCounterClockWise()) {
+						if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_RIGHT
+								&& adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
+										.getCounterClockWise()) {
 							return true;
 						} else if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.STRAIGHT
-								&& (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
-										|| adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
-												.getCounterClockWise())) {
+								&& (adjacentBlockState.getValue(StairsBlock.FACING) == state
+										.getValue(StairsBlock.FACING)
+										|| adjacentBlockState.getValue(StairsBlock.FACING) == state
+												.getValue(StairsBlock.FACING).getCounterClockWise())) {
 							return true;
 						}
 						break;
 					case OUTER_RIGHT:
-						if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_LEFT && adjacentBlockState
-								.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getClockWise()) {
+						if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_LEFT
+								&& adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
+										.getClockWise()) {
 							return true;
 						} else if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.STRAIGHT
-								&& (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
-										|| adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
-												.getClockWise())) {
+								&& (adjacentBlockState.getValue(StairsBlock.FACING) == state
+										.getValue(StairsBlock.FACING)
+										|| adjacentBlockState.getValue(StairsBlock.FACING) == state
+												.getValue(StairsBlock.FACING).getClockWise())) {
 							return true;
 						}
 						break;
@@ -134,14 +145,15 @@ public interface IGlassStairsBlock {
 			} else {
 				switch (state.getValue(StairsBlock.SHAPE)) {
 				case STRAIGHT:
-					if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.INNER_LEFT && (adjacentBlockState
-							.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
-							|| adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getClockWise())) {
+					if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.INNER_LEFT
+							&& (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
+									|| adjacentBlockState.getValue(StairsBlock.FACING) == state
+											.getValue(StairsBlock.FACING).getClockWise())) {
 						return true;
 					} else if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.INNER_RIGHT
 							&& (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
-									|| adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
-											.getCounterClockWise())) {
+									|| adjacentBlockState.getValue(StairsBlock.FACING) == state
+											.getValue(StairsBlock.FACING).getCounterClockWise())) {
 						return true;
 					}
 					break;
@@ -152,8 +164,8 @@ public interface IGlassStairsBlock {
 					}
 					break;
 				case INNER_RIGHT:
-					if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.INNER_LEFT
-							&& adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getClockWise()) {
+					if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.INNER_LEFT && adjacentBlockState
+							.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getClockWise()) {
 						return true;
 					}
 					break;
@@ -163,18 +175,19 @@ public interface IGlassStairsBlock {
 						return true;
 					} else if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.STRAIGHT
 							&& (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
-									|| adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
-											.getCounterClockWise())) {
+									|| adjacentBlockState.getValue(StairsBlock.FACING) == state
+											.getValue(StairsBlock.FACING).getCounterClockWise())) {
 						return true;
 					}
 					break;
 				case OUTER_RIGHT:
-					if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_LEFT
-							&& adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getClockWise()) {
+					if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_LEFT && adjacentBlockState
+							.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getClockWise()) {
 						return true;
-					} else if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.STRAIGHT && (adjacentBlockState
-							.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
-							|| adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getClockWise())) {
+					} else if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.STRAIGHT
+							&& (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
+									|| adjacentBlockState.getValue(StairsBlock.FACING) == state
+											.getValue(StairsBlock.FACING).getClockWise())) {
 						return true;
 					}
 					break;
@@ -189,11 +202,12 @@ public interface IGlassStairsBlock {
 		if (side == state.getValue(StairsBlock.FACING)) {
 			if (state.getValue(StairsBlock.HALF) == adjacentBlockState.getValue(StairsBlock.HALF)
 					&& state.getValue(StairsBlock.SHAPE) != StairsShape.STRAIGHT) {
-				if (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getCounterClockWise()
+				if (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
+						.getCounterClockWise()
 						&& adjacentBlockState.getValue(StairsBlock.SHAPE) != StairsShape.OUTER_RIGHT) {
 					return true;
-				} else if (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getClockWise()
-						&& adjacentBlockState.getValue(StairsBlock.SHAPE) != StairsShape.OUTER_LEFT) {
+				} else if (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
+						.getClockWise() && adjacentBlockState.getValue(StairsBlock.SHAPE) != StairsShape.OUTER_LEFT) {
 					return true;
 				}
 			}
@@ -201,11 +215,12 @@ public interface IGlassStairsBlock {
 
 		if (side == state.getValue(StairsBlock.FACING).getOpposite()) {
 			if (state.getValue(StairsBlock.HALF) == adjacentBlockState.getValue(StairsBlock.HALF)) {
-				if (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getCounterClockWise()
+				if (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
+						.getCounterClockWise()
 						&& adjacentBlockState.getValue(StairsBlock.SHAPE) != StairsShape.OUTER_RIGHT) {
 					return true;
-				} else if (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getClockWise()
-						&& adjacentBlockState.getValue(StairsBlock.SHAPE) != StairsShape.OUTER_LEFT) {
+				} else if (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
+						.getClockWise() && adjacentBlockState.getValue(StairsBlock.SHAPE) != StairsShape.OUTER_LEFT) {
 					return true;
 				}
 			}
@@ -220,8 +235,8 @@ public interface IGlassStairsBlock {
 				} else if (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
 						&& adjacentBlockState.getValue(StairsBlock.SHAPE) != StairsShape.OUTER_LEFT) {
 					return true;
-				} else if (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getOpposite()
-						&& state.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_RIGHT) {
+				} else if (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
+						.getOpposite() && state.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_RIGHT) {
 					return true;
 				}
 			}
@@ -236,8 +251,8 @@ public interface IGlassStairsBlock {
 				} else if (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
 						&& adjacentBlockState.getValue(StairsBlock.SHAPE) != StairsShape.OUTER_RIGHT) {
 					return true;
-				} else if (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING).getOpposite()
-						&& state.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_LEFT) {
+				} else if (adjacentBlockState.getValue(StairsBlock.FACING) == state.getValue(StairsBlock.FACING)
+						.getOpposite() && state.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_LEFT) {
 					return true;
 				}
 			}

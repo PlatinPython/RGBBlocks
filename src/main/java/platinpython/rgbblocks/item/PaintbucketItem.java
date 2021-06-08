@@ -16,7 +16,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.ClientHandler;
-import platinpython.rgbblocks.tileentity.RGBLampTileEntity;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 
 public class PaintbucketItem extends Item {
@@ -49,7 +48,7 @@ public class PaintbucketItem extends Item {
 	@Override
 	public ActionResultType useOn(ItemUseContext context) {
 		TileEntity tileEntity = context.getLevel().getBlockEntity(context.getClickedPos());
-		if (tileEntity instanceof RGBTileEntity || tileEntity instanceof RGBLampTileEntity) {
+		if (tileEntity instanceof RGBTileEntity) {
 			((RGBTileEntity) tileEntity).setColor(context.getItemInHand().getTag().getInt("color"));
 			context.getLevel().sendBlockUpdated(context.getClickedPos(), tileEntity.getBlockState(),
 					tileEntity.getBlockState(), 2);
