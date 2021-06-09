@@ -1,5 +1,8 @@
 package platinpython.rgbblocks.item;
 
+import java.util.List;
+
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -12,10 +15,13 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.ClientHandler;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
+import platinpython.rgbblocks.util.ColorUtils;
 
 public class PaintBucketItem extends Item {
 	public PaintBucketItem() {
@@ -31,6 +37,14 @@ public class PaintBucketItem extends Item {
 			compound.putBoolean("isRGBSelected", true);
 			items.add(stack);
 		}
+	}
+	
+	@Override
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip,
+			ITooltipFlag flagIn) {
+		ColorUtils color = new ColorUtils(stack.getOrCreateTag().getInt("color"));
+		StringTextComponent rgbHex = new StringTextComponent("#" + Integer.toHexString(color.getRGB()).substring(2));
+		tooltip.add(rgbHex);
 	}
 
 	@Override

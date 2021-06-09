@@ -1,13 +1,20 @@
 package platinpython.rgbblocks.item;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.World;
 import platinpython.rgbblocks.RGBBlocks;
+import platinpython.rgbblocks.util.ColorUtils;
 
 public class RGBBlockItem extends BlockItem {
 	public RGBBlockItem(Block blockIn) {
@@ -22,5 +29,14 @@ public class RGBBlockItem extends BlockItem {
 			compound.putInt("color", -1);
 			items.add(stack);
 		}
+	}
+	
+	@Override
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip,
+			ITooltipFlag flagIn) {
+		ColorUtils color = new ColorUtils(stack.getOrCreateTag().getInt("color"));
+		StringTextComponent rgbHex = new StringTextComponent("#" + Integer.toHexString(color.getRGB()).substring(2));
+		tooltip.add(rgbHex);
+//		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
 }
