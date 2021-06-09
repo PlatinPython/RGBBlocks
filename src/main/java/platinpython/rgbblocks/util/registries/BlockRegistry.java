@@ -14,6 +14,7 @@ import platinpython.rgbblocks.block.GenericRGBSlabBlock;
 import platinpython.rgbblocks.block.GenericRGBStairsBlock;
 import platinpython.rgbblocks.block.RGBCarpetBlock;
 import platinpython.rgbblocks.block.RGBConcretePowderBlock;
+import platinpython.rgbblocks.block.RGBRedstoneLampBlock;
 import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.RegistryHandler;
 
@@ -55,16 +56,18 @@ public class BlockRegistry {
 			() -> new GenericRGBStairsBlock(() -> RGB_TERRACOTTA.get().defaultBlockState(),
 					Properties.copy(Blocks.TERRACOTTA)));
 
-	public static final RegistryObject<Block> RGB_GLASS = register("glass",
-			() -> new GenericRGBGlassBlock(Properties.copy(Blocks.GLASS)));
-	public static final RegistryObject<Block> RGB_GLASS_SLAB = register("glass_slab",
-			() -> new GenericRGBGlassSlabBlock(Properties.copy(Blocks.GLASS)));
+	public static final RegistryObject<Block> RGB_GLASS = register("glass", GenericRGBGlassBlock::new);
+	public static final RegistryObject<Block> RGB_GLASS_SLAB = register("glass_slab", GenericRGBGlassSlabBlock::new);
 	public static final RegistryObject<Block> RGB_GLASS_STAIRS = register("glass_stairs",
-			() -> new GenericRGBGlassStairsBlock(() -> RGB_GLASS.get().defaultBlockState(),
-					Properties.copy(Blocks.GLASS)));
+			() -> new GenericRGBGlassStairsBlock(() -> RGB_GLASS.get().defaultBlockState()));
 
 	public static final RegistryObject<Block> RGB_ANTIBLOCK = register("antiblock",
 			() -> new GenericRGBBlock(Properties.copy(Blocks.STONE)));
+
+	public static final RegistryObject<Block> RGB_GLOWSTONE = register("glowstone",
+			() -> new GenericRGBBlock(Properties.copy(Blocks.GLOWSTONE)));
+
+	public static final RegistryObject<Block> RGB_REDSTONE_LAMP = register("redstone_lamp", RGBRedstoneLampBlock::new);
 
 	public static void register() {
 	}

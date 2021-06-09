@@ -1,14 +1,17 @@
 package platinpython.rgbblocks.block;
 
+import java.util.function.Supplier;
+
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
 public class GenericRGBGlassStairsBlock extends GenericRGBStairsBlock implements IGlassBlock, IGlassStairsBlock {
-	public GenericRGBGlassStairsBlock(java.util.function.Supplier<BlockState> state, Properties properties) {
-		super(state, properties);
+	public GenericRGBGlassStairsBlock(Supplier<BlockState> state) {
+		super(state, Properties.copy(Blocks.GLASS));
 	}
 	
 	@Override

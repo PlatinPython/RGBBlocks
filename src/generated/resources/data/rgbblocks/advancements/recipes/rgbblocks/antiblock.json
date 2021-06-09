@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rgbblocks:antiblock"
+    ]
+  },
+  "criteria": {
+    "has_rgb_glowstone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rgbblocks:glowstone"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rgbblocks:antiblock"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_rgb_glowstone",
+      "has_the_recipe"
+    ]
+  ]
+}

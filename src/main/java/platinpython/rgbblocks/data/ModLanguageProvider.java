@@ -26,9 +26,11 @@ public class ModLanguageProvider extends LanguageProvider {
 		add(BlockRegistry.RGB_GLASS.get(), "RGB Glass");
 		add(BlockRegistry.RGB_GLASS_SLAB.get(), "RGB Glass Slab");
 		add(BlockRegistry.RGB_GLASS_STAIRS.get(), "RGB Glass Stairs");
+		add(BlockRegistry.RGB_GLOWSTONE.get(), "RGB Glowstone");
 		add(BlockRegistry.RGB_PLANKS.get(), "RGB Planks");
 		add(BlockRegistry.RGB_PLANKS_SLAB.get(), "RGB Plank Slab");
 		add(BlockRegistry.RGB_PLANKS_STAIRS.get(), "RGB Plank Stairs");
+		add(BlockRegistry.RGB_REDSTONE_LAMP.get(), "RGB Redstone Lamp");
 		add(BlockRegistry.RGB_TERRACOTTA.get(), "RGB Terracotta");
 		add(BlockRegistry.RGB_TERRACOTTA_SLAB.get(), "RGB Terracotta Slab");
 		add(BlockRegistry.RGB_TERRACOTTA_STAIRS.get(), "RGB Terracotta Stairs");

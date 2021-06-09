@@ -1,14 +1,15 @@
 package platinpython.rgbblocks.block;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
 public class GenericRGBGlassSlabBlock extends GenericRGBSlabBlock implements IGlassBlock, IGlassSlabBlock {
-	public GenericRGBGlassSlabBlock(Properties properties) {
-		super(properties);
+	public GenericRGBGlassSlabBlock() {
+		super(Properties.copy(Blocks.GLASS));
 	}
 	
 	@Override

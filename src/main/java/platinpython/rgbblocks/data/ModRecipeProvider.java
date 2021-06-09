@@ -30,6 +30,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
 		block(consumer, BlockRegistry.RGB_CONCRETE_POWDER.get(), Blocks.WHITE_CONCRETE_POWDER);
 		block(consumer, BlockRegistry.RGB_GLASS.get(), Blocks.WHITE_STAINED_GLASS);
+		block(consumer, BlockRegistry.RGB_GLOWSTONE.get(), Blocks.GLOWSTONE);
 		block(consumer, BlockRegistry.RGB_PLANKS.get(), Blocks.BIRCH_PLANKS);
 		block(consumer, BlockRegistry.RGB_TERRACOTTA.get(), Blocks.WHITE_TERRACOTTA);
 		block(consumer, BlockRegistry.RGB_WOOL.get(), Blocks.WHITE_WOOL);
@@ -46,11 +47,15 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 		stairBlock(consumer, BlockRegistry.RGB_TERRACOTTA_STAIRS.get(), BlockRegistry.RGB_TERRACOTTA.get());
 		stairBlock(consumer, BlockRegistry.RGB_WOOL_STAIRS.get(), BlockRegistry.RGB_WOOL.get());
 
-//		ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_ANTIBLOCK.get(), 8, whiteNBT).define('S', Tags.Items.STONE)
-//				.define('G', Blocks.GLOWSTONE).pattern("SSS").pattern("SGS").pattern("SSS")
-//				.unlockedBy("has_rgb_glowstone", has(Blocks.GLOWSTONE)).save(consumer);
+		ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_ANTIBLOCK.get(), 8, whiteNBT).define('S', Tags.Items.STONE)
+				.define('G', BlockRegistry.RGB_GLOWSTONE.get()).pattern("SSS").pattern("SGS").pattern("SSS")
+				.unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get())).save(consumer);
 		ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_CARPET.get()).define('#', BlockRegistry.RGB_WOOL.get())
 				.pattern("##").unlockedBy("has_rgb_wool", has(BlockRegistry.RGB_WOOL.get())).save(consumer);
+		ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_REDSTONE_LAMP.get(), 1, whiteNBT)
+				.define('R', Tags.Items.DUSTS_REDSTONE).define('G', BlockRegistry.RGB_GLOWSTONE.get()).pattern(" R ")
+				.pattern("RGR").pattern(" R ").unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get()))
+				.save(consumer);
 	}
 
 	private void block(Consumer<IFinishedRecipe> consumer, Block result, Block base) {

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "rgbblocks:block/redstone_lamp"
+    },
+    "lit=true": {
+      "model": "rgbblocks:block/redstone_lamp_on"
+    }
+  }
+}
