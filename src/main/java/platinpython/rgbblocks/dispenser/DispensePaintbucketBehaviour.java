@@ -27,4 +27,8 @@ public class DispensePaintbucketBehaviour extends DefaultDispenseItemBehavior {
 			return itemStack;
 		}
 	}
+	
+	@Override
+	protected void playAnimation(IBlockSource source, Direction direction) {
+	}
 }
