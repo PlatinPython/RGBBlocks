@@ -11,19 +11,19 @@ public class RGBBlockColor implements IBlockColor {
 	public int getColor(BlockState blockState, IBlockDisplayReader blockDisplayReader, BlockPos blockPos,
 			int tintindex) {
 		if (blockDisplayReader == null) {
-			return 0;
+			return -1;
 		}
 		TileEntity tileEntity = blockDisplayReader.getBlockEntity(blockPos);
 		if (tileEntity == null) {
 			tileEntity = blockDisplayReader.getBlockEntity(blockPos.below());
 			if (tileEntity == null) {
-				return 0;
+				return -1;
 			}
 		}
 		if (tileEntity instanceof RGBTileEntity) {
 			return ((RGBTileEntity) tileEntity).getColor();
 		} else {
-			return 0;
+			return -1;
 		}
 	}
 }

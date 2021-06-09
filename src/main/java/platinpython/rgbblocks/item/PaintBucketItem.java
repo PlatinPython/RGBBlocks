@@ -47,9 +47,13 @@ public class PaintBucketItem extends Item {
 	public ActionResultType useOn(ItemUseContext context) {
 		TileEntity tileEntity = context.getLevel().getBlockEntity(context.getClickedPos());
 		if (tileEntity instanceof RGBTileEntity) {
-			((RGBTileEntity) tileEntity).setColor(context.getItemInHand().getTag().getInt("color"));
-			context.getLevel().sendBlockUpdated(context.getClickedPos(), tileEntity.getBlockState(),
-					tileEntity.getBlockState(), 2);
+			if (context.getPlayer().isShiftKeyDown()) {
+				context.getItemInHand().getTag().putInt("color", ((RGBTileEntity) tileEntity).getColor());
+			} else {
+				((RGBTileEntity) tileEntity).setColor(context.getItemInHand().getTag().getInt("color"));
+				context.getLevel().sendBlockUpdated(context.getClickedPos(), tileEntity.getBlockState(),
+						tileEntity.getBlockState(), 2);
+			}
 			return ActionResultType.SUCCESS;
 		} else {
 			return ActionResultType.PASS;
