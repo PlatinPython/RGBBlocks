@@ -180,7 +180,7 @@ public class ShapelessNBTRecipeBuilder {
 
 		public IRecipeSerializer<?> getType() {
 			return isNoReturnRecipe ? RecipeSerializerRegistry.SHAPELESS_NO_RETURN_RECIPE.get()
-					: IRecipeSerializer.SHAPELESS_RECIPE;
+					: RecipeSerializerRegistry.SHAPELESS_DURABILITY_AWARE_PAINT_BUCKET_RECIPE.get();
 		}
 
 		public ResourceLocation getId() {
