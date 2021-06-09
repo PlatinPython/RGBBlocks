@@ -21,7 +21,7 @@ public class GenericRGBGlassStairsBlock extends GenericRGBStairsBlock implements
 	
 	@Override
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-		return IGlassStairsBlock.isSideInvisible(state, adjacentBlockState, side);
+		return IGlassStairsBlock.skipRendering(state, adjacentBlockState, side);
 	}
 	
 	@Override

@@ -2,7 +2,7 @@
   "ctm": {
     "ctm_version": 1,
     "type": "ctm",
-    "layer": "CUTOUT",
+    "layer": "SOLID",
     "textures": [
       "rgbblocks:block/antiblock_ctm"
     ],

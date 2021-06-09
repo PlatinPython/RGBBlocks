@@ -19,7 +19,7 @@ public class GenericRGBGlassSlabBlock extends GenericRGBSlabBlock implements IGl
 	
 	@Override
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-		return IGlassSlabBlock.isSideInvisible(state, adjacentBlockState, side);
+		return IGlassSlabBlock.skipRendering(state, adjacentBlockState, side);
 	}
 	
 	@Override

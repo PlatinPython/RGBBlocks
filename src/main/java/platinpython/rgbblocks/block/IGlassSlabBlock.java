@@ -7,20 +7,20 @@ import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.Direction;
 
-public interface IGlassSlabBlock extends IGlassBlock {
-	static boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
+public interface IGlassSlabBlock {
+	static boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (adjacentBlockState.getBlock() instanceof GenericRGBGlassBlock) {
 			return true;
 		} else if (adjacentBlockState.getBlock() instanceof GenericRGBGlassSlabBlock) {
-			return isInvisibleToGlassSlab(state, adjacentBlockState, side);
+			return skipRenderingGlassSlab(state, adjacentBlockState, side);
 		} else if (adjacentBlockState.getBlock() instanceof GenericRGBGlassStairsBlock) {
-			return isInvisibleToGlassStairs(state, adjacentBlockState, side);
+			return skipRenderingGlassStairs(state, adjacentBlockState, side);
 		} else {
 			return false;
 		}
 	}
 
-	static boolean isInvisibleToGlassSlab(BlockState state, BlockState adjacentBlockState, Direction side) {
+	static boolean skipRenderingGlassSlab(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.DOUBLE) {
 			return true;
 		}
@@ -39,7 +39,7 @@ public interface IGlassSlabBlock extends IGlassBlock {
 		return false;
 	}
 
-	static boolean isInvisibleToGlassStairs(BlockState state, BlockState adjacentBlockState, Direction side) {
+	static boolean skipRenderingGlassStairs(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (side == Direction.UP && adjacentBlockState.getValue(StairsBlock.HALF) == Half.BOTTOM) {
 			return true;
 		}
