@@ -1,7 +1,5 @@
 package platinpython.rgbblocks.item;
 
-import java.awt.Color;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -28,7 +26,7 @@ public class PaintBucketItem extends Item {
 		if (group == RGBBlocks.ITEM_GROUP_RGB || group == ItemGroup.TAB_SEARCH) {
 			ItemStack stack = new ItemStack(this);
 			CompoundNBT compound = stack.getOrCreateTag();
-			compound.putInt("color", Color.WHITE.getRGB());
+			compound.putInt("color", -1);
 			compound.putBoolean("isRGBSelected", true);
 			items.add(stack);
 		}

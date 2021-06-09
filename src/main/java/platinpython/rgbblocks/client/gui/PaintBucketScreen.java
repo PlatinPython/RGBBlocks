@@ -1,7 +1,5 @@
 package platinpython.rgbblocks.client.gui;
 
-import java.awt.Color;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.minecraft.client.gui.screen.Screen;
@@ -10,6 +8,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.client.gui.widget.Slider;
+import platinpython.rgbblocks.util.ColorUtils;
 import platinpython.rgbblocks.util.network.PacketHandler;
 import platinpython.rgbblocks.util.network.packets.PaintBucketSyncPKT;
 
@@ -36,12 +35,12 @@ public class PaintBucketScreen extends Screen {
 
 	public PaintBucketScreen(int colorIn, boolean isRGBSelected) {
 		super(new TranslationTextComponent("item.rgbblocks.bucket_of_paint"));
-		Color color = new Color(colorIn);
+		ColorUtils color = new ColorUtils(colorIn);
 		this.red = (double) color.getRed();
 		this.green = (double) color.getGreen();
 		this.blue = (double) color.getBlue();
 
-		float[] hsb = Color.RGBtoHSB((int) red, (int) green, (int) blue, null);
+		float[] hsb = ColorUtils.RGBtoHSB((int) red, (int) green, (int) blue);
 		this.hue = hsb[0] * MAX_VALUE_HUE;
 		this.saturation = hsb[1] * MAX_VALUE_SB;
 		this.brightness = hsb[2] * MAX_VALUE_SB;
@@ -54,10 +53,10 @@ public class PaintBucketScreen extends Screen {
 
 	private int getColor() {
 		if (isRGBSelected) {
-			return new Color(this.redSlider.getValueInt(), this.greenSlider.getValueInt(),
+			return new ColorUtils(this.redSlider.getValueInt(), this.greenSlider.getValueInt(),
 					this.blueSlider.getValueInt()).getRGB();
 		} else {
-			return Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
+			return ColorUtils.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
 					(float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
 					(float) (brightnessSlider.getValueInt() / MAX_VALUE_SB)).getRGB();
 		}
@@ -71,34 +70,29 @@ public class PaintBucketScreen extends Screen {
 	@Override
 	protected void init() {
 		this.redSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 - SPACING,
-				SLIDER_WIDTH, WIDGET_HEIGHT,
-				new TranslationTextComponent("gui.rgbblocks.red").append(": "), EMPTY_TEXT, MIN_VALUE,
-				MAX_VALUE_RGB, this.red, false, true, null);
+				SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.red").append(": "), EMPTY_TEXT,
+				MIN_VALUE, MAX_VALUE_RGB, this.red, false, true, null);
 
 		this.greenSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2,
-				SLIDER_WIDTH, WIDGET_HEIGHT,
-				new TranslationTextComponent("gui.rgbblocks.green").append(": "), EMPTY_TEXT, MIN_VALUE,
-				MAX_VALUE_RGB, this.green, false, true, null);
+				SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.green").append(": "),
+				EMPTY_TEXT, MIN_VALUE, MAX_VALUE_RGB, this.green, false, true, null);
 
 		this.blueSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 + SPACING,
-				SLIDER_WIDTH, WIDGET_HEIGHT,
-				new TranslationTextComponent("gui.rgbblocks.blue").append(": "), EMPTY_TEXT, MIN_VALUE,
-				MAX_VALUE_RGB, this.blue, false, true, null);
+				SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.blue").append(": "),
+				EMPTY_TEXT, MIN_VALUE, MAX_VALUE_RGB, this.blue, false, true, null);
 
 		this.hueSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 - SPACING,
-				SLIDER_WIDTH, WIDGET_HEIGHT,
-				new TranslationTextComponent("gui.rgbblocks.hue").append(": "), EMPTY_TEXT, MIN_VALUE,
-				MAX_VALUE_HUE, this.hue, false, true, null);
+				SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.hue").append(": "), EMPTY_TEXT,
+				MIN_VALUE, MAX_VALUE_HUE, this.hue, false, true, null);
 
 		this.saturationSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2,
-				SLIDER_WIDTH, WIDGET_HEIGHT,
-				new TranslationTextComponent("gui.rgbblocks.saturation").append(": "), EMPTY_TEXT,
-				MIN_VALUE, MAX_VALUE_SB, this.saturation, false, true, null);
+				SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.saturation").append(": "),
+				EMPTY_TEXT, MIN_VALUE, MAX_VALUE_SB, this.saturation, false, true, null);
 
 		this.brightnessSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2,
 				this.height / 2 - WIDGET_HEIGHT / 2 + SPACING, SLIDER_WIDTH, WIDGET_HEIGHT,
-				new TranslationTextComponent("gui.rgbblocks.brightness").append(": "), EMPTY_TEXT,
-				MIN_VALUE, MAX_VALUE_SB, this.brightness, false, true, null);
+				new TranslationTextComponent("gui.rgbblocks.brightness").append(": "), EMPTY_TEXT, MIN_VALUE,
+				MAX_VALUE_SB, this.brightness, false, true, null);
 
 //		TextFieldWidget hex = new TextFieldWidget(font, this.width / 2 - SLIDER_WIDTH / 2,
 //				this.height / 2 - sliderHeight / 2 + 2 * (sliderHeight + 20), SLIDER_WIDTH / 4,
@@ -121,7 +115,7 @@ public class PaintBucketScreen extends Screen {
 				isRGBSelected = !isRGBSelected;
 
 				if (isRGBSelected) {
-					Color color = Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
+					ColorUtils color = ColorUtils.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
 							(float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
 							(float) (brightnessSlider.getValueInt() / MAX_VALUE_SB));
 
@@ -135,10 +129,10 @@ public class PaintBucketScreen extends Screen {
 
 					this.setMessage(useHSBText);
 				} else {
-					float[] hsb = Color.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(),
-							blueSlider.getValueInt(), null);
+					float[] hsb = ColorUtils.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(),
+							blueSlider.getValueInt());
 
-					hueSlider.setValue(hsb[0] * MAX_VALUE_HUE);	
+					hueSlider.setValue(hsb[0] * MAX_VALUE_HUE);
 					saturationSlider.setValue(hsb[1] * MAX_VALUE_SB);
 					brightnessSlider.setValue(hsb[2] * MAX_VALUE_SB);
 
