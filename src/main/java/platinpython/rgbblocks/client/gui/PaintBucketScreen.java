@@ -34,7 +34,7 @@ public class PaintBucketScreen extends Screen {
 	private TranslationTextComponent useRGBText, useHSBText;
 
 	public PaintBucketScreen(int colorIn, boolean isRGBSelected) {
-		super(new TranslationTextComponent("item.rgbblocks.bucket_of_paint"));
+		super(new TranslationTextComponent("item.rgbblocks.paint_bucket"));
 		ColorUtils color = new ColorUtils(colorIn);
 		this.red = (double) color.getRed();
 		this.green = (double) color.getGreen();

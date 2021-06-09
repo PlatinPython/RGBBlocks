@@ -7,7 +7,6 @@
       "rgbblocks:block/antiblock_ctm"
     ],
     "extra": {
-      "ignore_states": true,
       "light": 15
     }
   }
