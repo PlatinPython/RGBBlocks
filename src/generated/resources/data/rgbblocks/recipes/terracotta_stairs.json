@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "rgbblocks:terracotta"
+    }
+  },
+  "result": {
+    "item": "rgbblocks:terracotta_stairs",
+    "count": 4,
+    "nbt": "{\"color\":-1}"
+  }
+}

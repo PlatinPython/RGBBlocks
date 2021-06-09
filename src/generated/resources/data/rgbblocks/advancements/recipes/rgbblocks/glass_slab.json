@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rgbblocks:glass_slab"
+    ]
+  },
+  "criteria": {
+    "has_rgb_glass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rgbblocks:glass"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rgbblocks:glass_slab"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_rgb_glass",
+      "has_the_recipe"
+    ]
+  ]
+}

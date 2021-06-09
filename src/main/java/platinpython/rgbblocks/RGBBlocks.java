@@ -6,16 +6,20 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent.MissingMappings;
+import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import platinpython.rgbblocks.client.renderer.entity.RGBFallingBlockRenderer;
-import platinpython.rgbblocks.datagen.DataGatherer;
+import platinpython.rgbblocks.data.DataGatherer;
 import platinpython.rgbblocks.dispenser.DispensePaintbucketBehaviour;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.network.PacketHandler;
@@ -42,7 +46,7 @@ public class RGBBlocks {
 	public void setup(final FMLCommonSetupEvent event) {
 		PacketHandler.register();
 
-		event.enqueueWork(() -> DispenserBlock.registerBehavior(ItemRegistry.BUCKET_OF_PAINT.get(),
+		event.enqueueWork(() -> DispenserBlock.registerBehavior(ItemRegistry.PAINT_BUCKET.get(),
 				new DispensePaintbucketBehaviour()));
 	}
 
@@ -55,10 +59,19 @@ public class RGBBlocks {
 		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.translucent());
 	}
 
-	public static final ItemGroup ITEM_GROUP_RGB = new ItemGroup("rgbBlocks") {
+	@SubscribeEvent
+	public void replaceMappings(MissingMappings<Item> event) {
+		for (Mapping<Item> mapping : event.getAllMappings()) {
+			if (mapping.key.toString().equals("rgbblocks:bucket_of_paint")) {
+				mapping.remap(ItemRegistry.PAINT_BUCKET.get());
+			}
+		}
+	}
+
+	public static final ItemGroup ITEM_GROUP_RGB = new ItemGroup("rgbblocks") {
 		@Override
 		public ItemStack makeIcon() {
-			ItemStack stack = new ItemStack(ItemRegistry.BUCKET_OF_PAINT.get());
+			ItemStack stack = new ItemStack(ItemRegistry.PAINT_BUCKET.get());
 			stack.getOrCreateTag().putInt("color", -1);
 			return stack;
 		}

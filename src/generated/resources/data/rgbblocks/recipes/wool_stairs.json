@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "rgbblocks:wool"
+    }
+  },
+  "result": {
+    "item": "rgbblocks:wool_stairs",
+    "count": 4,
+    "nbt": "{\"color\":-1}"
+  }
+}

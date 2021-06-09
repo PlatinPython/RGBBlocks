@@ -25,6 +25,6 @@
   "gui.rgbblocks.saturation": "Saturation",
   "gui.rgbblocks.useHSB": "Use HSB",
   "gui.rgbblocks.useRGB": "Use RGB",
-  "item.rgbblocks.bucket_of_paint": "Bucket of Paint",
-  "itemGroup.rgbBlocks": "RGB Blocks"
+  "item.rgbblocks.paint_bucket": "Paint Bucket",
+  "itemGroup.rgbblocks": "RGB Blocks"
 }

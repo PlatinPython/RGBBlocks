@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:white_terracotta"
+    },
+    {
+      "item": "rgbblocks:paint_bucket"
+    }
+  ],
+  "result": {
+    "item": "rgbblocks:terracotta",
+    "nbt": "{\"color\":-1}"
+  }
+}

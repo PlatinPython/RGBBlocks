@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rgbblocks:concrete_slab"
+    ]
+  },
+  "criteria": {
+    "has_rgb_concrete": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rgbblocks:concrete"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rgbblocks:concrete_slab"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_rgb_concrete",
+      "has_the_recipe"
+    ]
+  ]
+}

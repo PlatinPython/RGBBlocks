@@ -4,7 +4,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.util.network.packets.PaintbucketSyncPKT;
+import platinpython.rgbblocks.util.network.packets.PaintBucketSyncPKT;
 
 public class PacketHandler {
 	private static final String PROTOCOL_VERSION = "1";
@@ -14,8 +14,8 @@ public class PacketHandler {
 
 	public static void register() {
 		int index = 0;
-		INSTANCE.registerMessage(index++, PaintbucketSyncPKT.class, PaintbucketSyncPKT::encode, PaintbucketSyncPKT::decode,
-				PaintbucketSyncPKT.Handler::handle);
+		INSTANCE.registerMessage(index++, PaintBucketSyncPKT.class, PaintBucketSyncPKT::encode, PaintBucketSyncPKT::decode,
+				PaintBucketSyncPKT.Handler::handle);
 	}
 	
 	public static void sendToServer(Object message) {

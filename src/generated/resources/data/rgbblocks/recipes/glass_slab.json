@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "rgbblocks:glass"
+    }
+  },
+  "result": {
+    "item": "rgbblocks:glass_slab",
+    "count": 6,
+    "nbt": "{\"color\":-1}"
+  }
+}

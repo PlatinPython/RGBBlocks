@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rgbblocks:wool_stairs"
+    ]
+  },
+  "criteria": {
+    "has_rgb_wool": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rgbblocks:wool"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rgbblocks:wool_stairs"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_rgb_wool",
+      "has_the_recipe"
+    ]
+  ]
+}
