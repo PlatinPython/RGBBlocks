@@ -38,10 +38,9 @@ public class PaintBucketItem extends Item {
 			items.add(stack);
 		}
 	}
-	
+
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip,
-			ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		ColorUtils color = new ColorUtils(stack.getOrCreateTag().getInt("color"));
 		StringTextComponent rgbHex = new StringTextComponent("#" + Integer.toHexString(color.getRGB()).substring(2));
 		tooltip.add(rgbHex);
@@ -61,7 +60,8 @@ public class PaintBucketItem extends Item {
 	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		if (handIn == Hand.MAIN_HAND && playerIn.isShiftKeyDown()) {
 			if (worldIn.isClientSide) {
-				ClientHandler.openPaintbucketGUI(playerIn.getMainHandItem());
+				ClientHandler.openPaintbucketGUI(playerIn.getMainHandItem().getTag().getInt("color"),
+						playerIn.getMainHandItem().getTag().getBoolean("isRGBSelected"));
 				return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getMainHandItem());
 			}
 		}
