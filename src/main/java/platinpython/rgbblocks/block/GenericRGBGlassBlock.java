@@ -26,7 +26,15 @@ public class GenericRGBGlassBlock extends GenericRGBBlock implements IGlassBlock
 		if (adjacentBlockState.getBlock() instanceof GenericRGBBlock) {
 			return true;
 		} else if (adjacentBlockState.getBlock() instanceof GenericRGBGlassSlabBlock) {
-			return adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.DOUBLE;
+			if(adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.DOUBLE) {
+				return true;
+			} else if (side == Direction.UP) {
+				return adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.BOTTOM;
+			} else if (side == Direction.DOWN) {
+				return adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.TOP;
+			} else {
+				return false;
+			}
 		} else if (adjacentBlockState.getBlock() instanceof GenericRGBGlassStairsBlock) {
 			if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_LEFT
 					|| adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_RIGHT) {
