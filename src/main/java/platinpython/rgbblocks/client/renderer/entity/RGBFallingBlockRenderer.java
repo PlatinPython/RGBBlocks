@@ -9,23 +9,24 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.model.data.EmptyModelData;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.entity.RGBFallingBlockEntity;
 
 public class RGBFallingBlockRenderer extends EntityRenderer<RGBFallingBlockEntity> {
-	public RGBFallingBlockRenderer(EntityRendererManager p_i46177_1_) {
-		super(p_i46177_1_);
+	public RGBFallingBlockRenderer(EntityRendererManager renderManagerIn) {
+		super(renderManagerIn);
 		this.shadowRadius = 0.5f;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void render(RGBFallingBlockEntity fallingBlockEntity, float entityYaw, float partialTicks,
 			MatrixStack matrixStackIn, IRenderTypeBuffer renderTypeBuffer, int packedLightIn) {
@@ -39,19 +40,20 @@ public class RGBFallingBlockRenderer extends EntityRenderer<RGBFallingBlockEntit
 						fallingBlockEntity.getZ());
 				matrixStackIn.translate(-0.5D, 0.0D, -0.5D);
 				BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
-				for (net.minecraft.client.renderer.RenderType type : net.minecraft.client.renderer.RenderType
-						.chunkBufferLayers()) {
+				for (RenderType type : RenderType.chunkBufferLayers()) {
 					if (RenderTypeLookup.canRenderInLayer(blockstate, type)) {
-						net.minecraftforge.client.ForgeHooksClient.setRenderLayer(type);
-						blockrendererdispatcher.getModelRenderer().tesselateBlock(world,
+						ForgeHooksClient.setRenderLayer(type);
+						blockrendererdispatcher.getModelRenderer().renderModel(world,
 								blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, matrixStackIn,
 								renderTypeBuffer.getBuffer(type), false, new Random(),
-								blockstate.getSeed(fallingBlockEntity.getStartPos()), OverlayTexture.NO_OVERLAY);
+								blockstate.getSeed(fallingBlockEntity.getStartPos()), fallingBlockEntity.getColor(),
+								EmptyModelData.INSTANCE);
 					}
 				}
-				net.minecraftforge.client.ForgeHooksClient.setRenderLayer(null);
+				ForgeHooksClient.setRenderLayer(null);
 				matrixStackIn.popPose();
-				super.render(fallingBlockEntity, entityYaw, partialTicks, matrixStackIn, renderTypeBuffer, packedLightIn);
+				super.render(fallingBlockEntity, entityYaw, partialTicks, matrixStackIn, renderTypeBuffer,
+						packedLightIn);
 			}
 		}
 	}

@@ -66,6 +66,10 @@ public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntity
 		this.setStartPos(this.blockPosition());
 		color = world.getBlockEntity(pos).getUpdateTag().getInt("color");
 	}
+	
+	public int getColor() {
+		return color;
+	}
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -156,11 +160,15 @@ public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntity
 									}
 								} else if (this.dropItem
 										&& this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
-									this.spawnAtLocation(block);
+									ItemStack item = new ItemStack(block);
+									item.getOrCreateTag().putInt("color", color);
+									this.spawnAtLocation(item);
 								}
 							} else if (this.dropItem
 									&& this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
-								this.spawnAtLocation(block);
+								ItemStack item = new ItemStack(block);
+								item.getOrCreateTag().putInt("color", color);
+								this.spawnAtLocation(item);
 							}
 						} else if (block instanceof FallingBlock) {
 							((FallingBlock) block).onBroken(this.level, blockpos1, this);
@@ -202,44 +210,44 @@ public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntity
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundNBT p_213281_1_) {
-		p_213281_1_.put("BlockState", NBTUtil.writeBlockState(this.blockState));
-		p_213281_1_.putInt("Time", this.time);
-		p_213281_1_.putBoolean("DropItem", this.dropItem);
-		p_213281_1_.putBoolean("HurtEntities", this.hurtEntities);
-		p_213281_1_.putFloat("FallHurtAmount", this.fallDamageAmount);
-		p_213281_1_.putInt("FallHurtMax", this.fallDamageMax);
+	protected void addAdditionalSaveData(CompoundNBT compound) {
+		compound.put("BlockState", NBTUtil.writeBlockState(this.blockState));
+		compound.putInt("Time", this.time);
+		compound.putBoolean("DropItem", this.dropItem);
+		compound.putBoolean("HurtEntities", this.hurtEntities);
+		compound.putFloat("FallHurtAmount", this.fallDamageAmount);
+		compound.putInt("FallHurtMax", this.fallDamageMax);
 		if (this.blockData != null) {
-			p_213281_1_.put("TileEntityData", this.blockData);
+			compound.put("TileEntityData", this.blockData);
 		}
-
+		compound.putInt("color", color);
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	protected void readAdditionalSaveData(CompoundNBT p_70037_1_) {
-		this.blockState = NBTUtil.readBlockState(p_70037_1_.getCompound("BlockState"));
-		this.time = p_70037_1_.getInt("Time");
-		if (p_70037_1_.contains("HurtEntities", 99)) {
-			this.hurtEntities = p_70037_1_.getBoolean("HurtEntities");
-			this.fallDamageAmount = p_70037_1_.getFloat("FallHurtAmount");
-			this.fallDamageMax = p_70037_1_.getInt("FallHurtMax");
+	protected void readAdditionalSaveData(CompoundNBT compound) {
+		this.blockState = NBTUtil.readBlockState(compound.getCompound("BlockState"));
+		this.time = compound.getInt("Time");
+		if (compound.contains("HurtEntities", 99)) {
+			this.hurtEntities = compound.getBoolean("HurtEntities");
+			this.fallDamageAmount = compound.getFloat("FallHurtAmount");
+			this.fallDamageMax = compound.getInt("FallHurtMax");
 		} else if (this.blockState.is(BlockTags.ANVIL)) {
 			this.hurtEntities = true;
 		}
 
-		if (p_70037_1_.contains("DropItem", 99)) {
-			this.dropItem = p_70037_1_.getBoolean("DropItem");
+		if (compound.contains("DropItem", 99)) {
+			this.dropItem = compound.getBoolean("DropItem");
 		}
 
-		if (p_70037_1_.contains("TileEntityData", 10)) {
-			this.blockData = p_70037_1_.getCompound("TileEntityData");
+		if (compound.contains("TileEntityData", 10)) {
+			this.blockData = compound.getCompound("TileEntityData");
 		}
 
 		if (this.blockState.isAir()) {
 			this.blockState = Blocks.SAND.defaultBlockState();
 		}
-
+		this.color = compound.getInt("color");
 	}
 
 	@Override
