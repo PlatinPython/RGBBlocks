@@ -39,6 +39,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
+import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.registries.EntityRegistry;
 
 public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntityAdditionalSpawnData {
@@ -64,7 +65,12 @@ public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntity
 		this.yo = y;
 		this.zo = z;
 		this.setStartPos(this.blockPosition());
-		color = world.getBlockEntity(pos).getUpdateTag().getInt("color");
+		TileEntity tileEntity = world.getBlockEntity(pos);
+		if(tileEntity instanceof RGBTileEntity) {
+			color = ((RGBTileEntity) tileEntity).getColor();
+		} else {
+			color = 0;
+		}
 	}
 	
 	public int getColor() {
