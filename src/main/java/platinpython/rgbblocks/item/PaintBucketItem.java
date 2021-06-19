@@ -94,4 +94,9 @@ public class PaintBucketItem extends Item {
 			return ActionResultType.PASS;
 		}
 	}
+	
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return false;
+	}
 }
