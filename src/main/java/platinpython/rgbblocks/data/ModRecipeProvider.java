@@ -7,8 +7,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.RecipeProvider;
+import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tags.ITag;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.IItemProvider;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
@@ -28,12 +33,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 				.requires(Tags.Items.DYES_RED).requires(Tags.Items.DYES_GREEN).requires(Tags.Items.DYES_BLUE)
 				.requires(Items.WATER_BUCKET).unlockedBy("has_water_bucket", has(Items.WATER_BUCKET)).save(consumer);
 
-		block(consumer, BlockRegistry.RGB_CONCRETE_POWDER.get(), Blocks.WHITE_CONCRETE_POWDER);
-		block(consumer, BlockRegistry.RGB_GLASS.get(), Blocks.WHITE_STAINED_GLASS);
-		block(consumer, BlockRegistry.RGB_GLOWSTONE.get(), Blocks.GLOWSTONE);
-		block(consumer, BlockRegistry.RGB_PLANKS.get(), Blocks.BIRCH_PLANKS);
-		block(consumer, BlockRegistry.RGB_TERRACOTTA.get(), Blocks.WHITE_TERRACOTTA);
-		block(consumer, BlockRegistry.RGB_WOOL.get(), Blocks.WHITE_WOOL);
+		blockIItemProvider(consumer, BlockRegistry.RGB_CONCRETE_POWDER.get(), Blocks.WHITE_CONCRETE_POWDER);
+		blockTag(consumer, BlockRegistry.RGB_GLASS.get(), Tags.Items.STAINED_GLASS);
+		blockIItemProvider(consumer, BlockRegistry.RGB_GLOWSTONE.get(), Blocks.GLOWSTONE);
+		blockTag(consumer, BlockRegistry.RGB_PLANKS.get(), ItemTags.PLANKS);
+		blockIItemProvider(consumer, BlockRegistry.RGB_TERRACOTTA.get(), Blocks.WHITE_TERRACOTTA);
+		blockTag(consumer, BlockRegistry.RGB_WOOL.get(), ItemTags.WOOL);
 
 		slabBlock(consumer, BlockRegistry.RGB_CONCRETE_SLAB.get(), BlockRegistry.RGB_CONCRETE.get());
 		slabBlock(consumer, BlockRegistry.RGB_GLASS_SLAB.get(), BlockRegistry.RGB_GLASS.get());
@@ -57,9 +62,17 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 				.pattern("RGR").pattern(" R ").unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get()))
 				.save(consumer);
 	}
+	
+	private void blockIItemProvider(Consumer<IFinishedRecipe> consumer, Block result, IItemProvider provider) {
+		block(consumer, result, Ingredient.of(provider));
+	}
+	
+	private void blockTag(Consumer<IFinishedRecipe> consumer, Block result, ITag<Item> tag) {
+		block(consumer, result, Ingredient.of(tag));
+	}
 
-	private void block(Consumer<IFinishedRecipe> consumer, Block result, Block base) {
-		ShapelessNBTRecipeBuilder.shapeless(result.getBlock(), 1, whiteNBT).requires(base)
+	private void block(Consumer<IFinishedRecipe> consumer, Block result, Ingredient ingredient) {
+		ShapelessNBTRecipeBuilder.shapeless(result.getBlock(), 1, whiteNBT).requires(ingredient)
 				.requires(ItemRegistry.PAINT_BUCKET.get())
 				.unlockedBy("has_paint_bucket", has(ItemRegistry.PAINT_BUCKET.get())).save(consumer);
 	}

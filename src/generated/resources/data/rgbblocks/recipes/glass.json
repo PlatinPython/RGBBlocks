@@ -2,7 +2,7 @@
   "type": "rgbblocks:crafting_shapeless_durability_aware_paint_bucket",
   "ingredients": [
     {
-      "item": "minecraft:white_stained_glass"
+      "tag": "forge:stained_glass"
     },
     {
       "item": "rgbblocks:paint_bucket"

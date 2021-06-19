@@ -2,7 +2,7 @@
   "type": "rgbblocks:crafting_shapeless_durability_aware_paint_bucket",
   "ingredients": [
     {
-      "item": "minecraft:white_wool"
+      "tag": "minecraft:wool"
     },
     {
       "item": "rgbblocks:paint_bucket"

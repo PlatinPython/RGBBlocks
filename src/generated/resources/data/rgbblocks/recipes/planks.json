@@ -2,7 +2,7 @@
   "type": "rgbblocks:crafting_shapeless_durability_aware_paint_bucket",
   "ingredients": [
     {
-      "item": "minecraft:birch_planks"
+      "tag": "minecraft:planks"
     },
     {
       "item": "rgbblocks:paint_bucket"
