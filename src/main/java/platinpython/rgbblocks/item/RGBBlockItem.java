@@ -14,7 +14,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.util.ColorUtils;
+import platinpython.rgbblocks.util.Color;
 
 public class RGBBlockItem extends BlockItem {
 	public RGBBlockItem(Block blockIn) {
@@ -34,7 +34,7 @@ public class RGBBlockItem extends BlockItem {
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip,
 			ITooltipFlag flagIn) {
-		ColorUtils color = new ColorUtils(stack.getOrCreateTag().getInt("color"));
+		Color color = new Color(stack.getOrCreateTag().getInt("color"));
 		StringTextComponent rgbHex = new StringTextComponent("#" + Integer.toHexString(color.getRGB()).substring(2));
 		tooltip.add(rgbHex);
 //		super.appendHoverText(stack, worldIn, tooltip, flagIn);

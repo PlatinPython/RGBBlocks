@@ -1,18 +1,18 @@
 package platinpython.rgbblocks.util;
 
-public class ColorUtils {
+public class Color {
 	private int value;
 
-	public ColorUtils(int r, int g, int b) {
+	public Color(int r, int g, int b) {
 		this(r, g, b, 255);
 	}
 
-	public ColorUtils(int r, int g, int b, int a) {
+	public Color(int r, int g, int b, int a) {
 		value = ((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0);
 		testColorValueRange(r, g, b, a);
 	}
 
-	public ColorUtils(int rgb) {
+	public Color(int rgb) {
 		value = 0xff000000 | rgb;
 	}
 
@@ -140,8 +140,8 @@ public class ColorUtils {
 		return 0xff000000 | (r << 16) | (g << 8) | (b << 0);
 	}
 
-	public static ColorUtils getHSBColor(float h, float s, float b) {
-		return new ColorUtils(HSBtoRGB(h, s, b));
+	public static Color getHSBColor(float h, float s, float b) {
+		return new Color(HSBtoRGB(h, s, b));
 	}
 
 	public float[] getRGBColorComponents() {

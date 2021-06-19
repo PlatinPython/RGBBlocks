@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.ClientHandler;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
-import platinpython.rgbblocks.util.ColorUtils;
+import platinpython.rgbblocks.util.Color;
 
 public class PaintBucketItem extends Item {
 	public PaintBucketItem() {
@@ -41,7 +41,7 @@ public class PaintBucketItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		ColorUtils color = new ColorUtils(stack.getOrCreateTag().getInt("color"));
+		Color color = new Color(stack.getOrCreateTag().getInt("color"));
 		StringTextComponent rgbHex = new StringTextComponent("#" + Integer.toHexString(color.getRGB()).substring(2));
 		tooltip.add(rgbHex);
 	}

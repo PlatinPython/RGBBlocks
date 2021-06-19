@@ -8,7 +8,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.client.gui.widget.Slider;
-import platinpython.rgbblocks.util.ColorUtils;
+import platinpython.rgbblocks.util.Color;
 import platinpython.rgbblocks.util.network.PacketHandler;
 import platinpython.rgbblocks.util.network.packets.PaintBucketSyncPKT;
 
@@ -35,12 +35,12 @@ public class PaintBucketScreen extends Screen {
 
 	public PaintBucketScreen(int colorIn, boolean isRGBSelected) {
 		super(new TranslationTextComponent("item.rgbblocks.paint_bucket"));
-		ColorUtils color = new ColorUtils(colorIn);
+		Color color = new Color(colorIn);
 		this.red = (double) color.getRed();
 		this.green = (double) color.getGreen();
 		this.blue = (double) color.getBlue();
 
-		float[] hsb = ColorUtils.RGBtoHSB((int) red, (int) green, (int) blue);
+		float[] hsb = Color.RGBtoHSB((int) red, (int) green, (int) blue);
 		this.hue = hsb[0] * MAX_VALUE_HUE;
 		this.saturation = hsb[1] * MAX_VALUE_SB;
 		this.brightness = hsb[2] * MAX_VALUE_SB;
@@ -53,10 +53,10 @@ public class PaintBucketScreen extends Screen {
 
 	private int getColor() {
 		if (isRGBSelected) {
-			return new ColorUtils(this.redSlider.getValueInt(), this.greenSlider.getValueInt(),
+			return new Color(this.redSlider.getValueInt(), this.greenSlider.getValueInt(),
 					this.blueSlider.getValueInt()).getRGB();
 		} else {
-			return ColorUtils.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
+			return Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
 					(float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
 					(float) (brightnessSlider.getValueInt() / MAX_VALUE_SB)).getRGB();
 		}
@@ -115,7 +115,7 @@ public class PaintBucketScreen extends Screen {
 				isRGBSelected = !isRGBSelected;
 
 				if (isRGBSelected) {
-					ColorUtils color = ColorUtils.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
+					Color color = Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
 							(float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
 							(float) (brightnessSlider.getValueInt() / MAX_VALUE_SB));
 
@@ -129,7 +129,7 @@ public class PaintBucketScreen extends Screen {
 
 					this.setMessage(useHSBText);
 				} else {
-					float[] hsb = ColorUtils.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(),
+					float[] hsb = Color.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(),
 							blueSlider.getValueInt());
 
 					hueSlider.setValue(hsb[0] * MAX_VALUE_HUE);
