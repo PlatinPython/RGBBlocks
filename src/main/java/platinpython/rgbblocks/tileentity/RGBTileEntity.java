@@ -6,6 +6,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
 public class RGBTileEntity extends TileEntity {
@@ -60,6 +61,6 @@ public class RGBTileEntity extends TileEntity {
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
 		this.load(getBlockState(), packet.getTag());
-		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), BlockFlags.DEFAULT_AND_RERENDER);
 	}
 }

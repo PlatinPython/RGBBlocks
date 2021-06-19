@@ -45,7 +45,6 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBB
 		return IRGBBlock.getPickBlock(state, target, world, pos, player);
 	}
 
-	// FallingBlockRenderer crashes game, so block won't fall for the time being
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 		if (worldIn.isEmptyBlock(pos.below()) || isFree(worldIn.getBlockState(pos.below())) && pos.getY() >= 0) {
@@ -56,13 +55,13 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements IRGBB
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() == BlockRegistry.RGB_CONCRETE_POWDER.get()
-				&& newState.getBlock() == BlockRegistry.RGB_CONCRETE.get()) {
-		} else {
-			super.onRemove(state, worldIn, pos, newState, isMoving);
+		if (!state.is(BlockRegistry.RGB_CONCRETE_POWDER.get())
+				&& !newState.is(BlockRegistry.RGB_CONCRETE.get())) {
+			if (state.hasTileEntity() && (!state.is(newState.getBlock()) || !newState.hasTileEntity())) {
+				worldIn.removeBlockEntity(pos);
+			}
 		}
 	}
 

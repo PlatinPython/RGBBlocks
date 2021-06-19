@@ -24,20 +24,21 @@ public interface IRGBBlock {
 
 	public static void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer,
 			ItemStack stack) {
-		if (stack.hasTag() == true) {
-			((RGBTileEntity) worldIn.getBlockEntity(pos)).setColor(stack.getTag().getInt("color"));
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
+		if (stack.hasTag() == true && tileEntity instanceof RGBTileEntity) {
+			((RGBTileEntity) tileEntity).setColor(stack.getTag().getInt("color"));
 		}
 	}
 
 	public static ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos,
 			PlayerEntity player) {
 		ItemStack stack = new ItemStack(state.getBlock().asItem());
-		RGBTileEntity tileEntity = (RGBTileEntity) world.getBlockEntity(pos);
-		CompoundNBT tag = new CompoundNBT();
-		tag.putInt("color", tileEntity.getUpdateTag().getInt("color"));
-		stack.setTag(tag);
+		TileEntity tileEntity = world.getBlockEntity(pos);
+		if(tileEntity instanceof RGBTileEntity) {
+			CompoundNBT tag = new CompoundNBT();
+			tag.putInt("color", ((RGBTileEntity) tileEntity).getColor());
+			stack.setTag(tag);
+		}
 		return stack;
-	}
-	
-	
+	}	
 }

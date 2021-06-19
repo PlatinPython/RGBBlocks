@@ -18,6 +18,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.ClientHandler;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
@@ -86,7 +87,7 @@ public class PaintBucketItem extends Item {
 				}
 				((RGBTileEntity) tileEntity).setColor(context.getItemInHand().getTag().getInt("color"));
 				context.getLevel().sendBlockUpdated(context.getClickedPos(), tileEntity.getBlockState(),
-						tileEntity.getBlockState(), 2);
+						tileEntity.getBlockState(), BlockFlags.DEFAULT_AND_RERENDER);
 			}
 			return ActionResultType.SUCCESS;
 		} else {

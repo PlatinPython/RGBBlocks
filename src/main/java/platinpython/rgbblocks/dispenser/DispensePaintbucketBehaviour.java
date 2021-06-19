@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 
 public class DispensePaintbucketBehaviour extends DefaultDispenseItemBehavior {
@@ -18,7 +19,8 @@ public class DispensePaintbucketBehaviour extends DefaultDispenseItemBehavior {
 		TileEntity tileEntity = source.getLevel().getBlockEntity(blockPos);
 		if (tileEntity instanceof RGBTileEntity) {
 			((RGBTileEntity) tileEntity).setColor(itemStack.getTag().getInt("color"));
-			source.getLevel().sendBlockUpdated(blockPos, tileEntity.getBlockState(), tileEntity.getBlockState(), 2);
+			source.getLevel().sendBlockUpdated(blockPos, tileEntity.getBlockState(), tileEntity.getBlockState(),
+					BlockFlags.DEFAULT_AND_RERENDER);
 			return itemStack;
 		} else {
 			IPosition iposition = DispenserBlock.getDispensePosition(source);
@@ -27,7 +29,7 @@ public class DispensePaintbucketBehaviour extends DefaultDispenseItemBehavior {
 			return itemStack;
 		}
 	}
-	
+
 	@Override
 	protected void playAnimation(IBlockSource source, Direction direction) {
 	}

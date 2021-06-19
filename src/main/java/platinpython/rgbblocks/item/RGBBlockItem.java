@@ -37,6 +37,5 @@ public class RGBBlockItem extends BlockItem {
 		Color color = new Color(stack.getOrCreateTag().getInt("color"));
 		StringTextComponent rgbHex = new StringTextComponent("#" + Integer.toHexString(color.getRGB()).substring(2));
 		tooltip.add(rgbHex);
-//		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
 }
