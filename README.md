@@ -1,5 +1,6 @@
 # RGB Blocks (Forge)
 Blocks in almost all colors you can imagine.
 
+Since 1.0.3.0 this mod needs [CTM](https://www.curseforge.com/minecraft/mc-mods/ctm) to work correctly.
+
 ## Known Issues:
-- The RGB Concrete Powder Block currently does not fall, as it does not keep it's color during/after the fall
