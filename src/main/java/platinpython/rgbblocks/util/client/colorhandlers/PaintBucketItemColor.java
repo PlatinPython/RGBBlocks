@@ -8,11 +8,12 @@ public class PaintBucketItemColor implements IItemColor {
 	@Override
 	public int getColor(ItemStack stack, int tintindex) {
 		if (stack.getItem() instanceof PaintBucketItem) {
-			if (!stack.hasTag() || !stack.getTag().contains("color")) {
-				return -1;
-			}
 			if (tintindex == 1) {
-				return stack.getTag().getInt("color");
+				if (!stack.hasTag() || !stack.getTag().contains("color")) {
+					return 0;
+				} else {
+					return stack.getTag().getInt("color");
+				}
 			} else {
 				return -1;
 			}
