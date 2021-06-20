@@ -1,4 +1,4 @@
-package platinpython.rgbblocks.util.registries.client;
+package platinpython.rgbblocks.client;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,10 +15,9 @@ import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockItemColor;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
 @EventBusSubscriber(modid = RGBBlocks.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
-public class ClientRegistry {
+public class ClientRegistration {
 	@SubscribeEvent
 	public static void registerColorHandlers(ColorHandlerEvent.Item event) {
-		RGBBlocks.LOGGER.debug("Registering ColorHandlers");
 		event.getBlockColors().register(new RGBBlockColor(),
 				RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
 		event.getItemColors().register(new RGBBlockItemColor(),
