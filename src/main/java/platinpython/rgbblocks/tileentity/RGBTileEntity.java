@@ -43,12 +43,15 @@ public class RGBTileEntity extends TileEntity {
 
 	@Override
 	public CompoundNBT getUpdateTag() {
-		return this.save(new CompoundNBT());
+		CompoundNBT tag = super.getUpdateTag();
+		tag.putInt("color", color);
+		return tag;
 	}
 	
 	@Override
 	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-		this.load(state, tag);
+		super.handleUpdateTag(state, tag);
+		setColor(tag.getInt("color"));
 	}
 
 	@Override
