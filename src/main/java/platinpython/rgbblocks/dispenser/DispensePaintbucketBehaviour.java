@@ -3,7 +3,6 @@ package platinpython.rgbblocks.dispenser;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.dispenser.IPosition;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -23,14 +22,7 @@ public class DispensePaintbucketBehaviour extends DefaultDispenseItemBehavior {
 					BlockFlags.DEFAULT_AND_RERENDER);
 			return itemStack;
 		} else {
-			IPosition iposition = DispenserBlock.getDispensePosition(source);
-			ItemStack spawnStack = itemStack.split(1);
-			spawnItem(source.getLevel(), spawnStack, 6, dispenserFacing, iposition);
-			return itemStack;
+			return super.execute(source, itemStack);
 		}
-	}
-
-	@Override
-	protected void playAnimation(IBlockSource source, Direction direction) {
 	}
 }

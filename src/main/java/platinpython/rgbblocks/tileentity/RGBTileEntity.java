@@ -19,12 +19,12 @@ public class RGBTileEntity extends TileEntity {
 	public RGBTileEntity() {
 		this(TileEntityRegistry.RGB.get());
 	}
-	
+
 	public void setColor(int color) {
 		this.color = color;
 		setChanged();
 	}
-	
+
 	public int getColor() {
 		return color;
 	}
@@ -47,7 +47,7 @@ public class RGBTileEntity extends TileEntity {
 		tag.putInt("color", color);
 		return tag;
 	}
-	
+
 	@Override
 	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
 		super.handleUpdateTag(state, tag);
@@ -63,7 +63,7 @@ public class RGBTileEntity extends TileEntity {
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-		this.load(getBlockState(), packet.getTag());
+		setColor(packet.getTag().getInt("color"));
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), BlockFlags.DEFAULT_AND_RERENDER);
 	}
 }
