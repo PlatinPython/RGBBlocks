@@ -100,52 +100,50 @@ public class PaintBucketScreen extends Screen {
 
 		Button toggleButton = new Button(this.width / 2 - BUTTON_WIDTH / 2,
 				this.height / 2 - WIDGET_HEIGHT / 2 + 2 * SPACING, BUTTON_WIDTH, WIDGET_HEIGHT,
-				isRGBSelected ? useHSBText : useRGBText, (button) -> {
-				}) {
-			@Override
-			public void onPress() {
-				redSlider.visible = !redSlider.visible;
-				greenSlider.visible = !greenSlider.visible;
-				blueSlider.visible = !blueSlider.visible;
+				isRGBSelected ? useHSBText : useRGBText, button -> {
+					redSlider.visible = !redSlider.visible;
+					greenSlider.visible = !greenSlider.visible;
+					blueSlider.visible = !blueSlider.visible;
 
-				hueSlider.visible = !hueSlider.visible;
-				saturationSlider.visible = !saturationSlider.visible;
-				brightnessSlider.visible = !brightnessSlider.visible;
+					hueSlider.visible = !hueSlider.visible;
+					saturationSlider.visible = !saturationSlider.visible;
+					brightnessSlider.visible = !brightnessSlider.visible;
 
-				isRGBSelected = !isRGBSelected;
+					isRGBSelected = !isRGBSelected;
 
-				if (isRGBSelected) {
-					Color color = Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
-							(float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
-							(float) (brightnessSlider.getValueInt() / MAX_VALUE_SB));
+					if (isRGBSelected) {
+						Color color = Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
+								(float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
+								(float) (brightnessSlider.getValueInt() / MAX_VALUE_SB));
 
-					redSlider.setValue(color.getRed());
-					greenSlider.setValue(color.getGreen());
-					blueSlider.setValue(color.getBlue());
+						redSlider.setValue(color.getRed());
+						greenSlider.setValue(color.getGreen());
+						blueSlider.setValue(color.getBlue());
 
-					redSlider.updateSlider();
-					greenSlider.updateSlider();
-					blueSlider.updateSlider();
+						redSlider.updateSlider();
+						greenSlider.updateSlider();
+						blueSlider.updateSlider();
 
-					this.setMessage(useHSBText);
-				} else {
-					float[] hsb = Color.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(),
-							blueSlider.getValueInt());
+						button.setMessage(useHSBText);
+					} else {
+						float[] hsb = Color.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(),
+								blueSlider.getValueInt());
 
-					hueSlider.setValue(hsb[0] * MAX_VALUE_HUE);
-					saturationSlider.setValue(hsb[1] * MAX_VALUE_SB);
-					brightnessSlider.setValue(hsb[2] * MAX_VALUE_SB);
+						hueSlider.setValue(hsb[0] * MAX_VALUE_HUE);
+						saturationSlider.setValue(hsb[1] * MAX_VALUE_SB);
+						brightnessSlider.setValue(hsb[2] * MAX_VALUE_SB);
 
-					hueSlider.updateSlider();
-					saturationSlider.updateSlider();
-					brightnessSlider.updateSlider();
+						hueSlider.updateSlider();
+						saturationSlider.updateSlider();
+						brightnessSlider.updateSlider();
 
-					this.setMessage(useRGBText);
-				}
-			}
-		};
+						button.setMessage(useRGBText);
+					}
+				});
 
-		if (isRGBSelected) {
+		if (isRGBSelected)
+
+		{
 			hueSlider.visible = false;
 			saturationSlider.visible = false;
 			brightnessSlider.visible = false;
