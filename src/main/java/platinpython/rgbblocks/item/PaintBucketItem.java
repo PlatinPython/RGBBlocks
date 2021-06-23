@@ -31,7 +31,7 @@ public class PaintBucketItem extends Item {
 
 	@Override
 	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
-		if (group == RGBBlocks.ITEM_GROUP_RGB || group == ItemGroup.TAB_SEARCH) {
+		if (allowdedIn(group)) {
 			ItemStack stack = new ItemStack(this);
 			CompoundNBT compound = stack.getOrCreateTag();
 			compound.putInt("color", -1);
