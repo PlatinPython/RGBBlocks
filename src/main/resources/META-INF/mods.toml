@@ -1,23 +1,23 @@
-modLoader="javafml" #mandatory
-loaderVersion="[34,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+modLoader="javafml"
+loaderVersion="[34,)"
 license="GPL-3.0 License"
-issueTrackerURL="https://github.com/PlatinPython/RGBBlocks/issues" #optional
+issueTrackerURL="https://github.com/PlatinPython/RGBBlocks/issues"
 
-[[mods]] #mandatory
-modId="rgbblocks" #mandatory
-version="${file.jarVersion}" #mandatory
-displayName="RGB Blocks" #mandatory
-logoFile="logo.png" #optional
-credits="Thanks TobiBenzi for the logo" #optional
-authors="PlatinPython" #optional
+[[mods]]
+modId="rgbblocks"
+version="${file.jarVersion}"
+displayName="RGB Blocks"
+logoFile="logo.png"
+credits="Thanks TobiBenzi for the logo and some textures"
+authors="PlatinPython"
 description='''
 Blocks in almost all colors you can imagine.
 '''
 
-[[dependencies.rgbblocks]] #optional
-  modId="forge" #mandatory
-  mandatory=true #mandatory
-  versionRange="[34,)" #mandatory
+[[dependencies.rgbblocks]]
+  modId="forge"
+  mandatory=true
+  versionRange="[34,)"
   ordering="NONE"
   side="BOTH"
 
@@ -28,10 +28,9 @@ Blocks in almost all colors you can imagine.
   ordering="NONE"
   side="BOTH"
 
-
 [[dependencies.rgbblocks]]
   modId="ctm"
-  mandatory=false
+  mandatory=true
   versionRange="[MC1.16.1-1,)"
   ordering="NONE"
   side="CLIENT"
