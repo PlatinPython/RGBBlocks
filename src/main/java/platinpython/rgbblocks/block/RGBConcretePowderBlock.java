@@ -50,6 +50,11 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements RGBBl
 		if (worldIn.isEmptyBlock(pos.below()) || isFree(worldIn.getBlockState(pos.below())) && pos.getY() >= 0) {
 			RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(worldIn, (double) pos.getX() + 0.5D,
 					(double) pos.getY(), (double) pos.getZ() + 0.5D, worldIn.getBlockState(pos), pos);
+			try {
+				RGBFallingBlockEntity.blockState.set(fallingBlockEntity, worldIn.getBlockState(pos));
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
 			this.falling(fallingBlockEntity);
 			worldIn.addFreshEntity(fallingBlockEntity);
 		}
