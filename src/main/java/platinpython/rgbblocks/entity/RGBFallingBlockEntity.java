@@ -2,7 +2,6 @@ package platinpython.rgbblocks.entity;
 
 import java.lang.reflect.Field;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -10,13 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
-import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.registries.EntityRegistry;
 
 public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntityAdditionalSpawnData {
@@ -27,16 +23,11 @@ public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntity
 		super(EntityRegistry.RGB_FALLING_BLOCK.get(), world);
 	}
 
-	public RGBFallingBlockEntity(World world, double x, double y, double z, BlockState state, BlockPos pos) {
+	public RGBFallingBlockEntity(World world, double x, double y, double z, int color) {
 		this(EntityRegistry.RGB_FALLING_BLOCK.get(), world);
 		this.blocksBuilding = true;
 		this.setPos(x, y + (double) ((1.0F - this.getBbHeight()) / 2.0F), z);
-		TileEntity tileEntity = world.getBlockEntity(pos);
-		if(tileEntity instanceof RGBTileEntity) {
-			color = ((RGBTileEntity) tileEntity).getColor();
-		} else {
-			color = 0;
-		}
+		this.color = color;
 	}
 	
 	public int getColor() {

@@ -48,13 +48,15 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements RGBBl
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 		if (worldIn.isEmptyBlock(pos.below()) || isFree(worldIn.getBlockState(pos.below())) && pos.getY() >= 0) {
+			TileEntity tileEntity = worldIn.getBlockEntity(pos);
 			RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(worldIn, (double) pos.getX() + 0.5D,
-					(double) pos.getY(), (double) pos.getZ() + 0.5D, worldIn.getBlockState(pos), pos);
-				try {
-					RGBFallingBlockEntity.blockState.set(fallingBlockEntity, worldIn.getBlockState(pos));
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					throw new RuntimeException(e);
-				}
+					(double) pos.getY(), (double) pos.getZ() + 0.5D,
+					tileEntity instanceof RGBTileEntity ? ((RGBTileEntity) tileEntity).getColor() : 0);
+			try {
+				RGBFallingBlockEntity.blockState.set(fallingBlockEntity, worldIn.getBlockState(pos));
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				throw new RuntimeException(e);
+			}
 			this.falling(fallingBlockEntity);
 			worldIn.addFreshEntity(fallingBlockEntity);
 		}
@@ -62,8 +64,7 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements RGBBl
 
 	@Override
 	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(BlockRegistry.RGB_CONCRETE_POWDER.get())
-				&& !newState.is(BlockRegistry.RGB_CONCRETE.get())) {
+		if (!state.is(BlockRegistry.RGB_CONCRETE_POWDER.get()) && !newState.is(BlockRegistry.RGB_CONCRETE.get())) {
 			if (state.hasTileEntity() && (!state.is(newState.getBlock()) || !newState.hasTileEntity())) {
 				worldIn.removeBlockEntity(pos);
 			}
