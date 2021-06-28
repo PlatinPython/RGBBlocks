@@ -11,14 +11,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
-public class GenericRGBGlassBlock extends GenericRGBBlock implements IGlassBlock {
+public class GenericRGBGlassBlock extends GenericRGBBlock implements GlassBlock {
 	public GenericRGBGlassBlock() {
 		super(Properties.copy(Blocks.GLASS));
 	}
 
 	@Override
 	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
-		return IGlassBlock.getBeaconColorMultiplier(state, world, pos, beaconPos);
+		return GlassBlock.getBeaconColorMultiplier(state, world, pos, beaconPos);
 	}
 
 	@Override

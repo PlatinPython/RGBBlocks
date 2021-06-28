@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
-public interface IRGBBlock {
+public interface RGBBlock {
 	public static boolean hasTileEntity(final BlockState state) {
 		return true;
 	}

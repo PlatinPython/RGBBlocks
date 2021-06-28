@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 import platinpython.rgbblocks.util.Color;
 
-public interface IGlassBlock {
+public interface GlassBlock {
 	public static float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos,
 			BlockPos beaconPos) {
 		CompoundNBT compound = world.getBlockEntity(pos).getUpdateTag();

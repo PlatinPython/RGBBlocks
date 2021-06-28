@@ -8,7 +8,7 @@ import net.minecraft.state.properties.SlabType;
 import net.minecraft.state.properties.StairsShape;
 import net.minecraft.util.Direction;
 
-public interface IGlassStairsBlock {
+public interface GlassStairsBlock {
 	public static boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (adjacentBlockState.getBlock() instanceof GenericRGBGlassBlock) {
 			return true;

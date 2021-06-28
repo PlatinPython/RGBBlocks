@@ -7,7 +7,7 @@ import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.Direction;
 
-public interface IGlassSlabBlock {
+public interface GlassSlabBlock {
 	static boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (adjacentBlockState.getBlock() instanceof GenericRGBGlassBlock) {
 			return true;
