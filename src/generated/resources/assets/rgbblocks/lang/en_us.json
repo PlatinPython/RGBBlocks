@@ -19,6 +19,7 @@
   "block.rgbblocks.wool": "RGB Wool",
   "block.rgbblocks.wool_slab": "RGB Wool Slab",
   "block.rgbblocks.wool_stairs": "RGB Wool Stairs",
+  "entity.rgbblocks.rgb_falling_block": "RGB Falling Block",
   "gui.rgbblocks.blue": "Blue",
   "gui.rgbblocks.brightness": "Brightness",
   "gui.rgbblocks.green": "Green",

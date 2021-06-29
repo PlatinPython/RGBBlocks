@@ -4,6 +4,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
+import platinpython.rgbblocks.util.registries.EntityRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
 public class ModLanguageProvider extends LanguageProvider {
@@ -37,6 +38,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		add(BlockRegistry.RGB_WOOL.get(), "RGB Wool");
 		add(BlockRegistry.RGB_WOOL_SLAB.get(), "RGB Wool Slab");
 		add(BlockRegistry.RGB_WOOL_STAIRS.get(), "RGB Wool Stairs");
+		
+		add(EntityRegistry.RGB_FALLING_BLOCK.get(), "RGB Falling Block");
 		
 		addGui("useRGB", "Use RGB");
 		addGui("useHSB", "Use HSB");
