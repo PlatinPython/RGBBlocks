@@ -82,8 +82,6 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.16'
 
     runtimeOnly fg.deobf("team.chisel.ctm:CTM:MC${ctm_version}")
-    
-    implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:${top_version}")
 }
 
 jar {
