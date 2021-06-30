@@ -1,13 +1,21 @@
 package platinpython.rgbblocks.client;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.IPackNameDecorator;
+import net.minecraft.resources.IReloadableResourceManager;
+import net.minecraft.resources.PackCompatibility;
+import net.minecraft.resources.ResourcePackInfo;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 import platinpython.rgbblocks.RGBBlocks;
+import platinpython.rgbblocks.pack.RGBBlocksPack;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.client.colorhandlers.PaintBucketItemColor;
 import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockColor;
@@ -15,7 +23,27 @@ import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockItemColor;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
 @EventBusSubscriber(modid = RGBBlocks.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
-public class ClientRegistration {
+public class ClientProxy {
+	public static final RGBBlocksPack VIRTUAL_PACK = new RGBBlocksPack();
+
+	@SubscribeEvent
+	public static void onModConstruct(FMLConstructModEvent event) {
+		event.enqueueWork(ClientProxy::registerVirtualPack);
+	}
+
+	private static void registerVirtualPack() {
+		Minecraft minecraft = Minecraft.getInstance();
+
+		minecraft.getResourcePackRepository().addPackFinder((infoConsumer,
+				packInfo) -> infoConsumer.accept(new ResourcePackInfo("rgbblocks_textures", true, () -> VIRTUAL_PACK,
+						new TranslationTextComponent("rgbblocks.pack_title"),
+						new TranslationTextComponent("rgbblocks.pack_description"), PackCompatibility.COMPATIBLE,
+						ResourcePackInfo.Priority.TOP, true, IPackNameDecorator.DEFAULT, false)));
+
+		IReloadableResourceManager resourceManager = (IReloadableResourceManager) (minecraft.getResourceManager());
+		resourceManager.registerReloadListener(VIRTUAL_PACK);
+	}
+
 	@SubscribeEvent
 	public static void registerColorHandlers(ColorHandlerEvent.Item event) {
 		event.getBlockColors().register(new RGBBlockColor(),

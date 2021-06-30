@@ -68,7 +68,7 @@ public class RGBBlocks {
 		}
 	}
 
-	public static final ItemGroup ITEM_GROUP_RGB = new ItemGroup("rgbblocks") {
+	public static final ItemGroup ITEM_GROUP_RGB = new ItemGroup(MOD_ID) {
 		@Override
 		public ItemStack makeIcon() {
 			ItemStack stack = new ItemStack(ItemRegistry.PAINT_BUCKET.get());
