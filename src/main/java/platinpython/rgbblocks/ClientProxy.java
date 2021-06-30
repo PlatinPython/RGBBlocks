@@ -1,4 +1,4 @@
-package platinpython.rgbblocks.client;
+package platinpython.rgbblocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -14,7 +14,6 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
-import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.pack.RGBBlocksPack;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.client.colorhandlers.PaintBucketItemColor;
