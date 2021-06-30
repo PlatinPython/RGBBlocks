@@ -12,7 +12,7 @@ public class RGBBlockItemColor implements IItemColor {
 				return 0;
 			}
 			CompoundNBT compound = stack.getTag();
-			if(compound.contains("color")) {
+			if (compound.contains("color")) {
 				return compound.getInt("color");
 			} else {
 				return -1;

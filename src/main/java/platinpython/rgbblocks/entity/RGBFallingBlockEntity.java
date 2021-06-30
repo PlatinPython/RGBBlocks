@@ -17,7 +17,8 @@ import platinpython.rgbblocks.util.registries.EntityRegistry;
 
 public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntityAdditionalSpawnData {
 	private int color;
-	public static final Field blockState = ObfuscationReflectionHelper.findField(FallingBlockEntity.class, "field_175132_d");
+	public static final Field blockState = ObfuscationReflectionHelper.findField(FallingBlockEntity.class,
+			"field_175132_d");
 
 	public RGBFallingBlockEntity(EntityType<? extends FallingBlockEntity> entityType, World world) {
 		super(EntityRegistry.RGB_FALLING_BLOCK.get(), world);
@@ -29,11 +30,11 @@ public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntity
 		this.setPos(x, y + (double) ((1.0F - this.getBbHeight()) / 2.0F), z);
 		this.color = color;
 	}
-	
+
 	public int getColor() {
 		return color;
 	}
-	
+
 	@Override
 	public ItemEntity spawnAtLocation(ItemStack stack, float offset) {
 		stack.getOrCreateTag().putInt("color", color);
@@ -61,7 +62,7 @@ public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntity
 	public void readSpawnData(PacketBuffer additionalData) {
 		color = additionalData.readInt();
 	}
-	
+
 	@Override
 	public IPacket<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);

@@ -26,8 +26,9 @@ public class RegistryHandler {
 
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES,
 			RGBBlocks.MOD_ID);
-	
-	public static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, RGBBlocks.MOD_ID);
+
+	public static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister
+			.create(ForgeRegistries.RECIPE_SERIALIZERS, RGBBlocks.MOD_ID);
 
 	public static void register() {
 		ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());

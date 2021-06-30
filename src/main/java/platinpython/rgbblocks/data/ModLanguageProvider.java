@@ -15,9 +15,9 @@ public class ModLanguageProvider extends LanguageProvider {
 	@Override
 	protected void addTranslations() {
 		add("itemGroup.rgbblocks", "RGB Blocks");
-		
+
 		add(ItemRegistry.PAINT_BUCKET.get(), "Paint Bucket");
-		
+
 		add(BlockRegistry.RGB_ANTIBLOCK.get(), "RGB Antiblock");
 		add(BlockRegistry.RGB_CARPET.get(), "RGB Carpet");
 		add(BlockRegistry.RGB_CONCRETE.get(), "RGB Concrete");
@@ -38,9 +38,9 @@ public class ModLanguageProvider extends LanguageProvider {
 		add(BlockRegistry.RGB_WOOL.get(), "RGB Wool");
 		add(BlockRegistry.RGB_WOOL_SLAB.get(), "RGB Wool Slab");
 		add(BlockRegistry.RGB_WOOL_STAIRS.get(), "RGB Wool Stairs");
-		
+
 		add(EntityRegistry.RGB_FALLING_BLOCK.get(), "RGB Falling Block");
-		
+
 		addGui("useRGB", "Use RGB");
 		addGui("useHSB", "Use HSB");
 		addGui("red", "Red");
@@ -50,7 +50,7 @@ public class ModLanguageProvider extends LanguageProvider {
 		addGui("saturation", "Saturation");
 		addGui("brightness", "Brightness");
 	}
-	
+
 	private void addGui(String suffix, String text) {
 		add("gui." + RGBBlocks.MOD_ID + "." + suffix, text);
 	}

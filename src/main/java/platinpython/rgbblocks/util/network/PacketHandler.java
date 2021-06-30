@@ -14,10 +14,10 @@ public class PacketHandler {
 
 	public static void register() {
 		int index = 0;
-		INSTANCE.registerMessage(index++, PaintBucketSyncPKT.class, PaintBucketSyncPKT::encode, PaintBucketSyncPKT::decode,
-				PaintBucketSyncPKT.Handler::handle);
+		INSTANCE.registerMessage(index++, PaintBucketSyncPKT.class, PaintBucketSyncPKT::encode,
+				PaintBucketSyncPKT::decode, PaintBucketSyncPKT.Handler::handle);
 	}
-	
+
 	public static void sendToServer(Object message) {
 		INSTANCE.sendToServer(message);
 	}

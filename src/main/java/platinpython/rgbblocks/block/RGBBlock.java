@@ -34,11 +34,11 @@ public interface RGBBlock {
 			PlayerEntity player) {
 		ItemStack stack = new ItemStack(state.getBlock().asItem());
 		TileEntity tileEntity = world.getBlockEntity(pos);
-		if(tileEntity instanceof RGBTileEntity) {
+		if (tileEntity instanceof RGBTileEntity) {
 			CompoundNBT tag = new CompoundNBT();
 			tag.putInt("color", ((RGBTileEntity) tileEntity).getColor());
 			stack.setTag(tag);
 		}
 		return stack;
-	}	
+	}
 }

@@ -31,7 +31,7 @@ public class RGBRedstoneLampBlock extends RedstoneLampBlock implements RGBBlock 
 	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		RGBBlock.setPlacedBy(worldIn, pos, state, placer, stack);
 	}
-	
+
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos,
 			PlayerEntity player) {

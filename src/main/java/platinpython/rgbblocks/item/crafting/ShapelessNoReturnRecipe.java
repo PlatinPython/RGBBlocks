@@ -14,19 +14,19 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import platinpython.rgbblocks.util.registries.RecipeSerializerRegistry;
 
 public class ShapelessNoReturnRecipe extends ShapelessRecipe {
-    public static final Serializer SERIALIZER = new Serializer();
-    
-	public ShapelessNoReturnRecipe(ResourceLocation id, String group, ItemStack result, NonNullList<Ingredient> ingredients) {
+	public ShapelessNoReturnRecipe(ResourceLocation id, String group, ItemStack result,
+			NonNullList<Ingredient> ingredients) {
 		super(id, group, result, ingredients);
 	}
-	
+
 	@Override
 	public IRecipeSerializer<?> getSerializer() {
-		return SERIALIZER;
+		return RecipeSerializerRegistry.SHAPELESS_NO_RETURN_RECIPE.get();
 	}
-	
+
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(CraftingInventory craftingInventory) {
 		return NonNullList.withSize(craftingInventory.getContainerSize(), ItemStack.EMPTY);

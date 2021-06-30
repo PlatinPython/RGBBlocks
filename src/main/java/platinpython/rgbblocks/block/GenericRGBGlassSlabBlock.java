@@ -11,17 +11,17 @@ public class GenericRGBGlassSlabBlock extends GenericRGBSlabBlock implements Gla
 	public GenericRGBGlassSlabBlock() {
 		super(Properties.copy(Blocks.GLASS));
 	}
-	
+
 	@Override
 	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
 		return GlassBlock.getBeaconColorMultiplier(state, world, pos, beaconPos);
 	}
-	
+
 	@Override
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		return GlassSlabBlock.skipRendering(state, adjacentBlockState, side);
 	}
-	
+
 	@Override
 	public float getShadeBrightness(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return 1.0F;

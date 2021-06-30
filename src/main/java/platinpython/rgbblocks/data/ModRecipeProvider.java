@@ -62,11 +62,11 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 				.pattern("RGR").pattern(" R ").unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get()))
 				.save(consumer);
 	}
-	
+
 	private void blockIItemProvider(Consumer<IFinishedRecipe> consumer, Block result, IItemProvider provider) {
 		block(consumer, result, Ingredient.of(provider));
 	}
-	
+
 	private void blockTag(Consumer<IFinishedRecipe> consumer, Block result, ITag<Item> tag) {
 		block(consumer, result, Ingredient.of(tag));
 	}
