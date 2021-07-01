@@ -1,4 +1,4 @@
-package platinpython.rgbblocks;
+package platinpython.rgbblocks.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -14,11 +14,11 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
-import platinpython.rgbblocks.pack.RGBBlocksPack;
-import platinpython.rgbblocks.util.RegistryHandler;
+import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.client.colorhandlers.PaintBucketItemColor;
 import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockColor;
 import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockItemColor;
+import platinpython.rgbblocks.util.pack.RGBBlocksPack;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
 @EventBusSubscriber(modid = RGBBlocks.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
@@ -34,7 +34,7 @@ public class ClientProxy {
 		Minecraft minecraft = Minecraft.getInstance();
 
 		minecraft.getResourcePackRepository().addPackFinder((infoConsumer,
-				packInfo) -> infoConsumer.accept(new ResourcePackInfo("rgbblocks_textures", true, () -> VIRTUAL_PACK,
+				packInfo) -> infoConsumer.accept(new ResourcePackInfo("rgbblocks_textures", false, () -> VIRTUAL_PACK,
 						new TranslationTextComponent("rgbblocks.pack_title"),
 						new TranslationTextComponent("rgbblocks.pack_description"), PackCompatibility.COMPATIBLE,
 						ResourcePackInfo.Priority.TOP, true, IPackNameDecorator.DEFAULT, false)));

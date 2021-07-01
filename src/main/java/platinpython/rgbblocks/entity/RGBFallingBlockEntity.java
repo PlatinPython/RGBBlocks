@@ -17,7 +17,7 @@ import platinpython.rgbblocks.util.registries.EntityRegistry;
 
 public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntityAdditionalSpawnData {
 	private int color;
-	public static final Field blockState = ObfuscationReflectionHelper.findField(FallingBlockEntity.class,
+	public static final Field BLOCK_STATE = ObfuscationReflectionHelper.findField(FallingBlockEntity.class,
 			"field_175132_d");
 
 	public RGBFallingBlockEntity(EntityType<? extends FallingBlockEntity> entityType, World world) {

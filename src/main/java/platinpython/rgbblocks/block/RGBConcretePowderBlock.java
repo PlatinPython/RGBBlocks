@@ -53,7 +53,7 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements RGBBl
 					(double) pos.getY(), (double) pos.getZ() + 0.5D,
 					tileEntity instanceof RGBTileEntity ? ((RGBTileEntity) tileEntity).getColor() : 0);
 			try {
-				RGBFallingBlockEntity.blockState.set(fallingBlockEntity, worldIn.getBlockState(pos));
+				RGBFallingBlockEntity.BLOCK_STATE.set(fallingBlockEntity, worldIn.getBlockState(pos));
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				throw new RuntimeException(e);
 			}
