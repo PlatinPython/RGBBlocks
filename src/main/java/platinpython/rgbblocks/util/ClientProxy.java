@@ -34,12 +34,12 @@ public class ClientProxy {
 		Minecraft minecraft = Minecraft.getInstance();
 
 		minecraft.getResourcePackRepository().addPackFinder((infoConsumer,
-				packInfo) -> infoConsumer.accept(new ResourcePackInfo("rgbblocks_textures", false, () -> VIRTUAL_PACK,
+				packInfo) -> infoConsumer.accept(new ResourcePackInfo("rgbblocks_textures", true, () -> VIRTUAL_PACK,
 						new TranslationTextComponent("rgbblocks.pack_title"),
 						new TranslationTextComponent("rgbblocks.pack_description"), PackCompatibility.COMPATIBLE,
-						ResourcePackInfo.Priority.TOP, true, IPackNameDecorator.DEFAULT, false)));
+						ResourcePackInfo.Priority.TOP, true, IPackNameDecorator.DEFAULT, true)));
 
-		IReloadableResourceManager resourceManager = (IReloadableResourceManager) (minecraft.getResourceManager());
+		IReloadableResourceManager resourceManager = (IReloadableResourceManager) minecraft.getResourceManager();
 		resourceManager.registerReloadListener(VIRTUAL_PACK);
 	}
 

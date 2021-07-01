@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,7 +18,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
 
@@ -29,15 +27,11 @@ import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.NativeImage;
-import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IFutureReloadListener;
 import net.minecraft.resources.IResourceManager;
-import net.minecraft.resources.IResourcePack;
 import net.minecraft.resources.ResourcePack;
 import net.minecraft.resources.ResourcePackFileNotFoundException;
-import net.minecraft.resources.ResourcePackInfo;
-import net.minecraft.resources.ResourcePackList;
 import net.minecraft.resources.ResourcePackType;
 import net.minecraft.resources.data.IMetadataSectionSerializer;
 import net.minecraft.resources.data.PackMetadataSection;
@@ -45,14 +39,10 @@ import net.minecraft.resources.data.PackMetadataSectionSerializer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.Color;
 
 public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener {
-	public static final Method PREPARE = ObfuscationReflectionHelper.findMethod(JsonReloadListener.class,
-			"func_212854_a_", IResourceManager.class, IProfiler.class);
-
 	public static final String TEXTURE_DIRECTORY = "textures/";
 	public static final String BLOCK_DIRECTORY = "block/";
 	public static final Set<String> NAMESPACES = ImmutableSet.of(RGBBlocks.MOD_ID);
@@ -97,25 +87,17 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 	}
 
 	protected void gatherTextureData(IResourceManager manager, IProfiler profiler) {
-		Minecraft minecraft = Minecraft.getInstance();
-
-		ResourcePackList packList = minecraft.getResourcePackRepository();
-		Map<String, ResourcePackInfo> selectedPacks = packList.getSelectedPacks().stream()
-				.collect(Collectors.toMap(ResourcePackInfo::getId, info -> info));
-		Map<String, ResourcePackInfo> unselectedPacks = packList.getAvailablePacks().stream()
-				.filter(info -> !selectedPacks.containsKey(info.getId()))
-				.collect(Collectors.toMap(ResourcePackInfo::getId, info -> info));
-
 		Map<ResourceLocation, Callable<InputStream>> resourceStreams = new HashMap<>();
 
 		textures.forEach((modLocation, vanillaLocation) -> {
-			generateImage(modLocation, vanillaLocation, selectedPacks, unselectedPacks).ifPresent(pair -> {
-				NativeImage image = pair.getFirst();
-				ResourceLocation textureID = makeTextureID(modLocation);
-				resourceStreams.put(textureID, () -> new ByteArrayInputStream(image.asByteArray()));
-				pair.getSecond().ifPresent(
-						metadataGetter -> resourceStreams.put(getMetadataLocation(textureID), metadataGetter));
-			});
+			generateImage(modLocation, vanillaLocation, Minecraft.getInstance().getResourceManager())
+					.ifPresent(pair -> {
+						NativeImage image = pair.getFirst();
+						ResourceLocation textureID = makeTextureID(modLocation);
+						resourceStreams.put(textureID, () -> new ByteArrayInputStream(image.asByteArray()));
+						pair.getSecond().ifPresent(
+								metadataGetter -> resourceStreams.put(getMetadataLocation(textureID), metadataGetter));
+					});
 		});
 
 		this.resources = resourceStreams;
@@ -130,23 +112,17 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 	}
 
 	public Optional<Pair<NativeImage, Optional<Callable<InputStream>>>> generateImage(ResourceLocation modLocation,
-			ResourceLocation vanillaLocation, Map<String, ResourcePackInfo> selectedPacks,
-			Map<String, ResourcePackInfo> unselectedPacks) {
-//		FallbackResourceManager manager = selectedPacks.get
-		IResourcePack pack = selectedPacks.get("vanilla").open();
-		if (pack == null) {
-			return Optional.empty();
-		}
+			ResourceLocation vanillaLocation, IResourceManager manager) {
 		ResourceLocation parentFile = makeTextureID(vanillaLocation);
-		try (InputStream inputStream = pack.getResource(ResourcePackType.CLIENT_RESOURCES, parentFile)) {
+		try (InputStream inputStream = manager.getResource(parentFile).getInputStream()) {
 			NativeImage image = NativeImage.read(inputStream);
 			NativeImage transformedImage = this.transformImage(image);
 			ResourceLocation metadata = getMetadataLocation(parentFile);
 			Optional<Callable<InputStream>> metadataLookup = Optional.empty();
-			if (pack.hasResource(ResourcePackType.CLIENT_RESOURCES, metadata)) {
+			if (manager.hasResource(metadata)) {
 				BufferedReader bufferedReader = null;
 				JsonObject metadataJson = null;
-				try (InputStream metadataStream = pack.getResource(ResourcePackType.CLIENT_RESOURCES, metadata)) {
+				try (InputStream metadataStream = manager.getResource(metadata).getInputStream()) {
 					bufferedReader = new BufferedReader(new InputStreamReader(metadataStream, StandardCharsets.UTF_8));
 					metadataJson = JSONUtils.parse(bufferedReader);
 				} finally {
