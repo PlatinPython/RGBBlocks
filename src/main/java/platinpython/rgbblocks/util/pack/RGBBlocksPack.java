@@ -142,7 +142,6 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 	}
 
 	public NativeImage transformImage(NativeImage image) {
-		RGBBlocks.LOGGER.debug(image.toString());
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
 				int oldColor = image.getPixelRGBA(x, y);
