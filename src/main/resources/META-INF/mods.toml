@@ -1,7 +1,6 @@
 modLoader="javafml"
 loaderVersion="[34,)"
 license="LGPLv3"
-showAsResourcePack=true
 issueTrackerURL="https://github.com/PlatinPython/RGBBlocks/issues"
 
 [[mods]]
