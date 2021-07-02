@@ -1,18 +1,19 @@
 modLoader="javafml"
 loaderVersion="[34,)"
-license="GPL-3.0 License"
+license="LGPLv3"
+showAsResourcePack=true
 issueTrackerURL="https://github.com/PlatinPython/RGBBlocks/issues"
 
 [[mods]]
-modId="rgbblocks"
-version="${file.jarVersion}"
-displayName="RGB Blocks"
-logoFile="logo.png"
-credits="Thanks TobiBenzi for the logo and some textures"
-authors="PlatinPython"
-description='''
-Blocks in almost all colors you can imagine.
-'''
+  modId="rgbblocks"
+  version="${file.jarVersion}"
+  displayName="RGB Blocks"
+  description="Blocks in almost all colors you can imagine."
+  logoFile="logo.png"
+  logoBlur=true
+  credits="Thanks TobiBenzi for the logo and some textures"
+  authors="PlatinPython"
+  displayURL="https://www.curseforge.com/minecraft/mc-mods/rgb-blocks-forge"
 
 [[dependencies.rgbblocks]]
   modId="forge"
