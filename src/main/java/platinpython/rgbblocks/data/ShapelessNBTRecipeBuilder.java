@@ -107,14 +107,8 @@ public class ShapelessNBTRecipeBuilder {
 
 	public void save(Consumer<IFinishedRecipe> consumer, ResourceLocation id) {
 		this.ensureValid(id);
-		this.advancement.parent(new ResourceLocation("recipes/root"))
-				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
-				.rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
-		consumer.accept(new ShapelessNBTRecipeBuilder.Result(id, this.result, this.count, this.compound,
-				this.group == null ? "" : this.group, this.ingredients, this.advancement,
-				new ResourceLocation(id.getNamespace(),
-						"recipes/" + this.result.getItemCategory().getRecipeFolderName() + "/" + id.getPath()),
-				this.isNoReturnRecipe));
+		this.advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
+		consumer.accept(new ShapelessNBTRecipeBuilder.Result(id, this.result, this.count, this.compound, this.group == null ? "" : this.group, this.ingredients, this.advancement, new ResourceLocation(id.getNamespace(), "recipes/" + this.result.getItemCategory().getRecipeFolderName() + "/" + id.getPath()), this.isNoReturnRecipe));
 	}
 
 	private void ensureValid(ResourceLocation id) {
@@ -139,9 +133,7 @@ public class ShapelessNBTRecipeBuilder {
 		private final ResourceLocation advancementId;
 		private final boolean isNoReturnRecipe;
 
-		public Result(ResourceLocation id, Item result, int count, CompoundNBT compound, String group,
-				List<Ingredient> ingredients, Advancement.Builder advancementBuilder, ResourceLocation advancementId,
-				boolean isNoReturnRecipe) {
+		public Result(ResourceLocation id, Item result, int count, CompoundNBT compound, String group, List<Ingredient> ingredients, Advancement.Builder advancementBuilder, ResourceLocation advancementId, boolean isNoReturnRecipe) {
 			this.id = id;
 			this.result = result;
 			this.count = count;
@@ -171,16 +163,14 @@ public class ShapelessNBTRecipeBuilder {
 				resultJson.addProperty("count", this.count);
 			}
 			if (this.compound != null) {
-				resultJson.addProperty("nbt",
-						NBTDynamicOps.INSTANCE.convertTo(JsonOps.INSTANCE, this.compound).toString());
+				resultJson.addProperty("nbt", NBTDynamicOps.INSTANCE.convertTo(JsonOps.INSTANCE, this.compound).toString());
 			}
 
 			json.add("result", resultJson);
 		}
 
 		public IRecipeSerializer<?> getType() {
-			return isNoReturnRecipe ? RecipeSerializerRegistry.SHAPELESS_NO_RETURN_RECIPE.get()
-					: RecipeSerializerRegistry.SHAPELESS_DURABILITY_AWARE_PAINT_BUCKET_RECIPE.get();
+			return isNoReturnRecipe ? RecipeSerializerRegistry.SHAPELESS_NO_RETURN_RECIPE.get() : RecipeSerializerRegistry.SHAPELESS_DURABILITY_AWARE_PAINT_BUCKET_RECIPE.get();
 		}
 
 		public ResourceLocation getId() {

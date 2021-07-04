@@ -20,8 +20,8 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.client.ClientHandler;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
+import platinpython.rgbblocks.util.ClientProxy;
 import platinpython.rgbblocks.util.Color;
 
 public class PaintBucketItem extends Item {
@@ -61,8 +61,7 @@ public class PaintBucketItem extends Item {
 	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		if (handIn == Hand.MAIN_HAND && playerIn.isShiftKeyDown()) {
 			if (worldIn.isClientSide) {
-				ClientHandler.openPaintbucketGUI(playerIn.getMainHandItem().getTag().getInt("color"),
-						playerIn.getMainHandItem().getTag().getBoolean("isRGBSelected"));
+				ClientProxy.openPaintbucketGUI(playerIn.getMainHandItem().getTag().getInt("color"), playerIn.getMainHandItem().getTag().getBoolean("isRGBSelected"));
 				return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getMainHandItem());
 			}
 		}
@@ -76,18 +75,15 @@ public class PaintBucketItem extends Item {
 			if (context.getPlayer().isShiftKeyDown()) {
 				context.getItemInHand().getTag().putInt("color", ((RGBTileEntity) tileEntity).getColor());
 			} else {
-				if (context.getItemInHand().getOrCreateTag().getInt("color") != ((RGBTileEntity) tileEntity)
-						.getColor()) {
+				if (context.getItemInHand().getOrCreateTag().getInt("color") != ((RGBTileEntity) tileEntity).getColor()) {
 					if (context.getItemInHand().getDamageValue() == context.getItemInHand().getMaxDamage() - 1) {
 						context.getPlayer().setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
 					} else {
-						context.getItemInHand().hurtAndBreak(1, context.getPlayer(),
-								e -> e.broadcastBreakEvent(context.getHand()));
+						context.getItemInHand().hurtAndBreak(1, context.getPlayer(), e -> e.broadcastBreakEvent(context.getHand()));
 					}
 				}
 				((RGBTileEntity) tileEntity).setColor(context.getItemInHand().getTag().getInt("color"));
-				context.getLevel().sendBlockUpdated(context.getClickedPos(), tileEntity.getBlockState(),
-						tileEntity.getBlockState(), BlockFlags.DEFAULT_AND_RERENDER);
+				context.getLevel().sendBlockUpdated(context.getClickedPos(), tileEntity.getBlockState(), tileEntity.getBlockState(), BlockFlags.DEFAULT_AND_RERENDER);
 			}
 			return ActionResultType.SUCCESS;
 		} else {

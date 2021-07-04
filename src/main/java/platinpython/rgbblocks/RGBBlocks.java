@@ -46,13 +46,11 @@ public class RGBBlocks {
 	public void setup(final FMLCommonSetupEvent event) {
 		PacketHandler.register();
 
-		event.enqueueWork(() -> DispenserBlock.registerBehavior(ItemRegistry.PAINT_BUCKET.get(),
-				new DispensePaintbucketBehaviour()));
+		event.enqueueWork(() -> DispenserBlock.registerBehavior(ItemRegistry.PAINT_BUCKET.get(), new DispensePaintbucketBehaviour()));
 	}
 
 	public void doClientStuff(final FMLClientSetupEvent event) {
-		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.RGB_FALLING_BLOCK.get(),
-				RGBFallingBlockRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.RGB_FALLING_BLOCK.get(), RGBFallingBlockRenderer::new);
 
 		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.translucent());
 		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.translucent());

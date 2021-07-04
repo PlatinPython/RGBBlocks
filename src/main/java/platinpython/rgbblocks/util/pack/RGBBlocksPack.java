@@ -72,32 +72,26 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 		map.put("terracotta", "white_terracotta");
 		map.put("wool", "white_wool");
 
-		map.forEach((modName, vanillaName) -> textures.put(
-				new ResourceLocation(RGBBlocks.MOD_ID, BLOCK_DIRECTORY + modName),
-				new ResourceLocation(BLOCK_DIRECTORY + vanillaName)));
+		map.forEach((modName, vanillaName) -> textures.put(new ResourceLocation(RGBBlocks.MOD_ID, BLOCK_DIRECTORY + modName), new ResourceLocation(BLOCK_DIRECTORY + vanillaName)));
 	}
 
 	@Override
-	public CompletableFuture<Void> reload(IStage stage, IResourceManager manager, IProfiler workerProfiler,
-			IProfiler mainProfiler, Executor workerExecutor, Executor mainExecutor) {
+	public CompletableFuture<Void> reload(IStage stage, IResourceManager manager, IProfiler workerProfiler, IProfiler mainProfiler, Executor workerExecutor, Executor mainExecutor) {
 		this.gatherTextureData(manager, mainProfiler);
-		return CompletableFuture.supplyAsync(() -> null, workerExecutor).thenCompose(stage::wait)
-				.thenAcceptAsync((noResult) -> {
-				}, mainExecutor);
+		return CompletableFuture.supplyAsync(() -> null, workerExecutor).thenCompose(stage::wait).thenAcceptAsync((noResult) -> {
+		}, mainExecutor);
 	}
 
 	protected void gatherTextureData(IResourceManager manager, IProfiler profiler) {
 		Map<ResourceLocation, Callable<InputStream>> resourceStreams = new HashMap<>();
 
 		textures.forEach((modLocation, vanillaLocation) -> {
-			generateImage(modLocation, vanillaLocation, Minecraft.getInstance().getResourceManager())
-					.ifPresent(pair -> {
-						NativeImage image = pair.getFirst();
-						ResourceLocation textureID = makeTextureID(modLocation);
-						resourceStreams.put(textureID, () -> new ByteArrayInputStream(image.asByteArray()));
-						pair.getSecond().ifPresent(
-								metadataGetter -> resourceStreams.put(getMetadataLocation(textureID), metadataGetter));
-					});
+			generateImage(modLocation, vanillaLocation, Minecraft.getInstance().getResourceManager()).ifPresent(pair -> {
+				NativeImage image = pair.getFirst();
+				ResourceLocation textureID = makeTextureID(modLocation);
+				resourceStreams.put(textureID, () -> new ByteArrayInputStream(image.asByteArray()));
+				pair.getSecond().ifPresent(metadataGetter -> resourceStreams.put(getMetadataLocation(textureID), metadataGetter));
+			});
 		});
 
 		this.resources = resourceStreams;
@@ -111,8 +105,7 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 		return new ResourceLocation(id.getNamespace(), id.getPath() + ".mcmeta");
 	}
 
-	public Optional<Pair<NativeImage, Optional<Callable<InputStream>>>> generateImage(ResourceLocation modLocation,
-			ResourceLocation vanillaLocation, IResourceManager manager) {
+	public Optional<Pair<NativeImage, Optional<Callable<InputStream>>>> generateImage(ResourceLocation modLocation, ResourceLocation vanillaLocation, IResourceManager manager) {
 		ResourceLocation parentFile = makeTextureID(vanillaLocation);
 		try (InputStream inputStream = manager.getResource(parentFile).getInputStream()) {
 			NativeImage image = NativeImage.read(inputStream);
@@ -130,8 +123,7 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 				}
 				if (metadataJson != null) {
 					JsonObject metaDataJsonForLambda = metadataJson;
-					metadataLookup = Optional
-							.of(() -> new ByteArrayInputStream(metaDataJsonForLambda.toString().getBytes()));
+					metadataLookup = Optional.of(() -> new ByteArrayInputStream(metaDataJsonForLambda.toString().getBytes()));
 				}
 			}
 			return Optional.of(Pair.of(transformedImage, metadataLookup));
@@ -147,8 +139,7 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 				int oldColor = image.getPixelRGBA(x, y);
 				float[] hsb = Color.RGBtoHSB((oldColor >> 0) & 0xFF, (oldColor >> 8) & 0xFF, (oldColor >> 16) & 0xFF);
 				int newColor = Color.HSBtoRGB(0, 0, hsb[2]);
-				image.setPixelRGBA(x, y, ((oldColor >> 24) & 0xFF) << 24 | ((newColor >> 0) & 0xFF) << 16
-						| ((newColor >> 8) & 0xFF) << 8 | ((newColor >> 16) & 0xFF) << 0);
+				image.setPixelRGBA(x, y, ((oldColor >> 24) & 0xFF) << 24 | ((newColor >> 0) & 0xFF) << 16 | ((newColor >> 8) & 0xFF) << 8 | ((newColor >> 16) & 0xFF) << 0);
 			}
 		}
 		return image;
@@ -159,8 +150,7 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 		return new TranslationTextComponent("rgbblocks.pack_title").getString();
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
+	@SuppressWarnings("unchecked") @Override
 	public <T> T getMetadataSection(IMetadataSectionSerializer<T> serializer) throws IOException {
 		return serializer instanceof PackMetadataSectionSerializer ? (T) this.packInfo : null;
 	}
@@ -219,8 +209,7 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 	}
 
 	@Override
-	public Collection<ResourceLocation> getResources(ResourcePackType type, String namespace, String id, int maxDepth,
-			Predicate<String> filter) {
+	public Collection<ResourceLocation> getResources(ResourcePackType type, String namespace, String id, int maxDepth, Predicate<String> filter) {
 		return NO_RESOURCES;
 	}
 

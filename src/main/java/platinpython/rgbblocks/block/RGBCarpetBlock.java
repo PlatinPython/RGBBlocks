@@ -34,8 +34,7 @@ public class RGBCarpetBlock extends CarpetBlock implements RGBBlock {
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos,
-			PlayerEntity player) {
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
 		return RGBBlock.getPickBlock(state, target, world, pos, player);
 	}
 }

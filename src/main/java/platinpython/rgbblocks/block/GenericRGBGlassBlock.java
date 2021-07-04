@@ -36,8 +36,7 @@ public class GenericRGBGlassBlock extends GenericRGBBlock implements GlassBlock 
 				return false;
 			}
 		} else if (adjacentBlockState.getBlock() instanceof GenericRGBGlassStairsBlock) {
-			if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_LEFT
-					|| adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_RIGHT) {
+			if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_LEFT || adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_RIGHT) {
 				return false;
 			} else if (side == adjacentBlockState.getValue(StairsBlock.FACING).getOpposite()) {
 				return true;

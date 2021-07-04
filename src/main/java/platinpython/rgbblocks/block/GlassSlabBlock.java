@@ -53,11 +53,9 @@ public interface GlassSlabBlock {
 		}
 
 		if (side.get2DDataValue() != -1) {
-			if (state.getValue(SlabBlock.TYPE) == SlabType.BOTTOM
-					&& adjacentBlockState.getValue(StairsBlock.HALF) == Half.BOTTOM) {
+			if (state.getValue(SlabBlock.TYPE) == SlabType.BOTTOM && adjacentBlockState.getValue(StairsBlock.HALF) == Half.BOTTOM) {
 				return true;
-			} else if (state.getValue(SlabBlock.TYPE) == SlabType.TOP
-					&& adjacentBlockState.getValue(StairsBlock.HALF) == Half.TOP) {
+			} else if (state.getValue(SlabBlock.TYPE) == SlabType.TOP && adjacentBlockState.getValue(StairsBlock.HALF) == Half.TOP) {
 				return true;
 			}
 		}

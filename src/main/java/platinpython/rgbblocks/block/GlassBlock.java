@@ -7,8 +7,7 @@ import net.minecraft.world.IWorldReader;
 import platinpython.rgbblocks.util.Color;
 
 public interface GlassBlock {
-	public static float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos,
-			BlockPos beaconPos) {
+	public static float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
 		CompoundNBT compound = world.getBlockEntity(pos).getUpdateTag();
 		if (compound.contains("color")) {
 			return new Color(compound.getInt("color")).getRGBColorComponents();

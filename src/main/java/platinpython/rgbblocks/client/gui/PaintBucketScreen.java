@@ -53,12 +53,9 @@ public class PaintBucketScreen extends Screen {
 
 	private int getColor() {
 		if (isRGBSelected) {
-			return new Color(this.redSlider.getValueInt(), this.greenSlider.getValueInt(),
-					this.blueSlider.getValueInt()).getRGB();
+			return new Color(this.redSlider.getValueInt(), this.greenSlider.getValueInt(), this.blueSlider.getValueInt()).getRGB();
 		} else {
-			return Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
-					(float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
-					(float) (brightnessSlider.getValueInt() / MAX_VALUE_SB)).getRGB();
+			return Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE), (float) (saturationSlider.getValueInt() / MAX_VALUE_SB), (float) (brightnessSlider.getValueInt() / MAX_VALUE_SB)).getRGB();
 		}
 	}
 
@@ -69,77 +66,59 @@ public class PaintBucketScreen extends Screen {
 
 	@Override
 	protected void init() {
-		this.redSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 - SPACING,
-				SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.red").append(": "), EMPTY_TEXT,
-				MIN_VALUE, MAX_VALUE_RGB, this.red, false, true, null);
+		this.redSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 - SPACING, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.red").append(": "), EMPTY_TEXT, MIN_VALUE, MAX_VALUE_RGB, this.red, false, true, null);
 
-		this.greenSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2,
-				SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.green").append(": "),
-				EMPTY_TEXT, MIN_VALUE, MAX_VALUE_RGB, this.green, false, true, null);
+		this.greenSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.green").append(": "), EMPTY_TEXT, MIN_VALUE, MAX_VALUE_RGB, this.green, false, true, null);
 
-		this.blueSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 + SPACING,
-				SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.blue").append(": "),
-				EMPTY_TEXT, MIN_VALUE, MAX_VALUE_RGB, this.blue, false, true, null);
+		this.blueSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 + SPACING, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.blue").append(": "), EMPTY_TEXT, MIN_VALUE, MAX_VALUE_RGB, this.blue, false, true, null);
 
-		this.hueSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 - SPACING,
-				SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.hue").append(": "), EMPTY_TEXT,
-				MIN_VALUE, MAX_VALUE_HUE, this.hue, false, true, null);
+		this.hueSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 - SPACING, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.hue").append(": "), EMPTY_TEXT, MIN_VALUE, MAX_VALUE_HUE, this.hue, false, true, null);
 
-		this.saturationSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2,
-				SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.saturation").append(": "),
-				EMPTY_TEXT, MIN_VALUE, MAX_VALUE_SB, this.saturation, false, true, null);
+		this.saturationSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.saturation").append(": "), EMPTY_TEXT, MIN_VALUE, MAX_VALUE_SB, this.saturation, false, true, null);
 
-		this.brightnessSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2,
-				this.height / 2 - WIDGET_HEIGHT / 2 + SPACING, SLIDER_WIDTH, WIDGET_HEIGHT,
-				new TranslationTextComponent("gui.rgbblocks.brightness").append(": "), EMPTY_TEXT, MIN_VALUE,
-				MAX_VALUE_SB, this.brightness, false, true, null);
+		this.brightnessSlider = new Slider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 + SPACING, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.brightness").append(": "), EMPTY_TEXT, MIN_VALUE, MAX_VALUE_SB, this.brightness, false, true, null);
 
 //		TextFieldWidget hex = new TextFieldWidget(font, this.width / 2 - SLIDER_WIDTH / 2,
 //				this.height / 2 - sliderHeight / 2 + 2 * (sliderHeight + 20), SLIDER_WIDTH / 4,
 //				sliderHeight, new StringTextComponent("Hex"));
 
-		Button toggleButton = new Button(this.width / 2 - BUTTON_WIDTH / 2,
-				this.height / 2 - WIDGET_HEIGHT / 2 + 2 * SPACING, BUTTON_WIDTH, WIDGET_HEIGHT,
-				isRGBSelected ? useHSBText : useRGBText, button -> {
-					redSlider.visible = !redSlider.visible;
-					greenSlider.visible = !greenSlider.visible;
-					blueSlider.visible = !blueSlider.visible;
+		Button toggleButton = new Button(this.width / 2 - BUTTON_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 + 2 * SPACING, BUTTON_WIDTH, WIDGET_HEIGHT, isRGBSelected ? useHSBText : useRGBText, button -> {
+			redSlider.visible = !redSlider.visible;
+			greenSlider.visible = !greenSlider.visible;
+			blueSlider.visible = !blueSlider.visible;
 
-					hueSlider.visible = !hueSlider.visible;
-					saturationSlider.visible = !saturationSlider.visible;
-					brightnessSlider.visible = !brightnessSlider.visible;
+			hueSlider.visible = !hueSlider.visible;
+			saturationSlider.visible = !saturationSlider.visible;
+			brightnessSlider.visible = !brightnessSlider.visible;
 
-					isRGBSelected = !isRGBSelected;
+			isRGBSelected = !isRGBSelected;
 
-					if (isRGBSelected) {
-						Color color = Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
-								(float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
-								(float) (brightnessSlider.getValueInt() / MAX_VALUE_SB));
+			if (isRGBSelected) {
+				Color color = Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE), (float) (saturationSlider.getValueInt() / MAX_VALUE_SB), (float) (brightnessSlider.getValueInt() / MAX_VALUE_SB));
 
-						redSlider.setValue(color.getRed());
-						greenSlider.setValue(color.getGreen());
-						blueSlider.setValue(color.getBlue());
+				redSlider.setValue(color.getRed());
+				greenSlider.setValue(color.getGreen());
+				blueSlider.setValue(color.getBlue());
 
-						redSlider.updateSlider();
-						greenSlider.updateSlider();
-						blueSlider.updateSlider();
+				redSlider.updateSlider();
+				greenSlider.updateSlider();
+				blueSlider.updateSlider();
 
-						button.setMessage(useHSBText);
-					} else {
-						float[] hsb = Color.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(),
-								blueSlider.getValueInt());
+				button.setMessage(useHSBText);
+			} else {
+				float[] hsb = Color.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(), blueSlider.getValueInt());
 
-						hueSlider.setValue(hsb[0] * MAX_VALUE_HUE);
-						saturationSlider.setValue(hsb[1] * MAX_VALUE_SB);
-						brightnessSlider.setValue(hsb[2] * MAX_VALUE_SB);
+				hueSlider.setValue(hsb[0] * MAX_VALUE_HUE);
+				saturationSlider.setValue(hsb[1] * MAX_VALUE_SB);
+				brightnessSlider.setValue(hsb[2] * MAX_VALUE_SB);
 
-						hueSlider.updateSlider();
-						saturationSlider.updateSlider();
-						brightnessSlider.updateSlider();
+				hueSlider.updateSlider();
+				saturationSlider.updateSlider();
+				brightnessSlider.updateSlider();
 
-						button.setMessage(useRGBText);
-					}
-				});
+				button.setMessage(useRGBText);
+			}
+		});
 
 		if (isRGBSelected)
 
@@ -173,8 +152,7 @@ public class PaintBucketScreen extends Screen {
 			((Widget) this.children.get(i)).render(matrixStack, mouseX, mouseY, partialTicks);
 		}
 		drawCenteredString(matrixStack, this.font, getTitle().getString(), this.width / 2, 15, 16777215);
-		fill(matrixStack, width / 2 - 3 * WIDGET_HEIGHT, height / 4 + 3 * WIDGET_HEIGHT, width / 2 + 3 * WIDGET_HEIGHT,
-				height / 4 - 3 * WIDGET_HEIGHT, getColor());
+		fill(matrixStack, width / 2 - 3 * WIDGET_HEIGHT, height / 4 + 3 * WIDGET_HEIGHT, width / 2 + 3 * WIDGET_HEIGHT, height / 4 - 3 * WIDGET_HEIGHT, getColor());
 	}
 
 	@Override

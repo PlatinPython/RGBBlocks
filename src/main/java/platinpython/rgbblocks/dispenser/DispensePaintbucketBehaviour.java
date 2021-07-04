@@ -18,8 +18,7 @@ public class DispensePaintbucketBehaviour extends DefaultDispenseItemBehavior {
 		TileEntity tileEntity = source.getLevel().getBlockEntity(blockPos);
 		if (tileEntity instanceof RGBTileEntity) {
 			((RGBTileEntity) tileEntity).setColor(itemStack.getTag().getInt("color"));
-			source.getLevel().sendBlockUpdated(blockPos, tileEntity.getBlockState(), tileEntity.getBlockState(),
-					BlockFlags.DEFAULT_AND_RERENDER);
+			source.getLevel().sendBlockUpdated(blockPos, tileEntity.getBlockState(), tileEntity.getBlockState(), BlockFlags.DEFAULT_AND_RERENDER);
 			return itemStack;
 		} else {
 			return super.execute(source, itemStack);

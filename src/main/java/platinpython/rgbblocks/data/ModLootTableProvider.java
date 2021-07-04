@@ -44,8 +44,7 @@ public class ModLootTableProvider extends LootTableProvider {
 	private class Blocks extends BlockLootTables {
 		@Override
 		protected void addTables() {
-			RegistryHandler.BLOCKS.getEntries()
-					.forEach((block) -> add(block.get(), createDropSelfWithNbt(block.get())));
+			RegistryHandler.BLOCKS.getEntries().forEach((block) -> add(block.get(), createDropSelfWithNbt(block.get())));
 		}
 
 		private LootTable.Builder createDropSelfWithNbt(IItemProvider block) {

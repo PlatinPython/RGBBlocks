@@ -21,26 +21,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
-		simpleBlock(BlockRegistry.RGB_ANTIBLOCK.get(),
-				models().singleTexture(BlockRegistry.RGB_ANTIBLOCK.getId().getPath(),
-						modLoc(ModelProvider.BLOCK_FOLDER + "/no_shade"), "all",
-						modLoc(ModelProvider.BLOCK_FOLDER + "/antiblock")));
-		simpleBlock(BlockRegistry.RGB_CARPET.get(),
-				models().singleTexture(BlockRegistry.RGB_CARPET.getId().getPath(),
-						modLoc(ModelProvider.BLOCK_FOLDER + "/thin_block"), "all",
-						modLoc(ModelProvider.BLOCK_FOLDER + "/wool")));
+		simpleBlock(BlockRegistry.RGB_ANTIBLOCK.get(), models().singleTexture(BlockRegistry.RGB_ANTIBLOCK.getId().getPath(), modLoc(ModelProvider.BLOCK_FOLDER + "/no_shade"), "all", modLoc(ModelProvider.BLOCK_FOLDER + "/antiblock")));
+		simpleBlock(BlockRegistry.RGB_CARPET.get(), models().singleTexture(BlockRegistry.RGB_CARPET.getId().getPath(), modLoc(ModelProvider.BLOCK_FOLDER + "/thin_block"), "all", modLoc(ModelProvider.BLOCK_FOLDER + "/wool")));
 		getVariantBuilder(BlockRegistry.RGB_REDSTONE_LAMP.get()).forAllStates(state -> {
-			return state.getValue(RedstoneLampBlock.LIT)
-					? ConfiguredModel.builder()
-							.modelFile(models().singleTexture(BlockRegistry.RGB_REDSTONE_LAMP.getId().getPath() + "_on",
-									modLoc(ModelProvider.BLOCK_FOLDER + "/block"), "all",
-									modLoc(ModelProvider.BLOCK_FOLDER + "/redstone_lamp_on")))
-							.build()
-					: ConfiguredModel.builder()
-							.modelFile(models().singleTexture(BlockRegistry.RGB_REDSTONE_LAMP.getId().getPath(),
-									modLoc(ModelProvider.BLOCK_FOLDER + "/block"), "all",
-									modLoc(ModelProvider.BLOCK_FOLDER + "/redstone_lamp")))
-							.build();
+			return state.getValue(RedstoneLampBlock.LIT) ? ConfiguredModel.builder().modelFile(models().singleTexture(BlockRegistry.RGB_REDSTONE_LAMP.getId().getPath() + "_on", modLoc(ModelProvider.BLOCK_FOLDER + "/block"), "all", modLoc(ModelProvider.BLOCK_FOLDER + "/redstone_lamp_on"))).build() : ConfiguredModel.builder().modelFile(models().singleTexture(BlockRegistry.RGB_REDSTONE_LAMP.getId().getPath(), modLoc(ModelProvider.BLOCK_FOLDER + "/block"), "all", modLoc(ModelProvider.BLOCK_FOLDER + "/redstone_lamp"))).build();
 		});
 
 		blocks(BlockRegistry.RGB_CONCRETE.get());
@@ -70,17 +54,14 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	private void blocks(Block block) {
 		String path = block.getRegistryName().getPath();
 		String loc = ModelProvider.BLOCK_FOLDER + "/" + path;
-		simpleBlock(block,
-				models().singleTexture(path, modLoc(ModelProvider.BLOCK_FOLDER + "/block"), "all", modLoc(loc)));
+		simpleBlock(block, models().singleTexture(path, modLoc(ModelProvider.BLOCK_FOLDER + "/block"), "all", modLoc(loc)));
 	}
 
 	private void slabBlocks(Block block) {
 		String path = block.getRegistryName().getPath();
 		String loc = ModelProvider.BLOCK_FOLDER + "/" + path.replace("_slab", "");
-		ModelFile slabBottom = models().withExistingParent(path, modLoc(ModelProvider.BLOCK_FOLDER + "/slab"))
-				.texture("all", loc);
-		ModelFile slabTop = models().withExistingParent(path + "_top", modLoc(ModelProvider.BLOCK_FOLDER + "/slab_top"))
-				.texture("all", loc);
+		ModelFile slabBottom = models().withExistingParent(path, modLoc(ModelProvider.BLOCK_FOLDER + "/slab")).texture("all", loc);
+		ModelFile slabTop = models().withExistingParent(path + "_top", modLoc(ModelProvider.BLOCK_FOLDER + "/slab_top")).texture("all", loc);
 		ModelFile slabDouble = models().getExistingFile(modLoc(loc));
 		slabBlock((SlabBlock) block, slabBottom, slabTop, slabDouble);
 		ConfiguredModel.builder().modelFile(slabBottom).build();
@@ -89,14 +70,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	private void stairBlocks(Block block) {
 		String path = block.getRegistryName().getPath();
 		String loc = ModelProvider.BLOCK_FOLDER + "/" + path.replace("_stairs", "");
-		ModelFile stairs = models().withExistingParent(path, modLoc(ModelProvider.BLOCK_FOLDER + "/stairs"))
-				.texture("all", loc);
-		ModelFile stairsInner = models()
-				.withExistingParent(path + "_inner", modLoc(ModelProvider.BLOCK_FOLDER + "/inner_stairs"))
-				.texture("all", loc);
-		ModelFile stairsOuter = models()
-				.withExistingParent(path + "_outer", modLoc(ModelProvider.BLOCK_FOLDER + "/outer_stairs"))
-				.texture("all", loc);
+		ModelFile stairs = models().withExistingParent(path, modLoc(ModelProvider.BLOCK_FOLDER + "/stairs")).texture("all", loc);
+		ModelFile stairsInner = models().withExistingParent(path + "_inner", modLoc(ModelProvider.BLOCK_FOLDER + "/inner_stairs")).texture("all", loc);
+		ModelFile stairsOuter = models().withExistingParent(path + "_outer", modLoc(ModelProvider.BLOCK_FOLDER + "/outer_stairs")).texture("all", loc);
 		stairsBlock((StairsBlock) block, stairs, stairsInner, stairsOuter);
 		ConfiguredModel.builder().modelFile(stairs).build();
 	}

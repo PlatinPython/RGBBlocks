@@ -17,8 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import platinpython.rgbblocks.util.registries.RecipeSerializerRegistry;
 
 public class ShapelessNoReturnRecipe extends ShapelessRecipe {
-	public ShapelessNoReturnRecipe(ResourceLocation id, String group, ItemStack result,
-			NonNullList<Ingredient> ingredients) {
+	public ShapelessNoReturnRecipe(ResourceLocation id, String group, ItemStack result, NonNullList<Ingredient> ingredients) {
 		super(id, group, result, ingredients);
 	}
 
@@ -32,8 +31,7 @@ public class ShapelessNoReturnRecipe extends ShapelessRecipe {
 		return NonNullList.withSize(craftingInventory.getContainerSize(), ItemStack.EMPTY);
 	}
 
-	public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>>
-			implements IRecipeSerializer<ShapelessNoReturnRecipe> {
+	public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ShapelessNoReturnRecipe> {
 		@Override
 		public ShapelessNoReturnRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
 			String s = JSONUtils.getAsString(jsonObject, "group", "");

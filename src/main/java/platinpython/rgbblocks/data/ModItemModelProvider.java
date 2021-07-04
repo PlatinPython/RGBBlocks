@@ -20,7 +20,6 @@ public class ModItemModelProvider extends ItemModelProvider {
 	private void item2Layers(Item item) {
 		String path = item.getRegistryName().getPath();
 		String loc = ITEM_FOLDER + "/" + path;
-		singleTexture(path, mcLoc(ITEM_FOLDER + "/generated"), "layer0", modLoc(loc)).texture("layer1",
-				modLoc(loc + "_color"));
+		singleTexture(path, mcLoc(ITEM_FOLDER + "/generated"), "layer0", modLoc(loc)).texture("layer1", modLoc(loc + "_color"));
 	}
 }

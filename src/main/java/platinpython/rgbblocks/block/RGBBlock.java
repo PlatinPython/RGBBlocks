@@ -22,16 +22,14 @@ public interface RGBBlock {
 		return TileEntityRegistry.RGB.get().create();
 	}
 
-	public static void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer,
-			ItemStack stack) {
+	public static void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		TileEntity tileEntity = worldIn.getBlockEntity(pos);
 		if (stack.hasTag() == true && tileEntity instanceof RGBTileEntity) {
 			((RGBTileEntity) tileEntity).setColor(stack.getTag().getInt("color"));
 		}
 	}
 
-	public static ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos,
-			PlayerEntity player) {
+	public static ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
 		ItemStack stack = new ItemStack(state.getBlock().asItem());
 		TileEntity tileEntity = world.getBlockEntity(pos);
 		if (tileEntity instanceof RGBTileEntity) {
