@@ -1,4 +1,4 @@
-package platinpython.rgbblocks.util.client.colorhandlers;
+package platinpython.rgbblocks.client.colorhandlers;
 
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;

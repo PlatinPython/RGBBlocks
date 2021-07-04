@@ -15,10 +15,10 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 import platinpython.rgbblocks.RGBBlocks;
+import platinpython.rgbblocks.client.colorhandlers.PaintBucketItemColor;
+import platinpython.rgbblocks.client.colorhandlers.RGBBlockColor;
+import platinpython.rgbblocks.client.colorhandlers.RGBBlockItemColor;
 import platinpython.rgbblocks.client.gui.PaintBucketScreen;
-import platinpython.rgbblocks.util.client.colorhandlers.PaintBucketItemColor;
-import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockColor;
-import platinpython.rgbblocks.util.client.colorhandlers.RGBBlockItemColor;
 import platinpython.rgbblocks.util.pack.RGBBlocksPack;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
