@@ -152,7 +152,6 @@ public class PaintBucketScreen extends Screen {
 			((Widget) this.children.get(i)).render(matrixStack, mouseX, mouseY, partialTicks);
 		}
 		drawCenteredString(matrixStack, this.font, getTitle().getString(), this.width / 2, 15, 16777215);
-		fill(matrixStack, width / 2 - 3 * WIDGET_HEIGHT, height / 4 + 3 * WIDGET_HEIGHT, width / 2 + 3 * WIDGET_HEIGHT, height / 4 - 3 * WIDGET_HEIGHT, getColor());
 	}
 
 	@Override

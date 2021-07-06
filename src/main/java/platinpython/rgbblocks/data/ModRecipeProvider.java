@@ -51,7 +51,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 		stairBlock(consumer, BlockRegistry.RGB_WOOL_STAIRS.get(), BlockRegistry.RGB_WOOL.get());
 
 		ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_ANTIBLOCK.get(), 8, whiteNBT).define('S', Tags.Items.STONE).define('G', BlockRegistry.RGB_GLOWSTONE.get()).pattern("SSS").pattern("SGS").pattern("SSS").unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get())).save(consumer);
-		ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_CARPET.get()).define('#', BlockRegistry.RGB_WOOL.get()).pattern("##").unlockedBy("has_rgb_wool", has(BlockRegistry.RGB_WOOL.get())).save(consumer);
+		ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_CARPET.get(), 3, whiteNBT).define('#', BlockRegistry.RGB_WOOL.get()).pattern("##").unlockedBy("has_rgb_wool", has(BlockRegistry.RGB_WOOL.get())).save(consumer);
 		ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_REDSTONE_LAMP.get(), 1, whiteNBT).define('R', Tags.Items.DUSTS_REDSTONE).define('G', BlockRegistry.RGB_GLOWSTONE.get()).pattern(" R ").pattern("RGR").pattern(" R ").unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get())).save(consumer);
 	}
 

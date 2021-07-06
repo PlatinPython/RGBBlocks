@@ -9,6 +9,8 @@
     }
   },
   "result": {
-    "item": "rgbblocks:carpet"
+    "item": "rgbblocks:carpet",
+    "count": 3,
+    "nbt": "{\"color\":-1}"
   }
 }
