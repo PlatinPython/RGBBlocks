@@ -21,7 +21,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
-		simpleBlock(BlockRegistry.RGB_ANTIBLOCK.get(), models().singleTexture(BlockRegistry.RGB_ANTIBLOCK.getId().getPath(), modLoc(ModelProvider.BLOCK_FOLDER + "/no_shade"), "all", modLoc(ModelProvider.BLOCK_FOLDER + "/antiblock")));
+		simpleBlock(BlockRegistry.RGB_ANTIBLOCK.get(), models().singleTexture(BlockRegistry.RGB_ANTIBLOCK.getId().getPath(), modLoc(ModelProvider.BLOCK_FOLDER + "/no_shade_2_layer"), "bot", modLoc(ModelProvider.BLOCK_FOLDER + "/white")).texture("top", modLoc(ModelProvider.BLOCK_FOLDER + "/antiblock")));
 		simpleBlock(BlockRegistry.RGB_CARPET.get(), models().singleTexture(BlockRegistry.RGB_CARPET.getId().getPath(), modLoc(ModelProvider.BLOCK_FOLDER + "/thin_block"), "all", modLoc(ModelProvider.BLOCK_FOLDER + "/wool")));
 		getVariantBuilder(BlockRegistry.RGB_REDSTONE_LAMP.get()).forAllStates(state -> {
 			return state.getValue(RedstoneLampBlock.LIT) ? ConfiguredModel.builder().modelFile(models().singleTexture(BlockRegistry.RGB_REDSTONE_LAMP.getId().getPath() + "_on", modLoc(ModelProvider.BLOCK_FOLDER + "/block"), "all", modLoc(ModelProvider.BLOCK_FOLDER + "/redstone_lamp_on"))).build() : ConfiguredModel.builder().modelFile(models().singleTexture(BlockRegistry.RGB_REDSTONE_LAMP.getId().getPath(), modLoc(ModelProvider.BLOCK_FOLDER + "/block"), "all", modLoc(ModelProvider.BLOCK_FOLDER + "/redstone_lamp"))).build();

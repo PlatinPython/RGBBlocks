@@ -1,13 +1,10 @@
 {
   "ctm": {
     "ctm_version": 1,
-    "type": "ctm",
-    "layer": "SOLID",
+    "type": "rgbblocks:colored",
+    "layer": "CUTOUT",
     "textures": [
       "rgbblocks:block/antiblock_ctm"
-    ],
-    "extra": {
-      "light": 15
-    }
+    ]
   }
 }

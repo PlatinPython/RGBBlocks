@@ -1,6 +1,7 @@
 {
-  "parent": "rgbblocks:block/no_shade",
+  "parent": "rgbblocks:block/no_shade_2_layer",
   "textures": {
-    "all": "rgbblocks:block/antiblock"
+    "bot": "rgbblocks:block/white",
+    "top": "rgbblocks:block/antiblock"
   }
 }
