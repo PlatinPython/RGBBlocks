@@ -23,7 +23,6 @@ import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.ClientProxy;
 import platinpython.rgbblocks.util.Color;
-import platinpython.rgbblocks.util.registries.BlockRegistry;
 
 public class PaintBucketItem extends Item {
 	public PaintBucketItem() {
@@ -85,9 +84,6 @@ public class PaintBucketItem extends Item {
 				}
 				((RGBTileEntity) tileEntity).setColor(context.getItemInHand().getTag().getInt("color"));
 				context.getLevel().sendBlockUpdated(context.getClickedPos(), tileEntity.getBlockState(), tileEntity.getBlockState(), BlockFlags.DEFAULT_AND_RERENDER);
-				if (context.getLevel().getBlockState(context.getClickedPos()).getBlock() == BlockRegistry.RGB_ANTIBLOCK.get()) {
-					context.getLevel().getBlockState(context.getClickedPos()).updateNeighbourShapes(context.getLevel(), context.getClickedPos(), BlockFlags.DEFAULT_AND_RERENDER);
-				}
 			}
 			return ActionResultType.SUCCESS;
 		} else {
