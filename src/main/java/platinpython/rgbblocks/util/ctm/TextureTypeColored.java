@@ -35,6 +35,9 @@ public class TextureTypeColored extends TextureTypeCTM {
 	public static class CTMLogicColored extends CTMLogic {
 		@Override
 		public boolean isConnected(IBlockReader world, BlockPos current, BlockPos connection, Direction dir, BlockState state) {
+			if(world.getBlockState(current).getBlock() != world.getBlockState(connection).getBlock()) {
+				return false;
+			}
 			TileEntity currentTileEntity = world.getBlockEntity(current);
 			TileEntity connectionTileEntity = world.getBlockEntity(connection);
 
