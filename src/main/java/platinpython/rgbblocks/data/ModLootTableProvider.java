@@ -65,6 +65,7 @@ public class ModLootTableProvider extends LootTableProvider {
 		@Override
 		protected void addTables() {
 			HashMap<Block, Function<Block, LootTable.Builder>> map = new HashMap<>();
+
 			map.put(BlockRegistry.RGB_ANTIBLOCK.get(), BlockLootTables::createSingleItemTable);
 			map.put(BlockRegistry.RGB_CARPET.get(), BlockLootTables::createSingleItemTable);
 			map.put(BlockRegistry.RGB_CONCRETE.get(), BlockLootTables::createSingleItemTable);
@@ -85,7 +86,8 @@ public class ModLootTableProvider extends LootTableProvider {
 			map.put(BlockRegistry.RGB_WOOL.get(), BlockLootTables::createSingleItemTable);
 			map.put(BlockRegistry.RGB_WOOL_SLAB.get(), BlockLootTables::createSlabItemTable);
 			map.put(BlockRegistry.RGB_WOOL_STAIRS.get(), BlockLootTables::createSingleItemTable);
-			map.forEach((block, function) -> add(block, applyNbtCopy(function.apply(block))));
+
+			map.forEach((block, function) -> add(block, block == BlockRegistry.RGB_GLOWSTONE.get() ? applyConditionalNbtCopy(function.apply(block)) : applyNbtCopy(function.apply(block))));
 		}
 
 		private LootTable.Builder createSilkTouchOnlySlabItemTable(Block block) {
@@ -94,6 +96,10 @@ public class ModLootTableProvider extends LootTableProvider {
 
 		private LootTable.Builder applyNbtCopy(LootTable.Builder table) {
 			return table.apply(CopyNbt.copyData(Source.BLOCK_ENTITY).copy("color", "color"));
+		}
+
+		private LootTable.Builder applyConditionalNbtCopy(LootTable.Builder table) {
+			return table.apply(CopyNbt.copyData(Source.BLOCK_ENTITY).copy("color", "color").when(MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.IntBound.atLeast(1))))));
 		}
 
 		@Override

@@ -66,6 +66,21 @@
   "functions": [
     {
       "function": "minecraft:copy_nbt",
+      "conditions": [
+        {
+          "condition": "minecraft:match_tool",
+          "predicate": {
+            "enchantments": [
+              {
+                "enchantment": "minecraft:silk_touch",
+                "levels": {
+                  "min": 1
+                }
+              }
+            ]
+          }
+        }
+      ],
       "source": "block_entity",
       "ops": [
         {
