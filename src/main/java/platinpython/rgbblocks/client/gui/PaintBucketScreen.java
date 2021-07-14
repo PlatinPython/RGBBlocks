@@ -1,12 +1,15 @@
 package platinpython.rgbblocks.client.gui;
 
+import java.util.function.Function;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 import platinpython.rgbblocks.util.Color;
 import platinpython.rgbblocks.util.network.PacketHandler;
@@ -82,7 +85,7 @@ public class PaintBucketScreen extends Screen {
 //				this.height / 2 - sliderHeight / 2 + 2 * (sliderHeight + 20), SLIDER_WIDTH / 4,
 //				sliderHeight, new StringTextComponent("Hex"));
 
-		Button toggleButton = new Button(this.width / 2 - BUTTON_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 + 2 * SPACING, BUTTON_WIDTH, WIDGET_HEIGHT, isRGBSelected ? useHSBText : useRGBText, button -> {
+		ExtendedButton toggleButton = new ExtendedButton(this.width / 2 - BUTTON_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 + 2 * SPACING, BUTTON_WIDTH, WIDGET_HEIGHT, isRGBSelected ? useHSBText : useRGBText, button -> {
 			redSlider.visible = !redSlider.visible;
 			greenSlider.visible = !greenSlider.visible;
 			blueSlider.visible = !blueSlider.visible;
@@ -148,10 +151,54 @@ public class PaintBucketScreen extends Screen {
 	@Override
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(matrixStack);
+		matrixStack.pushPose();
+		matrixStack.translate(width / 2, height / 2, 0);
+		matrixStack.mulPose(Vector3f.ZN.rotationDegrees(90f));
+		if (isRGBSelected) {
+			renderRGBPreviews(matrixStack);
+		} else {
+			renderHSBPreviews(matrixStack);
+		}
+		matrixStack.popPose();
 		for (int i = 0; i < this.children.size(); ++i) {
 			((Widget) this.children.get(i)).render(matrixStack, mouseX, mouseY, partialTicks);
 		}
 		drawCenteredString(matrixStack, this.font, getTitle().getString(), this.width / 2, 15, 16777215);
+	}
+
+	private void renderRGBPreviews(MatrixStack matrixStack) {
+		int xLeft = -SLIDER_WIDTH / 2;
+		int xRight = SLIDER_WIDTH / 2;
+		int y = WIDGET_HEIGHT / 2 + WIDGET_HEIGHT;
+		int yTop = y + WIDGET_HEIGHT;
+		int yBot = y + SPACING;
+		fillGradient(matrixStack, yTop, xLeft, yBot, xRight, new Color(0, greenSlider.getValueInt(), blueSlider.getValueInt()).getRGB(), new Color(0xFF, greenSlider.getValueInt(), blueSlider.getValueInt()).getRGB());
+		yTop -= SPACING;
+		yBot -= SPACING;
+		fillGradient(matrixStack, yTop, xLeft, yBot, xRight, new Color(redSlider.getValueInt(), 0, blueSlider.getValueInt()).getRGB(), new Color(redSlider.getValueInt(), 0xFF, blueSlider.getValueInt()).getRGB());
+		yTop -= SPACING;
+		yBot -= SPACING;
+		fillGradient(matrixStack, yTop, xLeft, yBot, xRight, new Color(redSlider.getValueInt(), greenSlider.getValueInt(), 0).getRGB(), new Color(redSlider.getValueInt(), greenSlider.getValueInt(), 0xFF).getRGB());
+	}
+
+	private void renderHSBPreviews(MatrixStack matrixStack) {
+		Function<Integer, Integer> lerp = (pct) -> (int) Math.floor((pct / 100f) * SLIDER_WIDTH - SLIDER_WIDTH / 2);
+		Function<Integer, Integer> color = (pct) -> Color.HSBtoRGB((float) ((pct / 100f)), (float) (saturationSlider.getValueInt() / MAX_VALUE_SB), (float) (brightnessSlider.getValueInt() / MAX_VALUE_SB));
+		int y = WIDGET_HEIGHT / 2 + WIDGET_HEIGHT;
+		int yTop = y + WIDGET_HEIGHT;
+		int yBot = y + SPACING;
+		fillGradient(matrixStack, yTop, lerp.apply(0), yBot, lerp.apply(17), color.apply(0), color.apply(17));
+		fillGradient(matrixStack, yTop, lerp.apply(17), yBot, lerp.apply(34), color.apply(17), color.apply(34));
+		fillGradient(matrixStack, yTop, lerp.apply(34), yBot, lerp.apply(50), color.apply(34), color.apply(50));
+		fillGradient(matrixStack, yTop, lerp.apply(50), yBot, lerp.apply(66), color.apply(50), color.apply(66));
+		fillGradient(matrixStack, yTop, lerp.apply(66), yBot, lerp.apply(82), color.apply(66), color.apply(82));
+		fillGradient(matrixStack, yTop, lerp.apply(82), yBot, lerp.apply(100), color.apply(82), color.apply(100));
+		yTop -= SPACING;
+		yBot -= SPACING;
+		fillGradient(matrixStack, yTop, lerp.apply(0), yBot, lerp.apply(100), Color.HSBtoRGB((float) (hueSlider.getValue() / MAX_VALUE_HUE), 0.0f, (float) (brightnessSlider.getValue() / MAX_VALUE_SB)), Color.HSBtoRGB((float) (hueSlider.getValue() / MAX_VALUE_HUE), 1.0f, (float) (brightnessSlider.getValue() / MAX_VALUE_SB)));
+		yTop -= SPACING;
+		yBot -= SPACING;
+		fillGradient(matrixStack, yTop, lerp.apply(0), yBot, lerp.apply(100), Color.HSBtoRGB((float) (hueSlider.getValue() / MAX_VALUE_HUE), (float) (saturationSlider.getValue() / MAX_VALUE_SB), 0.0f), Color.HSBtoRGB((float) (hueSlider.getValue() / MAX_VALUE_HUE), (float) (saturationSlider.getValue() / MAX_VALUE_SB), 1.0f));
 	}
 
 	@Override
