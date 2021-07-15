@@ -18,7 +18,7 @@ import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.colorhandlers.PaintBucketItemColor;
 import platinpython.rgbblocks.client.colorhandlers.RGBBlockColor;
 import platinpython.rgbblocks.client.colorhandlers.RGBBlockItemColor;
-import platinpython.rgbblocks.client.gui.PaintBucketScreen;
+import platinpython.rgbblocks.client.gui.ColorSelectScreen;
 import platinpython.rgbblocks.util.pack.RGBBlocksPack;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
@@ -48,7 +48,7 @@ public class ClientProxy {
 		event.getItemColors().register(new PaintBucketItemColor(), ItemRegistry.PAINT_BUCKET.get());
 	}
 
-	public static void openPaintbucketGUI(int color, boolean isRGBSelected) {
-		Minecraft.getInstance().setScreen(new PaintBucketScreen(color, isRGBSelected));
+	public static void openColorSelectScreen(int color, boolean isRGBSelected) {
+		Minecraft.getInstance().setScreen(new ColorSelectScreen(color, isRGBSelected));
 	}
 }

@@ -61,7 +61,7 @@ public class PaintBucketItem extends Item {
 	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		if (handIn == Hand.MAIN_HAND && playerIn.isShiftKeyDown()) {
 			if (worldIn.isClientSide) {
-				ClientProxy.openPaintbucketGUI(playerIn.getMainHandItem().getTag().getInt("color"), playerIn.getMainHandItem().getTag().getBoolean("isRGBSelected"));
+				ClientProxy.openColorSelectScreen(playerIn.getMainHandItem().getTag().getInt("color"), playerIn.getMainHandItem().getTag().getBoolean("isRGBSelected"));
 				return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getMainHandItem());
 			}
 		}
