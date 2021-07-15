@@ -1,4 +1,4 @@
-package platinpython.rgbblocks.client.gui;
+package platinpython.rgbblocks.client.gui.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
@@ -8,6 +8,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 import platinpython.rgbblocks.client.gui.widget.ColorSlider;
+import platinpython.rgbblocks.client.gui.widget.SliderType;
 import platinpython.rgbblocks.util.Color;
 import platinpython.rgbblocks.util.network.PacketHandler;
 import platinpython.rgbblocks.util.network.packets.PaintBucketSyncPKT;
@@ -17,11 +18,11 @@ public class ColorSelectScreen extends Screen {
 	public ColorSlider redSlider, greenSlider, blueSlider;
 	private double hue, saturation, brightness;
 	public ColorSlider hueSlider, saturationSlider, brightnessSlider;
-
+	
 	public final int WIDGET_HEIGHT = 20;
 	public final int SLIDER_WIDTH = 310;
-	public final int BUTTON_WIDTH = 50;
-	public final int SPACING = WIDGET_HEIGHT + 20;
+	public final int BUTTON_WIDTH = 98;
+	public final int SPACING = WIDGET_HEIGHT + 5;
 
 	public final double MIN_VALUE = 0.0D;
 	public final double MAX_VALUE_RGB = 255.0D;
@@ -30,7 +31,6 @@ public class ColorSelectScreen extends Screen {
 
 	private boolean isRGBSelected;
 
-	private final StringTextComponent EMPTY_TEXT = new StringTextComponent("");
 	private TranslationTextComponent useRGBText, useHSBText;
 
 	public ColorSelectScreen(int colorIn, boolean isRGBSelected) {
@@ -66,23 +66,34 @@ public class ColorSelectScreen extends Screen {
 
 	@Override
 	protected void init() {
-		this.redSlider = new ColorSlider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 - SPACING, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.red").append(": "), EMPTY_TEXT, MIN_VALUE, MAX_VALUE_RGB, this.red, false, true, null, SliderType.RED);
+		int x = this.width / 2 - SLIDER_WIDTH / 2;
+		int y = this.height / 2 - WIDGET_HEIGHT / 2 - SPACING;
 
-		this.greenSlider = new ColorSlider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.green").append(": "), EMPTY_TEXT, MIN_VALUE, MAX_VALUE_RGB, this.green, false, true, null, SliderType.GREEN);
+		this.redSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.red").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.red, SliderType.RED);
 
-		this.blueSlider = new ColorSlider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 + SPACING, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.blue").append(": "), EMPTY_TEXT, MIN_VALUE, MAX_VALUE_RGB, this.blue, false, true, null, SliderType.BLUE);
+		this.hueSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.hue").append(": "), MIN_VALUE, MAX_VALUE_HUE, this.hue, SliderType.HUE);
 
-		this.hueSlider = new ColorSlider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 - SPACING, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.hue").append(": "), EMPTY_TEXT, MIN_VALUE, MAX_VALUE_HUE, this.hue, false, true, null, SliderType.HUE);
+		y += SPACING;
 
-		this.saturationSlider = new ColorSlider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.saturation").append(": "), EMPTY_TEXT, MIN_VALUE, MAX_VALUE_SB, this.saturation, false, true, null, SliderType.SATURATION);
+		this.greenSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.green").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.green, SliderType.GREEN);
 
-		this.brightnessSlider = new ColorSlider(this.width / 2 - SLIDER_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 + SPACING, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.brightness").append(": "), EMPTY_TEXT, MIN_VALUE, MAX_VALUE_SB, this.brightness, false, true, null, SliderType.BRIGHTNESS);
+		this.saturationSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.saturation").append(": "), MIN_VALUE, MAX_VALUE_SB, this.saturation, SliderType.SATURATION);
+
+		y += SPACING;
+
+		this.blueSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.blue").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.blue, SliderType.BLUE);
+
+		this.brightnessSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.brightness").append(": "), MIN_VALUE, MAX_VALUE_SB, this.brightness, SliderType.BRIGHTNESS);
+
+		y += SPACING;
 
 //		TextFieldWidget hex = new TextFieldWidget(font, this.width / 2 - SLIDER_WIDTH / 2,
 //				this.height / 2 - sliderHeight / 2 + 2 * (sliderHeight + 20), SLIDER_WIDTH / 4,
 //				sliderHeight, new StringTextComponent("Hex"));
 
-		ExtendedButton toggleButton = new ExtendedButton(this.width / 2 - BUTTON_WIDTH / 2, this.height / 2 - WIDGET_HEIGHT / 2 + 2 * SPACING, BUTTON_WIDTH, WIDGET_HEIGHT, isRGBSelected ? useHSBText : useRGBText, button -> {
+		x = this.width / 2 - BUTTON_WIDTH / 2;
+
+		ExtendedButton toggleButton = new ExtendedButton(x, y, BUTTON_WIDTH, WIDGET_HEIGHT, isRGBSelected ? useHSBText : useRGBText, button -> {
 			redSlider.visible = !redSlider.visible;
 			greenSlider.visible = !greenSlider.visible;
 			blueSlider.visible = !blueSlider.visible;
@@ -96,25 +107,17 @@ public class ColorSelectScreen extends Screen {
 			if (isRGBSelected) {
 				Color color = Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE), (float) (saturationSlider.getValueInt() / MAX_VALUE_SB), (float) (brightnessSlider.getValueInt() / MAX_VALUE_SB));
 
-				redSlider.setValue(color.getRed());
-				greenSlider.setValue(color.getGreen());
-				blueSlider.setValue(color.getBlue());
-
-				redSlider.updateSlider();
-				greenSlider.updateSlider();
-				blueSlider.updateSlider();
+				redSlider.setValueInt(color.getRed());
+				greenSlider.setValueInt(color.getGreen());
+				blueSlider.setValueInt(color.getBlue());
 
 				button.setMessage(useHSBText);
 			} else {
 				float[] hsb = Color.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(), blueSlider.getValueInt());
 
-				hueSlider.setValue(hsb[0] * MAX_VALUE_HUE);
-				saturationSlider.setValue(hsb[1] * MAX_VALUE_SB);
-				brightnessSlider.setValue(hsb[2] * MAX_VALUE_SB);
-
-				hueSlider.updateSlider();
-				saturationSlider.updateSlider();
-				brightnessSlider.updateSlider();
+				hueSlider.setValueInt((int) (hsb[0] * MAX_VALUE_HUE));
+				saturationSlider.setValueInt((int) (hsb[1] * MAX_VALUE_SB));
+				brightnessSlider.setValueInt((int) (hsb[2] * MAX_VALUE_SB));
 
 				button.setMessage(useRGBText);
 			}

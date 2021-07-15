@@ -41,15 +41,15 @@ public class Color {
 		}
 	}
 
-	public double getRed() {
+	public int getRed() {
 		return (getRGB() >> 16) & 0xFF;
 	}
 
-	public double getGreen() {
+	public int getGreen() {
 		return (getRGB() >> 8) & 0xFF;
 	}
 
-	public double getBlue() {
+	public int getBlue() {
 		return (getRGB() >> 0) & 0xFF;
 	}
 

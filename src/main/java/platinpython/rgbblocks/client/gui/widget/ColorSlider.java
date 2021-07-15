@@ -5,44 +5,64 @@ import java.util.function.Function;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SoundHandler;
+import net.minecraft.client.gui.widget.AbstractSlider;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.fml.client.gui.widget.Slider;
-import platinpython.rgbblocks.client.gui.ColorSelectScreen;
 import platinpython.rgbblocks.client.gui.ScreenUtils;
-import platinpython.rgbblocks.client.gui.SliderType;
+import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
 import platinpython.rgbblocks.util.Color;
 
-public class ColorSlider extends Slider {
+public class ColorSlider extends AbstractSlider {
 	private SliderType type;
 
-	public ColorSlider(int xPos, int yPos, int width, int height, ITextComponent prefix, ITextComponent suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, IPressable handler, SliderType type) {
-		super(xPos, yPos, width, height, prefix, suf, minVal, maxVal, currentVal, showDec, drawStr, handler);
+	private double minValue;
+	private double maxValue;
+
+	private ITextComponent displayText;
+
+	public ColorSlider(int x, int y, int width, int height, ITextComponent displayText, double minValue, double maxValue, double currentValue, SliderType type) {
+		super(x, y, width, height, displayText, (currentValue - minValue) / (maxValue - minValue));
 		this.type = type;
+		this.minValue = minValue;
+		this.maxValue = maxValue;
+		this.value = (currentValue - this.minValue) / (this.maxValue - this.minValue);
+		this.displayText = displayText;
+		setMessage(new StringTextComponent("").append(displayText).append(Integer.toString((int) Math.round(this.value * (maxValue - minValue) + minValue))));
 	}
 
-	public void playDownSound(SoundHandler pHandler) {
+	@Override
+	protected void updateMessage() {
+		setMessage(new StringTextComponent("").append(this.displayText).append(Integer.toString(getValueInt())));
 	}
 
-	public void onRelease(double pMouseX, double pMouseY) {
-		super.playDownSound(Minecraft.getInstance().getSoundManager());
-		this.dragging = false;
+	@Override
+	protected void applyValue() {
+	}
+
+	public int getValueInt() {
+		return (int) Math.round(this.value * (maxValue - minValue) + minValue);
+	}
+
+	public double getValue() {
+		return this.value * (maxValue - minValue) + minValue;
+	}
+
+	public void setValueInt(int value) {
+		this.value = (value - this.minValue) / (this.maxValue - this.minValue);
+		this.updateMessage();
 	}
 
 	@Override
 	public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		if (this.visible) {
-			Minecraft mc = Minecraft.getInstance();
-			this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+			Minecraft minecraft = Minecraft.getInstance();
 			fill(matrixStack, this.x, this.y, this.x + this.width, this.y + this.height, 0xFF000000);
-			if (mc.screen instanceof ColorSelectScreen) {
-				ColorSelectScreen screen = (ColorSelectScreen) mc.screen;
+			if (minecraft.screen instanceof ColorSelectScreen) {
+				ColorSelectScreen screen = (ColorSelectScreen) minecraft.screen;
 				switch (type) {
 				case RED:
 					renderRedBackground(matrixStack, screen);
-					setFGColor(mouseY);
 					break;
 				case GREEN:
 					renderGreenBackground(matrixStack, screen);
@@ -62,44 +82,35 @@ public class ColorSlider extends Slider {
 				}
 			}
 
-			this.renderBg(matrixStack, mc, mouseX, mouseY);
+			this.renderBg(matrixStack, minecraft, mouseX, mouseY);
 
 			ITextComponent buttonText = this.getMessage();
-			int strWidth = mc.font.width(buttonText);
-			int ellipsisWidth = mc.font.width("...");
+			int strWidth = minecraft.font.width(buttonText);
+			int ellipsisWidth = minecraft.font.width("...");
 
 			if (strWidth > this.width - 6 && strWidth > ellipsisWidth)
-				buttonText = new StringTextComponent(mc.font.substrByWidth(buttonText, this.width - 6 - ellipsisWidth).getString() + "...");
+				buttonText = new StringTextComponent(minecraft.font.substrByWidth(buttonText, this.width - 6 - ellipsisWidth).getString() + "...");
 
-			drawCenteredString(matrixStack, mc.font, buttonText, this.x + this.width / 2, this.y + (this.height - 8) / 2, getFGColor());
-		}
-	}
-
-	@Override
-	protected void renderBg(MatrixStack matrixStack, Minecraft minecraft, int mouseX, int mouseY) {
-		if (this.visible) {
-			if (this.dragging) {
-				this.sliderValue = (mouseX - (this.x + 4)) / (float) (this.width - 8);
-				updateSlider();
-			}
-
-			minecraft.getTextureManager().bind(WIDGETS_LOCATION);
-			int i = (this.isHovered() ? 2 : 1) * 20;
-			this.blit(matrixStack, this.x + (int) (this.sliderValue * (double) (this.width - 8)), this.y, 0, 46 + i, 4, 20);
-			this.blit(matrixStack, this.x + (int) (this.sliderValue * (double) (this.width - 8)) + 4, this.y, 196, 46 + i, 4, 20);
+			drawCenteredString(matrixStack, minecraft.font, buttonText, this.x + this.width / 2, this.y + (this.height - 8) / 2, getFGColor());
 		}
 	}
 
 	private void renderRedBackground(MatrixStack matrixStack, ColorSelectScreen screen) {
-		ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, this.getBlitOffset(), new Color(0x00, screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB(), new Color(0xFF, screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB());
+		int leftColor = new Color(0x00, screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB();
+		int rightColor = new Color(0xFF, screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB();
+		ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, this.getBlitOffset(), leftColor, rightColor);
 	}
 
 	private void renderGreenBackground(MatrixStack matrixStack, ColorSelectScreen screen) {
-		ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, this.getBlitOffset(), new Color(screen.redSlider.getValueInt(), 0, screen.blueSlider.getValueInt()).getRGB(), new Color(screen.redSlider.getValueInt(), 0xFF, screen.blueSlider.getValueInt()).getRGB());
+		int leftColor = new Color(screen.redSlider.getValueInt(), 0x00, screen.blueSlider.getValueInt()).getRGB();
+		int rightColor = new Color(screen.redSlider.getValueInt(), 0xFF, screen.blueSlider.getValueInt()).getRGB();
+		ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, this.getBlitOffset(), leftColor, rightColor);
 	}
 
 	private void renderBlueBackground(MatrixStack matrixStack, ColorSelectScreen screen) {
-		ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, this.getBlitOffset(), new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), 0).getRGB(), new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), 0xFF).getRGB());
+		int leftColor = new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), 0x00).getRGB();
+		int rightColor = new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), 0xFF).getRGB();
+		ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, this.getBlitOffset(), leftColor, rightColor);
 	}
 
 	private void renderHueBackground(MatrixStack matrixStack, ColorSelectScreen screen) {
@@ -114,10 +125,14 @@ public class ColorSlider extends Slider {
 	}
 
 	private void renderSaturationBackground(MatrixStack matrixStack, ColorSelectScreen screen) {
-		ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, this.getBlitOffset(), Color.HSBtoRGB((float) (screen.hueSlider.getValue() / screen.MAX_VALUE_HUE), 0.0f, (float) (screen.brightnessSlider.getValue() / screen.MAX_VALUE_SB)), Color.HSBtoRGB((float) (screen.hueSlider.getValue() / screen.MAX_VALUE_HUE), 1.0f, (float) (screen.brightnessSlider.getValue() / screen.MAX_VALUE_SB)));
+		int leftColor = Color.HSBtoRGB((float) (screen.hueSlider.getValue() / screen.MAX_VALUE_HUE), 0.0f, (float) (screen.brightnessSlider.getValue() / screen.MAX_VALUE_SB));
+		int rightColor = Color.HSBtoRGB((float) (screen.hueSlider.getValue() / screen.MAX_VALUE_HUE), 1.0f, (float) (screen.brightnessSlider.getValue() / screen.MAX_VALUE_SB));
+		ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, this.getBlitOffset(), leftColor, rightColor);
 	}
 
 	private void renderBrightnessBackground(MatrixStack matrixStack, ColorSelectScreen screen) {
-		ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, this.getBlitOffset(), Color.HSBtoRGB((float) (screen.hueSlider.getValue() / screen.MAX_VALUE_HUE), (float) (screen.saturationSlider.getValue() / screen.MAX_VALUE_SB), 0.0f), Color.HSBtoRGB((float) (screen.hueSlider.getValue() / screen.MAX_VALUE_HUE), (float) (screen.saturationSlider.getValue() / screen.MAX_VALUE_SB), 1.0f));
+		int leftColor = Color.HSBtoRGB((float) (screen.hueSlider.getValue() / screen.MAX_VALUE_HUE), (float) (screen.saturationSlider.getValue() / screen.MAX_VALUE_SB), 0.0f);
+		int rightColor = Color.HSBtoRGB((float) (screen.hueSlider.getValue() / screen.MAX_VALUE_HUE), (float) (screen.saturationSlider.getValue() / screen.MAX_VALUE_SB), 1.0f);
+		ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, this.getBlitOffset(), leftColor, rightColor);
 	}
 }

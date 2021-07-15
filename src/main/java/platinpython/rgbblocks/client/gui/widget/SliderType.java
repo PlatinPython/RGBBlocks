@@ -1,4 +1,4 @@
-package platinpython.rgbblocks.client.gui;
+package platinpython.rgbblocks.client.gui.widget;
 
 public enum SliderType {
 	RED,

@@ -18,7 +18,7 @@ import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.colorhandlers.PaintBucketItemColor;
 import platinpython.rgbblocks.client.colorhandlers.RGBBlockColor;
 import platinpython.rgbblocks.client.colorhandlers.RGBBlockItemColor;
-import platinpython.rgbblocks.client.gui.ColorSelectScreen;
+import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
 import platinpython.rgbblocks.util.pack.RGBBlocksPack;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
