@@ -84,14 +84,7 @@ public class ColorSlider extends AbstractSlider {
 
 			this.renderBg(matrixStack, minecraft, mouseX, mouseY);
 
-			ITextComponent buttonText = this.getMessage();
-			int strWidth = minecraft.font.width(buttonText);
-			int ellipsisWidth = minecraft.font.width("...");
-
-			if (strWidth > this.width - 6 && strWidth > ellipsisWidth)
-				buttonText = new StringTextComponent(minecraft.font.substrByWidth(buttonText, this.width - 6 - ellipsisWidth).getString() + "...");
-
-			drawCenteredString(matrixStack, minecraft.font, buttonText, this.x + this.width / 2, this.y + (this.height - 8) / 2, getFGColor());
+			drawCenteredString(matrixStack, minecraft.font, this.getMessage(), this.x + this.width / 2, this.y - (this.height) / 10 * 7, getFGColor());
 		}
 	}
 

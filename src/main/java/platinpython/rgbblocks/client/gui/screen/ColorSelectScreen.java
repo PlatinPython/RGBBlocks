@@ -31,7 +31,7 @@ public class ColorSelectScreen extends Screen {
 
 	private boolean isRGBSelected;
 
-	private TranslationTextComponent useRGBText, useHSBText;
+	private final TranslationTextComponent useRGBText, useHSBText;
 
 	public ColorSelectScreen(int colorIn, boolean isRGBSelected) {
 		super(StringTextComponent.EMPTY);
@@ -73,13 +73,13 @@ public class ColorSelectScreen extends Screen {
 
 		this.hueSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.hue").append(": "), MIN_VALUE, MAX_VALUE_HUE, this.hue, SliderType.HUE);
 
-		y += SPACING;
+		y += SPACING + 15;
 
 		this.greenSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.green").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.green, SliderType.GREEN);
 
 		this.saturationSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.saturation").append(": "), MIN_VALUE, MAX_VALUE_SB, this.saturation, SliderType.SATURATION);
 
-		y += SPACING;
+		y += SPACING + 15;
 
 		this.blueSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.blue").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.blue, SliderType.BLUE);
 
@@ -156,7 +156,7 @@ public class ColorSelectScreen extends Screen {
 		}
 		matrixStack.pushPose();
 		matrixStack.translate(this.width / 2, this.height / 4, 0);
-		fill(matrixStack, -10, -10, 10, 10, getColor());
+//		fill(matrixStack, -10, -10, 10, 10, getColor());
 		matrixStack.popPose();
 	}
 
