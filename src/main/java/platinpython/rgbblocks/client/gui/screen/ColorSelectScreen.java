@@ -69,21 +69,51 @@ public class ColorSelectScreen extends Screen {
 		int x = this.width / 2 - SLIDER_WIDTH / 2;
 		int y = this.height / 2 - WIDGET_HEIGHT / 2 - SPACING;
 
-		this.redSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.red").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.red, SliderType.RED);
+		if (redSlider == null) {
+			this.redSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.red").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.red, SliderType.RED);
+		} else {
+			this.redSlider.x = x;
+			this.redSlider.y = y;
+		}
 
-		this.hueSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.hue").append(": "), MIN_VALUE, MAX_VALUE_HUE, this.hue, SliderType.HUE);
+		if (hueSlider == null) {
+			this.hueSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.hue").append(": "), MIN_VALUE, MAX_VALUE_HUE, this.hue, SliderType.HUE);
+		} else {
+			this.hueSlider.x = x;
+			this.hueSlider.y = y;
+		}
 
 		y += SPACING + 15;
 
-		this.greenSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.green").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.green, SliderType.GREEN);
+		if (greenSlider == null) {
+			this.greenSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.green").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.green, SliderType.GREEN);
+		} else {
+			this.greenSlider.x = x;
+			this.greenSlider.y = y;
+		}
 
-		this.saturationSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.saturation").append(": "), MIN_VALUE, MAX_VALUE_SB, this.saturation, SliderType.SATURATION);
+		if (saturationSlider == null) {
+			this.saturationSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.saturation").append(": "), MIN_VALUE, MAX_VALUE_SB, this.saturation, SliderType.SATURATION);
+		} else {
+			this.saturationSlider.x = x;
+			this.saturationSlider.y = y;
+		}
 
 		y += SPACING + 15;
 
-		this.blueSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.blue").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.blue, SliderType.BLUE);
+		if (blueSlider == null) {
+			this.blueSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.blue").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.blue, SliderType.BLUE);
+		} else {
+			this.blueSlider.x = x;
+			this.blueSlider.y = y;
+		}
 
-		this.brightnessSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.brightness").append(": "), MIN_VALUE, MAX_VALUE_SB, this.brightness, SliderType.BRIGHTNESS);
+		if (brightnessSlider == null) {
+			this.brightnessSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.brightness").append(": "), MIN_VALUE, MAX_VALUE_SB, this.brightness, SliderType.BRIGHTNESS);
+		} else {
+			this.brightnessSlider.x = x;
+			this.brightnessSlider.y = y;
+		}
 
 		y += SPACING;
 
