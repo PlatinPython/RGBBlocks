@@ -18,7 +18,7 @@ public class ColorSelectScreen extends Screen {
 	public ColorSlider redSlider, greenSlider, blueSlider;
 	private double hue, saturation, brightness;
 	public ColorSlider hueSlider, saturationSlider, brightnessSlider;
-	
+
 	public final int WIDGET_HEIGHT = 20;
 	public final int SLIDER_WIDTH = 310;
 	public final int BUTTON_WIDTH = 98;
@@ -155,8 +155,9 @@ public class ColorSelectScreen extends Screen {
 			((Widget) this.children.get(i)).render(matrixStack, mouseX, mouseY, partialTicks);
 		}
 		matrixStack.pushPose();
-		matrixStack.translate(this.width / 2, this.height / 4, 0);
-//		fill(matrixStack, -10, -10, 10, 10, getColor());
+		matrixStack.translate(this.width / 2, this.height / 2 - WIDGET_HEIGHT / 2 - 2 * SPACING - 15, 0);
+		fill(matrixStack, -SLIDER_WIDTH / 2, -WIDGET_HEIGHT, SLIDER_WIDTH / 2, WIDGET_HEIGHT, 0xFF000000);
+		fill(matrixStack, -SLIDER_WIDTH / 2 + 1, -WIDGET_HEIGHT + 1, SLIDER_WIDTH / 2 - 1, WIDGET_HEIGHT - 1, getColor());
 		matrixStack.popPose();
 	}
 
