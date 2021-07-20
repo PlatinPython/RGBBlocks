@@ -2,6 +2,8 @@ package platinpython.rgbblocks.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.resources.IPackNameDecorator;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.resources.PackCompatibility;
@@ -11,15 +13,20 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.colorhandlers.PaintBucketItemColor;
 import platinpython.rgbblocks.client.colorhandlers.RGBBlockColor;
 import platinpython.rgbblocks.client.colorhandlers.RGBBlockItemColor;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
+import platinpython.rgbblocks.client.renderer.entity.RGBFallingBlockRenderer;
 import platinpython.rgbblocks.util.pack.RGBBlocksPack;
+import platinpython.rgbblocks.util.registries.BlockRegistry;
+import platinpython.rgbblocks.util.registries.EntityRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
 @EventBusSubscriber(modid = RGBBlocks.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
@@ -38,6 +45,15 @@ public class ClientProxy {
 
 		IReloadableResourceManager resourceManager = (IReloadableResourceManager) minecraft.getResourceManager();
 		resourceManager.registerReloadListener(VIRTUAL_PACK);
+	}
+
+	@SubscribeEvent
+	public static void doClientStuff(final FMLClientSetupEvent event) {
+		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.RGB_FALLING_BLOCK.get(), RGBFallingBlockRenderer::new);
+
+		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.translucent());
 	}
 
 	@SubscribeEvent
