@@ -5,12 +5,12 @@ import java.util.function.Function;
 import mcjty.theoneprobe.api.ITheOneProbe;
 
 public class TOPMain implements Function<ITheOneProbe, Void>{
-	static ITheOneProbe PROBE;
+	private static ITheOneProbe probe;
 
 	@Override
-	public Void apply(ITheOneProbe o) {
-		PROBE = (ITheOneProbe) o;
-		PROBE.registerProvider(new RGBBlockProvider());
+	public Void apply(ITheOneProbe theOneProbe) {
+		probe = theOneProbe;
+		probe.registerProvider(new RGBBlockProvider());
 		return null;
 	}
 

@@ -15,13 +15,16 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 import platinpython.rgbblocks.RGBBlocks;
+import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
-import platinpython.rgbblocks.util.ClientProxy;
+import platinpython.rgbblocks.util.ClientUtils;
 import platinpython.rgbblocks.util.Color;
 
 public class PaintBucketItem extends Item {
@@ -43,8 +46,19 @@ public class PaintBucketItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		Color color = new Color(stack.getOrCreateTag().getInt("color"));
-		StringTextComponent rgbHex = new StringTextComponent("#" + Integer.toHexString(color.getRGB()).substring(2));
-		tooltip.add(rgbHex);
+		if (ClientUtils.hasShiftDown()) {
+			IFormattableTextComponent red = new TranslationTextComponent("gui.rgbblocks.red").append(": " + color.getRed());
+			IFormattableTextComponent green = new TranslationTextComponent("gui.rgbblocks.green").append(": " + color.getGreen());
+			IFormattableTextComponent blue = new TranslationTextComponent("gui.rgbblocks.blue").append(": " + color.getBlue());
+			tooltip.add(red.append(", ").append(green).append(", ").append(blue));
+			float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue());
+			IFormattableTextComponent hue = new TranslationTextComponent("gui.rgbblocks.hue").append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
+			IFormattableTextComponent saturation = new TranslationTextComponent("gui.rgbblocks.saturation").append(": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
+			IFormattableTextComponent brightness = new TranslationTextComponent("gui.rgbblocks.brightness").append(": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
+			tooltip.add(hue.append(", ").append(saturation).append(", ").append(brightness));
+		} else {
+			tooltip.add(new StringTextComponent("#" + Integer.toHexString(color.getRGB()).substring(2)));
+		}
 	}
 
 	@Override
@@ -61,7 +75,7 @@ public class PaintBucketItem extends Item {
 	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		if (handIn == Hand.MAIN_HAND && playerIn.isShiftKeyDown()) {
 			if (worldIn.isClientSide) {
-				ClientProxy.openColorSelectScreen(playerIn.getMainHandItem().getTag().getInt("color"), playerIn.getMainHandItem().getTag().getBoolean("isRGBSelected"));
+				ClientUtils.openColorSelectScreen(playerIn.getMainHandItem().getTag().getInt("color"), playerIn.getMainHandItem().getTag().getBoolean("isRGBSelected"));
 				return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getMainHandItem());
 			}
 		}

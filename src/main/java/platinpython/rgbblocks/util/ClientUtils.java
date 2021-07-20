@@ -2,6 +2,7 @@ package platinpython.rgbblocks.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.resources.IPackNameDecorator;
@@ -30,12 +31,12 @@ import platinpython.rgbblocks.util.registries.EntityRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
 @EventBusSubscriber(modid = RGBBlocks.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
-public class ClientProxy {
+public class ClientUtils {
 	public static final RGBBlocksPack VIRTUAL_PACK = new RGBBlocksPack();
 
 	@SubscribeEvent
 	public static void onModConstruct(FMLConstructModEvent event) {
-		event.enqueueWork(ClientProxy::registerVirtualPack);
+		event.enqueueWork(ClientUtils::registerVirtualPack);
 	}
 
 	private static void registerVirtualPack() {
@@ -66,5 +67,9 @@ public class ClientProxy {
 
 	public static void openColorSelectScreen(int color, boolean isRGBSelected) {
 		Minecraft.getInstance().setScreen(new ColorSelectScreen(color, isRGBSelected));
+	}
+	
+	public static boolean hasShiftDown() {
+		return Screen.hasShiftDown();
 	}
 }
