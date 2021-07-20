@@ -24,10 +24,10 @@ public class ColorSelectScreen extends Screen {
 	public final int BUTTON_WIDTH = 98;
 	public final int SPACING = WIDGET_HEIGHT + 5;
 
-	public final double MIN_VALUE = 0.0D;
-	public final double MAX_VALUE_RGB = 255.0D;
-	public final double MAX_VALUE_HUE = 360.0D;
-	public final double MAX_VALUE_SB = 100.0D;
+	public static final double MIN_VALUE = 0.0D;
+	public static final double MAX_VALUE_RGB = 255.0D;
+	public static final double MAX_VALUE_HUE = 360.0D;
+	public static final double MAX_VALUE_SB = 100.0D;
 
 	private boolean isRGBSelected;
 

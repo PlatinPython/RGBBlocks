@@ -108,7 +108,7 @@ public class ColorSlider extends AbstractSlider {
 
 	private void renderHueBackground(MatrixStack matrixStack, ColorSelectScreen screen) {
 		Function<Integer, Integer> lerp = (pct) -> (int) Math.floor(MathHelper.lerp(pct / 100f, this.x + 1, this.x + this.width - 1));
-		Function<Integer, Integer> color = (pct) -> Color.HSBtoRGB((float) ((pct / 100f)), (float) (screen.saturationSlider.getValueInt() / screen.MAX_VALUE_SB), (float) (screen.brightnessSlider.getValueInt() / screen.MAX_VALUE_SB));
+		Function<Integer, Integer> color = (pct) -> Color.HSBtoRGB((float) ((pct / 100f)), (float) (screen.saturationSlider.getValueInt() / ColorSelectScreen.MAX_VALUE_SB), (float) (screen.brightnessSlider.getValueInt() / ColorSelectScreen.MAX_VALUE_SB));
 		ScreenUtils.fillGradient(matrixStack, lerp.apply(0), this.y + 1, lerp.apply(17), this.y + this.height - 1, this.getBlitOffset(), color.apply(0), color.apply(17));
 		ScreenUtils.fillGradient(matrixStack, lerp.apply(17), this.y + 1, lerp.apply(34), this.y + this.height - 1, this.getBlitOffset(), color.apply(17), color.apply(34));
 		ScreenUtils.fillGradient(matrixStack, lerp.apply(34), this.y + 1, lerp.apply(50), this.y + this.height - 1, this.getBlitOffset(), color.apply(34), color.apply(50));
@@ -118,14 +118,14 @@ public class ColorSlider extends AbstractSlider {
 	}
 
 	private void renderSaturationBackground(MatrixStack matrixStack, ColorSelectScreen screen) {
-		int leftColor = Color.HSBtoRGB((float) (screen.hueSlider.getValue() / screen.MAX_VALUE_HUE), 0.0f, (float) (screen.brightnessSlider.getValue() / screen.MAX_VALUE_SB));
-		int rightColor = Color.HSBtoRGB((float) (screen.hueSlider.getValue() / screen.MAX_VALUE_HUE), 1.0f, (float) (screen.brightnessSlider.getValue() / screen.MAX_VALUE_SB));
+		int leftColor = Color.HSBtoRGB((float) (screen.hueSlider.getValue() / ColorSelectScreen.MAX_VALUE_HUE), 0.0f, (float) (screen.brightnessSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB));
+		int rightColor = Color.HSBtoRGB((float) (screen.hueSlider.getValue() / ColorSelectScreen.MAX_VALUE_HUE), 1.0f, (float) (screen.brightnessSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB));
 		ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, this.getBlitOffset(), leftColor, rightColor);
 	}
 
 	private void renderBrightnessBackground(MatrixStack matrixStack, ColorSelectScreen screen) {
-		int leftColor = Color.HSBtoRGB((float) (screen.hueSlider.getValue() / screen.MAX_VALUE_HUE), (float) (screen.saturationSlider.getValue() / screen.MAX_VALUE_SB), 0.0f);
-		int rightColor = Color.HSBtoRGB((float) (screen.hueSlider.getValue() / screen.MAX_VALUE_HUE), (float) (screen.saturationSlider.getValue() / screen.MAX_VALUE_SB), 1.0f);
+		int leftColor = Color.HSBtoRGB((float) (screen.hueSlider.getValue() / ColorSelectScreen.MAX_VALUE_HUE), (float) (screen.saturationSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB), 0.0f);
+		int rightColor = Color.HSBtoRGB((float) (screen.hueSlider.getValue() / ColorSelectScreen.MAX_VALUE_HUE), (float) (screen.saturationSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB), 1.0f);
 		ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, this.getBlitOffset(), leftColor, rightColor);
 	}
 }
