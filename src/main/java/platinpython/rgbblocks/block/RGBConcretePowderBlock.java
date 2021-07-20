@@ -48,12 +48,7 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements RGBBl
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 		if (worldIn.isEmptyBlock(pos.below()) || isFree(worldIn.getBlockState(pos.below())) && pos.getY() >= 0) {
 			TileEntity tileEntity = worldIn.getBlockEntity(pos);
-			RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(worldIn, (double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, tileEntity instanceof RGBTileEntity ? ((RGBTileEntity) tileEntity).getColor() : 0);
-			try {
-				RGBFallingBlockEntity.BLOCK_STATE.set(fallingBlockEntity, worldIn.getBlockState(pos));
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				throw new RuntimeException(e);
-			}
+			RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(worldIn, (double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, state, tileEntity instanceof RGBTileEntity ? ((RGBTileEntity) tileEntity).getColor() : 0);
 			this.falling(fallingBlockEntity);
 			worldIn.addFreshEntity(fallingBlockEntity);
 		}

@@ -1,7 +1,6 @@
 package platinpython.rgbblocks.entity;
 
-import java.lang.reflect.Field;
-
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -10,21 +9,20 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 import platinpython.rgbblocks.util.registries.EntityRegistry;
 
 public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntityAdditionalSpawnData {
 	private int color;
-	public static final Field BLOCK_STATE = ObfuscationReflectionHelper.findField(FallingBlockEntity.class, "field_175132_d");
 
 	public RGBFallingBlockEntity(EntityType<? extends FallingBlockEntity> entityType, World world) {
 		super(EntityRegistry.RGB_FALLING_BLOCK.get(), world);
 	}
 
-	public RGBFallingBlockEntity(World world, double x, double y, double z, int color) {
+	public RGBFallingBlockEntity(World world, double x, double y, double z, BlockState state, int color) {
 		this(EntityRegistry.RGB_FALLING_BLOCK.get(), world);
+		this.blockState = state;
 		this.blocksBuilding = true;
 		this.setPos(x, y + (double) ((1.0F - this.getBbHeight()) / 2.0F), z);
 		this.color = color;
