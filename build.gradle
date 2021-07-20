@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'me.sizableshrimp.parchmenttest', name: 'ForgeGradle', version: '4.+', changing: true
+        classpath group: 'me.sizableshrimp.parchmenttest', name: 'ForgeGradle', version: '4.1.+', changing: true
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -21,7 +21,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'parchment', version: '2021.06.27-nightly-SNAPSHOT-1.16.5'
+    mappings channel: 'parchment', version: '2021.07.14-nightly-SNAPSHOT-1.16.5'
 
     runs {
         client {
@@ -79,7 +79,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.1.16'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.1.65'
 
 	implementation fg.deobf("team.chisel.ctm:CTM:MC1.16.1-${ctm_version}")
 }

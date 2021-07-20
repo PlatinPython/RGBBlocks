@@ -9,7 +9,7 @@ import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 public class DataGatherer {
 	public static void onGatherData(GatherDataEvent event) {
 		DataGenerator generator = event.getGenerator();
-		ExistingFileHelper helper = new ExistingFileHelper(Collections.emptyList(), Collections.emptySet(), false);
+		ExistingFileHelper helper = new ExistingFileHelper(Collections.emptyList(), Collections.emptySet(), false, null, null);
 
 		if (event.includeClient()) {
 			generator.addProvider(new ModLanguageProvider(generator));
