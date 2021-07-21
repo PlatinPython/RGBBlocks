@@ -44,7 +44,6 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
 
 		for (int i = 0; i < nonnulllist.size(); i++) {
 			ItemStack item = craftingInventory.getItem(i);
-			;
 			if (item.getItem() instanceof PaintBucketItem) {
 				if (item.getOrCreateTag().getInt("color") == blockStack.getOrCreateTag().getInt("color")) {
 					nonnulllist.set(i, item.copy());
