@@ -16,6 +16,7 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import platinpython.rgbblocks.item.PaintBucketItem;
+import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.registries.RecipeSerializerRegistry;
 
 public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
@@ -31,11 +32,23 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(CraftingInventory craftingInventory) {
 		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(craftingInventory.getContainerSize(), ItemStack.EMPTY);
+		ItemStack blockStack = ItemStack.EMPTY;
 
 		for (int i = 0; i < nonnulllist.size(); i++) {
 			ItemStack item = craftingInventory.getItem(i);
+			if (item.getItem() instanceof RGBBlockItem) {
+				blockStack = item;
+				break;
+			}
+		}
+
+		for (int i = 0; i < nonnulllist.size(); i++) {
+			ItemStack item = craftingInventory.getItem(i);
+			;
 			if (item.getItem() instanceof PaintBucketItem) {
-				if (item.getDamageValue() == item.getMaxDamage() - 1) {
+				if (item.getOrCreateTag().getInt("color") == blockStack.getOrCreateTag().getInt("color")) {
+					nonnulllist.set(i, item.copy());
+				} else if (item.getDamageValue() == item.getMaxDamage() - 1) {
 					nonnulllist.set(i, new ItemStack(Items.BUCKET));
 				} else {
 					ItemStack remainder = item.copy();

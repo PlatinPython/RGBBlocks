@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rgbblocks:glass_coloring"
+    ]
+  },
+  "criteria": {
+    "has_paint_bucket_and_glass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rgbblocks:paint_bucket"
+          },
+          {
+            "item": "rgbblocks:glass"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rgbblocks:glass_coloring"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_paint_bucket_and_glass",
+      "has_the_recipe"
+    ]
+  ]
+}

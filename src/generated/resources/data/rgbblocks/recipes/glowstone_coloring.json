@@ -2,13 +2,13 @@
   "type": "rgbblocks:crafting_shapeless_durability_aware_paint_bucket",
   "ingredients": [
     {
-      "tag": "forge:stained_glass"
+      "item": "rgbblocks:glowstone"
     },
     {
       "item": "rgbblocks:paint_bucket"
     }
   ],
   "result": {
-    "item": "rgbblocks:glass"
+    "item": "rgbblocks:glowstone"
   }
 }

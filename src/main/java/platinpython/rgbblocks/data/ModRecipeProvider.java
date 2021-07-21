@@ -2,6 +2,7 @@ package platinpython.rgbblocks.data;
 
 import java.util.function.Consumer;
 
+import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
@@ -16,6 +17,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.IItemProvider;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
+import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
@@ -53,6 +55,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 		ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_ANTIBLOCK.get(), 8, whiteNBT).define('S', Tags.Items.STONE).define('G', BlockRegistry.RGB_GLOWSTONE.get()).pattern("SSS").pattern("SGS").pattern("SSS").unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get())).save(consumer);
 		ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_CARPET.get(), 3, whiteNBT).define('#', BlockRegistry.RGB_WOOL.get()).pattern("##").unlockedBy("has_rgb_wool", has(BlockRegistry.RGB_WOOL.get())).save(consumer);
 		ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_REDSTONE_LAMP.get(), 1, whiteNBT).define('R', Tags.Items.DUSTS_REDSTONE).define('G', BlockRegistry.RGB_GLOWSTONE.get()).pattern(" R ").pattern("RGR").pattern(" R ").unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get())).save(consumer);
+
+		RegistryHandler.BLOCKS.getEntries().forEach((block) -> ShapelessNBTRecipeBuilder.shapeless(block.get().getBlock()).requires(block.get()).requires(ItemRegistry.PAINT_BUCKET.get()).unlockedBy("has_paint_bucket_and_" + block.getId().getPath(), inventoryTrigger(ItemPredicate.Builder.item().of(ItemRegistry.PAINT_BUCKET.get()).build(), ItemPredicate.Builder.item().of(block.get()).build())).save(consumer, block.getId() + "_coloring"));
 	}
 
 	private void blockIItemProvider(Consumer<IFinishedRecipe> consumer, Block result, IItemProvider provider) {
@@ -64,7 +68,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 	}
 
 	private void block(Consumer<IFinishedRecipe> consumer, Block result, Ingredient ingredient) {
-		ShapelessNBTRecipeBuilder.shapeless(result.getBlock(), 1, whiteNBT).requires(ingredient).requires(ItemRegistry.PAINT_BUCKET.get()).unlockedBy("has_paint_bucket", has(ItemRegistry.PAINT_BUCKET.get())).save(consumer);
+		ShapelessNBTRecipeBuilder.shapeless(result.getBlock()).requires(ingredient).requires(ItemRegistry.PAINT_BUCKET.get()).unlockedBy("has_paint_bucket", has(ItemRegistry.PAINT_BUCKET.get())).save(consumer);
 	}
 
 	private void slabBlock(Consumer<IFinishedRecipe> consumer, Block result, Block base) {

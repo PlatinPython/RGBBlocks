@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rgbblocks:wool_slab_coloring"
+    ]
+  },
+  "criteria": {
+    "has_paint_bucket_and_wool_slab": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rgbblocks:paint_bucket"
+          },
+          {
+            "item": "rgbblocks:wool_slab"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rgbblocks:wool_slab_coloring"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_paint_bucket_and_wool_slab",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -9,7 +9,6 @@
     }
   ],
   "result": {
-    "item": "rgbblocks:wool",
-    "nbt": "{\"color\":-1}"
+    "item": "rgbblocks:wool"
   }
 }

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rgbblocks:carpet_coloring"
+    ]
+  },
+  "criteria": {
+    "has_paint_bucket_and_carpet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rgbblocks:paint_bucket"
+          },
+          {
+            "item": "rgbblocks:carpet"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rgbblocks:carpet_coloring"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_paint_bucket_and_carpet",
+      "has_the_recipe"
+    ]
+  ]
+}

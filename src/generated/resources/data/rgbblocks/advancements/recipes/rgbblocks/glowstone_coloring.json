@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rgbblocks:glowstone_coloring"
+    ]
+  },
+  "criteria": {
+    "has_paint_bucket_and_glowstone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rgbblocks:paint_bucket"
+          },
+          {
+            "item": "rgbblocks:glowstone"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rgbblocks:glowstone_coloring"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_paint_bucket_and_glowstone",
+      "has_the_recipe"
+    ]
+  ]
+}

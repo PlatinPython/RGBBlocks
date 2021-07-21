@@ -9,7 +9,6 @@
     }
   ],
   "result": {
-    "item": "rgbblocks:terracotta",
-    "nbt": "{\"color\":-1}"
+    "item": "rgbblocks:terracotta"
   }
 }

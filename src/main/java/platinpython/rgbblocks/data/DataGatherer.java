@@ -9,12 +9,12 @@ import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 public class DataGatherer {
 	public static void onGatherData(GatherDataEvent event) {
 		DataGenerator generator = event.getGenerator();
-		ExistingFileHelper helper = new ExistingFileHelper(Collections.emptyList(), Collections.emptySet(), false, null, null);
+		ExistingFileHelper existingFileHelper = new ExistingFileHelper(Collections.emptyList(), Collections.emptySet(), false, null, null);
 
 		if (event.includeClient()) {
 			generator.addProvider(new ModLanguageProvider(generator));
-			generator.addProvider(new ModItemModelProvider(generator, helper));
-			generator.addProvider(new ModBlockStateProvider(generator, helper));
+			generator.addProvider(new ModItemModelProvider(generator, existingFileHelper));
+			generator.addProvider(new ModBlockStateProvider(generator, existingFileHelper));
 		}
 		if (event.includeServer()) {
 			generator.addProvider(new ModRecipeProvider(generator));

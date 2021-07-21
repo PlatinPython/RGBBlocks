@@ -9,7 +9,6 @@
     }
   ],
   "result": {
-    "item": "rgbblocks:concrete_powder",
-    "nbt": "{\"color\":-1}"
+    "item": "rgbblocks:concrete_powder"
   }
 }

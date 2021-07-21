@@ -9,7 +9,6 @@
     }
   ],
   "result": {
-    "item": "rgbblocks:glowstone",
-    "nbt": "{\"color\":-1}"
+    "item": "rgbblocks:glowstone"
   }
 }

@@ -2,7 +2,7 @@
   "type": "rgbblocks:crafting_shapeless_durability_aware_paint_bucket",
   "ingredients": [
     {
-      "tag": "forge:stained_glass"
+      "item": "rgbblocks:glass"
     },
     {
       "item": "rgbblocks:paint_bucket"
