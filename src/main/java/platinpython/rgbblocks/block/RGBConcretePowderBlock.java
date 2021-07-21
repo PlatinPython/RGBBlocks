@@ -19,29 +19,29 @@ import platinpython.rgbblocks.entity.RGBFallingBlockEntity;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
-public class RGBConcretePowderBlock extends ConcretePowderBlock implements RGBBlock {
+public class RGBConcretePowderBlock extends ConcretePowderBlock {
 	public RGBConcretePowderBlock() {
 		super(BlockRegistry.RGB_CONCRETE.get(), Properties.copy(Blocks.WHITE_CONCRETE_POWDER));
 	}
 
 	@Override
 	public boolean hasTileEntity(BlockState state) {
-		return RGBBlock.hasTileEntity(state);
+		return true;
 	}
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return RGBBlock.createTileEntity(state, world);
+		return RGBBlockUtils.createTileEntity(state, world);
 	}
 
 	@Override
 	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		RGBBlock.setPlacedBy(worldIn, pos, state, placer, stack);
+		RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
 	}
 
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-		return RGBBlock.getPickBlock(state, target, world, pos, player);
+		return RGBBlockUtils.getPickBlock(state, target, world, pos, player);
 	}
 
 	@Override

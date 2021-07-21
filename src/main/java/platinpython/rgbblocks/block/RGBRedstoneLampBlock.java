@@ -12,28 +12,28 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class RGBRedstoneLampBlock extends RedstoneLampBlock implements RGBBlock {
+public class RGBRedstoneLampBlock extends RedstoneLampBlock {
 	public RGBRedstoneLampBlock() {
 		super(Properties.copy(Blocks.REDSTONE_LAMP));
 	}
 
 	@Override
 	public boolean hasTileEntity(BlockState state) {
-		return RGBBlock.hasTileEntity(state);
+		return true;
 	}
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return RGBBlock.createTileEntity(state, world);
+		return RGBBlockUtils.createTileEntity(state, world);
 	}
 
 	@Override
 	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		RGBBlock.setPlacedBy(worldIn, pos, state, placer, stack);
+		RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
 	}
 
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-		return RGBBlock.getPickBlock(state, target, world, pos, player);
+		return RGBBlockUtils.getPickBlock(state, target, world, pos, player);
 	}
 }

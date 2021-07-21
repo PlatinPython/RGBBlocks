@@ -3,25 +3,154 @@ package platinpython.rgbblocks.block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.state.properties.StairsShape;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
+import platinpython.rgbblocks.tileentity.RGBTileEntity;
+import platinpython.rgbblocks.util.Color;
+import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
-public interface GlassStairsBlock {
-	public static boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-		if (adjacentBlockState.getBlock() instanceof GenericRGBGlassBlock) {
+public final class RGBBlockUtils {
+	public static TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return TileEntityRegistry.RGB.get().create();
+	}
+
+	public static void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
+		if (stack.hasTag() == true && tileEntity instanceof RGBTileEntity) {
+			((RGBTileEntity) tileEntity).setColor(stack.getTag().getInt("color"));
+		}
+	}
+
+	public static ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+		ItemStack stack = new ItemStack(state.getBlock().asItem());
+		TileEntity tileEntity = world.getBlockEntity(pos);
+		if (tileEntity instanceof RGBTileEntity) {
+			CompoundNBT tag = new CompoundNBT();
+			tag.putInt("color", ((RGBTileEntity) tileEntity).getColor());
+			stack.setTag(tag);
+		}
+		return stack;
+	}
+
+	public static float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
+		TileEntity tileEntity = world.getBlockEntity(pos);
+		if (tileEntity instanceof RGBTileEntity) {
+			return new Color(((RGBTileEntity) tileEntity).getColor()).getRGBColorComponents();
+		} else {
+			return null;
+		}
+	}
+
+	public static boolean blockSkipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
+		if (adjacentBlockState.getBlock() instanceof RGBBlock) {
 			return true;
-		} else if (adjacentBlockState.getBlock() instanceof GenericRGBGlassSlabBlock) {
-			return skipRenderingGlassSlab(state, adjacentBlockState, side);
-		} else if (adjacentBlockState.getBlock() instanceof GenericRGBGlassStairsBlock) {
-			return skipRenderingGlassStairs(state, adjacentBlockState, side);
+		} else if (adjacentBlockState.getBlock() instanceof RGBGlassSlabBlock) {
+			if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.DOUBLE) {
+				return true;
+			} else if (side == Direction.UP) {
+				return adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.BOTTOM;
+			} else if (side == Direction.DOWN) {
+				return adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.TOP;
+			} else {
+				return false;
+			}
+		} else if (adjacentBlockState.getBlock() instanceof RGBGlassStairsBlock) {
+			if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_LEFT || adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.OUTER_RIGHT) {
+				return false;
+			} else if (side == adjacentBlockState.getValue(StairsBlock.FACING).getOpposite()) {
+				return true;
+			} else if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.INNER_LEFT) {
+				return side == adjacentBlockState.getValue(StairsBlock.FACING).getClockWise();
+			} else if (adjacentBlockState.getValue(StairsBlock.SHAPE) == StairsShape.INNER_RIGHT) {
+				return side == adjacentBlockState.getValue(StairsBlock.FACING).getCounterClockWise();
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
 	}
 
-	static boolean skipRenderingGlassSlab(BlockState state, BlockState adjacentBlockState, Direction side) {
+	public static boolean slabSkipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
+		if (adjacentBlockState.getBlock() instanceof RGBGlassBlock) {
+			return true;
+		} else if (adjacentBlockState.getBlock() instanceof RGBGlassSlabBlock) {
+			return slabSkipRenderingAdjacentGlassSlab(state, adjacentBlockState, side);
+		} else if (adjacentBlockState.getBlock() instanceof RGBGlassStairsBlock) {
+			return slabSkipRenderingAdjacentGlassStairs(state, adjacentBlockState, side);
+		} else {
+			return false;
+		}
+	}
+
+	public static boolean slabSkipRenderingAdjacentGlassSlab(BlockState state, BlockState adjacentBlockState, Direction side) {
+		if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.DOUBLE) {
+			return true;
+		}
+
+		switch (side) {
+		case UP:
+		case DOWN:
+			return (state.getValue(SlabBlock.TYPE) != adjacentBlockState.getValue(SlabBlock.TYPE));
+		case NORTH:
+		case EAST:
+		case SOUTH:
+		case WEST:
+			return (state.getValue(SlabBlock.TYPE) == adjacentBlockState.getValue(SlabBlock.TYPE));
+		}
+
+		return false;
+	}
+
+	public static boolean slabSkipRenderingAdjacentGlassStairs(BlockState state, BlockState adjacentBlockState, Direction side) {
+		if (side == Direction.UP && adjacentBlockState.getValue(StairsBlock.HALF) == Half.BOTTOM) {
+			return true;
+		}
+
+		if (side == Direction.DOWN && adjacentBlockState.getValue(StairsBlock.HALF) == Half.TOP) {
+			return true;
+		}
+
+		if (adjacentBlockState.getValue(StairsBlock.FACING) == side.getOpposite()) {
+			return true;
+		}
+
+		if (side.get2DDataValue() != -1) {
+			if (state.getValue(SlabBlock.TYPE) == SlabType.BOTTOM && adjacentBlockState.getValue(StairsBlock.HALF) == Half.BOTTOM) {
+				return true;
+			} else if (state.getValue(SlabBlock.TYPE) == SlabType.TOP && adjacentBlockState.getValue(StairsBlock.HALF) == Half.TOP) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public static boolean stairSkipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
+		if (adjacentBlockState.getBlock() instanceof RGBGlassBlock) {
+			return true;
+		} else if (adjacentBlockState.getBlock() instanceof RGBGlassSlabBlock) {
+			return stairSkipRenderingAdjacentGlassSlab(state, adjacentBlockState, side);
+		} else if (adjacentBlockState.getBlock() instanceof RGBGlassStairsBlock) {
+			return stairSkipRenderingAdjacentGlassStairs(state, adjacentBlockState, side);
+		} else {
+			return false;
+		}
+	}
+
+	public static boolean stairSkipRenderingAdjacentGlassSlab(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (side == Direction.UP && adjacentBlockState.getValue(SlabBlock.TYPE) != SlabType.TOP) {
 			return true;
 		}
@@ -61,7 +190,7 @@ public interface GlassStairsBlock {
 		return false;
 	}
 
-	static boolean skipRenderingGlassStairs(BlockState state, BlockState adjacentBlockState, Direction side) {
+	public static boolean stairSkipRenderingAdjacentGlassStairs(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (side == Direction.UP) {
 			if (adjacentBlockState.getValue(StairsBlock.HALF) == Half.BOTTOM) {
 				return true;

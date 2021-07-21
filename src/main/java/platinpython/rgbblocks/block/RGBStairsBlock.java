@@ -1,7 +1,7 @@
 package platinpython.rgbblocks.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -11,28 +11,28 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class GenericRGBBlock extends Block implements RGBBlock {
-	public GenericRGBBlock(Properties properties) {
-		super(properties);
+public class RGBStairsBlock extends StairsBlock {
+	public RGBStairsBlock(java.util.function.Supplier<BlockState> state, Properties properties) {
+		super(state, properties);
 	}
 
 	@Override
 	public boolean hasTileEntity(final BlockState state) {
-		return RGBBlock.hasTileEntity(state);
+		return true;
 	}
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return RGBBlock.createTileEntity(state, world);
+		return RGBBlockUtils.createTileEntity(state, world);
 	}
 
 	@Override
 	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		RGBBlock.setPlacedBy(worldIn, pos, state, placer, stack);
+		RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
 	}
 
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-		return RGBBlock.getPickBlock(state, target, world, pos, player);
+		return RGBBlockUtils.getPickBlock(state, target, world, pos, player);
 	}
 }

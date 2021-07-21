@@ -7,19 +7,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
-public class GenericRGBGlassSlabBlock extends GenericRGBSlabBlock implements GlassBlock, GlassSlabBlock {
-	public GenericRGBGlassSlabBlock() {
+public class RGBGlassBlock extends RGBBlock {
+	public RGBGlassBlock() {
 		super(Properties.copy(Blocks.GLASS));
 	}
 
 	@Override
 	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
-		return GlassBlock.getBeaconColorMultiplier(state, world, pos, beaconPos);
+		return RGBBlockUtils.getBeaconColorMultiplier(state, world, pos, beaconPos);
 	}
 
 	@Override
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-		return GlassSlabBlock.skipRendering(state, adjacentBlockState, side);
+		return RGBBlockUtils.blockSkipRendering(state, adjacentBlockState, side);
 	}
 
 	@Override
