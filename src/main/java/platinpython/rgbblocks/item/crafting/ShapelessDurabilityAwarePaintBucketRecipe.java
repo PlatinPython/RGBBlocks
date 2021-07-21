@@ -32,7 +32,7 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
 	public NonNullList<ItemStack> getRemainingItems(CraftingInventory craftingInventory) {
 		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(craftingInventory.getContainerSize(), ItemStack.EMPTY);
 
-		for (int i = 0; i < nonnulllist.size(); ++i) {
+		for (int i = 0; i < nonnulllist.size(); i++) {
 			ItemStack item = craftingInventory.getItem(i);
 			if (item.getItem() instanceof PaintBucketItem) {
 				if (item.getDamageValue() == item.getMaxDamage() - 1) {
@@ -46,6 +46,20 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
 		}
 
 		return nonnulllist;
+	}
+
+	@Override
+	public ItemStack assemble(CraftingInventory craftingInventory) {
+		int color = 0;
+		for (int i = 0; i < craftingInventory.getContainerSize(); i++) {
+			if (craftingInventory.getItem(i).getItem() instanceof PaintBucketItem) {
+				color = craftingInventory.getItem(i).getOrCreateTag().getInt("color");
+				break;
+			}
+		}
+		ItemStack result = super.assemble(craftingInventory);
+		result.getOrCreateTag().putInt("color", color);
+		return result;
 	}
 
 	public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ShapelessDurabilityAwarePaintBucketRecipe> {
