@@ -1,7 +1,7 @@
 package platinpython.rgbblocks.util.registries;
 
-import net.minecraft.item.Item;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import platinpython.rgbblocks.item.PaintBucketItem;
 import platinpython.rgbblocks.util.RegistryHandler;
 

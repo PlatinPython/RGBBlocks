@@ -1,12 +1,11 @@
 package platinpython.rgbblocks.client.gui.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraftforge.fmlclient.gui.widget.ExtendedButton;
 import platinpython.rgbblocks.client.gui.widget.ColorSlider;
 import platinpython.rgbblocks.client.gui.widget.SliderType;
 import platinpython.rgbblocks.util.Color;
@@ -31,10 +30,10 @@ public class ColorSelectScreen extends Screen {
 
 	private boolean isRGBSelected;
 
-	private final TranslationTextComponent useRGBText, useHSBText;
+	private final TranslatableComponent useRGBText, useHSBText;
 
 	public ColorSelectScreen(int colorIn, boolean isRGBSelected) {
-		super(StringTextComponent.EMPTY);
+		super(TextComponent.EMPTY);
 		Color color = new Color(colorIn);
 		this.red = (double) color.getRed();
 		this.green = (double) color.getGreen();
@@ -47,8 +46,8 @@ public class ColorSelectScreen extends Screen {
 
 		this.isRGBSelected = isRGBSelected;
 
-		this.useRGBText = new TranslationTextComponent("gui.rgbblocks.useRGB");
-		this.useHSBText = new TranslationTextComponent("gui.rgbblocks.useHSB");
+		this.useRGBText = new TranslatableComponent("gui.rgbblocks.useRGB");
+		this.useHSBText = new TranslatableComponent("gui.rgbblocks.useHSB");
 	}
 
 	public int getColor() {
@@ -70,14 +69,14 @@ public class ColorSelectScreen extends Screen {
 		int y = this.height / 2 - WIDGET_HEIGHT / 2 - SPACING;
 
 		if (redSlider == null) {
-			this.redSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.red").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.red, SliderType.RED);
+			this.redSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslatableComponent("gui.rgbblocks.red").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.red, SliderType.RED);
 		} else {
 			this.redSlider.x = x;
 			this.redSlider.y = y;
 		}
 
 		if (hueSlider == null) {
-			this.hueSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.hue").append(": "), MIN_VALUE, MAX_VALUE_HUE, this.hue, SliderType.HUE);
+			this.hueSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslatableComponent("gui.rgbblocks.hue").append(": "), MIN_VALUE, MAX_VALUE_HUE, this.hue, SliderType.HUE);
 		} else {
 			this.hueSlider.x = x;
 			this.hueSlider.y = y;
@@ -86,14 +85,14 @@ public class ColorSelectScreen extends Screen {
 		y += SPACING + 15;
 
 		if (greenSlider == null) {
-			this.greenSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.green").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.green, SliderType.GREEN);
+			this.greenSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslatableComponent("gui.rgbblocks.green").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.green, SliderType.GREEN);
 		} else {
 			this.greenSlider.x = x;
 			this.greenSlider.y = y;
 		}
 
 		if (saturationSlider == null) {
-			this.saturationSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.saturation").append(": "), MIN_VALUE, MAX_VALUE_SB, this.saturation, SliderType.SATURATION);
+			this.saturationSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslatableComponent("gui.rgbblocks.saturation").append(": "), MIN_VALUE, MAX_VALUE_SB, this.saturation, SliderType.SATURATION);
 		} else {
 			this.saturationSlider.x = x;
 			this.saturationSlider.y = y;
@@ -102,14 +101,14 @@ public class ColorSelectScreen extends Screen {
 		y += SPACING + 15;
 
 		if (blueSlider == null) {
-			this.blueSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.blue").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.blue, SliderType.BLUE);
+			this.blueSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslatableComponent("gui.rgbblocks.blue").append(": "), MIN_VALUE, MAX_VALUE_RGB, this.blue, SliderType.BLUE);
 		} else {
 			this.blueSlider.x = x;
 			this.blueSlider.y = y;
 		}
 
 		if (brightnessSlider == null) {
-			this.brightnessSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslationTextComponent("gui.rgbblocks.brightness").append(": "), MIN_VALUE, MAX_VALUE_SB, this.brightness, SliderType.BRIGHTNESS);
+			this.brightnessSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT, new TranslatableComponent("gui.rgbblocks.brightness").append(": "), MIN_VALUE, MAX_VALUE_SB, this.brightness, SliderType.BRIGHTNESS);
 		} else {
 			this.brightnessSlider.x = x;
 			this.brightnessSlider.y = y;
@@ -165,30 +164,28 @@ public class ColorSelectScreen extends Screen {
 			blueSlider.visible = false;
 		}
 
-		addWidget(redSlider);
-		addWidget(greenSlider);
-		addWidget(blueSlider);
+		addRenderableWidget(redSlider);
+		addRenderableWidget(greenSlider);
+		addRenderableWidget(blueSlider);
 
-		addWidget(hueSlider);
-		addWidget(saturationSlider);
-		addWidget(brightnessSlider);
+		addRenderableWidget(hueSlider);
+		addRenderableWidget(saturationSlider);
+		addRenderableWidget(brightnessSlider);
 
 //		addButton(hex);
 
-		addButton(toggleButton);
+		addRenderableWidget(toggleButton);
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(matrixStack);
-		for (int i = 0; i < this.children.size(); ++i) {
-			((Widget) this.children.get(i)).render(matrixStack, mouseX, mouseY, partialTicks);
-		}
-		matrixStack.pushPose();
-		matrixStack.translate(this.width / 2, this.height / 2 - WIDGET_HEIGHT / 2 - 2 * SPACING - 15, 0);
-		fill(matrixStack, -SLIDER_WIDTH / 2, -WIDGET_HEIGHT, SLIDER_WIDTH / 2, WIDGET_HEIGHT, 0xFF000000);
-		fill(matrixStack, -SLIDER_WIDTH / 2 + 1, -WIDGET_HEIGHT + 1, SLIDER_WIDTH / 2 - 1, WIDGET_HEIGHT - 1, getColor());
-		matrixStack.popPose();
+	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(poseStack);
+		super.render(poseStack, mouseX, mouseY, partialTicks);
+		poseStack.pushPose();
+		poseStack.translate(this.width / 2, this.height / 2 - WIDGET_HEIGHT / 2 - 2 * SPACING - 15, 0);
+		fill(poseStack, -SLIDER_WIDTH / 2, -WIDGET_HEIGHT, SLIDER_WIDTH / 2, WIDGET_HEIGHT, 0xFF000000);
+		fill(poseStack, -SLIDER_WIDTH / 2 + 1, -WIDGET_HEIGHT + 1, SLIDER_WIDTH / 2 - 1, WIDGET_HEIGHT - 1, getColor());
+		poseStack.popPose();
 	}
 
 	@Override

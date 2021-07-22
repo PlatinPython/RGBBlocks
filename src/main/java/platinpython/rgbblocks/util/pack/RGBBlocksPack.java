@@ -23,26 +23,26 @@ import org.apache.commons.io.IOUtils;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.NativeImage;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IFutureReloadListener;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.resources.ResourcePack;
-import net.minecraft.resources.ResourcePackFileNotFoundException;
-import net.minecraft.resources.ResourcePackType;
-import net.minecraft.resources.data.IMetadataSectionSerializer;
-import net.minecraft.resources.data.PackMetadataSection;
-import net.minecraft.resources.data.PackMetadataSectionSerializer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.AbstractPackResources;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.ResourcePackFileNotFoundException;
+import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSectionSerializer;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.util.profiling.ProfilerFiller;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.Color;
 
-public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener {
+public class RGBBlocksPack extends AbstractPackResources implements PreparableReloadListener {
 	public static final String TEXTURE_DIRECTORY = "textures/";
 	public static final String BLOCK_DIRECTORY = "block/";
 	public static final Set<String> NAMESPACES = ImmutableSet.of(RGBBlocks.MOD_ID);
@@ -54,7 +54,7 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 
 	public RGBBlocksPack() {
 		super(new File("rgbblocks_virtual_pack"));
-		this.packInfo = new PackMetadataSection(new TranslationTextComponent("rgbblocks.pack_description"), 6);
+		this.packInfo = new PackMetadataSection(new TranslatableComponent("rgbblocks.pack_description"), 6);
 		fillTexturesMap();
 	}
 
@@ -76,13 +76,13 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 	}
 
 	@Override
-	public CompletableFuture<Void> reload(IStage stage, IResourceManager manager, IProfiler workerProfiler, IProfiler mainProfiler, Executor workerExecutor, Executor mainExecutor) {
+	public CompletableFuture<Void> reload(PreparationBarrier stage, ResourceManager manager, ProfilerFiller workerProfiler, ProfilerFiller mainProfiler, Executor workerExecutor, Executor mainExecutor) {
 		this.gatherTextureData(manager, mainProfiler);
 		return CompletableFuture.supplyAsync(() -> null, workerExecutor).thenCompose(stage::wait).thenAcceptAsync((noResult) -> {
 		}, mainExecutor);
 	}
 
-	protected void gatherTextureData(IResourceManager manager, IProfiler profiler) {
+	protected void gatherTextureData(ResourceManager manager, ProfilerFiller profiler) {
 		Map<ResourceLocation, Callable<InputStream>> resourceStreams = new HashMap<>();
 
 		textures.forEach((modLocation, vanillaLocation) -> {
@@ -105,7 +105,7 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 		return new ResourceLocation(id.getNamespace(), id.getPath() + ".mcmeta");
 	}
 
-	public Optional<Pair<NativeImage, Optional<Callable<InputStream>>>> generateImage(ResourceLocation modLocation, ResourceLocation vanillaLocation, IResourceManager manager) {
+	public Optional<Pair<NativeImage, Optional<Callable<InputStream>>>> generateImage(ResourceLocation modLocation, ResourceLocation vanillaLocation, ResourceManager manager) {
 		ResourceLocation parentFile = makeTextureID(vanillaLocation);
 		try (InputStream inputStream = manager.getResource(parentFile).getInputStream()) {
 			NativeImage image = NativeImage.read(inputStream);
@@ -117,7 +117,7 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 				JsonObject metadataJson = null;
 				try (InputStream metadataStream = manager.getResource(metadata).getInputStream()) {
 					bufferedReader = new BufferedReader(new InputStreamReader(metadataStream, StandardCharsets.UTF_8));
-					metadataJson = JSONUtils.parse(bufferedReader);
+					metadataJson = GsonHelper.parse(bufferedReader);
 				} finally {
 					IOUtils.closeQuietly(bufferedReader);
 				}
@@ -147,11 +147,11 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 
 	@Override
 	public String getName() {
-		return new TranslationTextComponent("rgbblocks.pack_title").getString();
+		return new TranslatableComponent("rgbblocks.pack_title").getString();
 	}
 
 	@SuppressWarnings("unchecked") @Override
-	public <T> T getMetadataSection(IMetadataSectionSerializer<T> serializer) throws IOException {
+	public <T> T getMetadataSection(MetadataSectionSerializer<T> serializer) throws IOException {
 		return serializer instanceof PackMetadataSectionSerializer ? (T) this.packInfo : null;
 	}
 
@@ -175,17 +175,17 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 	}
 
 	@Override
-	public Set<String> getNamespaces(ResourcePackType type) {
+	public Set<String> getNamespaces(PackType type) {
 		return NAMESPACES;
 	}
 
 	@Override
-	public boolean hasResource(ResourcePackType type, ResourceLocation id) {
-		return type == ResourcePackType.CLIENT_RESOURCES && (this.resources.containsKey(id));
+	public boolean hasResource(PackType type, ResourceLocation id) {
+		return type == PackType.CLIENT_RESOURCES && (this.resources.containsKey(id));
 	}
 
 	@Override
-	public InputStream getResource(ResourcePackType type, ResourceLocation id) throws IOException {
+	public InputStream getResource(PackType type, ResourceLocation id) throws IOException {
 		if (this.resources.containsKey(id)) {
 			Callable<InputStream> streamGetter = this.resources.get(id);
 			if (streamGetter == null) {
@@ -203,13 +203,13 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
 		}
 	}
 
-	public ResourcePackFileNotFoundException makeFileNotFoundException(ResourcePackType type, ResourceLocation id) {
+	public ResourcePackFileNotFoundException makeFileNotFoundException(PackType type, ResourceLocation id) {
 		String path = String.format("%s/%s/%s", type.getDirectory(), id.getNamespace(), id.getPath());
 		return new ResourcePackFileNotFoundException(this.file, path);
 	}
 
 	@Override
-	public Collection<ResourceLocation> getResources(ResourcePackType type, String namespace, String id, int maxDepth, Predicate<String> filter) {
+	public Collection<ResourceLocation> getResources(PackType type, String namespace, String id, int maxDepth, Predicate<String> filter) {
 		return NO_RESOURCES;
 	}
 

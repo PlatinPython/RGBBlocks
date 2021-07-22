@@ -1,24 +1,24 @@
 package platinpython.rgbblocks.util;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.resources.IPackNameDecorator;
-import net.minecraft.resources.IReloadableResourceManager;
-import net.minecraft.resources.PackCompatibility;
-import net.minecraft.resources.ResourcePackInfo;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackCompatibility;
+import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
+import net.minecraftforge.fmlclient.registry.RenderingRegistry;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.colorhandlers.PaintBucketItemColor;
 import platinpython.rgbblocks.client.colorhandlers.RGBBlockColor;
@@ -42,9 +42,9 @@ public class ClientUtils {
 	private static void registerVirtualPack() {
 		Minecraft minecraft = Minecraft.getInstance();
 
-		minecraft.getResourcePackRepository().addPackFinder((infoConsumer, packInfo) -> infoConsumer.accept(new ResourcePackInfo("rgbblocks_textures", true, () -> VIRTUAL_PACK, new TranslationTextComponent("rgbblocks.pack_title"), new TranslationTextComponent("rgbblocks.pack_description"), PackCompatibility.COMPATIBLE, ResourcePackInfo.Priority.TOP, true, IPackNameDecorator.DEFAULT, true)));
+		minecraft.getResourcePackRepository().addPackFinder((infoConsumer, packInfo) -> infoConsumer.accept(new Pack("rgbblocks_textures", true, () -> VIRTUAL_PACK, new TranslatableComponent("rgbblocks.pack_title"), new TranslatableComponent("rgbblocks.pack_description"), PackCompatibility.COMPATIBLE, Pack.Position.TOP, true, PackSource.DEFAULT, true)));
 
-		IReloadableResourceManager resourceManager = (IReloadableResourceManager) minecraft.getResourceManager();
+		ReloadableResourceManager resourceManager = (ReloadableResourceManager) minecraft.getResourceManager();
 		resourceManager.registerReloadListener(VIRTUAL_PACK);
 	}
 
@@ -52,9 +52,9 @@ public class ClientUtils {
 	public static void doClientStuff(final FMLClientSetupEvent event) {
 		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.RGB_FALLING_BLOCK.get(), RGBFallingBlockRenderer::new);
 
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.translucent());
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.translucent());
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.translucent());
 	}
 
 	@SubscribeEvent

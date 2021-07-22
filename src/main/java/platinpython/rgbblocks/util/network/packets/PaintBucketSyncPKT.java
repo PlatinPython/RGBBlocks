@@ -2,9 +2,9 @@ package platinpython.rgbblocks.util.network.packets;
 
 import java.util.function.Supplier;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import platinpython.rgbblocks.item.PaintBucketItem;
 
 public class PaintBucketSyncPKT {
@@ -16,12 +16,12 @@ public class PaintBucketSyncPKT {
 		this.isRGBSelected = isRGBSelected;
 	}
 
-	public static void encode(PaintBucketSyncPKT message, PacketBuffer buffer) {
+	public static void encode(PaintBucketSyncPKT message, FriendlyByteBuf buffer) {
 		buffer.writeInt(message.color);
 		buffer.writeBoolean(message.isRGBSelected);
 	}
 
-	public static PaintBucketSyncPKT decode(PacketBuffer buffer) {
+	public static PaintBucketSyncPKT decode(FriendlyByteBuf buffer) {
 		return new PaintBucketSyncPKT(buffer.readInt(), buffer.readBoolean());
 	}
 

@@ -17,52 +17,52 @@ import com.mojang.serialization.JsonOps;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.ICriterionInstance;
-import net.minecraft.advancements.IRequirementsStrategy;
-import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTDynamicOps;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ShapedNBTRecipeBuilder {
 	private final Item result;
 	private final int count;
-	private final CompoundNBT compound;
+	private final CompoundTag compound;
 	private final List<String> rows = Lists.newArrayList();
 	private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	private String group;
 
-	public ShapedNBTRecipeBuilder(IItemProvider result, int count, CompoundNBT compound) {
+	public ShapedNBTRecipeBuilder(ItemLike result, int count, CompoundTag compound) {
 		this.result = result.asItem();
 		this.count = count;
 		this.compound = compound;
 	}
 
-	public static ShapedNBTRecipeBuilder shaped(IItemProvider result) {
+	public static ShapedNBTRecipeBuilder shaped(ItemLike result) {
 		return new ShapedNBTRecipeBuilder(result, 1, null);
 	}
 
-	public static ShapedNBTRecipeBuilder shaped(IItemProvider result, int count) {
+	public static ShapedNBTRecipeBuilder shaped(ItemLike result, int count) {
 		return new ShapedNBTRecipeBuilder(result, count, null);
 	}
 
-	public static ShapedNBTRecipeBuilder shaped(IItemProvider result, int count, CompoundNBT compound) {
+	public static ShapedNBTRecipeBuilder shaped(ItemLike result, int count, CompoundTag compound) {
 		return new ShapedNBTRecipeBuilder(result, count, compound);
 	}
 
-	public ShapedNBTRecipeBuilder define(Character symbol, ITag<Item> tag) {
+	public ShapedNBTRecipeBuilder define(Character symbol, Tag<Item> tag) {
 		return this.define(symbol, Ingredient.of(tag));
 	}
 
-	public ShapedNBTRecipeBuilder define(Character symbol, IItemProvider item) {
+	public ShapedNBTRecipeBuilder define(Character symbol, ItemLike item) {
 		return this.define(symbol, Ingredient.of(item));
 	}
 
@@ -86,7 +86,7 @@ public class ShapedNBTRecipeBuilder {
 		}
 	}
 
-	public ShapedNBTRecipeBuilder unlockedBy(String name, ICriterionInstance criterion) {
+	public ShapedNBTRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterion) {
 		this.advancement.addCriterion(name, criterion);
 		return this;
 	}
@@ -96,22 +96,22 @@ public class ShapedNBTRecipeBuilder {
 		return this;
 	}
 
-	public void save(Consumer<IFinishedRecipe> consumer) {
+	public void save(Consumer<FinishedRecipe> consumer) {
 		this.save(consumer, ForgeRegistries.ITEMS.getKey(this.result));
 	}
 
-	public void save(Consumer<IFinishedRecipe> consumer, String save) {
+	public void save(Consumer<FinishedRecipe> consumer, String save) {
 		ResourceLocation saveTo = new ResourceLocation(save);
-		if (saveTo.equals(ForgeRegistries.ITEMS.getKey(this.result.getItem()))) {
+		if (saveTo.equals(ForgeRegistries.ITEMS.getKey(this.result))) {
 			throw new IllegalStateException("Shaped Recipe " + save + " should remove its 'save' argument");
 		} else {
 			this.save(consumer, saveTo);
 		}
 	}
 
-	public void save(Consumer<IFinishedRecipe> consumer, ResourceLocation id) {
+	public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
 		this.ensureValid(id);
-		this.advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
+		this.advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(RequirementsStrategy.OR);
 		consumer.accept(new ShapedNBTRecipeBuilder.Result(id, this.result, this.count, this.compound, this.group == null ? "" : this.group, this.rows, this.key, this.advancement, new ResourceLocation(id.getNamespace(), "recipes/" + this.result.getItemCategory().getRecipeFolderName() + "/" + id.getPath())));
 	}
 
@@ -143,18 +143,18 @@ public class ShapedNBTRecipeBuilder {
 		}
 	}
 
-	public class Result implements IFinishedRecipe {
+	public class Result implements FinishedRecipe {
 		private final ResourceLocation id;
 		private final Item result;
 		private final int count;
-		private final CompoundNBT compound;
+		private final CompoundTag compound;
 		private final String group;
 		private final List<String> pattern;
 		private final Map<Character, Ingredient> key;
 		private final Advancement.Builder advancement;
 		private final ResourceLocation advancementId;
 
-		public Result(ResourceLocation id, Item result, int count, CompoundNBT compound, String group, List<String> pattern, Map<Character, Ingredient> key, Advancement.Builder advancement, ResourceLocation advancementId) {
+		public Result(ResourceLocation id, Item result, int count, CompoundTag compound, String group, List<String> pattern, Map<Character, Ingredient> key, Advancement.Builder advancement, ResourceLocation advancementId) {
 			this.id = id;
 			this.result = result;
 			this.count = count;
@@ -191,14 +191,14 @@ public class ShapedNBTRecipeBuilder {
 				resultJson.addProperty("count", this.count);
 			}
 			if (this.compound != null) {
-				resultJson.addProperty("nbt", NBTDynamicOps.INSTANCE.convertTo(JsonOps.INSTANCE, this.compound).toString());
+				resultJson.addProperty("nbt", NbtOps.INSTANCE.convertTo(JsonOps.INSTANCE, this.compound).toString());
 			}
 
 			json.add("result", resultJson);
 		}
 
-		public IRecipeSerializer<?> getType() {
-			return IRecipeSerializer.SHAPED_RECIPE;
+		public RecipeSerializer<?> getType() {
+			return RecipeSerializer.SHAPED_RECIPE;
 		}
 
 		public ResourceLocation getId() {

@@ -3,15 +3,14 @@ package platinpython.rgbblocks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent.MissingMappings;
 import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -22,7 +21,6 @@ import platinpython.rgbblocks.dispenser.DispensePaintbucketBehaviour;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.network.PacketHandler;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
-import platinpython.rgbblocks.util.top.TOPMain;
 
 @Mod("rgbblocks")
 public class RGBBlocks {
@@ -48,7 +46,7 @@ public class RGBBlocks {
 
 	public void enqueueIMC(final InterModEnqueueEvent event) {
 		if (ModList.get().isLoaded("theoneprobe")) {
-			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPMain::new);
+//			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPMain::new);
 		}
 	}
 
@@ -61,7 +59,7 @@ public class RGBBlocks {
 		}
 	}
 
-	public static final ItemGroup ITEM_GROUP_RGB = new ItemGroup(MOD_ID) {
+	public static final CreativeModeTab ITEM_GROUP_RGB = new CreativeModeTab(MOD_ID) {
 		@Override
 		public ItemStack makeIcon() {
 			ItemStack stack = new ItemStack(ItemRegistry.PAINT_BUCKET.get());

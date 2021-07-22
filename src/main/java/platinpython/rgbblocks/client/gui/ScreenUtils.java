@@ -1,29 +1,27 @@
 package platinpython.rgbblocks.client.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Matrix4f;
 
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.client.renderer.GameRenderer;
 
 public class ScreenUtils {
-	@SuppressWarnings("deprecation")
-	public static void fillGradient(MatrixStack matrixStack, int x1, int y1, int x2, int y2, int z, int colorFrom, int colorTo) {
+	public static void fillGradient(PoseStack poseStack, int x1, int y1, int x2, int y2, int z, int colorFrom, int colorTo) {
 		RenderSystem.disableTexture();
 		RenderSystem.enableBlend();
-		RenderSystem.disableAlphaTest();
 		RenderSystem.defaultBlendFunc();
-		RenderSystem.shadeModel(7425);
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuilder();
-		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-		fillGradient(matrixStack.last().pose(), bufferbuilder, x1, y1, x2, y2, z, colorFrom, colorTo);
-		tessellator.end();
-		RenderSystem.shadeModel(7424);
+		RenderSystem.setShader(GameRenderer::getPositionColorShader);
+		Tesselator tesselator = Tesselator.getInstance();
+		BufferBuilder bufferbuilder = tesselator.getBuilder();
+		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+		fillGradient(poseStack.last().pose(), bufferbuilder, x1, y1, x2, y2, z, colorFrom, colorTo);
+		tesselator.end();
 		RenderSystem.disableBlend();
-		RenderSystem.enableAlphaTest();
 		RenderSystem.enableTexture();
 	}
 

@@ -4,17 +4,17 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.item.crafting.ShapelessRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
 import platinpython.rgbblocks.item.PaintBucketItem;
 import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.registries.RecipeSerializerRegistry;
@@ -25,12 +25,12 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
 	}
 
 	@Override
-	public IRecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<?> getSerializer() {
 		return RecipeSerializerRegistry.SHAPELESS_DURABILITY_AWARE_PAINT_BUCKET_RECIPE.get();
 	}
 
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingInventory craftingInventory) {
+	public NonNullList<ItemStack> getRemainingItems(CraftingContainer craftingInventory) {
 		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(craftingInventory.getContainerSize(), ItemStack.EMPTY);
 		ItemStack blockStack = ItemStack.EMPTY;
 
@@ -61,7 +61,7 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInventory craftingInventory) {
+	public ItemStack assemble(CraftingContainer craftingInventory) {
 		int color = 0;
 		for (int i = 0; i < craftingInventory.getContainerSize(); i++) {
 			if (craftingInventory.getItem(i).getItem() instanceof PaintBucketItem) {
@@ -74,17 +74,17 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
 		return result;
 	}
 
-	public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ShapelessDurabilityAwarePaintBucketRecipe> {
+	public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ShapelessDurabilityAwarePaintBucketRecipe> {
 		@Override
 		public ShapelessDurabilityAwarePaintBucketRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
-			String s = JSONUtils.getAsString(jsonObject, "group", "");
-			NonNullList<Ingredient> nonnulllist = itemsFromJson(JSONUtils.getAsJsonArray(jsonObject, "ingredients"));
+			String s = GsonHelper.getAsString(jsonObject, "group", "");
+			NonNullList<Ingredient> nonnulllist = itemsFromJson(GsonHelper.getAsJsonArray(jsonObject, "ingredients"));
 			if (nonnulllist.isEmpty()) {
 				throw new JsonParseException("No ingredients for shapeless recipe");
 			} else if (nonnulllist.size() > 9) {
 				throw new JsonParseException("Too many ingredients for shapeless recipe the max is " + 9);
 			} else {
-				ItemStack itemstack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(jsonObject, "result"));
+				ItemStack itemstack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "result"));
 				return new ShapelessDurabilityAwarePaintBucketRecipe(resourceLocation, s, itemstack, nonnulllist);
 			}
 		}
@@ -102,7 +102,7 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
 		}
 
 		@Override
-		public ShapelessDurabilityAwarePaintBucketRecipe fromNetwork(ResourceLocation resourceLocation, PacketBuffer buffer) {
+		public ShapelessDurabilityAwarePaintBucketRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf buffer) {
 			String s = buffer.readUtf(32767);
 			int i = buffer.readVarInt();
 			NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i, Ingredient.EMPTY);
@@ -116,7 +116,7 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
 		}
 
 		@Override
-		public void toNetwork(PacketBuffer buffer, ShapelessDurabilityAwarePaintBucketRecipe recipe) {
+		public void toNetwork(FriendlyByteBuf buffer, ShapelessDurabilityAwarePaintBucketRecipe recipe) {
 			buffer.writeUtf(recipe.getGroup());
 			buffer.writeVarInt(recipe.getIngredients().size());
 

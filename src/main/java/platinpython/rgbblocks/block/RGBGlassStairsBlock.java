@@ -2,12 +2,12 @@ package platinpython.rgbblocks.block;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class RGBGlassStairsBlock extends RGBStairsBlock {
 	public RGBGlassStairsBlock(Supplier<BlockState> state) {
@@ -15,7 +15,7 @@ public class RGBGlassStairsBlock extends RGBStairsBlock {
 	}
 
 	@Override
-	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
+	public float[] getBeaconColorMultiplier(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos) {
 		return RGBBlockUtils.getBeaconColorMultiplier(state, world, pos, beaconPos);
 	}
 
@@ -25,12 +25,12 @@ public class RGBGlassStairsBlock extends RGBStairsBlock {
 	}
 
 	@Override
-	public float getShadeBrightness(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
 		return 1.0F;
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
 		return true;
 	}
 }

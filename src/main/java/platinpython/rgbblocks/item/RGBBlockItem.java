@@ -2,19 +2,19 @@ package platinpython.rgbblocks.item;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
 import platinpython.rgbblocks.util.ClientUtils;
@@ -26,30 +26,30 @@ public class RGBBlockItem extends BlockItem {
 	}
 
 	@Override
-	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
+	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (allowdedIn(group)) {
 			ItemStack stack = new ItemStack(this);
-			CompoundNBT compound = stack.getOrCreateTag();
+			CompoundTag compound = stack.getOrCreateTag();
 			compound.putInt("color", -1);
 			items.add(stack);
 		}
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		Color color = new Color(stack.getOrCreateTag().getInt("color"));
 		if (ClientUtils.hasShiftDown()) {
-			IFormattableTextComponent red = new TranslationTextComponent("gui.rgbblocks.red").append(": " + color.getRed());
-			IFormattableTextComponent green = new TranslationTextComponent("gui.rgbblocks.green").append(": " + color.getGreen());
-			IFormattableTextComponent blue = new TranslationTextComponent("gui.rgbblocks.blue").append(": " + color.getBlue());
+			MutableComponent red = new TranslatableComponent("gui.rgbblocks.red").append(": " + color.getRed());
+			MutableComponent green = new TranslatableComponent("gui.rgbblocks.green").append(": " + color.getGreen());
+			MutableComponent blue = new TranslatableComponent("gui.rgbblocks.blue").append(": " + color.getBlue());
 			tooltip.add(red.append(", ").append(green).append(", ").append(blue));
 			float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue());
-			IFormattableTextComponent hue = new TranslationTextComponent("gui.rgbblocks.hue").append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
-			IFormattableTextComponent saturation = new TranslationTextComponent("gui.rgbblocks.saturation").append(": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
-			IFormattableTextComponent brightness = new TranslationTextComponent("gui.rgbblocks.brightness").append(": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
+			MutableComponent hue = new TranslatableComponent("gui.rgbblocks.hue").append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
+			MutableComponent saturation = new TranslatableComponent("gui.rgbblocks.saturation").append(": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
+			MutableComponent brightness = new TranslatableComponent("gui.rgbblocks.brightness").append(": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
 			tooltip.add(hue.append(", ").append(saturation).append(", ").append(brightness));
 		} else {
-			tooltip.add(new StringTextComponent("#" + Integer.toHexString(color.getRGB()).substring(2)));
+			tooltip.add(new TextComponent("#" + Integer.toHexString(color.getRGB()).substring(2)));
 		}
 	}
 }

@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[34,)"
+loaderVersion="[37,)"
 license="MIT"
 issueTrackerURL="https://github.com/PlatinPython/RGBBlocks/issues"
 
@@ -17,20 +17,20 @@ issueTrackerURL="https://github.com/PlatinPython/RGBBlocks/issues"
 [[dependencies.rgbblocks]]
   modId="forge"
   mandatory=true
-  versionRange="[34,)"
+  versionRange="[37,)"
   ordering="NONE"
   side="BOTH"
 
 [[dependencies.rgbblocks]]
   modId="minecraft"
   mandatory=true
-  versionRange="[1.16.3,)"
+  versionRange="[1.17.1,)"
   ordering="NONE"
   side="BOTH"
 
 [[dependencies.rgbblocks]]
   modId="ctm"
-  mandatory=true
+  mandatory=false
   versionRange="[MC1.16.1-1,)"
   ordering="NONE"
   side="CLIENT"

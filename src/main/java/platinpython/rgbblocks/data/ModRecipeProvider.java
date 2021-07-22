@@ -2,19 +2,19 @@ package platinpython.rgbblocks.data;
 
 import java.util.function.Consumer;
 
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.RecipeProvider;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tags.ITag;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import platinpython.rgbblocks.util.RegistryHandler;
@@ -22,7 +22,7 @@ import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
 public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
-	private final CompoundNBT whiteNBT = new CompoundNBT();
+	private final CompoundTag whiteNBT = new CompoundTag();
 
 	public ModRecipeProvider(DataGenerator generator) {
 		super(generator);
@@ -30,7 +30,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 	}
 
 	@Override
-	protected void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer) {
+	protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
 		ShapelessNBTRecipeBuilder.shapeless(ItemRegistry.PAINT_BUCKET.get(), 1, whiteNBT).makeNoReturnRecipe().requires(Tags.Items.DYES_RED).requires(Tags.Items.DYES_GREEN).requires(Tags.Items.DYES_BLUE).requires(Items.WATER_BUCKET).unlockedBy("has_water_bucket", has(Items.WATER_BUCKET)).save(consumer);
 
 		blockIItemProvider(consumer, BlockRegistry.RGB_CONCRETE_POWDER.get(), Blocks.WHITE_CONCRETE_POWDER);
@@ -56,26 +56,26 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 		ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_CARPET.get(), 3, whiteNBT).define('#', BlockRegistry.RGB_WOOL.get()).pattern("##").unlockedBy("has_rgb_wool", has(BlockRegistry.RGB_WOOL.get())).save(consumer);
 		ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_REDSTONE_LAMP.get(), 1, whiteNBT).define('R', Tags.Items.DUSTS_REDSTONE).define('G', BlockRegistry.RGB_GLOWSTONE.get()).pattern(" R ").pattern("RGR").pattern(" R ").unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get())).save(consumer);
 
-		RegistryHandler.BLOCKS.getEntries().forEach((block) -> ShapelessNBTRecipeBuilder.shapeless(block.get().getBlock()).requires(block.get()).requires(ItemRegistry.PAINT_BUCKET.get()).unlockedBy("has_paint_bucket_and_" + block.getId().getPath(), inventoryTrigger(ItemPredicate.Builder.item().of(ItemRegistry.PAINT_BUCKET.get()).build(), ItemPredicate.Builder.item().of(block.get()).build())).save(consumer, block.getId() + "_coloring"));
+		RegistryHandler.BLOCKS.getEntries().forEach((block) -> ShapelessNBTRecipeBuilder.shapeless(block.get().asItem()).requires(block.get()).requires(ItemRegistry.PAINT_BUCKET.get()).unlockedBy("has_paint_bucket_and_" + block.getId().getPath(), inventoryTrigger(ItemPredicate.Builder.item().of(ItemRegistry.PAINT_BUCKET.get()).build(), ItemPredicate.Builder.item().of(block.get()).build())).save(consumer, block.getId() + "_coloring"));
 	}
 
-	private void blockIItemProvider(Consumer<IFinishedRecipe> consumer, Block result, IItemProvider provider) {
+	private void blockIItemProvider(Consumer<FinishedRecipe> consumer, Block result, ItemLike provider) {
 		block(consumer, result, Ingredient.of(provider));
 	}
 
-	private void blockTag(Consumer<IFinishedRecipe> consumer, Block result, ITag<Item> tag) {
+	private void blockTag(Consumer<FinishedRecipe> consumer, Block result, Tag<Item> tag) {
 		block(consumer, result, Ingredient.of(tag));
 	}
 
-	private void block(Consumer<IFinishedRecipe> consumer, Block result, Ingredient ingredient) {
-		ShapelessNBTRecipeBuilder.shapeless(result.getBlock()).requires(ingredient).requires(ItemRegistry.PAINT_BUCKET.get()).unlockedBy("has_paint_bucket", has(ItemRegistry.PAINT_BUCKET.get())).save(consumer);
+	private void block(Consumer<FinishedRecipe> consumer, Block result, Ingredient ingredient) {
+		ShapelessNBTRecipeBuilder.shapeless(result.asItem()).requires(ingredient).requires(ItemRegistry.PAINT_BUCKET.get()).unlockedBy("has_paint_bucket", has(ItemRegistry.PAINT_BUCKET.get())).save(consumer);
 	}
 
-	private void slabBlock(Consumer<IFinishedRecipe> consumer, Block result, Block base) {
-		ShapedNBTRecipeBuilder.shaped(result.getBlock(), 6, whiteNBT).define('#', base.getBlock()).pattern("###").unlockedBy("has_rgb_" + base.getRegistryName().getPath(), has(base)).save(consumer);
+	private void slabBlock(Consumer<FinishedRecipe> consumer, Block result, Block base) {
+		ShapedNBTRecipeBuilder.shaped(result.asItem(), 6, whiteNBT).define('#', base.asItem()).pattern("###").unlockedBy("has_rgb_" + base.getRegistryName().getPath(), has(base)).save(consumer);
 	}
 
-	private void stairBlock(Consumer<IFinishedRecipe> consumer, Block result, Block base) {
-		ShapedNBTRecipeBuilder.shaped(result.getBlock(), 4, whiteNBT).define('#', base.getBlock()).pattern("#  ").pattern("## ").pattern("###").unlockedBy("has_rgb_" + base.getRegistryName().getPath(), has(base)).save(consumer);
+	private void stairBlock(Consumer<FinishedRecipe> consumer, Block result, Block base) {
+		ShapedNBTRecipeBuilder.shaped(result.asItem(), 4, whiteNBT).define('#', base.asItem()).pattern("#  ").pattern("## ").pattern("###").unlockedBy("has_rgb_" + base.getRegistryName().getPath(), has(base)).save(consumer);
 	}
 }

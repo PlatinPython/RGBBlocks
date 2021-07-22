@@ -2,19 +2,19 @@ package platinpython.rgbblocks.util.registries;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.AbstractBlock.Properties;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import platinpython.rgbblocks.block.RGBBlock;
+import platinpython.rgbblocks.block.RGBCarpetBlock;
+import platinpython.rgbblocks.block.RGBConcretePowderBlock;
 import platinpython.rgbblocks.block.RGBGlassBlock;
 import platinpython.rgbblocks.block.RGBGlassSlabBlock;
 import platinpython.rgbblocks.block.RGBGlassStairsBlock;
+import platinpython.rgbblocks.block.RGBRedstoneLampBlock;
 import platinpython.rgbblocks.block.RGBSlabBlock;
 import platinpython.rgbblocks.block.RGBStairsBlock;
-import platinpython.rgbblocks.block.RGBCarpetBlock;
-import platinpython.rgbblocks.block.RGBConcretePowderBlock;
-import platinpython.rgbblocks.block.RGBRedstoneLampBlock;
 import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.RegistryHandler;
 

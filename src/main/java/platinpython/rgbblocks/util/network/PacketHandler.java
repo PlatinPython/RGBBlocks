@@ -1,8 +1,8 @@
 package platinpython.rgbblocks.util.network;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.fmllegacy.network.NetworkRegistry;
+import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.network.packets.PaintBucketSyncPKT;
 

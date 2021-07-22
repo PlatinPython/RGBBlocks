@@ -4,16 +4,16 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.item.crafting.ShapelessRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
 import platinpython.rgbblocks.util.registries.RecipeSerializerRegistry;
 
 public class ShapelessNoReturnRecipe extends ShapelessRecipe {
@@ -22,26 +22,26 @@ public class ShapelessNoReturnRecipe extends ShapelessRecipe {
 	}
 
 	@Override
-	public IRecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<?> getSerializer() {
 		return RecipeSerializerRegistry.SHAPELESS_NO_RETURN_RECIPE.get();
 	}
 
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingInventory craftingInventory) {
+	public NonNullList<ItemStack> getRemainingItems(CraftingContainer craftingInventory) {
 		return NonNullList.withSize(craftingInventory.getContainerSize(), ItemStack.EMPTY);
 	}
 
-	public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ShapelessNoReturnRecipe> {
+	public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ShapelessNoReturnRecipe> {
 		@Override
 		public ShapelessNoReturnRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
-			String s = JSONUtils.getAsString(jsonObject, "group", "");
-			NonNullList<Ingredient> nonnulllist = itemsFromJson(JSONUtils.getAsJsonArray(jsonObject, "ingredients"));
+			String s = GsonHelper.getAsString(jsonObject, "group", "");
+			NonNullList<Ingredient> nonnulllist = itemsFromJson(GsonHelper.getAsJsonArray(jsonObject, "ingredients"));
 			if (nonnulllist.isEmpty()) {
 				throw new JsonParseException("No ingredients for shapeless recipe");
 			} else if (nonnulllist.size() > 9) {
 				throw new JsonParseException("Too many ingredients for shapeless recipe the max is " + 9);
 			} else {
-				ItemStack itemstack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(jsonObject, "result"));
+				ItemStack itemstack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "result"));
 				return new ShapelessNoReturnRecipe(resourceLocation, s, itemstack, nonnulllist);
 			}
 		}
@@ -59,7 +59,7 @@ public class ShapelessNoReturnRecipe extends ShapelessRecipe {
 		}
 
 		@Override
-		public ShapelessNoReturnRecipe fromNetwork(ResourceLocation resourceLocation, PacketBuffer buffer) {
+		public ShapelessNoReturnRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf buffer) {
 			String s = buffer.readUtf(32767);
 			int i = buffer.readVarInt();
 			NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i, Ingredient.EMPTY);
@@ -73,7 +73,7 @@ public class ShapelessNoReturnRecipe extends ShapelessRecipe {
 		}
 
 		@Override
-		public void toNetwork(PacketBuffer buffer, ShapelessNoReturnRecipe recipe) {
+		public void toNetwork(FriendlyByteBuf buffer, ShapelessNoReturnRecipe recipe) {
 			buffer.writeUtf(recipe.getGroup());
 			buffer.writeVarInt(recipe.getIngredients().size());
 

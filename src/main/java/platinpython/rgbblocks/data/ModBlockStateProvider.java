@@ -1,9 +1,9 @@
 package platinpython.rgbblocks.data;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.RedstoneLampBlock;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RedstoneLampBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -73,7 +73,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		ModelFile stairs = models().withExistingParent(path, modLoc(ModelProvider.BLOCK_FOLDER + "/stairs")).texture("all", loc);
 		ModelFile stairsInner = models().withExistingParent(path + "_inner", modLoc(ModelProvider.BLOCK_FOLDER + "/inner_stairs")).texture("all", loc);
 		ModelFile stairsOuter = models().withExistingParent(path + "_outer", modLoc(ModelProvider.BLOCK_FOLDER + "/outer_stairs")).texture("all", loc);
-		stairsBlock((StairsBlock) block, stairs, stairsInner, stairsOuter);
+		stairsBlock((StairBlock) block, stairs, stairsInner, stairsOuter);
 		ConfiguredModel.builder().modelFile(stairs).build();
 	}
 

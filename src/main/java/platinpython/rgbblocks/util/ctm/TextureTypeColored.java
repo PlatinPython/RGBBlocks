@@ -1,10 +1,10 @@
 package platinpython.rgbblocks.util.ctm;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import team.chisel.ctm.api.texture.ICTMTexture;
@@ -23,7 +23,7 @@ public class TextureTypeColored extends TextureTypeCTM {
 	}
 
 	@Override
-	public TextureContextCTM getBlockRenderContext(BlockState state, IBlockReader world, BlockPos pos, ICTMTexture<?> tex) {
+	public TextureContextCTM getBlockRenderContext(BlockState state, BlockGetter world, BlockPos pos, ICTMTexture<?> tex) {
 		return new TextureContextCTM(state, world, pos, (TextureCTM<?>) tex) {
 			@Override
 			protected CTMLogic createCTM(BlockState state) {
@@ -34,12 +34,12 @@ public class TextureTypeColored extends TextureTypeCTM {
 
 	public static class CTMLogicColored extends CTMLogic {
 		@Override
-		public boolean isConnected(IBlockReader world, BlockPos current, BlockPos connection, Direction dir, BlockState state) {
+		public boolean isConnected(BlockGetter world, BlockPos current, BlockPos connection, Direction dir, BlockState state) {
 			if(world.getBlockState(current).getBlock() != world.getBlockState(connection).getBlock()) {
 				return false;
 			}
-			TileEntity currentTileEntity = world.getBlockEntity(current);
-			TileEntity connectionTileEntity = world.getBlockEntity(connection);
+			BlockEntity currentTileEntity = world.getBlockEntity(current);
+			BlockEntity connectionTileEntity = world.getBlockEntity(connection);
 
 			if (currentTileEntity instanceof RGBTileEntity && connectionTileEntity instanceof RGBTileEntity) {
 				if (((RGBTileEntity) currentTileEntity).getColor() == ((RGBTileEntity) connectionTileEntity).getColor()) {
