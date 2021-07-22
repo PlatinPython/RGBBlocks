@@ -17,11 +17,11 @@ version = "${minecraft_version}-${mod_version}"
 group = 'platinpython.rgbblocks'
 archivesBaseName = 'RGB Blocks'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'parchment', version: '2021.07.14-nightly-SNAPSHOT-1.16.5'
+    mappings channel: 'parchment', version: '2021.07.22-nightly-SNAPSHOT-1.17.1'
     
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -81,11 +81,11 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.2.0'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.0'
 
-	implementation fg.deobf("team.chisel.ctm:CTM:MC1.16.1-${ctm_version}")
+	//implementation fg.deobf("team.chisel.ctm:CTM:MC1.16.1-${ctm_version}")
 	
-	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:${top_version}")
+	//implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:${top_version}")
 }
 
 jar {
