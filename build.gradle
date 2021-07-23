@@ -88,6 +88,15 @@ dependencies {
 	//implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:${top_version}")
 }
 
+sourceSets {
+	main {
+		java {
+			exclude 'platinpython/rgbblocks/util/ctm/**'
+			exclude 'platinpython/rgbblocks/util/top/**'
+		}
+	}
+}
+
 jar {
     manifest {
         attributes([
