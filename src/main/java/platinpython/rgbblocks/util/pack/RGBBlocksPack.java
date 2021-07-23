@@ -54,7 +54,7 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
 
 	public RGBBlocksPack() {
 		super(new File("rgbblocks_virtual_pack"));
-		this.packInfo = new PackMetadataSection(new TranslatableComponent("rgbblocks.pack_description"), 6);
+		this.packInfo = new PackMetadataSection(new TranslatableComponent("rgbblocks.pack_description"), 7);
 		fillTexturesMap();
 	}
 

@@ -22,7 +22,7 @@ public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntity
 
 	public RGBFallingBlockEntity(Level world, double x, double y, double z, BlockState state, int color) {
 		this(EntityRegistry.RGB_FALLING_BLOCK.get(), world);
-//		this.blockState = state;
+		this.blockState = state;
 		this.blocksBuilding = true;
 		this.setPos(x, y + (double) ((1.0F - this.getBbHeight()) / 2.0F), z);
 		this.color = color;

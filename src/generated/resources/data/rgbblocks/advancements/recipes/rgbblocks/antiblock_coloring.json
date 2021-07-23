@@ -11,10 +11,14 @@
       "conditions": {
         "items": [
           {
-            "item": "rgbblocks:paint_bucket"
+            "items": [
+              "rgbblocks:paint_bucket"
+            ]
           },
           {
-            "item": "rgbblocks:antiblock"
+            "items": [
+              "rgbblocks:antiblock"
+            ]
           }
         ]
       }

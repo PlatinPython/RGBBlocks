@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackCompatibility;
@@ -17,7 +18,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
-import net.minecraftforge.fmlclient.registry.RenderingRegistry;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.colorhandlers.PaintBucketItemColor;
@@ -50,11 +50,16 @@ public class ClientUtils {
 
 	@SubscribeEvent
 	public static void doClientStuff(final FMLClientSetupEvent event) {
-		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.RGB_FALLING_BLOCK.get(), RGBFallingBlockRenderer::new);
+		// Needed until Forge fixes RenderingRegistry
+		EntityRenderers.register(EntityRegistry.RGB_FALLING_BLOCK.get(), RGBFallingBlockRenderer::new);
+//		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.RGB_FALLING_BLOCK.get(), RGBFallingBlockRenderer::new);
 
 		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.translucent());
 		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.translucent());
 		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.translucent());
+
+		// Needed until CTM for 1.17 releases
+		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_ANTIBLOCK.get(), RenderType.cutout());
 	}
 
 	@SubscribeEvent
@@ -68,7 +73,7 @@ public class ClientUtils {
 	public static void openColorSelectScreen(int color, boolean isRGBSelected) {
 		Minecraft.getInstance().setScreen(new ColorSelectScreen(color, isRGBSelected));
 	}
-	
+
 	public static boolean hasShiftDown() {
 		return Screen.hasShiftDown();
 	}

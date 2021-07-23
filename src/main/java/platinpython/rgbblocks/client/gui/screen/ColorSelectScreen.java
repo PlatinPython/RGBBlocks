@@ -2,10 +2,10 @@ package platinpython.rgbblocks.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.fmlclient.gui.widget.ExtendedButton;
 import platinpython.rgbblocks.client.gui.widget.ColorSlider;
 import platinpython.rgbblocks.client.gui.widget.SliderType;
 import platinpython.rgbblocks.util.Color;
@@ -122,7 +122,7 @@ public class ColorSelectScreen extends Screen {
 
 		x = this.width / 2 - BUTTON_WIDTH / 2;
 
-		ExtendedButton toggleButton = new ExtendedButton(x, y, BUTTON_WIDTH, WIDGET_HEIGHT, isRGBSelected ? useHSBText : useRGBText, button -> {
+		Button toggleButton = new Button(x, y, BUTTON_WIDTH, WIDGET_HEIGHT, isRGBSelected ? useHSBText : useRGBText, button -> {
 			redSlider.visible = !redSlider.visible;
 			greenSlider.visible = !greenSlider.visible;
 			blueSlider.visible = !blueSlider.visible;

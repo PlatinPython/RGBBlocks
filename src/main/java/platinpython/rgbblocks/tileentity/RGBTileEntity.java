@@ -6,11 +6,10 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.extensions.IForgeBlockEntity;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
-public class RGBTileEntity extends BlockEntity implements IForgeBlockEntity {
+public class RGBTileEntity extends BlockEntity {
 	private int color;
 
 	public RGBTileEntity(BlockPos pos, BlockState state) {

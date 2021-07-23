@@ -43,6 +43,7 @@ import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.fmllegacy.RegistryObject;
+import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
@@ -66,26 +67,26 @@ public class ModLootTableProvider extends LootTableProvider {
 		protected void addTables() {
 			HashMap<Block, Function<Block, LootTable.Builder>> map = new HashMap<>();
 
-			map.put(BlockRegistry.RGB_ANTIBLOCK.get(), BlockLoot::createSingleItemTable);
-			map.put(BlockRegistry.RGB_CARPET.get(), BlockLoot::createSingleItemTable);
-			map.put(BlockRegistry.RGB_CONCRETE.get(), BlockLoot::createSingleItemTable);
-			map.put(BlockRegistry.RGB_CONCRETE_POWDER.get(), BlockLoot::createSingleItemTable);
-			map.put(BlockRegistry.RGB_CONCRETE_SLAB.get(), BlockLoot::createSlabItemTable);
-			map.put(BlockRegistry.RGB_CONCRETE_STAIRS.get(), BlockLoot::createSingleItemTable);
-			map.put(BlockRegistry.RGB_GLASS.get(), BlockLoot::createSilkTouchOnlyTable);
+			map.put(BlockRegistry.RGB_ANTIBLOCK.get(), (block) -> createSingleItemTable(block));
+			map.put(BlockRegistry.RGB_CARPET.get(), (block) -> createSingleItemTable(block));
+			map.put(BlockRegistry.RGB_CONCRETE.get(), (block) -> createSingleItemTable(block));
+			map.put(BlockRegistry.RGB_CONCRETE_POWDER.get(), (block) -> createSingleItemTable(block));
+			map.put(BlockRegistry.RGB_CONCRETE_SLAB.get(), (block) -> createSlabItemTable(block));
+			map.put(BlockRegistry.RGB_CONCRETE_STAIRS.get(), (block) -> createSingleItemTable(block));
+			map.put(BlockRegistry.RGB_GLASS.get(), (block) -> createSilkTouchOnlyTable(block));
 			map.put(BlockRegistry.RGB_GLASS_SLAB.get(), (block) -> createSilkTouchOnlySlabItemTable(block));
-			map.put(BlockRegistry.RGB_GLASS_STAIRS.get(), BlockLoot::createSilkTouchOnlyTable);
-			map.put(BlockRegistry.RGB_GLOWSTONE.get(), (block) -> createSilkTouchDispatchTable(block, applyExplosionDecay(block, LootItem.lootTableItem(Items.GLOWSTONE_DUST).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE)).apply(LimitCount.limitCount(IntRange.range(1, 4))))));
-			map.put(BlockRegistry.RGB_PLANKS.get(), BlockLoot::createSingleItemTable);
-			map.put(BlockRegistry.RGB_PLANKS_SLAB.get(), BlockLoot::createSlabItemTable);
-			map.put(BlockRegistry.RGB_PLANKS_STAIRS.get(), BlockLoot::createSingleItemTable);
-			map.put(BlockRegistry.RGB_REDSTONE_LAMP.get(), BlockLoot::createSingleItemTable);
-			map.put(BlockRegistry.RGB_TERRACOTTA.get(), BlockLoot::createSingleItemTable);
-			map.put(BlockRegistry.RGB_TERRACOTTA_SLAB.get(), BlockLoot::createSlabItemTable);
-			map.put(BlockRegistry.RGB_TERRACOTTA_STAIRS.get(), BlockLoot::createSingleItemTable);
-			map.put(BlockRegistry.RGB_WOOL.get(), BlockLoot::createSingleItemTable);
-			map.put(BlockRegistry.RGB_WOOL_SLAB.get(), BlockLoot::createSlabItemTable);
-			map.put(BlockRegistry.RGB_WOOL_STAIRS.get(), BlockLoot::createSingleItemTable);
+			map.put(BlockRegistry.RGB_GLASS_STAIRS.get(), (block) -> createSilkTouchOnlyTable(block));
+			map.put(BlockRegistry.RGB_GLOWSTONE.get(), (block) -> Blocks.createSilkTouchDispatchTable(block, applyExplosionDecay(block, LootItem.lootTableItem(Items.GLOWSTONE_DUST).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE)).apply(LimitCount.limitCount(IntRange.range(1, 4))))));
+			map.put(BlockRegistry.RGB_PLANKS.get(), (block) -> createSingleItemTable(block));
+			map.put(BlockRegistry.RGB_PLANKS_SLAB.get(), (block) -> createSlabItemTable(block));
+			map.put(BlockRegistry.RGB_PLANKS_STAIRS.get(), (block) -> createSingleItemTable(block));
+			map.put(BlockRegistry.RGB_REDSTONE_LAMP.get(), (block) -> createSingleItemTable(block));
+			map.put(BlockRegistry.RGB_TERRACOTTA.get(), (block) -> createSingleItemTable(block));
+			map.put(BlockRegistry.RGB_TERRACOTTA_SLAB.get(), (block) -> createSlabItemTable(block));
+			map.put(BlockRegistry.RGB_TERRACOTTA_STAIRS.get(), (block) -> createSingleItemTable(block));
+			map.put(BlockRegistry.RGB_WOOL.get(), (block) -> createSingleItemTable(block));
+			map.put(BlockRegistry.RGB_WOOL_SLAB.get(), (block) -> createSlabItemTable(block));
+			map.put(BlockRegistry.RGB_WOOL_STAIRS.get(), (block) -> createSingleItemTable(block));
 
 			map.forEach((block, function) -> add(block, block == BlockRegistry.RGB_GLOWSTONE.get() ? applyConditionalNbtCopy(function.apply(block)) : applyNbtCopy(function.apply(block))));
 		}
@@ -95,6 +96,7 @@ public class ModLootTableProvider extends LootTableProvider {
 		}
 
 		private LootTable.Builder applyNbtCopy(LootTable.Builder table) {
+			RGBBlocks.LOGGER.debug(table.toString());
 			return table.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("color", "color"));
 		}
 
