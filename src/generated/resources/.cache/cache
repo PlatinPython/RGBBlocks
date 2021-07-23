@@ -76,6 +76,10 @@ dda4a0026d8f553612d6182d243e0430e0533f0e assets/rgbblocks/models/item/terracotta
 f0044e5f09c937ff25a31e510c7ab2e8cfc35926 assets/rgbblocks/models/item/wool.json
 0464443b25a1328de5c3986b50d52262225793ab assets/rgbblocks/models/item/wool_slab.json
 37d0878aa15ba1233bb16fca07d0b35cdc984d61 assets/rgbblocks/models/item/wool_stairs.json
+1a5e89c29f40557c49903d1c3095ec8313f10f09 data/minecraft/tags/blocks/impermeable.json
+6f3155096b75f9ef39305e0392109e59114bdcf6 data/minecraft/tags/blocks/mineable/axe.json
+73aa841a2f13334d0ff79c5db8dee89af451eb71 data/minecraft/tags/blocks/mineable/pickaxe.json
+18bbe7bd45d8bae85179a2154803fd18520eb5a4 data/minecraft/tags/blocks/mineable/shovel.json
 37f3e3300c48e09375322c7aaaded88e2cfae6bd data/rgbblocks/advancements/recipes/rgbblocks/antiblock.json
 18db19c54fcafba1ee955f0956f48d26972914cb data/rgbblocks/advancements/recipes/rgbblocks/antiblock_coloring.json
 aa34ae98ffc682c3f3cc68fb2649ae03dc14037a data/rgbblocks/advancements/recipes/rgbblocks/carpet.json

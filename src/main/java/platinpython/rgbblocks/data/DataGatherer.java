@@ -19,6 +19,7 @@ public class DataGatherer {
 		if (event.includeServer()) {
 			generator.addProvider(new ModRecipeProvider(generator));
 			generator.addProvider(new ModLootTableProvider(generator));
+			generator.addProvider(new ModBlockTagsProvider(generator, existingFileHelper));
 		}
 	}
 }

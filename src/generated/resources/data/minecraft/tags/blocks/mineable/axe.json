@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "rgbblocks:planks",
+    "rgbblocks:planks_slab",
+    "rgbblocks:planks_stairs"
+  ]
+}
