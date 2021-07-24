@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'me.sizableshrimp.parchmenttest', name: 'ForgeGradle', version: '5.+', changing: true
+        classpath group: 'me.sizableshrimp.parchmenttest', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -21,7 +21,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'parchment', version: '2021.07.22-nightly-SNAPSHOT-1.17.1'
+    mappings channel: 'parchment', version: '2021.07.21-1.17'
     
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -81,7 +81,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.1'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.2'
 
 	//implementation fg.deobf("team.chisel.ctm:CTM:MC1.16.1-${ctm_version}")
 	
