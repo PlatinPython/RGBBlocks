@@ -81,7 +81,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.2'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.7'
 
 	//implementation fg.deobf("team.chisel.ctm:CTM:MC1.16.1-${ctm_version}")
 	

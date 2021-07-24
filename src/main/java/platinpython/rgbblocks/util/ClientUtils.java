@@ -50,7 +50,7 @@ public class ClientUtils {
 
 	@SubscribeEvent
 	public static void doClientStuff(final FMLClientSetupEvent event) {
-		// Needed until Forge fixes RenderingRegistry
+		// Needed until Forge fixes ClientModLoader#postSidedRunnable not being called anymore
 		EntityRenderers.register(EntityRegistry.RGB_FALLING_BLOCK.get(), RGBFallingBlockRenderer::new);
 //		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.RGB_FALLING_BLOCK.get(), RGBFallingBlockRenderer::new);
 
