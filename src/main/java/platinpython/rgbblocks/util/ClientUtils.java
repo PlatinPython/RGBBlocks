@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackCompatibility;
@@ -13,6 +12,7 @@ import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -50,16 +50,17 @@ public class ClientUtils {
 
 	@SubscribeEvent
 	public static void doClientStuff(final FMLClientSetupEvent event) {
-		// Needed until Forge fixes ClientModLoader#postSidedRunnable not being called anymore
-		EntityRenderers.register(EntityRegistry.RGB_FALLING_BLOCK.get(), RGBFallingBlockRenderer::new);
-//		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.RGB_FALLING_BLOCK.get(), RGBFallingBlockRenderer::new);
-
 		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.translucent());
 		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.translucent());
 		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.translucent());
 
 		// Needed until CTM for 1.17 releases
 		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_ANTIBLOCK.get(), RenderType.cutout());
+	}
+	
+	@SubscribeEvent
+	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+		event.registerEntityRenderer(EntityRegistry.RGB_FALLING_BLOCK.get(), RGBFallingBlockRenderer::new);
 	}
 
 	@SubscribeEvent
