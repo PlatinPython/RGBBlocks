@@ -1,6 +1,7 @@
 package platinpython.rgbblocks.client.gui.screen;
 
 import java.util.Locale;
+import java.util.function.UnaryOperator;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
@@ -10,6 +11,7 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
+import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.gui.widget.ColorSlider;
 import platinpython.rgbblocks.client.gui.widget.SliderType;
 import platinpython.rgbblocks.util.Color;
@@ -125,17 +127,61 @@ public class ColorSelectScreen extends Screen {
 		x = this.width / 2 - FIELD_WIDTH / 2;
 
 		this.hexField = new TextFieldWidget(this.font, x, y, FIELD_WIDTH, WIDGET_HEIGHT, new StringTextComponent("Hex")) {
+			UnaryOperator<String> formatter = string -> {
+				if (string.contains("#")) {
+					String substringed = string.substring(1);
+					if(substringed.length() < 6) {
+						int len = substringed.length();
+						for(int i = 0; i < 6 - len; i++) {
+							substringed = substringed.concat("0");
+						}
+					}
+					return substringed.isEmpty() ? "000000" : substringed;
+				} else if (string.isEmpty()) {
+					return "000000";
+				} else {
+					return string;
+				}
+			};
+
 			@Override
 			public void insertText(String textToWrite) {
+				textToWrite = textToWrite.contains("#") ? textToWrite.substring(1) : textToWrite;
 				textToWrite = textToWrite.toUpperCase(Locale.ENGLISH);
 				super.insertText(textToWrite);
-				this.setValue("#" + getValue());
+				try {
+					Color color = new Color(Integer.parseInt(formatter.apply(getValue()), 16));
+					redSlider.setValueInt(color.getRed());
+					greenSlider.setValueInt(color.getGreen());
+					blueSlider.setValueInt(color.getBlue());
+				} catch (NumberFormatException e) {
+					RGBBlocks.LOGGER.debug(textToWrite);
+				}
+				int cursorPosition = this.getCursorPosition();
+				this.setValue("#" + (getValue().contains("#") ? getValue().substring(1) : getValue()));
+				if(this.getCursorPosition() != cursorPosition) {
+					this.setHighlightPos(cursorPosition);
+				}
+				this.setCursorPosition(cursorPosition);
 			}
 
 			@Override
 			public void deleteChars(int pNum) {
 				super.deleteChars(pNum);
-				this.setValue("#" + getValue());
+				try {
+					Color color = new Color(Integer.parseInt(formatter.apply(getValue()), 16));
+					redSlider.setValueInt(color.getRed());
+					greenSlider.setValueInt(color.getGreen());
+					blueSlider.setValueInt(color.getBlue());
+				} catch (NumberFormatException e) {
+					RGBBlocks.LOGGER.debug(getValue());
+				}
+				int cursorPosition = this.getCursorPosition();
+				this.setValue("#" + (getValue().contains("#") ? getValue().substring(1) : getValue()));
+				if(this.getCursorPosition() != cursorPosition) {
+					this.setHighlightPos(cursorPosition);
+				}
+				this.setCursorPosition(cursorPosition);
 			}
 		};
 
@@ -166,7 +212,7 @@ public class ColorSelectScreen extends Screen {
 				redSlider.setValueInt(color.getRed());
 				greenSlider.setValueInt(color.getGreen());
 				blueSlider.setValueInt(color.getBlue());
-				
+
 				hexField.setValue("#" + Integer.toHexString(color.getRGB()).substring(2).toUpperCase(Locale.ENGLISH));
 
 				button.y = button.y + SPACING;
