@@ -4,7 +4,7 @@ import java.util.function.Function;
 
 import mcjty.theoneprobe.api.ITheOneProbe;
 
-public class TOPMain implements Function<ITheOneProbe, Void>{
+public class TOPMain implements Function<ITheOneProbe, Void> {
 	private static ITheOneProbe probe;
 
 	@Override
@@ -13,5 +13,4 @@ public class TOPMain implements Function<ITheOneProbe, Void>{
 		probe.registerProvider(new RGBBlockProvider());
 		return null;
 	}
-
 }

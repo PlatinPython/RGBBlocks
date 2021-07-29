@@ -1,11 +1,10 @@
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://sizableshrimp.me/maven' }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'me.sizableshrimp.parchmenttest', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -21,7 +20,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'parchment', version: '2021.07.21-1.17'
+    mappings channel: 'official', version: '1.17.1'
     
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -78,21 +77,28 @@ repositories {
 	maven { // CTM, TOP
         url "https://maven.tterrag.com/"
     }
+    maven {
+    	url "https://www.cursemaven.com/"
+    	content {
+    		includeGroup "curse.maven"
+    	}
+    }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.8'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.13'
 
 	//implementation fg.deobf("team.chisel.ctm:CTM:MC1.16.1-${ctm_version}")
 	
 	//implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:${top_version}")
+	
+	implementation fg.deobf("curse.maven:top-245211:3402482")
 }
 
 sourceSets {
 	main {
 		java {
 			exclude 'platinpython/rgbblocks/util/ctm/**'
-			exclude 'platinpython/rgbblocks/util/top/**'
 		}
 	}
 }

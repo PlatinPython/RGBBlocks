@@ -4,12 +4,12 @@ import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ProbeMode;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
@@ -34,7 +34,7 @@ public class RGBBlockProvider implements IProbeInfoProvider {
 				MutableComponent hue = new TranslatableComponent("gui.rgbblocks.hue").append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
 				MutableComponent saturation = new TranslatableComponent("gui.rgbblocks.saturation").append(": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
 				MutableComponent brightness = new TranslatableComponent("gui.rgbblocks.brightness").append(": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
-				info.text(hue.append(", ").append(saturation).append(", ").append(brightness));
+				info.text(hue.append("°, ").append(saturation).append("%, ").append(brightness).append("%"));
 			}
 		}
 	}

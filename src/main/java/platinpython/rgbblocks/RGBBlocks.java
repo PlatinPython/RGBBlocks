@@ -11,6 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent.MissingMappings;
 import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -21,6 +22,7 @@ import platinpython.rgbblocks.dispenser.DispensePaintbucketBehaviour;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.network.PacketHandler;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
+import platinpython.rgbblocks.util.top.TOPMain;
 
 @Mod("rgbblocks")
 public class RGBBlocks {
@@ -46,7 +48,7 @@ public class RGBBlocks {
 
 	public void enqueueIMC(final InterModEnqueueEvent event) {
 		if (ModList.get().isLoaded("theoneprobe")) {
-//			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPMain::new);
+			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPMain::new);
 		}
 	}
 

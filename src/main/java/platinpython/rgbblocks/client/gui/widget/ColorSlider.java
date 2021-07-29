@@ -1,5 +1,6 @@
 package platinpython.rgbblocks.client.gui.widget;
 
+import java.util.Locale;
 import java.util.function.Function;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -38,6 +39,10 @@ public class ColorSlider extends AbstractSliderButton {
 
 	@Override
 	protected void applyValue() {
+		Minecraft minecraft = Minecraft.getInstance();
+		if (minecraft.screen instanceof ColorSelectScreen screen) {
+			screen.hexBox.setValue("#" + Integer.toHexString(new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), screen.	blueSlider.getValueInt()).getRGB()).substring(2).toUpperCase(Locale.ENGLISH));
+		}
 	}
 
 	public int getValueInt() {

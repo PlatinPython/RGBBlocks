@@ -1,11 +1,16 @@
 package platinpython.rgbblocks.client.gui.screen;
 
+import java.util.Locale;
+import java.util.function.UnaryOperator;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.gui.widget.ColorSlider;
 import platinpython.rgbblocks.client.gui.widget.SliderType;
 import platinpython.rgbblocks.util.Color;
@@ -17,10 +22,12 @@ public class ColorSelectScreen extends Screen {
 	public ColorSlider redSlider, greenSlider, blueSlider;
 	private double hue, saturation, brightness;
 	public ColorSlider hueSlider, saturationSlider, brightnessSlider;
+	public EditBox hexBox;
 
 	public final int WIDGET_HEIGHT = 20;
 	public final int SLIDER_WIDTH = 310;
 	public final int BUTTON_WIDTH = 98;
+	public final int BOX_WIDTH = 50;
 	public final int SPACING = WIDGET_HEIGHT + 5;
 
 	public static final double MIN_VALUE = 0.0D;
@@ -116,9 +123,72 @@ public class ColorSelectScreen extends Screen {
 
 		y += SPACING;
 
-//		TextFieldWidget hex = new TextFieldWidget(font, this.width / 2 - SLIDER_WIDTH / 2,
-//				this.height / 2 - sliderHeight / 2 + 2 * (sliderHeight + 20), SLIDER_WIDTH / 4,
-//				sliderHeight, new StringTextComponent("Hex"));
+		x = this.width / 2 - BOX_WIDTH / 2;
+
+		this.hexBox = new EditBox(this.font, x, y, BOX_WIDTH, WIDGET_HEIGHT, new TextComponent("Hex")) {
+			UnaryOperator<String> formatter = string -> {
+				if (string.contains("#")) {
+					String substringed = string.substring(1);
+					if (substringed.length() < 6) {
+						int len = substringed.length();
+						for (int i = 0; i < 6 - len; i++) {
+							substringed = substringed.concat("0");
+						}
+					}
+					return substringed.isEmpty() ? "000000" : substringed;
+				} else if (string.isEmpty()) {
+					return "000000";
+				} else {
+					return string;
+				}
+			};
+
+			@Override
+			public void insertText(String textToWrite) {
+				textToWrite = textToWrite.contains("#") ? textToWrite.substring(1) : textToWrite;
+				textToWrite = textToWrite.toUpperCase(Locale.ENGLISH);
+				super.insertText(textToWrite);
+				try {
+					Color color = new Color(Integer.parseInt(formatter.apply(getValue()), 16));
+					redSlider.setValueInt(color.getRed());
+					greenSlider.setValueInt(color.getGreen());
+					blueSlider.setValueInt(color.getBlue());
+				} catch (NumberFormatException e) {
+					RGBBlocks.LOGGER.debug(textToWrite);
+				}
+				int cursorPosition = this.getCursorPosition();
+				this.setValue("#" + (getValue().contains("#") ? getValue().substring(1) : getValue()));
+				if (this.getCursorPosition() != cursorPosition) {
+					this.setHighlightPos(cursorPosition);
+				}
+				this.setCursorPosition(cursorPosition);
+			}
+
+			@Override
+			public void deleteChars(int pNum) {
+				super.deleteChars(pNum);
+				try {
+					Color color = new Color(Integer.parseInt(formatter.apply(getValue()), 16));
+					redSlider.setValueInt(color.getRed());
+					greenSlider.setValueInt(color.getGreen());
+					blueSlider.setValueInt(color.getBlue());
+				} catch (NumberFormatException e) {
+					RGBBlocks.LOGGER.debug(getValue());
+				}
+				int cursorPosition = this.getCursorPosition();
+				this.setValue("#" + (getValue().contains("#") ? getValue().substring(1) : getValue()));
+				if (this.getCursorPosition() != cursorPosition) {
+					this.setHighlightPos(cursorPosition);
+				}
+				this.setCursorPosition(cursorPosition);
+			}
+		};
+
+		this.hexBox.setMaxLength(7);
+		this.hexBox.setFilter((string) -> string.matches("(#|)([0-9A-F]){0,6}"));
+		this.hexBox.setValue("#" + Integer.toHexString(new Color(redSlider.getValueInt(), greenSlider.getValueInt(), blueSlider.getValueInt()).getRGB()).substring(2).toUpperCase(Locale.ENGLISH));
+
+		y += SPACING;
 
 		x = this.width / 2 - BUTTON_WIDTH / 2;
 
@@ -131,6 +201,8 @@ public class ColorSelectScreen extends Screen {
 			saturationSlider.visible = !saturationSlider.visible;
 			brightnessSlider.visible = !brightnessSlider.visible;
 
+			hexBox.visible = !hexBox.visible;
+
 			isRGBSelected = !isRGBSelected;
 
 			if (isRGBSelected) {
@@ -140,6 +212,10 @@ public class ColorSelectScreen extends Screen {
 				greenSlider.setValueInt(color.getGreen());
 				blueSlider.setValueInt(color.getBlue());
 
+				hexBox.setValue("#" + Integer.toHexString(color.getRGB()).substring(2).toUpperCase(Locale.ENGLISH));
+
+				button.y = button.y + SPACING;
+
 				button.setMessage(useHSBText);
 			} else {
 				float[] hsb = Color.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(), blueSlider.getValueInt());
@@ -148,13 +224,13 @@ public class ColorSelectScreen extends Screen {
 				saturationSlider.setValueInt((int) (hsb[1] * MAX_VALUE_SB));
 				brightnessSlider.setValueInt((int) (hsb[2] * MAX_VALUE_SB));
 
+				button.y = button.y - SPACING;
+
 				button.setMessage(useRGBText);
 			}
 		});
 
-		if (isRGBSelected)
-
-		{
+		if (isRGBSelected) {
 			hueSlider.visible = false;
 			saturationSlider.visible = false;
 			brightnessSlider.visible = false;
@@ -162,6 +238,8 @@ public class ColorSelectScreen extends Screen {
 			redSlider.visible = false;
 			greenSlider.visible = false;
 			blueSlider.visible = false;
+			hexBox.visible = false;
+			toggleButton.y = toggleButton.y - SPACING;
 		}
 
 		addRenderableWidget(redSlider);
@@ -172,7 +250,7 @@ public class ColorSelectScreen extends Screen {
 		addRenderableWidget(saturationSlider);
 		addRenderableWidget(brightnessSlider);
 
-//		addButton(hex);
+		addRenderableWidget(hexBox);
 
 		addRenderableWidget(toggleButton);
 	}
