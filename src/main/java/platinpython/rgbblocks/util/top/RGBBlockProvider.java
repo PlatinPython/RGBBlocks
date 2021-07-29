@@ -34,7 +34,7 @@ public class RGBBlockProvider implements IProbeInfoProvider {
 				IFormattableTextComponent hue = new TranslationTextComponent("gui.rgbblocks.hue").append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
 				IFormattableTextComponent saturation = new TranslationTextComponent("gui.rgbblocks.saturation").append(": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
 				IFormattableTextComponent brightness = new TranslationTextComponent("gui.rgbblocks.brightness").append(": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
-				info.text(hue.append(", ").append(saturation).append(", ").append(brightness));
+				info.text(hue.append("°, ").append(saturation).append("%, ").append(brightness).append("%"));
 			}
 		}
 	}
