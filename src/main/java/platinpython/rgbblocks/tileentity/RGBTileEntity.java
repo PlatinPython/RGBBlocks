@@ -7,6 +7,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.Constants.BlockFlags;
+import platinpython.rgbblocks.util.Color;
 import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
 public class RGBTileEntity extends BlockEntity {
@@ -17,7 +18,7 @@ public class RGBTileEntity extends BlockEntity {
 	}
 
 	public void setColor(int color) {
-		this.color = color;
+		this.color = new Color(color).getRGB();
 		setChanged();
 	}
 
@@ -44,8 +45,9 @@ public class RGBTileEntity extends BlockEntity {
 		return tag;
 	}
 
-	public void handleUpdateTag(BlockState state, CompoundTag tag) {
-		handleUpdateTag(state, tag);
+	@Override
+	public void handleUpdateTag(CompoundTag tag) {
+		super.handleUpdateTag(tag);
 		setColor(tag.getInt("color"));
 	}
 
