@@ -7,6 +7,7 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.util.Constants.BlockFlags;
+import platinpython.rgbblocks.util.Color;
 import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
 public class RGBTileEntity extends TileEntity {
@@ -21,7 +22,7 @@ public class RGBTileEntity extends TileEntity {
 	}
 
 	public void setColor(int color) {
-		this.color = color;
+		this.color = new Color(color).getRGB();
 		setChanged();
 	}
 
