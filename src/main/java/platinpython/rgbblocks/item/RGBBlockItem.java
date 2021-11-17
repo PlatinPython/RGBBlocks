@@ -21,35 +21,46 @@ import platinpython.rgbblocks.util.ClientUtils;
 import platinpython.rgbblocks.util.Color;
 
 public class RGBBlockItem extends BlockItem {
-	public RGBBlockItem(Block blockIn) {
-		super(blockIn, new Item.Properties().tab(RGBBlocks.ITEM_GROUP_RGB));
-	}
+    public RGBBlockItem(Block blockIn) {
+        super(blockIn, new Item.Properties().tab(RGBBlocks.ITEM_GROUP_RGB));
+    }
 
-	@Override
-	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
-		if (allowdedIn(group)) {
-			ItemStack stack = new ItemStack(this);
-			CompoundNBT compound = stack.getOrCreateTag();
-			compound.putInt("color", -1);
-			items.add(stack);
-		}
-	}
+    @Override
+    public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
+        if (allowdedIn(group)) {
+            ItemStack stack = new ItemStack(this);
+            CompoundNBT compound = stack.getOrCreateTag();
+            compound.putInt("color", -1);
+            items.add(stack);
+        }
+    }
 
-	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		Color color = new Color(stack.getOrCreateTag().getInt("color"));
-		if (ClientUtils.hasShiftDown()) {
-			IFormattableTextComponent red = new TranslationTextComponent("gui.rgbblocks.red").append(": " + color.getRed());
-			IFormattableTextComponent green = new TranslationTextComponent("gui.rgbblocks.green").append(": " + color.getGreen());
-			IFormattableTextComponent blue = new TranslationTextComponent("gui.rgbblocks.blue").append(": " + color.getBlue());
-			tooltip.add(red.append(", ").append(green).append(", ").append(blue));
-			float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue());
-			IFormattableTextComponent hue = new TranslationTextComponent("gui.rgbblocks.hue").append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
-			IFormattableTextComponent saturation = new TranslationTextComponent("gui.rgbblocks.saturation").append(": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
-			IFormattableTextComponent brightness = new TranslationTextComponent("gui.rgbblocks.brightness").append(": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
-			tooltip.add(hue.append("°, ").append(saturation).append("%, ").append(brightness).append("%"));
-		} else {
-			tooltip.add(new StringTextComponent("#" + Integer.toHexString(color.getRGB()).substring(2)));
-		}
-	}
+    @Override
+    public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        Color color = new Color(stack.getOrCreateTag().getInt("color"));
+        if (ClientUtils.hasShiftDown()) {
+            IFormattableTextComponent red = new TranslationTextComponent("gui.rgbblocks.red").append(": " +
+                                                                                                     color.getRed());
+            IFormattableTextComponent green = new TranslationTextComponent("gui.rgbblocks.green").append(": " +
+                                                                                                         color.getGreen());
+            IFormattableTextComponent blue = new TranslationTextComponent("gui.rgbblocks.blue").append(": " +
+                                                                                                       color.getBlue());
+            tooltip.add(red.append(", ").append(green).append(", ").append(blue));
+            float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue());
+            IFormattableTextComponent hue = new TranslationTextComponent("gui.rgbblocks.hue").append(": " +
+                                                                                                     Math.round(hsb[0] *
+                                                                                                                ColorSelectScreen.MAX_VALUE_HUE));
+            IFormattableTextComponent saturation = new TranslationTextComponent("gui.rgbblocks.saturation").append(": " +
+                                                                                                                   Math.round(
+                                                                                                                           hsb[1] *
+                                                                                                                           ColorSelectScreen.MAX_VALUE_SB));
+            IFormattableTextComponent brightness = new TranslationTextComponent("gui.rgbblocks.brightness").append(": " +
+                                                                                                                   Math.round(
+                                                                                                                           hsb[2] *
+                                                                                                                           ColorSelectScreen.MAX_VALUE_SB));
+            tooltip.add(hue.append("°, ").append(saturation).append("%, ").append(brightness).append("%"));
+        } else {
+            tooltip.add(new StringTextComponent("#" + Integer.toHexString(color.getRGB()).substring(2)));
+        }
+    }
 }

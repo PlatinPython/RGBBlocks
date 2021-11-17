@@ -32,44 +32,60 @@ import platinpython.rgbblocks.util.registries.ItemRegistry;
 
 @EventBusSubscriber(modid = RGBBlocks.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientUtils {
-	public static final RGBBlocksPack VIRTUAL_PACK = new RGBBlocksPack();
+    public static final RGBBlocksPack VIRTUAL_PACK = new RGBBlocksPack();
 
-	@SubscribeEvent
-	public static void onModConstruct(FMLConstructModEvent event) {
-		event.enqueueWork(ClientUtils::registerVirtualPack);
-	}
+    @SubscribeEvent
+    public static void onModConstruct(FMLConstructModEvent event) {
+        event.enqueueWork(ClientUtils::registerVirtualPack);
+    }
 
-	private static void registerVirtualPack() {
-		Minecraft minecraft = Minecraft.getInstance();
+    private static void registerVirtualPack() {
+        Minecraft minecraft = Minecraft.getInstance();
 
-		minecraft.getResourcePackRepository().addPackFinder((infoConsumer, packInfo) -> infoConsumer.accept(new ResourcePackInfo("rgbblocks_textures", true, () -> VIRTUAL_PACK, new TranslationTextComponent("rgbblocks.pack_title"), new TranslationTextComponent("rgbblocks.pack_description"), PackCompatibility.COMPATIBLE, ResourcePackInfo.Priority.TOP, true, IPackNameDecorator.DEFAULT, true)));
+        minecraft.getResourcePackRepository()
+                 .addPackFinder((infoConsumer, packInfo) -> infoConsumer.accept(new ResourcePackInfo(
+                         "rgbblocks_textures",
+                         true,
+                         () -> VIRTUAL_PACK,
+                         new TranslationTextComponent("rgbblocks.pack_title"),
+                         new TranslationTextComponent("rgbblocks.pack_description"),
+                         PackCompatibility.COMPATIBLE,
+                         ResourcePackInfo.Priority.TOP,
+                         true,
+                         IPackNameDecorator.DEFAULT,
+                         true)));
 
-		IReloadableResourceManager resourceManager = (IReloadableResourceManager) minecraft.getResourceManager();
-		resourceManager.registerReloadListener(VIRTUAL_PACK);
-	}
+        IReloadableResourceManager resourceManager = (IReloadableResourceManager) minecraft.getResourceManager();
+        resourceManager.registerReloadListener(VIRTUAL_PACK);
+    }
 
-	@SubscribeEvent
-	public static void doClientStuff(final FMLClientSetupEvent event) {
-		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.RGB_FALLING_BLOCK.get(), RGBFallingBlockRenderer::new);
+    @SubscribeEvent
+    public static void doClientStuff(final FMLClientSetupEvent event) {
+        RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.RGB_FALLING_BLOCK.get(),
+                                                         RGBFallingBlockRenderer::new);
 
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.translucent());
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.translucent());
-		RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.translucent());
-	}
+        RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.translucent());
+        RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.translucent());
+        RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.translucent());
+    }
 
-	@SubscribeEvent
-	public static void registerColorHandlers(ColorHandlerEvent.Item event) {
-		event.getBlockColors().register(new RGBBlockColor(), RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
-		event.getItemColors().register(new RGBBlockItemColor(), RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
+    @SubscribeEvent
+    public static void registerColorHandlers(ColorHandlerEvent.Item event) {
+        event.getBlockColors()
+             .register(new RGBBlockColor(),
+                       RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
+        event.getItemColors()
+             .register(new RGBBlockItemColor(),
+                       RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
 
-		event.getItemColors().register(new PaintBucketItemColor(), ItemRegistry.PAINT_BUCKET.get());
-	}
+        event.getItemColors().register(new PaintBucketItemColor(), ItemRegistry.PAINT_BUCKET.get());
+    }
 
-	public static void openColorSelectScreen(int color, boolean isRGBSelected) {
-		Minecraft.getInstance().setScreen(new ColorSelectScreen(color, isRGBSelected));
-	}
-	
-	public static boolean hasShiftDown() {
-		return Screen.hasShiftDown();
-	}
+    public static void openColorSelectScreen(int color, boolean isRGBSelected) {
+        Minecraft.getInstance().setScreen(new ColorSelectScreen(color, isRGBSelected));
+    }
+
+    public static boolean hasShiftDown() {
+        return Screen.hasShiftDown();
+    }
 }

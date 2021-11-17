@@ -12,27 +12,28 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class RGBStairsBlock extends StairsBlock {
-	public RGBStairsBlock(java.util.function.Supplier<BlockState> state, Properties properties) {
-		super(state, properties);
-	}
+    public RGBStairsBlock(java.util.function.Supplier<BlockState> state, Properties properties) {
+        super(state, properties);
+    }
 
-	@Override
-	public boolean hasTileEntity(final BlockState state) {
-		return true;
-	}
+    @Override
+    public boolean hasTileEntity(final BlockState state) {
+        return true;
+    }
 
-	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return RGBBlockUtils.createTileEntity(state, world);
-	}
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return RGBBlockUtils.createTileEntity(state, world);
+    }
 
-	@Override
-	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
-	}
+    @Override
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
+    }
 
-	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-		return RGBBlockUtils.getPickBlock(state, target, world, pos, player);
-	}
+    @Override
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos,
+                                  PlayerEntity player) {
+        return RGBBlockUtils.getPickBlock(state, target, world, pos, player);
+    }
 }

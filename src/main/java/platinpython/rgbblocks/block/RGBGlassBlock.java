@@ -8,27 +8,27 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
 public class RGBGlassBlock extends RGBBlock {
-	public RGBGlassBlock() {
-		super(Properties.copy(Blocks.GLASS));
-	}
+    public RGBGlassBlock() {
+        super(Properties.copy(Blocks.GLASS));
+    }
 
-	@Override
-	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
-		return RGBBlockUtils.getBeaconColorMultiplier(state, world, pos, beaconPos);
-	}
+    @Override
+    public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
+        return RGBBlockUtils.getBeaconColorMultiplier(state, world, pos, beaconPos);
+    }
 
-	@Override
-	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-		return RGBBlockUtils.blockSkipRendering(state, adjacentBlockState, side);
-	}
+    @Override
+    public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
+        return RGBBlockUtils.blockSkipRendering(state, adjacentBlockState, side);
+    }
 
-	@Override
-	public float getShadeBrightness(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return 1.0F;
-	}
+    @Override
+    public float getShadeBrightness(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return 1.0F;
+    }
 
-	@Override
-	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
-		return true;
-	}
+    @Override
+    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+        return true;
+    }
 }

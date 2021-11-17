@@ -14,54 +14,54 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import platinpython.rgbblocks.util.registries.EntityRegistry;
 
 public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntityAdditionalSpawnData {
-	private int color;
+    private int color;
 
-	public RGBFallingBlockEntity(EntityType<? extends FallingBlockEntity> entityType, World world) {
-		super(EntityRegistry.RGB_FALLING_BLOCK.get(), world);
-	}
+    public RGBFallingBlockEntity(EntityType<? extends FallingBlockEntity> entityType, World world) {
+        super(EntityRegistry.RGB_FALLING_BLOCK.get(), world);
+    }
 
-	public RGBFallingBlockEntity(World world, double x, double y, double z, BlockState state, int color) {
-		this(EntityRegistry.RGB_FALLING_BLOCK.get(), world);
-		this.blockState = state;
-		this.blocksBuilding = true;
-		this.setPos(x, y + (double) ((1.0F - this.getBbHeight()) / 2.0F), z);
-		this.color = color;
-	}
+    public RGBFallingBlockEntity(World world, double x, double y, double z, BlockState state, int color) {
+        this(EntityRegistry.RGB_FALLING_BLOCK.get(), world);
+        this.blockState = state;
+        this.blocksBuilding = true;
+        this.setPos(x, y + (double) ((1.0F - this.getBbHeight()) / 2.0F), z);
+        this.color = color;
+    }
 
-	public int getColor() {
-		return color;
-	}
+    public int getColor() {
+        return color;
+    }
 
-	@Override
-	public ItemEntity spawnAtLocation(ItemStack stack, float offset) {
-		stack.getOrCreateTag().putInt("color", color);
-		return super.spawnAtLocation(stack, offset);
-	}
+    @Override
+    public ItemEntity spawnAtLocation(ItemStack stack, float offset) {
+        stack.getOrCreateTag().putInt("color", color);
+        return super.spawnAtLocation(stack, offset);
+    }
 
-	@Override
-	protected void addAdditionalSaveData(CompoundNBT compound) {
-		super.addAdditionalSaveData(compound);
-		compound.putInt("color", color);
-	}
+    @Override
+    protected void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("color", color);
+    }
 
-	@Override
-	protected void readAdditionalSaveData(CompoundNBT compound) {
-		super.readAdditionalSaveData(compound);
-		color = compound.getInt("color");
-	}
+    @Override
+    protected void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
+        color = compound.getInt("color");
+    }
 
-	@Override
-	public void writeSpawnData(PacketBuffer buffer) {
-		buffer.writeInt(color);
-	}
+    @Override
+    public void writeSpawnData(PacketBuffer buffer) {
+        buffer.writeInt(color);
+    }
 
-	@Override
-	public void readSpawnData(PacketBuffer additionalData) {
-		color = additionalData.readInt();
-	}
+    @Override
+    public void readSpawnData(PacketBuffer additionalData) {
+        color = additionalData.readInt();
+    }
 
-	@Override
-	public IPacket<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
-	}
+    @Override
+    public IPacket<?> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
 }

@@ -17,42 +17,45 @@ import team.chisel.ctm.client.util.CTMLogic;
 
 @TextureType(RGBBlocks.MOD_ID + ":colored")
 public class TextureTypeColored extends TextureTypeCTM {
-	@Override
-	public ICTMTexture<? extends TextureTypeCTM> makeTexture(TextureInfo info) {
-		return new TextureCTM<TextureTypeCTM>(this, info);
-	}
+    @Override
+    public ICTMTexture<? extends TextureTypeCTM> makeTexture(TextureInfo info) {
+        return new TextureCTM<TextureTypeCTM>(this, info);
+    }
 
-	@Override
-	public TextureContextCTM getBlockRenderContext(BlockState state, IBlockReader world, BlockPos pos, ICTMTexture<?> tex) {
-		return new TextureContextCTM(state, world, pos, (TextureCTM<?>) tex) {
-			@Override
-			protected CTMLogic createCTM(BlockState state) {
-				return new CTMLogicColored();
-			}
-		};
-	}
+    @Override
+    public TextureContextCTM getBlockRenderContext(BlockState state, IBlockReader world, BlockPos pos,
+                                                   ICTMTexture<?> tex) {
+        return new TextureContextCTM(state, world, pos, (TextureCTM<?>) tex) {
+            @Override
+            protected CTMLogic createCTM(BlockState state) {
+                return new CTMLogicColored();
+            }
+        };
+    }
 
-	public static class CTMLogicColored extends CTMLogic {
-		@Override
-		public boolean isConnected(IBlockReader world, BlockPos current, BlockPos connection, Direction dir, BlockState state) {
-			if(world.getBlockState(current).getBlock() != world.getBlockState(connection).getBlock()) {
-				return false;
-			}
-			TileEntity currentTileEntity = world.getBlockEntity(current);
-			TileEntity connectionTileEntity = world.getBlockEntity(connection);
+    public static class CTMLogicColored extends CTMLogic {
+        @Override
+        public boolean isConnected(IBlockReader world, BlockPos current, BlockPos connection, Direction dir,
+                                   BlockState state) {
+            if (world.getBlockState(current).getBlock() != world.getBlockState(connection).getBlock()) {
+                return false;
+            }
+            TileEntity currentTileEntity = world.getBlockEntity(current);
+            TileEntity connectionTileEntity = world.getBlockEntity(connection);
 
-			if (currentTileEntity instanceof RGBTileEntity && connectionTileEntity instanceof RGBTileEntity) {
-				if (((RGBTileEntity) currentTileEntity).getColor() == ((RGBTileEntity) connectionTileEntity).getColor()) {
-					BlockPos obscuringPos = connection.relative(dir);
-					BlockState obscuring = getConnectionState(world, obscuringPos, dir, current);
-					boolean b = true;
-					return (b &= !stateComparator(state, obscuring, dir));
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		}
-	}
+            if (currentTileEntity instanceof RGBTileEntity && connectionTileEntity instanceof RGBTileEntity) {
+                if (((RGBTileEntity) currentTileEntity).getColor() ==
+                    ((RGBTileEntity) connectionTileEntity).getColor()) {
+                    BlockPos obscuringPos = connection.relative(dir);
+                    BlockState obscuring = getConnectionState(world, obscuringPos, dir, current);
+                    boolean b = true;
+                    return (b &= !stateComparator(state, obscuring, dir));
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    }
 }

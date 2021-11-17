@@ -47,64 +47,102 @@ import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
 public class ModLootTableProvider extends LootTableProvider {
-	public ModLootTableProvider(DataGenerator generator) {
-		super(generator);
-	}
+    public ModLootTableProvider(DataGenerator generator) {
+        super(generator);
+    }
 
-	@Override
-	protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, Builder>>>, LootParameterSet>> getTables() {
-		return ImmutableList.of(Pair.of(Blocks::new, LootParameterSets.BLOCK));
-	}
+    @Override
+    protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, Builder>>>, LootParameterSet>> getTables() {
+        return ImmutableList.of(Pair.of(Blocks::new, LootParameterSets.BLOCK));
+    }
 
-	@Override
-	protected void validate(Map<ResourceLocation, LootTable> map, ValidationTracker validationtracker) {
-		map.forEach((name, table) -> LootTableManager.validate(validationtracker, name, table));
-	}
+    @Override
+    protected void validate(Map<ResourceLocation, LootTable> map, ValidationTracker validationtracker) {
+        map.forEach((name, table) -> LootTableManager.validate(validationtracker, name, table));
+    }
 
-	private class Blocks extends BlockLootTables {
-		@Override
-		protected void addTables() {
-			HashMap<Block, Function<Block, LootTable.Builder>> map = new HashMap<>();
+    private class Blocks extends BlockLootTables {
+        @Override
+        protected void addTables() {
+            HashMap<Block, Function<Block, LootTable.Builder>> map = new HashMap<>();
 
-			map.put(BlockRegistry.RGB_ANTIBLOCK.get(), BlockLootTables::createSingleItemTable);
-			map.put(BlockRegistry.RGB_CARPET.get(), BlockLootTables::createSingleItemTable);
-			map.put(BlockRegistry.RGB_CONCRETE.get(), BlockLootTables::createSingleItemTable);
-			map.put(BlockRegistry.RGB_CONCRETE_POWDER.get(), BlockLootTables::createSingleItemTable);
-			map.put(BlockRegistry.RGB_CONCRETE_SLAB.get(), BlockLootTables::createSlabItemTable);
-			map.put(BlockRegistry.RGB_CONCRETE_STAIRS.get(), BlockLootTables::createSingleItemTable);
-			map.put(BlockRegistry.RGB_GLASS.get(), BlockLootTables::createSilkTouchOnlyTable);
-			map.put(BlockRegistry.RGB_GLASS_SLAB.get(), (block) -> createSilkTouchOnlySlabItemTable(block));
-			map.put(BlockRegistry.RGB_GLASS_STAIRS.get(), BlockLootTables::createSilkTouchOnlyTable);
-			map.put(BlockRegistry.RGB_GLOWSTONE.get(), (block) -> createSilkTouchDispatchTable(block, applyExplosionDecay(block, ItemLootEntry.lootTableItem(Items.GLOWSTONE_DUST).apply(SetCount.setCount(RandomValueRange.between(2.0F, 4.0F))).apply(ApplyBonus.addUniformBonusCount(Enchantments.BLOCK_FORTUNE)).apply(LimitCount.limitCount(IntClamper.clamp(1, 4))))));
-			map.put(BlockRegistry.RGB_PLANKS.get(), BlockLootTables::createSingleItemTable);
-			map.put(BlockRegistry.RGB_PLANKS_SLAB.get(), BlockLootTables::createSlabItemTable);
-			map.put(BlockRegistry.RGB_PLANKS_STAIRS.get(), BlockLootTables::createSingleItemTable);
-			map.put(BlockRegistry.RGB_REDSTONE_LAMP.get(), BlockLootTables::createSingleItemTable);
-			map.put(BlockRegistry.RGB_TERRACOTTA.get(), BlockLootTables::createSingleItemTable);
-			map.put(BlockRegistry.RGB_TERRACOTTA_SLAB.get(), BlockLootTables::createSlabItemTable);
-			map.put(BlockRegistry.RGB_TERRACOTTA_STAIRS.get(), BlockLootTables::createSingleItemTable);
-			map.put(BlockRegistry.RGB_WOOL.get(), BlockLootTables::createSingleItemTable);
-			map.put(BlockRegistry.RGB_WOOL_SLAB.get(), BlockLootTables::createSlabItemTable);
-			map.put(BlockRegistry.RGB_WOOL_STAIRS.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_ANTIBLOCK.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_CARPET.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_CONCRETE.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_CONCRETE_POWDER.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_CONCRETE_SLAB.get(), BlockLootTables::createSlabItemTable);
+            map.put(BlockRegistry.RGB_CONCRETE_STAIRS.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_GLASS.get(), BlockLootTables::createSilkTouchOnlyTable);
+            map.put(BlockRegistry.RGB_GLASS_SLAB.get(), (block) -> createSilkTouchOnlySlabItemTable(block));
+            map.put(BlockRegistry.RGB_GLASS_STAIRS.get(), BlockLootTables::createSilkTouchOnlyTable);
+            map.put(BlockRegistry.RGB_GLOWSTONE.get(),
+                    (block) -> createSilkTouchDispatchTable(block,
+                                                            applyExplosionDecay(block,
+                                                                                ItemLootEntry.lootTableItem(Items.GLOWSTONE_DUST)
+                                                                                             .apply(SetCount.setCount(
+                                                                                                     RandomValueRange.between(
+                                                                                                             2.0F,
+                                                                                                             4.0F)))
+                                                                                             .apply(ApplyBonus.addUniformBonusCount(
+                                                                                                     Enchantments.BLOCK_FORTUNE))
+                                                                                             .apply(LimitCount.limitCount(
+                                                                                                     IntClamper.clamp(1,
+                                                                                                                      4))))));
+            map.put(BlockRegistry.RGB_PLANKS.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_PLANKS_SLAB.get(), BlockLootTables::createSlabItemTable);
+            map.put(BlockRegistry.RGB_PLANKS_STAIRS.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_REDSTONE_LAMP.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_TERRACOTTA.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_TERRACOTTA_SLAB.get(), BlockLootTables::createSlabItemTable);
+            map.put(BlockRegistry.RGB_TERRACOTTA_STAIRS.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_WOOL.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_WOOL_SLAB.get(), BlockLootTables::createSlabItemTable);
+            map.put(BlockRegistry.RGB_WOOL_STAIRS.get(), BlockLootTables::createSingleItemTable);
 
-			map.forEach((block, function) -> add(block, block == BlockRegistry.RGB_GLOWSTONE.get() ? applyConditionalNbtCopy(function.apply(block)) : applyNbtCopy(function.apply(block))));
-		}
+            map.forEach((block, function) -> add(block,
+                                                 block == BlockRegistry.RGB_GLOWSTONE.get() ? applyConditionalNbtCopy(
+                                                         function.apply(block)) : applyNbtCopy(function.apply(block))));
+        }
 
-		private LootTable.Builder createSilkTouchOnlySlabItemTable(Block block) {
-			return LootTable.lootTable().withPool(LootPool.lootPool().when(MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.IntBound.atLeast(1))))).setRolls(ConstantRange.exactly(1)).add(applyExplosionDecay(block, ItemLootEntry.lootTableItem(block).apply(SetCount.setCount(ConstantRange.exactly(2)).when(BlockStateProperty.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SlabBlock.TYPE, SlabType.DOUBLE)))))));
-		}
+        private LootTable.Builder createSilkTouchOnlySlabItemTable(Block block) {
+            return LootTable.lootTable()
+                            .withPool(LootPool.lootPool()
+                                              .when(MatchTool.toolMatches(ItemPredicate.Builder.item()
+                                                                                               .hasEnchantment(new EnchantmentPredicate(
+                                                                                                       Enchantments.SILK_TOUCH,
+                                                                                                       MinMaxBounds.IntBound.atLeast(
+                                                                                                               1)))))
+                                              .setRolls(ConstantRange.exactly(1))
+                                              .add(applyExplosionDecay(block,
+                                                                       ItemLootEntry.lootTableItem(block)
+                                                                                    .apply(SetCount.setCount(
+                                                                                                           ConstantRange.exactly(2))
+                                                                                                   .when(BlockStateProperty.hasBlockStateProperties(
+                                                                                                                                   block)
+                                                                                                                           .setProperties(
+                                                                                                                                   StatePropertiesPredicate.Builder.properties()
+                                                                                                                                                                   .hasProperty(
+                                                                                                                                                                           SlabBlock.TYPE,
+                                                                                                                                                                           SlabType.DOUBLE)))))));
+        }
 
-		private LootTable.Builder applyNbtCopy(LootTable.Builder table) {
-			return table.apply(CopyNbt.copyData(Source.BLOCK_ENTITY).copy("color", "color"));
-		}
+        private LootTable.Builder applyNbtCopy(LootTable.Builder table) {
+            return table.apply(CopyNbt.copyData(Source.BLOCK_ENTITY).copy("color", "color"));
+        }
 
-		private LootTable.Builder applyConditionalNbtCopy(LootTable.Builder table) {
-			return table.apply(CopyNbt.copyData(Source.BLOCK_ENTITY).copy("color", "color").when(MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.IntBound.atLeast(1))))));
-		}
+        private LootTable.Builder applyConditionalNbtCopy(LootTable.Builder table) {
+            return table.apply(CopyNbt.copyData(Source.BLOCK_ENTITY)
+                                      .copy("color", "color")
+                                      .when(MatchTool.toolMatches(ItemPredicate.Builder.item()
+                                                                                       .hasEnchantment(new EnchantmentPredicate(
+                                                                                               Enchantments.SILK_TOUCH,
+                                                                                               MinMaxBounds.IntBound.atLeast(
+                                                                                                       1))))));
+        }
 
-		@Override
-		protected Iterable<Block> getKnownBlocks() {
-			return RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator;
-		}
-	}
+        @Override
+        protected Iterable<Block> getKnownBlocks() {
+            return RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator;
+        }
+    }
 }
