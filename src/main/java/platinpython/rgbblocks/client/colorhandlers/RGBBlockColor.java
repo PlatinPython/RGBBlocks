@@ -8,21 +8,22 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 
 public class RGBBlockColor implements BlockColor {
-	public int getColor(BlockState blockState, BlockAndTintGetter blockDisplayReader, BlockPos blockPos, int tintindex) {
-		if (blockDisplayReader == null) {
-			return -1;
-		}
-		BlockEntity tileEntity = blockDisplayReader.getBlockEntity(blockPos);
-		if (tileEntity == null) {
-			tileEntity = blockDisplayReader.getBlockEntity(blockPos.below());
-			if (tileEntity == null) {
-				return -1;
-			}
-		}
-		if (tileEntity instanceof RGBTileEntity) {
-			return ((RGBTileEntity) tileEntity).getColor();
-		} else {
-			return -1;
-		}
-	}
+    public int getColor(BlockState blockState, BlockAndTintGetter blockDisplayReader, BlockPos blockPos,
+                        int tintindex) {
+        if (blockDisplayReader == null) {
+            return -1;
+        }
+        BlockEntity tileEntity = blockDisplayReader.getBlockEntity(blockPos);
+        if (tileEntity == null) {
+            tileEntity = blockDisplayReader.getBlockEntity(blockPos.below());
+            if (tileEntity == null) {
+                return -1;
+            }
+        }
+        if (tileEntity instanceof RGBTileEntity) {
+            return ((RGBTileEntity) tileEntity).getColor();
+        } else {
+            return -1;
+        }
+    }
 }

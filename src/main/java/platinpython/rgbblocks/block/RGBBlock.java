@@ -13,22 +13,22 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 
 public class RGBBlock extends Block implements EntityBlock {
-	public RGBBlock(Properties properties) {
-		super(properties);
-	}
+    public RGBBlock(Properties properties) {
+        super(properties);
+    }
 
-	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return RGBBlockUtils.newBlockEntity(pos, state);
-	}
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return RGBBlockUtils.newBlockEntity(pos, state);
+    }
 
-	@Override
-	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
-	}
+    @Override
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
+    }
 
-	@Override
-	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
-		return RGBBlockUtils.getPickBlock(state, target, world, pos, player);
-	}
+    @Override
+    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+        return RGBBlockUtils.getPickBlock(state, target, world, pos, player);
+    }
 }

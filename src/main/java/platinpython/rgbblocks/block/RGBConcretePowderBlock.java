@@ -21,62 +21,70 @@ import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
 public class RGBConcretePowderBlock extends ConcretePowderBlock implements EntityBlock {
-	public RGBConcretePowderBlock() {
-		super(BlockRegistry.RGB_CONCRETE.get(), Properties.copy(Blocks.WHITE_CONCRETE_POWDER));
-	}
+    public RGBConcretePowderBlock() {
+        super(BlockRegistry.RGB_CONCRETE.get(), Properties.copy(Blocks.WHITE_CONCRETE_POWDER));
+    }
 
-	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return RGBBlockUtils.newBlockEntity(pos, state);
-	}
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return RGBBlockUtils.newBlockEntity(pos, state);
+    }
 
-	@Override
-	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
-	}
+    @Override
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
+    }
 
-	@Override
-	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
-		return RGBBlockUtils.getPickBlock(state, target, world, pos, player);
-	}
+    @Override
+    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+        return RGBBlockUtils.getPickBlock(state, target, world, pos, player);
+    }
 
-	@Override
-	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
-		if (worldIn.isEmptyBlock(pos.below()) || isFree(worldIn.getBlockState(pos.below())) && pos.getY() >= 0) {
-			BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-			RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(worldIn, (double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, state, tileEntity instanceof RGBTileEntity ? ((RGBTileEntity) tileEntity).getColor() : 0);
-			this.falling(fallingBlockEntity);
-			worldIn.addFreshEntity(fallingBlockEntity);
-		}
-	}
+    @Override
+    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
+        if (worldIn.isEmptyBlock(pos.below()) || isFree(worldIn.getBlockState(pos.below())) && pos.getY() >= 0) {
+            BlockEntity tileEntity = worldIn.getBlockEntity(pos);
+            RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(worldIn,
+                                                                                 (double) pos.getX() + 0.5D,
+                                                                                 (double) pos.getY(),
+                                                                                 (double) pos.getZ() + 0.5D,
+                                                                                 state,
+                                                                                 tileEntity instanceof RGBTileEntity
+                                                                                 ? ((RGBTileEntity) tileEntity).getColor()
+                                                                                 : 0);
+            this.falling(fallingBlockEntity);
+            worldIn.addFreshEntity(fallingBlockEntity);
+        }
+    }
 
-	@Override
-	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(BlockRegistry.RGB_CONCRETE_POWDER.get()) && !newState.is(BlockRegistry.RGB_CONCRETE.get())) {
-			if (state.hasBlockEntity() && (!state.is(newState.getBlock()) || !newState.hasBlockEntity())) {
-				worldIn.removeBlockEntity(pos);
-			}
-		}
-	}
+    @Override
+    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(BlockRegistry.RGB_CONCRETE_POWDER.get()) && !newState.is(BlockRegistry.RGB_CONCRETE.get())) {
+            if (state.hasBlockEntity() && (!state.is(newState.getBlock()) || !newState.hasBlockEntity())) {
+                worldIn.removeBlockEntity(pos);
+            }
+        }
+    }
 
-	@Override
-	public void onLand(Level world, BlockPos blockPos, BlockState blockBlockState, BlockState entityBlockState, FallingBlockEntity entity) {
-		super.onLand(world, blockPos, blockBlockState, entityBlockState, entity);
-		if (entity instanceof RGBFallingBlockEntity) {
-			RGBTileEntity tileEntity = new RGBTileEntity(blockPos, entityBlockState);
-			tileEntity.setColor(((RGBFallingBlockEntity) entity).getColor());
-			world.setBlockEntity(tileEntity);
-		}
-	}
+    @Override
+    public void onLand(Level world, BlockPos blockPos, BlockState blockBlockState, BlockState entityBlockState,
+                       FallingBlockEntity entity) {
+        super.onLand(world, blockPos, blockBlockState, entityBlockState, entity);
+        if (entity instanceof RGBFallingBlockEntity) {
+            RGBTileEntity tileEntity = new RGBTileEntity(blockPos, entityBlockState);
+            tileEntity.setColor(((RGBFallingBlockEntity) entity).getColor());
+            world.setBlockEntity(tileEntity);
+        }
+    }
 
-	@Override
-	public int getDustColor(BlockState blockState, BlockGetter blockReader, BlockPos blockPos) {
-		if (blockReader != null) {
-			BlockEntity tileEntity = blockReader.getBlockEntity(blockPos.above());
-			if (tileEntity instanceof RGBTileEntity) {
-				return ((RGBTileEntity) tileEntity).getColor();
-			}
-		}
-		return super.getDustColor(blockState, blockReader, blockPos);
-	}
+    @Override
+    public int getDustColor(BlockState blockState, BlockGetter blockReader, BlockPos blockPos) {
+        if (blockReader != null) {
+            BlockEntity tileEntity = blockReader.getBlockEntity(blockPos.above());
+            if (tileEntity instanceof RGBTileEntity) {
+                return ((RGBTileEntity) tileEntity).getColor();
+            }
+        }
+        return super.getDustColor(blockState, blockReader, blockPos);
+    }
 }

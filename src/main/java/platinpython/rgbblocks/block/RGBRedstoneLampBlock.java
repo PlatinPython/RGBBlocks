@@ -15,22 +15,22 @@ import net.minecraft.world.phys.HitResult;
 import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
 public class RGBRedstoneLampBlock extends RedstoneLampBlock implements EntityBlock {
-	public RGBRedstoneLampBlock() {
-		super(Properties.copy(Blocks.REDSTONE_LAMP));
-	}
+    public RGBRedstoneLampBlock() {
+        super(Properties.copy(Blocks.REDSTONE_LAMP));
+    }
 
-	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return TileEntityRegistry.RGB.get().create(pos, state);
-	}
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return TileEntityRegistry.RGB.get().create(pos, state);
+    }
 
-	@Override
-	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
-	}
+    @Override
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
+    }
 
-	@Override
-	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
-		return RGBBlockUtils.getPickBlock(state, target, world, pos, player);
-	}
+    @Override
+    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+        return RGBBlockUtils.getPickBlock(state, target, world, pos, player);
+    }
 }

@@ -26,47 +26,48 @@ import platinpython.rgbblocks.util.top.TOPMain;
 
 @Mod("rgbblocks")
 public class RGBBlocks {
-	public static final String MOD_ID = "rgbblocks";
+    public static final String MOD_ID = "rgbblocks";
 
-	public static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
 
-	public RGBBlocks() {
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(DataGatherer::onGatherData);
+    public RGBBlocks() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(DataGatherer::onGatherData);
 
-		RegistryHandler.register();
+        RegistryHandler.register();
 
-		MinecraftForge.EVENT_BUS.register(this);
-	}
+        MinecraftForge.EVENT_BUS.register(this);
+    }
 
-	public void setup(final FMLCommonSetupEvent event) {
-		PacketHandler.register();
+    public void setup(final FMLCommonSetupEvent event) {
+        PacketHandler.register();
 
-		event.enqueueWork(() -> DispenserBlock.registerBehavior(ItemRegistry.PAINT_BUCKET.get(), new DispensePaintbucketBehaviour()));
-	}
+        event.enqueueWork(() -> DispenserBlock.registerBehavior(ItemRegistry.PAINT_BUCKET.get(),
+                                                                new DispensePaintbucketBehaviour()));
+    }
 
-	public void enqueueIMC(final InterModEnqueueEvent event) {
-		if (ModList.get().isLoaded("theoneprobe")) {
-			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPMain::new);
-		}
-	}
+    public void enqueueIMC(final InterModEnqueueEvent event) {
+        if (ModList.get().isLoaded("theoneprobe")) {
+            InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPMain::new);
+        }
+    }
 
-	@SubscribeEvent
-	public void replaceMappings(MissingMappings<Item> event) {
-		for (Mapping<Item> mapping : event.getAllMappings()) {
-			if (mapping.key.toString().equals("rgbblocks:bucket_of_paint")) {
-				mapping.remap(ItemRegistry.PAINT_BUCKET.get());
-			}
-		}
-	}
+    @SubscribeEvent
+    public void replaceMappings(MissingMappings<Item> event) {
+        for (Mapping<Item> mapping : event.getAllMappings()) {
+            if (mapping.key.toString().equals("rgbblocks:bucket_of_paint")) {
+                mapping.remap(ItemRegistry.PAINT_BUCKET.get());
+            }
+        }
+    }
 
-	public static final CreativeModeTab ITEM_GROUP_RGB = new CreativeModeTab(MOD_ID) {
-		@Override
-		public ItemStack makeIcon() {
-			ItemStack stack = new ItemStack(ItemRegistry.PAINT_BUCKET.get());
-			stack.getOrCreateTag().putInt("color", -1);
-			return stack;
-		}
-	};
+    public static final CreativeModeTab ITEM_GROUP_RGB = new CreativeModeTab(MOD_ID) {
+        @Override
+        public ItemStack makeIcon() {
+            ItemStack stack = new ItemStack(ItemRegistry.PAINT_BUCKET.get());
+            stack.getOrCreateTag().putInt("color", -1);
+            return stack;
+        }
+    };
 }

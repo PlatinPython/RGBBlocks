@@ -32,50 +32,66 @@ import platinpython.rgbblocks.util.registries.ItemRegistry;
 
 @EventBusSubscriber(modid = RGBBlocks.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientUtils {
-	public static final RGBBlocksPack VIRTUAL_PACK = new RGBBlocksPack();
+    public static final RGBBlocksPack VIRTUAL_PACK = new RGBBlocksPack();
 
-	@SubscribeEvent
-	public static void onModConstruct(FMLConstructModEvent event) {
-		event.enqueueWork(ClientUtils::registerVirtualPack);
-	}
+    @SubscribeEvent
+    public static void onModConstruct(FMLConstructModEvent event) {
+        event.enqueueWork(ClientUtils::registerVirtualPack);
+    }
 
-	private static void registerVirtualPack() {
-		Minecraft minecraft = Minecraft.getInstance();
+    private static void registerVirtualPack() {
+        Minecraft minecraft = Minecraft.getInstance();
 
-		minecraft.getResourcePackRepository().addPackFinder((infoConsumer, packInfo) -> infoConsumer.accept(new Pack("rgbblocks_textures", true, () -> VIRTUAL_PACK, new TranslatableComponent("rgbblocks.pack_title"), new TranslatableComponent("rgbblocks.pack_description"), PackCompatibility.COMPATIBLE, Pack.Position.TOP, true, PackSource.DEFAULT, true)));
+        minecraft.getResourcePackRepository()
+                 .addPackFinder((infoConsumer, packInfo) -> infoConsumer.accept(new Pack("rgbblocks_textures",
+                                                                                         true,
+                                                                                         () -> VIRTUAL_PACK,
+                                                                                         new TranslatableComponent(
+                                                                                                 "rgbblocks.pack_title"),
+                                                                                         new TranslatableComponent(
+                                                                                                 "rgbblocks.pack_description"),
+                                                                                         PackCompatibility.COMPATIBLE,
+                                                                                         Pack.Position.TOP,
+                                                                                         true,
+                                                                                         PackSource.DEFAULT,
+                                                                                         true)));
 
-		ReloadableResourceManager resourceManager = (ReloadableResourceManager) minecraft.getResourceManager();
-		resourceManager.registerReloadListener(VIRTUAL_PACK);
-	}
+        ReloadableResourceManager resourceManager = (ReloadableResourceManager) minecraft.getResourceManager();
+        resourceManager.registerReloadListener(VIRTUAL_PACK);
+    }
 
-	@SubscribeEvent
-	public static void doClientStuff(final FMLClientSetupEvent event) {
-		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.translucent());
-		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.translucent());
-		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.translucent());
+    @SubscribeEvent
+    public static void doClientStuff(final FMLClientSetupEvent event) {
+        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.translucent());
 
-		// Needed until CTM for 1.17 releases
-		ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_ANTIBLOCK.get(), RenderType.cutout());
-	}
-	
-	@SubscribeEvent
-	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerEntityRenderer(EntityRegistry.RGB_FALLING_BLOCK.get(), RGBFallingBlockRenderer::new);
-	}
+        // Needed until CTM for 1.17 releases
+        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_ANTIBLOCK.get(), RenderType.cutout());
+    }
 
-	@SubscribeEvent
-	public static void registerColorHandlers(ColorHandlerEvent.Item event) {
-		event.getBlockColors().register(new RGBBlockColor(), RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
-		event.getItemColors().register(new RGBBlockItemColor(), RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
+    @SubscribeEvent
+    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(EntityRegistry.RGB_FALLING_BLOCK.get(), RGBFallingBlockRenderer::new);
+    }
 
-		event.getItemColors().register(new PaintBucketItemColor(), ItemRegistry.PAINT_BUCKET.get());
-	}
+    @SubscribeEvent
+    public static void registerColorHandlers(ColorHandlerEvent.Item event) {
+        event.getBlockColors()
+             .register(new RGBBlockColor(),
+                       RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
+        event.getItemColors()
+             .register(new RGBBlockItemColor(),
+                       RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
 
-	public static void openColorSelectScreen(int color, boolean isRGBSelected) {
-		Minecraft.getInstance().setScreen(new ColorSelectScreen(color, isRGBSelected));
-	}
+        event.getItemColors().register(new PaintBucketItemColor(), ItemRegistry.PAINT_BUCKET.get());
+    }
 
-	public static boolean hasShiftDown() {
-		return Screen.hasShiftDown();
-	}
+    public static void openColorSelectScreen(int color, boolean isRGBSelected) {
+        Minecraft.getInstance().setScreen(new ColorSelectScreen(color, isRGBSelected));
+    }
+
+    public static boolean hasShiftDown() {
+        return Screen.hasShiftDown();
+    }
 }

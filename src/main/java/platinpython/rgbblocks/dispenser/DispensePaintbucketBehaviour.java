@@ -11,17 +11,21 @@ import net.minecraftforge.common.util.Constants.BlockFlags;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 
 public class DispensePaintbucketBehaviour extends DefaultDispenseItemBehavior {
-	@Override
-	protected ItemStack execute(BlockSource source, ItemStack itemStack) {
-		Direction dispenserFacing = source.getBlockState().getValue(DispenserBlock.FACING);
-		BlockPos blockPos = source.getPos().relative(dispenserFacing);
-		BlockEntity tileEntity = source.getLevel().getBlockEntity(blockPos);
-		if (tileEntity instanceof RGBTileEntity) {
-			((RGBTileEntity) tileEntity).setColor(itemStack.getTag().getInt("color"));
-			source.getLevel().sendBlockUpdated(blockPos, tileEntity.getBlockState(), tileEntity.getBlockState(), BlockFlags.DEFAULT_AND_RERENDER);
-			return itemStack;
-		} else {
-			return super.execute(source, itemStack);
-		}
-	}
+    @Override
+    protected ItemStack execute(BlockSource source, ItemStack itemStack) {
+        Direction dispenserFacing = source.getBlockState().getValue(DispenserBlock.FACING);
+        BlockPos blockPos = source.getPos().relative(dispenserFacing);
+        BlockEntity tileEntity = source.getLevel().getBlockEntity(blockPos);
+        if (tileEntity instanceof RGBTileEntity) {
+            ((RGBTileEntity) tileEntity).setColor(itemStack.getTag().getInt("color"));
+            source.getLevel()
+                  .sendBlockUpdated(blockPos,
+                                    tileEntity.getBlockState(),
+                                    tileEntity.getBlockState(),
+                                    BlockFlags.DEFAULT_AND_RERENDER);
+            return itemStack;
+        } else {
+            return super.execute(source, itemStack);
+        }
+    }
 }
