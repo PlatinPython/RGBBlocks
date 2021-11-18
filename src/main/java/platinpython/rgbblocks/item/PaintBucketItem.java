@@ -35,12 +35,17 @@ public class PaintBucketItem extends Item {
     @Override
     public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
         if (allowdedIn(group)) {
-            ItemStack stack = new ItemStack(this);
-            CompoundTag compound = stack.getOrCreateTag();
-            compound.putInt("color", -1);
-            compound.putBoolean("isRGBSelected", true);
-            items.add(stack);
+            items.add(getDefaultInstance());
         }
+    }
+
+    @Override
+    public ItemStack getDefaultInstance() {
+        ItemStack stack = new ItemStack(this);
+        CompoundTag compound = stack.getOrCreateTag();
+        compound.putInt("color", -1);
+        compound.putBoolean("isRGBSelected", true);
+        return stack;
     }
 
     @Override

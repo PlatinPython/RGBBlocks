@@ -28,11 +28,16 @@ public class RGBBlockItem extends BlockItem {
     @Override
     public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
         if (allowdedIn(group)) {
-            ItemStack stack = new ItemStack(this);
-            CompoundTag compound = stack.getOrCreateTag();
-            compound.putInt("color", -1);
-            items.add(stack);
+            items.add(getDefaultInstance());
         }
+    }
+
+    @Override
+    public ItemStack getDefaultInstance() {
+        ItemStack stack = new ItemStack(this);
+        CompoundTag compound = stack.getOrCreateTag();
+        compound.putInt("color", -1);
+        return stack;
     }
 
     @Override
