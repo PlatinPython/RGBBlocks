@@ -28,11 +28,16 @@ public class RGBBlockItem extends BlockItem {
     @Override
     public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
         if (allowdedIn(group)) {
-            ItemStack stack = new ItemStack(this);
-            CompoundNBT compound = stack.getOrCreateTag();
-            compound.putInt("color", -1);
-            items.add(stack);
+            items.add(getDefaultInstance());
         }
+    }
+
+    @Override
+    public ItemStack getDefaultInstance() {
+        ItemStack stack = new ItemStack(this);
+        CompoundNBT compound = stack.getOrCreateTag();
+        compound.putInt("color", -1);
+        return stack;
     }
 
     @Override

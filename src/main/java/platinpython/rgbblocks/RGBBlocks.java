@@ -1,5 +1,6 @@
 package platinpython.rgbblocks;
 
+import net.minecraft.util.NonNullList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -68,6 +69,14 @@ public class RGBBlocks {
             ItemStack stack = new ItemStack(ItemRegistry.PAINT_BUCKET.get());
             stack.getOrCreateTag().putInt("color", -1);
             return stack;
+        }
+
+        @Override
+        public void fillItemList(NonNullList<ItemStack> pItems) {
+            super.fillItemList(pItems);
+            pItems.sort((i1, i2) -> i1.getItem().getRegistryName().compareNamespaced(i2.getItem().getRegistryName()));
+            pItems.removeIf(i -> i.getItem().equals(ItemRegistry.PAINT_BUCKET.get()));
+            pItems.add(0, ItemRegistry.PAINT_BUCKET.get().getDefaultInstance());
         }
     };
 }
