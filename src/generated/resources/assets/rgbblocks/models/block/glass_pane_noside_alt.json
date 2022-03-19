@@ -1,0 +1,6 @@
+{
+  "parent": "rgbblocks:block/template_glass_pane_noside_alt",
+  "textures": {
+    "pane": "rgbblocks:block/glass"
+  }
+}

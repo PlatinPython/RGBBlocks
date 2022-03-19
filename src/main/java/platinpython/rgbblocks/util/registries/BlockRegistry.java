@@ -1,15 +1,15 @@
 package platinpython.rgbblocks.util.registries;
 
-import java.util.function.Supplier;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import platinpython.rgbblocks.block.RGBBlock;
 import platinpython.rgbblocks.block.RGBCarpetBlock;
 import platinpython.rgbblocks.block.RGBConcretePowderBlock;
 import platinpython.rgbblocks.block.RGBGlassBlock;
+import platinpython.rgbblocks.block.RGBGlassPaneBlock;
 import platinpython.rgbblocks.block.RGBGlassSlabBlock;
 import platinpython.rgbblocks.block.RGBGlassStairsBlock;
 import platinpython.rgbblocks.block.RGBRedstoneLampBlock;
@@ -17,6 +17,8 @@ import platinpython.rgbblocks.block.RGBSlabBlock;
 import platinpython.rgbblocks.block.RGBStairsBlock;
 import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.RegistryHandler;
+
+import java.util.function.Supplier;
 
 public class BlockRegistry {
     public static final RegistryObject<Block> RGB_CONCRETE = register("concrete",
@@ -70,6 +72,8 @@ public class BlockRegistry {
                                                                           () -> new RGBGlassStairsBlock(() -> RGB_GLASS.get()
                                                                                                                        .defaultBlockState()));
 
+    public static final RegistryObject<IronBarsBlock> RGB_GLASS_PANE = register("glass_pane", RGBGlassPaneBlock::new);
+
     public static final RegistryObject<Block> RGB_ANTIBLOCK = register("antiblock",
                                                                        () -> new RGBBlock(Properties.copy(Blocks.STONE)));
 
@@ -77,6 +81,47 @@ public class BlockRegistry {
                                                                        () -> new RGBBlock(Properties.copy(Blocks.GLOWSTONE)));
 
     public static final RegistryObject<Block> RGB_REDSTONE_LAMP = register("redstone_lamp", RGBRedstoneLampBlock::new);
+
+    public static final RegistryObject<Block> RGB_PRISMARINE = register("prismarine",
+                                                                        () -> new RGBBlock(Properties.copy(Blocks.PRISMARINE)));
+
+    public static final RegistryObject<Block> RGB_PRISMARINE_SLAB = register("prismarine_slab",
+                                                                             () -> new RGBSlabBlock(Properties.copy(
+                                                                                     Blocks.PRISMARINE_SLAB)));
+
+    public static final RegistryObject<Block> RGB_PRISMARINE_STAIRS = register("prismarine_stairs",
+                                                                               () -> new RGBStairsBlock(RGB_PRISMARINE.get()::defaultBlockState,
+                                                                                                        Properties.copy(
+                                                                                                                Blocks.PRISMARINE_STAIRS)));
+
+
+    public static final RegistryObject<Block> RGB_PRISMARINE_BRICKS = register("prismarine_bricks",
+                                                                               () -> new RGBBlock(Properties.copy(Blocks.PRISMARINE_BRICKS)));
+
+    public static final RegistryObject<Block> RGB_PRISMARINE_BRICK_SLAB = register("prismarine_bricks_slab",
+                                                                                   () -> new RGBSlabBlock(Properties.copy(
+                                                                                           Blocks.PRISMARINE_BRICK_SLAB)));
+
+    public static final RegistryObject<Block> RGB_PRISMARINE_BRICK_STAIRS = register("prismarine_bricks_stairs",
+                                                                                     () -> new RGBStairsBlock(
+                                                                                             RGB_PRISMARINE_BRICKS.get()::defaultBlockState,
+                                                                                             Properties.copy(Blocks.PRISMARINE_BRICK_STAIRS)));
+
+
+    public static final RegistryObject<Block> RGB_DARK_PRISMARINE = register("dark_prismarine",
+                                                                             () -> new RGBBlock(Properties.copy(Blocks.DARK_PRISMARINE)));
+
+    public static final RegistryObject<Block> RGB_DARK_PRISMARINE_SLAB = register("dark_prismarine_slab",
+                                                                                  () -> new RGBSlabBlock(Properties.copy(
+                                                                                          Blocks.DARK_PRISMARINE_SLAB)));
+
+    public static final RegistryObject<Block> RGB_DARK_PRISMARINE_STAIRS = register("dark_prismarine_stairs",
+                                                                                    () -> new RGBStairsBlock(
+                                                                                            RGB_DARK_PRISMARINE.get()::defaultBlockState,
+                                                                                            Properties.copy(Blocks.DARK_PRISMARINE_STAIRS)));
+
+    public static final RegistryObject<Block> RGB_SEA_LANTERN = register("sea_lantern",
+                                                                         () -> new RGBBlock(Properties.copy(Blocks.SEA_LANTERN)));
 
     public static void register() {
     }

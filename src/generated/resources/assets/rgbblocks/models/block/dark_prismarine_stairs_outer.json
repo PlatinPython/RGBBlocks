@@ -1,0 +1,6 @@
+{
+  "parent": "rgbblocks:block/outer_stairs",
+  "textures": {
+    "all": "rgbblocks:block/dark_prismarine"
+  }
+}

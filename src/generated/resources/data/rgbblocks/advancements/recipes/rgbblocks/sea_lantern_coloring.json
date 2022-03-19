@@ -1,0 +1,39 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rgbblocks:sea_lantern_coloring"
+    ]
+  },
+  "criteria": {
+    "has_paint_bucket_and_sea_lantern": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rgbblocks:paint_bucket"
+            ]
+          },
+          {
+            "items": [
+              "rgbblocks:sea_lantern"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rgbblocks:sea_lantern_coloring"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_paint_bucket_and_sea_lantern",
+      "has_the_recipe"
+    ]
+  ]
+}

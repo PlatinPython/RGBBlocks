@@ -1,12 +1,21 @@
 {
   "replace": false,
   "values": [
-    "rgbblocks:antiblock",
     "rgbblocks:concrete",
     "rgbblocks:concrete_slab",
     "rgbblocks:concrete_stairs",
     "rgbblocks:terracotta",
     "rgbblocks:terracotta_slab",
-    "rgbblocks:terracotta_stairs"
+    "rgbblocks:terracotta_stairs",
+    "rgbblocks:antiblock",
+    "rgbblocks:prismarine",
+    "rgbblocks:prismarine_slab",
+    "rgbblocks:prismarine_stairs",
+    "rgbblocks:prismarine_bricks",
+    "rgbblocks:prismarine_bricks_slab",
+    "rgbblocks:prismarine_bricks_stairs",
+    "rgbblocks:dark_prismarine",
+    "rgbblocks:dark_prismarine_slab",
+    "rgbblocks:dark_prismarine_stairs"
   ]
 }

@@ -1,0 +1,39 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rgbblocks:prismarine_coloring"
+    ]
+  },
+  "criteria": {
+    "has_paint_bucket_and_prismarine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rgbblocks:paint_bucket"
+            ]
+          },
+          {
+            "items": [
+              "rgbblocks:prismarine"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rgbblocks:prismarine_coloring"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_paint_bucket_and_prismarine",
+      "has_the_recipe"
+    ]
+  ]
+}

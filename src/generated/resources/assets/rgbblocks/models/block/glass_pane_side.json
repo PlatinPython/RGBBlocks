@@ -1,0 +1,7 @@
+{
+  "parent": "rgbblocks:block/template_glass_pane_side",
+  "textures": {
+    "pane": "rgbblocks:block/glass",
+    "edge": "rgbblocks:block/glass_pane_top"
+  }
+}

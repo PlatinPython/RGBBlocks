@@ -61,16 +61,20 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
     private void fillTexturesMap() {
         Map<String, String> map = new HashMap<>();
 
-        map.put("concrete_powder", "white_concrete_powder");
         map.put("concrete", "white_concrete");
-        map.put("glass_pane_top", "white_stained_glass_pane_top");
-        map.put("glass", "white_stained_glass");
-        map.put("glowstone", "glowstone");
-        map.put("planks", "birch_planks");
-        map.put("redstone_lamp_on", "redstone_lamp_on");
-        map.put("redstone_lamp", "redstone_lamp");
-        map.put("terracotta", "white_terracotta");
+        map.put("concrete_powder", "white_concrete_powder");
         map.put("wool", "white_wool");
+        map.put("planks", "birch_planks");
+        map.put("terracotta", "white_terracotta");
+        map.put("glass", "white_stained_glass");
+        map.put("glass_pane_top", "white_stained_glass_pane_top");
+        map.put("glowstone", "glowstone");
+        map.put("redstone_lamp", "redstone_lamp");
+        map.put("redstone_lamp_on", "redstone_lamp_on");
+        map.put("prismarine", "prismarine");
+        map.put("prismarine_bricks", "prismarine_bricks");
+        map.put("dark_prismarine", "dark_prismarine");
+        map.put("sea_lantern", "sea_lantern");
 
         map.forEach((modName, vanillaName) -> textures.put(new ResourceLocation(RGBBlocks.MOD_ID,
                                                                                 BLOCK_DIRECTORY + modName),

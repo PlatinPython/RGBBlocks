@@ -65,6 +65,7 @@ public class ClientUtils {
         ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_GLASS_PANE.get(), RenderType.translucent());
 
         // Needed until CTM for 1.17 releases
         ItemBlockRenderTypes.setRenderLayer(BlockRegistry.RGB_ANTIBLOCK.get(), RenderType.cutout());
