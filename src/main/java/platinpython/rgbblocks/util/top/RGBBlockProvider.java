@@ -42,7 +42,7 @@ public class RGBBlockProvider implements IProbeInfoProvider {
                         ": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
                 IFormattableTextComponent brightness = new TranslationTextComponent("gui.rgbblocks.brightness").append(
                         ": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
-                info.text(hue.append("°, ").append(saturation).append("%, ").append(brightness).append("%"));
+                info.text(hue.append("\u00B0, ").append(saturation).append("%, ").append(brightness).append("%"));
             }
         }
     }
