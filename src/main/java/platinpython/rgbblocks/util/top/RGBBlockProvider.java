@@ -6,6 +6,7 @@ import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -44,13 +45,13 @@ public class RGBBlockProvider implements IProbeInfoProvider {
                                                                                                            Math.round(
                                                                                                                    hsb[2] *
                                                                                                                    ColorSelectScreen.MAX_VALUE_SB));
-                info.text(hue.append("°, ").append(saturation).append("%, ").append(brightness).append("%"));
+                info.text(hue.append("\u00B0, ").append(saturation).append("%, ").append(brightness).append("%"));
             }
         }
     }
 
     @Override
-    public String getID() {
-        return RGBBlocks.MOD_ID;
+    public ResourceLocation getID() {
+        return new ResourceLocation(RGBBlocks.MOD_ID, "block");
     }
 }
