@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "rgbblocks:dark_prismarine"
+    }
+  },
+  "result": {
+    "item": "rgbblocks:dark_prismarine_stairs",
+    "count": 4,
+    "nbt": "{\"color\":-1}"
+  }
+}

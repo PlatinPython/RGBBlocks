@@ -1,5 +1,26 @@
 package platinpython.rgbblocks.util.pack;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.NativeImage;
+import net.minecraft.profiler.IProfiler;
+import net.minecraft.resources.IFutureReloadListener;
+import net.minecraft.resources.IResourceManager;
+import net.minecraft.resources.ResourcePack;
+import net.minecraft.resources.ResourcePackFileNotFoundException;
+import net.minecraft.resources.ResourcePackType;
+import net.minecraft.resources.data.IMetadataSectionSerializer;
+import net.minecraft.resources.data.PackMetadataSection;
+import net.minecraft.resources.data.PackMetadataSectionSerializer;
+import net.minecraft.util.JSONUtils;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
+import org.apache.commons.io.IOUtils;
+import platinpython.rgbblocks.RGBBlocks;
+import platinpython.rgbblocks.util.Color;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -18,29 +39,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Predicate;
-
-import org.apache.commons.io.IOUtils;
-
-import com.google.common.collect.ImmutableSet;
-import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Pair;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.NativeImage;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IFutureReloadListener;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.resources.ResourcePack;
-import net.minecraft.resources.ResourcePackFileNotFoundException;
-import net.minecraft.resources.ResourcePackType;
-import net.minecraft.resources.data.IMetadataSectionSerializer;
-import net.minecraft.resources.data.PackMetadataSection;
-import net.minecraft.resources.data.PackMetadataSectionSerializer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
-import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.util.Color;
 
 public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener {
     public static final String TEXTURE_DIRECTORY = "textures/";
@@ -61,16 +59,20 @@ public class RGBBlocksPack extends ResourcePack implements IFutureReloadListener
     private void fillTexturesMap() {
         Map<String, String> map = new HashMap<>();
 
-        map.put("concrete_powder", "white_concrete_powder");
         map.put("concrete", "white_concrete");
-        map.put("glass_pane_top", "white_stained_glass_pane_top");
-        map.put("glass", "white_stained_glass");
-        map.put("glowstone", "glowstone");
-        map.put("planks", "birch_planks");
-        map.put("redstone_lamp_on", "redstone_lamp_on");
-        map.put("redstone_lamp", "redstone_lamp");
-        map.put("terracotta", "white_terracotta");
+        map.put("concrete_powder", "white_concrete_powder");
         map.put("wool", "white_wool");
+        map.put("planks", "birch_planks");
+        map.put("terracotta", "white_terracotta");
+        map.put("glass", "white_stained_glass");
+        map.put("glass_pane_top", "white_stained_glass_pane_top");
+        map.put("glowstone", "glowstone");
+        map.put("redstone_lamp", "redstone_lamp");
+        map.put("redstone_lamp_on", "redstone_lamp_on");
+        map.put("prismarine", "prismarine");
+        map.put("prismarine_bricks", "prismarine_bricks");
+        map.put("dark_prismarine", "dark_prismarine");
+        map.put("sea_lantern", "sea_lantern");
 
         map.forEach((modName, vanillaName) -> textures.put(new ResourceLocation(RGBBlocks.MOD_ID,
                                                                                 BLOCK_DIRECTORY + modName),

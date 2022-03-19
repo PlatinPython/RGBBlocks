@@ -1,0 +1,14 @@
+{
+  "type": "rgbblocks:crafting_shapeless_durability_aware_paint_bucket",
+  "ingredients": [
+    {
+      "item": "minecraft:sea_lantern"
+    },
+    {
+      "item": "rgbblocks:paint_bucket"
+    }
+  ],
+  "result": {
+    "item": "rgbblocks:sea_lantern"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "rgbblocks:crafting_shapeless_durability_aware_paint_bucket",
+  "ingredients": [
+    {
+      "item": "rgbblocks:prismarine_bricks_stairs"
+    },
+    {
+      "item": "rgbblocks:paint_bucket"
+    }
+  ],
+  "result": {
+    "item": "rgbblocks:prismarine_bricks_stairs"
+  }
+}

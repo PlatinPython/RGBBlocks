@@ -1,0 +1,14 @@
+{
+  "type": "rgbblocks:crafting_shapeless_durability_aware_paint_bucket",
+  "ingredients": [
+    {
+      "item": "minecraft:prismarine"
+    },
+    {
+      "item": "rgbblocks:paint_bucket"
+    }
+  ],
+  "result": {
+    "item": "rgbblocks:prismarine"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rgbblocks:dark_prismarine"
+    ]
+  },
+  "criteria": {
+    "has_paint_bucket": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rgbblocks:paint_bucket"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rgbblocks:dark_prismarine"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_paint_bucket",
+      "has_the_recipe"
+    ]
+  ]
+}

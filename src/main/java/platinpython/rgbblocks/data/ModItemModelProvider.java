@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import platinpython.rgbblocks.RGBBlocks;
+import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
 public class ModItemModelProvider extends ItemModelProvider {
@@ -15,6 +16,11 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         item2Layers(ItemRegistry.PAINT_BUCKET.get());
+
+        singleTexture(BlockRegistry.RGB_GLASS_PANE.getId().getPath(),
+                      mcLoc(ITEM_FOLDER + "/generated"),
+                      "layer0",
+                      modLoc(BLOCK_FOLDER + "/glass"));
     }
 
     private void item2Layers(Item item) {

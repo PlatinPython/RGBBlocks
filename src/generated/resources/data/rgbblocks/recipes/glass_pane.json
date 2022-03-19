@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "rgbblocks:glass"
+    }
+  },
+  "result": {
+    "item": "rgbblocks:glass_pane",
+    "count": 16,
+    "nbt": "{\"color\":-1}"
+  }
+}

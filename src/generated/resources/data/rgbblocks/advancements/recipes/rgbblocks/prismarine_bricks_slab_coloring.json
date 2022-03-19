@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rgbblocks:prismarine_bricks_slab_coloring"
+    ]
+  },
+  "criteria": {
+    "has_paint_bucket_and_prismarine_bricks_slab": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rgbblocks:paint_bucket"
+          },
+          {
+            "item": "rgbblocks:prismarine_bricks_slab"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rgbblocks:prismarine_bricks_slab_coloring"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_paint_bucket_and_prismarine_bricks_slab",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,16 +1,7 @@
 package platinpython.rgbblocks.data;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-
 import net.minecraft.advancements.criterion.EnchantmentPredicate;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.MinMaxBounds;
@@ -46,6 +37,14 @@ import net.minecraftforge.fml.RegistryObject;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 public class ModLootTableProvider extends LootTableProvider {
     public ModLootTableProvider(DataGenerator generator) {
         super(generator);
@@ -66,15 +65,25 @@ public class ModLootTableProvider extends LootTableProvider {
         protected void addTables() {
             HashMap<Block, Function<Block, LootTable.Builder>> map = new HashMap<>();
 
-            map.put(BlockRegistry.RGB_ANTIBLOCK.get(), BlockLootTables::createSingleItemTable);
-            map.put(BlockRegistry.RGB_CARPET.get(), BlockLootTables::createSingleItemTable);
             map.put(BlockRegistry.RGB_CONCRETE.get(), BlockLootTables::createSingleItemTable);
-            map.put(BlockRegistry.RGB_CONCRETE_POWDER.get(), BlockLootTables::createSingleItemTable);
             map.put(BlockRegistry.RGB_CONCRETE_SLAB.get(), BlockLootTables::createSlabItemTable);
             map.put(BlockRegistry.RGB_CONCRETE_STAIRS.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_CONCRETE_POWDER.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_WOOL.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_WOOL_SLAB.get(), BlockLootTables::createSlabItemTable);
+            map.put(BlockRegistry.RGB_WOOL_STAIRS.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_CARPET.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_PLANKS.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_PLANKS_SLAB.get(), BlockLootTables::createSlabItemTable);
+            map.put(BlockRegistry.RGB_PLANKS_STAIRS.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_TERRACOTTA.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_TERRACOTTA_SLAB.get(), BlockLootTables::createSlabItemTable);
+            map.put(BlockRegistry.RGB_TERRACOTTA_STAIRS.get(), BlockLootTables::createSingleItemTable);
             map.put(BlockRegistry.RGB_GLASS.get(), BlockLootTables::createSilkTouchOnlyTable);
-            map.put(BlockRegistry.RGB_GLASS_SLAB.get(), (block) -> createSilkTouchOnlySlabItemTable(block));
+            map.put(BlockRegistry.RGB_GLASS_SLAB.get(), this::createSilkTouchOnlySlabItemTable);
             map.put(BlockRegistry.RGB_GLASS_STAIRS.get(), BlockLootTables::createSilkTouchOnlyTable);
+            map.put(BlockRegistry.RGB_GLASS_PANE.get(), BlockLootTables::createSilkTouchOnlyTable);
+            map.put(BlockRegistry.RGB_ANTIBLOCK.get(), BlockLootTables::createSingleItemTable);
             map.put(BlockRegistry.RGB_GLOWSTONE.get(),
                     (block) -> createSilkTouchDispatchTable(block,
                                                             applyExplosionDecay(block,
@@ -88,19 +97,34 @@ public class ModLootTableProvider extends LootTableProvider {
                                                                                              .apply(LimitCount.limitCount(
                                                                                                      IntClamper.clamp(1,
                                                                                                                       4))))));
-            map.put(BlockRegistry.RGB_PLANKS.get(), BlockLootTables::createSingleItemTable);
-            map.put(BlockRegistry.RGB_PLANKS_SLAB.get(), BlockLootTables::createSlabItemTable);
-            map.put(BlockRegistry.RGB_PLANKS_STAIRS.get(), BlockLootTables::createSingleItemTable);
             map.put(BlockRegistry.RGB_REDSTONE_LAMP.get(), BlockLootTables::createSingleItemTable);
-            map.put(BlockRegistry.RGB_TERRACOTTA.get(), BlockLootTables::createSingleItemTable);
-            map.put(BlockRegistry.RGB_TERRACOTTA_SLAB.get(), BlockLootTables::createSlabItemTable);
-            map.put(BlockRegistry.RGB_TERRACOTTA_STAIRS.get(), BlockLootTables::createSingleItemTable);
-            map.put(BlockRegistry.RGB_WOOL.get(), BlockLootTables::createSingleItemTable);
-            map.put(BlockRegistry.RGB_WOOL_SLAB.get(), BlockLootTables::createSlabItemTable);
-            map.put(BlockRegistry.RGB_WOOL_STAIRS.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_PRISMARINE.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_PRISMARINE_SLAB.get(), BlockLootTables::createSlabItemTable);
+            map.put(BlockRegistry.RGB_PRISMARINE_STAIRS.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_PRISMARINE_BRICKS.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_PRISMARINE_BRICK_SLAB.get(), BlockLootTables::createSlabItemTable);
+            map.put(BlockRegistry.RGB_PRISMARINE_BRICK_STAIRS.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_DARK_PRISMARINE.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_DARK_PRISMARINE_SLAB.get(), BlockLootTables::createSlabItemTable);
+            map.put(BlockRegistry.RGB_DARK_PRISMARINE_STAIRS.get(), BlockLootTables::createSingleItemTable);
+            map.put(BlockRegistry.RGB_SEA_LANTERN.get(),
+                    (block) -> createSilkTouchDispatchTable(block,
+                                                            applyExplosionDecay(block,
+                                                                                ItemLootEntry.lootTableItem(Items.PRISMARINE_CRYSTALS)
+                                                                                             .apply(SetCount.setCount(
+                                                                                                     RandomValueRange.between(
+                                                                                                             2.0F,
+                                                                                                             3.0F)))
+                                                                                             .apply(ApplyBonus.addUniformBonusCount(
+                                                                                                     Enchantments.BLOCK_FORTUNE))
+                                                                                             .apply(LimitCount.limitCount(
+                                                                                                     IntClamper.clamp(1,
+                                                                                                                      +5)))))
+            );
 
             map.forEach((block, function) -> add(block,
-                                                 block == BlockRegistry.RGB_GLOWSTONE.get() ? applyConditionalNbtCopy(
+                                                 block == BlockRegistry.RGB_GLOWSTONE.get() ||
+                                                 block == BlockRegistry.RGB_SEA_LANTERN.get() ? applyConditionalNbtCopy(
                                                          function.apply(block)) : applyNbtCopy(function.apply(block))));
         }
 

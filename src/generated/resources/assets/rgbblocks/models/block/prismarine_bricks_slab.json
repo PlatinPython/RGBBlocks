@@ -1,0 +1,6 @@
+{
+  "parent": "rgbblocks:block/slab",
+  "textures": {
+    "all": "rgbblocks:block/prismarine_bricks"
+  }
+}

@@ -67,6 +67,7 @@ public class ClientUtils {
         RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS.get(), RenderType.translucent());
         RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_STAIRS.get(), RenderType.translucent());
         RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_SLAB.get(), RenderType.translucent());
+        RenderTypeLookup.setRenderLayer(BlockRegistry.RGB_GLASS_PANE.get(), RenderType.translucent());
     }
 
     @SubscribeEvent

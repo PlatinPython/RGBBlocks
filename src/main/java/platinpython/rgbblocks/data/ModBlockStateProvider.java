@@ -21,17 +21,36 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+        simpleBlock(BlockRegistry.RGB_CARPET.get(),
+                    models().singleTexture(BlockRegistry.RGB_CARPET.getId().getPath(),
+                                           modLoc(ModelProvider.BLOCK_FOLDER + "/thin_block"),
+                                           "all",
+                                           modLoc(ModelProvider.BLOCK_FOLDER + "/wool")));
+        paneBlock(BlockRegistry.RGB_GLASS_PANE.get(),
+                  models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_post",
+                                              modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_post"))
+                          .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
+                          .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
+                  models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_side",
+                                              modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_side"))
+                          .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
+                          .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
+                  models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_side_alt",
+                                              modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_side_alt"))
+                          .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
+                          .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
+                  models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_noside",
+                                              modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_noside"))
+                          .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass")),
+                  models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_noside_alt",
+                                              modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_noside_alt"))
+                          .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass")));
         simpleBlock(BlockRegistry.RGB_ANTIBLOCK.get(),
                     models().singleTexture(BlockRegistry.RGB_ANTIBLOCK.getId().getPath(),
                                            modLoc(ModelProvider.BLOCK_FOLDER + "/no_shade_2_layer"),
                                            "bot",
                                            modLoc(ModelProvider.BLOCK_FOLDER + "/white"))
                             .texture("top", modLoc(ModelProvider.BLOCK_FOLDER + "/antiblock")));
-        simpleBlock(BlockRegistry.RGB_CARPET.get(),
-                    models().singleTexture(BlockRegistry.RGB_CARPET.getId().getPath(),
-                                           modLoc(ModelProvider.BLOCK_FOLDER + "/thin_block"),
-                                           "all",
-                                           modLoc(ModelProvider.BLOCK_FOLDER + "/wool")));
         getVariantBuilder(BlockRegistry.RGB_REDSTONE_LAMP.get()).forAllStates(state -> {
             return state.getValue(RedstoneLampBlock.LIT)
                    ? ConfiguredModel.builder()
@@ -55,26 +74,35 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         blocks(BlockRegistry.RGB_CONCRETE.get());
         blocks(BlockRegistry.RGB_CONCRETE_POWDER.get());
-        blocks(BlockRegistry.RGB_GLASS.get());
-        blocks(BlockRegistry.RGB_GLOWSTONE.get());
+        blocks(BlockRegistry.RGB_WOOL.get());
         blocks(BlockRegistry.RGB_PLANKS.get());
         blocks(BlockRegistry.RGB_TERRACOTTA.get());
-        blocks(BlockRegistry.RGB_WOOL.get());
+        blocks(BlockRegistry.RGB_GLASS.get());
+        blocks(BlockRegistry.RGB_GLOWSTONE.get());
+        blocks(BlockRegistry.RGB_PRISMARINE.get());
+        blocks(BlockRegistry.RGB_PRISMARINE_BRICKS.get());
+        blocks(BlockRegistry.RGB_DARK_PRISMARINE.get());
+        blocks(BlockRegistry.RGB_SEA_LANTERN.get());
 
         slabBlocks(BlockRegistry.RGB_CONCRETE_SLAB.get());
-        slabBlocks(BlockRegistry.RGB_GLASS_SLAB.get());
+        slabBlocks(BlockRegistry.RGB_WOOL_SLAB.get());
         slabBlocks(BlockRegistry.RGB_PLANKS_SLAB.get());
         slabBlocks(BlockRegistry.RGB_TERRACOTTA_SLAB.get());
-        slabBlocks(BlockRegistry.RGB_WOOL_SLAB.get());
+        slabBlocks(BlockRegistry.RGB_GLASS_SLAB.get());
+        slabBlocks(BlockRegistry.RGB_PRISMARINE_SLAB.get());
+        slabBlocks(BlockRegistry.RGB_PRISMARINE_BRICK_SLAB.get());
+        slabBlocks(BlockRegistry.RGB_DARK_PRISMARINE_SLAB.get());
 
         stairBlocks(BlockRegistry.RGB_CONCRETE_STAIRS.get());
-        stairBlocks(BlockRegistry.RGB_GLASS_STAIRS.get());
+        stairBlocks(BlockRegistry.RGB_WOOL_STAIRS.get());
         stairBlocks(BlockRegistry.RGB_PLANKS_STAIRS.get());
         stairBlocks(BlockRegistry.RGB_TERRACOTTA_STAIRS.get());
-        stairBlocks(BlockRegistry.RGB_WOOL_STAIRS.get());
+        stairBlocks(BlockRegistry.RGB_GLASS_STAIRS.get());
+        stairBlocks(BlockRegistry.RGB_PRISMARINE_STAIRS.get());
+        stairBlocks(BlockRegistry.RGB_PRISMARINE_BRICK_STAIRS.get());
+        stairBlocks(BlockRegistry.RGB_DARK_PRISMARINE_STAIRS.get());
 
-        RegistryHandler.BLOCKS.getEntries().forEach((block) -> blockItems(block.get()));
-
+        RegistryHandler.BLOCKS.getEntries().stream().filter((block) -> block.get() != BlockRegistry.RGB_GLASS_PANE.get()).forEach((block) -> blockItems(block.get()));
     }
 
     private void blocks(Block block) {
