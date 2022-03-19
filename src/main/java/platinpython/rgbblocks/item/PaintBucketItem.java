@@ -1,7 +1,5 @@
 package platinpython.rgbblocks.item;
 
-import java.util.List;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,13 +17,15 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.util.Constants.BlockFlags;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.ClientUtils;
 import platinpython.rgbblocks.util.Color;
+
+import java.util.List;
 
 public class PaintBucketItem extends Item {
     public PaintBucketItem() {
@@ -115,7 +115,7 @@ public class PaintBucketItem extends Item {
                        .sendBlockUpdated(context.getClickedPos(),
                                          tileEntity.getBlockState(),
                                          tileEntity.getBlockState(),
-                                         BlockFlags.DEFAULT_AND_RERENDER);
+                                         Block.UPDATE_ALL_IMMEDIATE);
             }
             return InteractionResult.SUCCESS;
         } else {

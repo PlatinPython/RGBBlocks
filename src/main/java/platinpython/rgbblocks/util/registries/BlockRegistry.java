@@ -4,7 +4,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import platinpython.rgbblocks.block.RGBBlock;
 import platinpython.rgbblocks.block.RGBCarpetBlock;
 import platinpython.rgbblocks.block.RGBConcretePowderBlock;

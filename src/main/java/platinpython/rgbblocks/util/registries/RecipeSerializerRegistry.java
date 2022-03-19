@@ -1,7 +1,7 @@
 package platinpython.rgbblocks.util.registries;
 
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import platinpython.rgbblocks.item.crafting.ShapelessDurabilityAwarePaintBucketRecipe;
 import platinpython.rgbblocks.item.crafting.ShapelessNoReturnRecipe;
 import platinpython.rgbblocks.util.RegistryHandler;

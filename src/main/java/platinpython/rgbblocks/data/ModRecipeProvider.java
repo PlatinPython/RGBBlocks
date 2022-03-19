@@ -6,7 +6,7 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -120,7 +120,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         block(consumer, result, Ingredient.of(provider));
     }
 
-    private void blockTag(Consumer<FinishedRecipe> consumer, Block result, Tag<Item> tag) {
+    private void blockTag(Consumer<FinishedRecipe> consumer, Block result, TagKey<Item> tag) {
         block(consumer, result, Ingredient.of(tag));
     }
 

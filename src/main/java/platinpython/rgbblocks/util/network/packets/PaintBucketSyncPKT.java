@@ -1,11 +1,11 @@
 package platinpython.rgbblocks.util.network.packets;
 
-import java.util.function.Supplier;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 import platinpython.rgbblocks.item.PaintBucketItem;
+
+import java.util.function.Supplier;
 
 public class PaintBucketSyncPKT {
     private final int color;

@@ -30,7 +30,7 @@ public class RGBStairsBlock extends StairBlock implements EntityBlock {
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
-        return RGBBlockUtils.getPickBlock(state, target, world, pos, player);
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+        return RGBBlockUtils.getCloneItemStack(state, target, world, pos, player);
     }
 }

@@ -29,12 +29,12 @@ public final class RGBBlockUtils {
     public static void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer,
                                    ItemStack stack) {
         BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        if (stack.hasTag() == true && tileEntity instanceof RGBTileEntity) {
+        if (stack.hasTag() && tileEntity instanceof RGBTileEntity) {
             ((RGBTileEntity) tileEntity).setColor(stack.getTag().getInt("color"));
         }
     }
 
-    public static ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos,
+    public static ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos,
                                          Player player) {
         ItemStack stack = new ItemStack(state.getBlock().asItem());
         BlockEntity tileEntity = world.getBlockEntity(pos);

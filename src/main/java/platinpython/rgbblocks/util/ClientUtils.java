@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.colorhandlers.PaintBucketItemColor;
 import platinpython.rgbblocks.client.colorhandlers.RGBBlockColor;
