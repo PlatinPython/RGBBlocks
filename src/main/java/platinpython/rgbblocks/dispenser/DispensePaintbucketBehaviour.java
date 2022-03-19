@@ -1,13 +1,13 @@
 package platinpython.rgbblocks.dispenser;
 
-import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.core.BlockSource;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraftforge.common.util.Constants.BlockFlags;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.Direction;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 
 public class DispensePaintbucketBehaviour extends DefaultDispenseItemBehavior {
@@ -22,7 +22,7 @@ public class DispensePaintbucketBehaviour extends DefaultDispenseItemBehavior {
                   .sendBlockUpdated(blockPos,
                                     tileEntity.getBlockState(),
                                     tileEntity.getBlockState(),
-                                    BlockFlags.DEFAULT_AND_RERENDER);
+                                    Block.UPDATE_ALL_IMMEDIATE);
             return itemStack;
         } else {
             return super.execute(source, itemStack);
