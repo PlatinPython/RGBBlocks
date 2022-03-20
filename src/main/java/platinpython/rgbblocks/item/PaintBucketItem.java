@@ -101,7 +101,7 @@ public class PaintBucketItem extends Item {
             if (context.getPlayer().isShiftKeyDown()) {
                 context.getItemInHand().getTag().putInt("color", ((RGBTileEntity) tileEntity).getColor());
             } else {
-                if (context.getItemInHand().getOrCreateTag().getInt("color") !=
+                if (!context.getPlayer().getAbilities().instabuild && context.getItemInHand().getOrCreateTag().getInt("color") !=
                     ((RGBTileEntity) tileEntity).getColor()) {
                     if (context.getItemInHand().getDamageValue() == context.getItemInHand().getMaxDamage() - 1) {
                         context.getPlayer().setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
