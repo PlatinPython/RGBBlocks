@@ -71,7 +71,7 @@ public class PaintBucketItem extends Item {
                                                                                                                    Math.round(
                                                                                                                            hsb[2] *
                                                                                                                            ColorSelectScreen.MAX_VALUE_SB));
-            tooltip.add(hue.append("°, ").append(saturation).append("%, ").append(brightness).append("%"));
+            tooltip.add(hue.append("\u00B0, ").append(saturation).append("%, ").append(brightness).append("%"));
         } else {
             tooltip.add(new StringTextComponent("#" + Integer.toHexString(color.getRGB()).substring(2)));
         }
