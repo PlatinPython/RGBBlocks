@@ -1,7 +1,5 @@
 package platinpython.rgbblocks.item;
 
-import java.util.List;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -26,6 +24,8 @@ import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.ClientUtils;
 import platinpython.rgbblocks.util.Color;
+
+import java.util.List;
 
 public class PaintBucketItem extends Item {
     public PaintBucketItem() {
@@ -106,7 +106,8 @@ public class PaintBucketItem extends Item {
             if (context.getPlayer().isShiftKeyDown()) {
                 context.getItemInHand().getTag().putInt("color", ((RGBTileEntity) tileEntity).getColor());
             } else {
-                if (context.getItemInHand().getOrCreateTag().getInt("color") !=
+                if (!context.getPlayer().abilities.instabuild &&
+                    context.getItemInHand().getOrCreateTag().getInt("color") !=
                     ((RGBTileEntity) tileEntity).getColor()) {
                     if (context.getItemInHand().getDamageValue() == context.getItemInHand().getMaxDamage() - 1) {
                         context.getPlayer().setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
