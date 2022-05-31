@@ -23,7 +23,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'parchment', version: '2022.03.13-1.18.2'
+    mappings channel: 'parchment', version: '2022.05.22-1.18.2'
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -77,10 +77,10 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    maven { // CTM, TOP
+    maven { // CTM
         url "https://maven.tterrag.com/"
     }
-    maven {
+    maven { // TOP
         url "https://www.cursemaven.com/"
         content {
             includeGroup "curse.maven"
@@ -89,21 +89,11 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.0.19'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.30'
 
-//    implementation fg.deobf("team.chisel.ctm:CTM:1.18-${ctm_version}")
-
-//    implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:${top_version}")
+    implementation fg.deobf("team.chisel.ctm:CTM:${ctm_version}")
 
     implementation fg.deobf("curse.maven:top-245211:3671753")
-}
-
-sourceSets {
-    main {
-        java {
-            exclude 'platinpython/rgbblocks/util/ctm/**'
-        }
-    }
 }
 
 jar {
@@ -121,16 +111,3 @@ jar {
 }
 
 jar.finalizedBy('reobfJar')
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
-        }
-    }
-}
