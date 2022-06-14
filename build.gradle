@@ -77,9 +77,6 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    maven { // CTM
-        url "https://maven.tterrag.com/"
-    }
     maven { // TOP
         url "https://www.cursemaven.com/"
         content {
@@ -89,10 +86,10 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.30'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.51'
 
-    implementation fg.deobf("team.chisel.ctm:CTM:${ctm_version}")
-
+//    compileOnly fg.deobf("curse.maven:top-245211:3671753:api")
+//    runtimeOnly fg.deobf("curse.maven:top-245211:3671753")
     implementation fg.deobf("curse.maven:top-245211:3671753")
 }
 

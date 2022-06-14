@@ -5,6 +5,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackCompatibility;
 import net.minecraft.server.packs.repository.PackSource;
@@ -13,6 +14,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -24,6 +27,7 @@ import platinpython.rgbblocks.client.colorhandlers.PaintBucketItemColor;
 import platinpython.rgbblocks.client.colorhandlers.RGBBlockColor;
 import platinpython.rgbblocks.client.colorhandlers.RGBBlockItemColor;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
+import platinpython.rgbblocks.client.model.AntiblockBakedModel;
 import platinpython.rgbblocks.client.renderer.entity.RGBFallingBlockRenderer;
 import platinpython.rgbblocks.util.pack.RGBBlocksPack;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
@@ -86,6 +90,11 @@ public class ClientUtils {
                        RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
 
         event.getItemColors().register(new PaintBucketItemColor(), ItemRegistry.PAINT_BUCKET.get());
+    }
+
+    @SubscribeEvent
+    public static void registerModelStuff(ModelRegistryEvent event) {
+        ModelLoaderRegistry.registerLoader(new ResourceLocation(RGBBlocks.MOD_ID, "antiblock_model"), new AntiblockBakedModel.ModelLoader());
     }
 
     public static void openColorSelectScreen(int color, boolean isRGBSelected) {

@@ -1,14 +1,13 @@
 package platinpython.rgbblocks.data;
 
+import com.google.gson.JsonObject;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RedstoneLampBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.ModelProvider;
+import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.RegistryHandler;
@@ -45,12 +44,41 @@ public class ModBlockStateProvider extends BlockStateProvider {
                   models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_noside_alt",
                                               modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_noside_alt"))
                           .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass")));
+        class AntiblockLoaderBuilder extends CustomLoaderBuilder<BlockModelBuilder> {
+            private JsonObject baseModel;
+
+            protected AntiblockLoaderBuilder(BlockModelBuilder parent,
+                                             ExistingFileHelper existingFileHelper) {
+                super(new ResourceLocation(RGBBlocks.MOD_ID, "antiblock_model"), parent, existingFileHelper);
+            }
+
+            public AntiblockLoaderBuilder baseModel(JsonObject baseModel) {
+                this.baseModel = baseModel;
+                models().generatedModels.remove(modLoc("block/" + BlockRegistry.RGB_ANTIBLOCK.getId().getPath() + "_base"));
+                return this;
+            }
+
+            @Override
+            public JsonObject toJson(JsonObject json) {
+                json = super.toJson(json);
+                if (baseModel != null)
+                    json.add("base_model", baseModel);
+                return json;
+            }
+        }
         simpleBlock(BlockRegistry.RGB_ANTIBLOCK.get(),
-                    models().singleTexture(BlockRegistry.RGB_ANTIBLOCK.getId().getPath(),
-                                           modLoc(ModelProvider.BLOCK_FOLDER + "/no_shade_2_layer"),
-                                           "bot",
-                                           modLoc(ModelProvider.BLOCK_FOLDER + "/white"))
-                            .texture("top", modLoc(ModelProvider.BLOCK_FOLDER + "/antiblock")));
+                    models().withExistingParent(BlockRegistry.RGB_ANTIBLOCK.getId().getPath(),
+                                                new ResourceLocation("forge:block/default")
+                            )
+                            .customLoader(AntiblockLoaderBuilder::new)
+                            .baseModel(models().singleTexture(BlockRegistry.RGB_ANTIBLOCK.getId().getPath() + "_base",
+                                                              modLoc(ModelProvider.BLOCK_FOLDER + "/no_shade_2_layer"),
+                                                              "bot",
+                                                              modLoc(ModelProvider.BLOCK_FOLDER + "/white")
+                                               )
+                                               .texture("top", modLoc(ModelProvider.BLOCK_FOLDER + "/antiblock")).toJson())
+                            .end()
+        );
         getVariantBuilder(BlockRegistry.RGB_REDSTONE_LAMP.get()).forAllStates(state -> {
             return state.getValue(RedstoneLampBlock.LIT)
                    ? ConfiguredModel.builder()

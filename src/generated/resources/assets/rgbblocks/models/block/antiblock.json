@@ -1,7 +1,11 @@
 {
-  "parent": "rgbblocks:block/no_shade_2_layer",
-  "textures": {
-    "bot": "rgbblocks:block/white",
-    "top": "rgbblocks:block/antiblock"
+  "parent": "forge:block/default",
+  "loader": "rgbblocks:antiblock_model",
+  "base_model": {
+    "parent": "rgbblocks:block/no_shade_2_layer",
+    "textures": {
+      "bot": "rgbblocks:block/white",
+      "top": "rgbblocks:block/antiblock"
+    }
   }
 }

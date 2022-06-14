@@ -10,7 +10,7 @@ issueTrackerURL="https://github.com/PlatinPython/RGBBlocks/issues"
   description="Blocks in almost all colors you can imagine."
   logoFile="logo.png"
   logoBlur=true
-  credits="Thanks TobiBenzi for the logo and some textures"
+  credits="Thanks TobiBenzi for the logo and some textures, Thanks XFactHD for implementing the CTM Model"
   authors="PlatinPython"
   displayURL="https://www.curseforge.com/minecraft/mc-mods/rgb-blocks-forge"
 
@@ -27,10 +27,3 @@ issueTrackerURL="https://github.com/PlatinPython/RGBBlocks/issues"
   versionRange="[1.18.2,)"
   ordering="NONE"
   side="BOTH"
-
-[[dependencies.rgbblocks]]
-  modId="ctm"
-  mandatory=true
-  versionRange="[MC1.18.2-1,)"
-  ordering="NONE"
-  side="CLIENT"
