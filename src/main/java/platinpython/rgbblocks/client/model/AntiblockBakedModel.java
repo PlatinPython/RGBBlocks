@@ -148,9 +148,7 @@ public class AntiblockBakedModel implements BakedModel {
         TextureAtlasSprite sprite = frameQuad.getSprite();
         TextureAtlasSprite ctmSprite = Minecraft.getInstance()
                                                 .getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
-                                                .apply(new ResourceLocation(RGBBlocks.MOD_ID,
-                                                                            "block/antiblock_ctm"
-                                                ));
+                                                .apply(new ResourceLocation(RGBBlocks.MOD_ID, "block/antiblock_ctm"));
 
         List<BakedQuad> quads = new ArrayList<>(bgQuads);
 
@@ -303,6 +301,30 @@ public class AntiblockBakedModel implements BakedModel {
         boolean west = false;
         boolean up = false;
         boolean down = false;
+        boolean upNorth = false;
+        boolean upNorthColor = false;
+        boolean upEast = false;
+        boolean upEastColor = false;
+        boolean upSouth = false;
+        boolean upSouthColor = false;
+        boolean upWest = false;
+        boolean upWestColor = false;
+        boolean northEast = false;
+        boolean northEastColor = false;
+        boolean southEast = false;
+        boolean southEastColor = false;
+        boolean southWest = false;
+        boolean southWestColor = false;
+        boolean northWest = false;
+        boolean northWestColor = false;
+        boolean downNorth = false;
+        boolean downNorthColor = false;
+        boolean downEast = false;
+        boolean downEastColor = false;
+        boolean downSouth = false;
+        boolean downSouthColor = false;
+        boolean downWest = false;
+        boolean downWestColor = false;
 
         if (getAntiblockAt(level, pos.north()) instanceof RGBTileEntity otherBlockEntity)
             north = otherBlockEntity.getColor() == blockEntity.getColor();
@@ -316,18 +338,54 @@ public class AntiblockBakedModel implements BakedModel {
             up = otherBlockEntity.getColor() == blockEntity.getColor();
         if (getAntiblockAt(level, pos.below()) instanceof RGBTileEntity otherBlockEntity)
             down = otherBlockEntity.getColor() == blockEntity.getColor();
-        boolean upNorth = getAntiblockAt(level, pos.above().north()) instanceof RGBTileEntity;
-        boolean upEast = getAntiblockAt(level, pos.above().east()) instanceof RGBTileEntity;
-        boolean upSouth = getAntiblockAt(level, pos.above().south()) instanceof RGBTileEntity;
-        boolean upWest = getAntiblockAt(level, pos.above().west()) instanceof RGBTileEntity;
-        boolean northEast = getAntiblockAt(level, pos.north().east()) instanceof RGBTileEntity;
-        boolean southEast = getAntiblockAt(level, pos.south().east()) instanceof RGBTileEntity;
-        boolean southWest = getAntiblockAt(level, pos.south().west()) instanceof RGBTileEntity;
-        boolean northWest = getAntiblockAt(level, pos.north().west()) instanceof RGBTileEntity;
-        boolean downNorth = getAntiblockAt(level, pos.below().north()) instanceof RGBTileEntity;
-        boolean downEast = getAntiblockAt(level, pos.below().east()) instanceof RGBTileEntity;
-        boolean downSouth = getAntiblockAt(level, pos.below().south()) instanceof RGBTileEntity;
-        boolean downWest = getAntiblockAt(level, pos.below().west()) instanceof RGBTileEntity;
+        if (getAntiblockAt(level, pos.above().north()) instanceof RGBTileEntity otherBlockEntity) {
+            upNorth = true;
+            upNorthColor = otherBlockEntity.getColor() == blockEntity.getColor();
+        }
+        if (getAntiblockAt(level, pos.above().east()) instanceof RGBTileEntity otherBlockEntity) {
+            upEast = true;
+            upEastColor = otherBlockEntity.getColor() == blockEntity.getColor();
+        }
+        if (getAntiblockAt(level, pos.above().south()) instanceof RGBTileEntity otherBlockEntity) {
+            upSouth = true;
+            upSouthColor = otherBlockEntity.getColor() == blockEntity.getColor();
+        }
+        if (getAntiblockAt(level, pos.above().west()) instanceof RGBTileEntity otherBlockEntity) {
+            upWest = true;
+            upWestColor = otherBlockEntity.getColor() == blockEntity.getColor();
+        }
+        if (getAntiblockAt(level, pos.north().east()) instanceof RGBTileEntity otherBlockEntity) {
+            northEast = true;
+            northEastColor = otherBlockEntity.getColor() == blockEntity.getColor();
+        }
+        if (getAntiblockAt(level, pos.south().east()) instanceof RGBTileEntity otherBlockEntity) {
+            southEast = true;
+            southEastColor = otherBlockEntity.getColor() == blockEntity.getColor();
+        }
+        if (getAntiblockAt(level, pos.south().west()) instanceof RGBTileEntity otherBlockEntity) {
+            southWest = true;
+            southWestColor = otherBlockEntity.getColor() == blockEntity.getColor();
+        }
+        if (getAntiblockAt(level, pos.north().west()) instanceof RGBTileEntity otherBlockEntity) {
+            northWest = true;
+            northWestColor = otherBlockEntity.getColor() == blockEntity.getColor();
+        }
+        if (getAntiblockAt(level, pos.below().north()) instanceof RGBTileEntity otherBlockEntity) {
+            downNorth = true;
+            downNorthColor = otherBlockEntity.getColor() == blockEntity.getColor();
+        }
+        if (getAntiblockAt(level, pos.below().east()) instanceof RGBTileEntity otherBlockEntity) {
+            downEast = true;
+            downEastColor = otherBlockEntity.getColor() == blockEntity.getColor();
+        }
+        if (getAntiblockAt(level, pos.below().south()) instanceof RGBTileEntity otherBlockEntity) {
+            downSouth = true;
+            downSouthColor = otherBlockEntity.getColor() == blockEntity.getColor();
+        }
+        if (getAntiblockAt(level, pos.below().west()) instanceof RGBTileEntity otherBlockEntity) {
+            downWest = true;
+            downWestColor = otherBlockEntity.getColor() == blockEntity.getColor();
+        }
         boolean upNorthEast = getAntiblockAt(level, pos.above().north().east()) instanceof RGBTileEntity;
         boolean upSouthEast = getAntiblockAt(level, pos.above().south().east()) instanceof RGBTileEntity;
         boolean upSouthWest = getAntiblockAt(level, pos.above().south().west()) instanceof RGBTileEntity;
@@ -339,23 +397,27 @@ public class AntiblockBakedModel implements BakedModel {
 
         modelData.setData(AntiblockModelData.ANTIBLOCK_MODEL_DATA, new AntiblockModelData(
                 new Connections(Direction.NORTH, up && !upNorth, down && !downNorth, east && !northEast,
-                                west && !northWest, upEast && !upNorthEast, upWest && !upNorthWest,
-                                downEast && !downNorthEast, downWest && !downNorthWest
+                                west && !northWest, upEast && upEastColor && !upNorthEast,
+                                upWest && upWestColor && !upNorthWest, downEast && downEastColor && !downNorthEast,
+                                downWest && downWestColor && !downNorthWest
                 ), new Connections(Direction.EAST, up && !upEast, down && !downEast, south && !southEast,
-                                   north && !northEast, upSouth && !upSouthEast, upNorth && !upNorthEast,
-                                   downSouth && !downSouthEast, downNorth && !downNorthEast
+                                   north && !northEast, upSouth && upSouthColor && !upSouthEast,
+                                   upNorth && upNorthColor && !upNorthEast,
+                                   downSouth && downSouthColor && !downSouthEast,
+                                   downNorth && downNorthColor && !downNorthEast
         ), new Connections(Direction.SOUTH, up && !upSouth, down && !downSouth, west && !southWest, east && !southEast,
-                           upWest && !upSouthWest, upEast && !upSouthEast, downWest && !downSouthWest,
-                           downEast && !downSouthEast
+                           upWest && upWestColor && !upSouthWest, upEast && upEastColor && !upSouthEast,
+                           downWest && downWestColor && !downSouthWest, downEast && downEastColor && !downSouthEast
         ), new Connections(Direction.WEST, up && !upWest, down && !downWest, north && !northWest, south && !southWest,
-                           upNorth && !upNorthWest, upSouth && !upSouthWest, downNorth && !downNorthWest,
-                           downSouth && !downSouthWest
+                           upNorth && upNorthColor && !upNorthWest, upSouth && upSouthColor && !upSouthWest,
+                           downNorth && downNorthColor && !downNorthWest, downSouth && downSouthColor && !downSouthWest
         ), new Connections(Direction.UP, north && !upNorth, south && !upSouth, west && !upWest, east && !upEast,
-                           northWest && !upNorthWest, northEast && !upNorthEast, southWest & !upSouthWest,
-                           southEast && !upSouthEast
+                           northWest && northWestColor && !upNorthWest, northEast && northEastColor && !upNorthEast,
+                           southWest && southWestColor && !upSouthWest, southEast && southEastColor && !upSouthEast
         ), new Connections(Direction.DOWN, south && !downSouth, north && !downNorth, west && !downWest,
-                           east && !downEast, southWest && !downSouthWest, southEast && !downSouthEast,
-                           northWest && !downNorthWest, northEast && !downNorthEast
+                           east && !downEast, southWest && southWestColor && !downSouthWest,
+                           southEast && southEastColor && !downSouthEast, northWest && northWestColor && !downNorthWest,
+                           northEast && northEastColor && !downNorthEast
         )));
         return modelData;
     }
