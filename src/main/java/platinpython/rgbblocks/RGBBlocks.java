@@ -1,16 +1,11 @@
 package platinpython.rgbblocks;
 
 import net.minecraft.core.NonNullList;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent.MissingMappings;
-import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
@@ -18,6 +13,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.MissingMappingsEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import platinpython.rgbblocks.data.DataGatherer;
 import platinpython.rgbblocks.dispenser.DispensePaintbucketBehaviour;
 import platinpython.rgbblocks.util.RegistryHandler;
@@ -45,7 +44,8 @@ public class RGBBlocks {
         PacketHandler.register();
 
         event.enqueueWork(() -> DispenserBlock.registerBehavior(ItemRegistry.PAINT_BUCKET.get(),
-                                                                new DispensePaintbucketBehaviour()));
+                                                                new DispensePaintbucketBehaviour()
+        ));
     }
 
     public void enqueueIMC(final InterModEnqueueEvent event) {
@@ -55,9 +55,10 @@ public class RGBBlocks {
     }
 
     @SubscribeEvent
-    public void replaceMappings(MissingMappings<Item> event) {
-        for (Mapping<Item> mapping : event.getAllMappings()) {
-            if (mapping.key.toString().equals("rgbblocks:bucket_of_paint")) {
+    public void replaceMappings(MissingMappingsEvent event) {
+        for (MissingMappingsEvent.Mapping<Item> mapping : event.getAllMappings(
+                ForgeRegistries.ITEMS.getRegistryKey())) {
+            if (mapping.getKey().toString().equals("rgbblocks:bucket_of_paint")) {
                 mapping.remap(ItemRegistry.PAINT_BUCKET.get());
             }
         }
@@ -72,11 +73,13 @@ public class RGBBlocks {
         }
 
         @Override
-        public void fillItemList(NonNullList<ItemStack> pItems) {
-            super.fillItemList(pItems);
-            pItems.sort((i1, i2) -> i1.getItem().getRegistryName().compareNamespaced(i2.getItem().getRegistryName()));
-            pItems.removeIf(i -> i.getItem().equals(ItemRegistry.PAINT_BUCKET.get()));
-            pItems.add(0, ItemRegistry.PAINT_BUCKET.get().getDefaultInstance());
+        public void fillItemList(NonNullList<ItemStack> items) {
+            super.fillItemList(items);
+            //noinspection ConstantConditions
+            items.sort((i1, i2) -> ForgeRegistries.ITEMS.getKey(i1.getItem())
+                                                        .compareNamespaced(ForgeRegistries.ITEMS.getKey(i2.getItem())));
+            items.removeIf(i -> i.getItem().equals(ItemRegistry.PAINT_BUCKET.get()));
+            items.add(0, ItemRegistry.PAINT_BUCKET.get().getDefaultInstance());
         }
     };
 }

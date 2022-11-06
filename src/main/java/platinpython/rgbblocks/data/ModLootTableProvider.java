@@ -85,19 +85,25 @@ public class ModLootTableProvider extends LootTableProvider {
             map.put(BlockRegistry.RGB_GLASS_STAIRS.get(), BlockLoot::createSilkTouchOnlyTable);
             map.put(BlockRegistry.RGB_GLASS_PANE.get(), BlockLoot::createSilkTouchOnlyTable);
             map.put(BlockRegistry.RGB_ANTIBLOCK.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_GLOWSTONE.get(),
-                    (block) -> createSilkTouchDispatchTable(block,
-                                                            applyExplosionDecay(block,
-                                                                                LootItem.lootTableItem(Items.GLOWSTONE_DUST)
-                                                                                        .apply(SetItemCountFunction.setCount(
-                                                                                                UniformGenerator.between(
-                                                                                                        2.0F,
-                                                                                                        4.0F)))
-                                                                                        .apply(ApplyBonusCount.addUniformBonusCount(
-                                                                                                Enchantments.BLOCK_FORTUNE))
-                                                                                        .apply(LimitCount.limitCount(
-                                                                                                IntRange.range(1,
-                                                                                                               4))))));
+            map.put(BlockRegistry.RGB_GLOWSTONE.get(), (block) -> createSilkTouchDispatchTable(block,
+                                                                                               applyExplosionDecay(
+                                                                                                       block,
+                                                                                                       LootItem.lootTableItem(
+                                                                                                                       Items.GLOWSTONE_DUST)
+                                                                                                               .apply(SetItemCountFunction.setCount(
+                                                                                                                       UniformGenerator.between(
+                                                                                                                               2.0F,
+                                                                                                                               4.0F
+                                                                                                                       )))
+                                                                                                               .apply(ApplyBonusCount.addUniformBonusCount(
+                                                                                                                       Enchantments.BLOCK_FORTUNE))
+                                                                                                               .apply(LimitCount.limitCount(
+                                                                                                                       IntRange.range(
+                                                                                                                               1,
+                                                                                                                               4
+                                                                                                                       )))
+                                                                                               )
+            ));
             map.put(BlockRegistry.RGB_REDSTONE_LAMP.get(), BlockLoot::createSingleItemTable);
             map.put(BlockRegistry.RGB_PRISMARINE.get(), BlockLoot::createSingleItemTable);
             map.put(BlockRegistry.RGB_PRISMARINE_SLAB.get(), BlockLoot::createSlabItemTable);
@@ -108,46 +114,55 @@ public class ModLootTableProvider extends LootTableProvider {
             map.put(BlockRegistry.RGB_DARK_PRISMARINE.get(), BlockLoot::createSingleItemTable);
             map.put(BlockRegistry.RGB_DARK_PRISMARINE_SLAB.get(), BlockLoot::createSlabItemTable);
             map.put(BlockRegistry.RGB_DARK_PRISMARINE_STAIRS.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_SEA_LANTERN.get(),
-                    (block) -> createSilkTouchDispatchTable(block,
-                                                            applyExplosionDecay(block,
-                                                                                LootItem.lootTableItem(Items.PRISMARINE_CRYSTALS)
-                                                                                        .apply(SetItemCountFunction.setCount(
-                                                                                                UniformGenerator.between(
-                                                                                                        2.0F,
-                                                                                                        3.0F)))
-                                                                                        .apply(ApplyBonusCount.addUniformBonusCount(
-                                                                                                Enchantments.BLOCK_FORTUNE))
-                                                                                        .apply(LimitCount.limitCount(
-                                                                                                IntRange.range(1,
-                                                                                                               5))))));
+            map.put(BlockRegistry.RGB_SEA_LANTERN.get(), (block) -> createSilkTouchDispatchTable(block,
+                                                                                                 applyExplosionDecay(
+                                                                                                         block,
+                                                                                                         LootItem.lootTableItem(
+                                                                                                                         Items.PRISMARINE_CRYSTALS)
+                                                                                                                 .apply(SetItemCountFunction.setCount(
+                                                                                                                         UniformGenerator.between(
+                                                                                                                                 2.0F,
+                                                                                                                                 3.0F
+                                                                                                                         )))
+                                                                                                                 .apply(ApplyBonusCount.addUniformBonusCount(
+                                                                                                                         Enchantments.BLOCK_FORTUNE))
+                                                                                                                 .apply(LimitCount.limitCount(
+                                                                                                                         IntRange.range(
+                                                                                                                                 1,
+                                                                                                                                 5
+                                                                                                                         )))
+                                                                                                 )
+            ));
 
             map.forEach((block, function) -> add(block,
-                                                 block == BlockRegistry.RGB_GLOWSTONE.get() ||
-                                                 block == BlockRegistry.RGB_SEA_LANTERN.get() ? applyConditionalNbtCopy(
-                                                         function.apply(block)) : applyNbtCopy(function.apply(block))));
+                                                 block == BlockRegistry.RGB_GLOWSTONE.get() || block == BlockRegistry.RGB_SEA_LANTERN.get() ?
+                                                 applyConditionalNbtCopy(function.apply(block)) :
+                                                 applyNbtCopy(function.apply(block))
+            ));
         }
 
         private LootTable.Builder createSilkTouchOnlySlabItemTable(Block block) {
             return LootTable.lootTable()
                             .withPool(LootPool.lootPool()
                                               .when(MatchTool.toolMatches(ItemPredicate.Builder.item()
-                                                                                               .hasEnchantment(new EnchantmentPredicate(
-                                                                                                       Enchantments.SILK_TOUCH,
-                                                                                                       MinMaxBounds.Ints.atLeast(
-                                                                                                               1)))))
+                                                                                               .hasEnchantment(
+                                                                                                       new EnchantmentPredicate(
+                                                                                                               Enchantments.SILK_TOUCH,
+                                                                                                               MinMaxBounds.Ints.atLeast(
+                                                                                                                       1)
+                                                                                                       ))))
                                               .setRolls(ConstantValue.exactly(1))
-                                              .add(applyExplosionDecay(block,
-                                                                       LootItem.lootTableItem(block)
-                                                                               .apply(SetItemCountFunction.setCount(
-                                                                                                                  ConstantValue.exactly(2))
-                                                                                                          .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(
-                                                                                                                                                           block)
-                                                                                                                                                   .setProperties(
-                                                                                                                                                           StatePropertiesPredicate.Builder.properties()
-                                                                                                                                                                                           .hasProperty(
-                                                                                                                                                                                                   SlabBlock.TYPE,
-                                                                                                                                                                                                   SlabType.DOUBLE)))))));
+                                              .add(applyExplosionDecay(block, LootItem.lootTableItem(block)
+                                                                                      .apply(SetItemCountFunction.setCount(
+                                                                                                                         ConstantValue.exactly(2))
+                                                                                                                 .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(
+                                                                                                                                                                  block)
+                                                                                                                                                          .setProperties(
+                                                                                                                                                                  StatePropertiesPredicate.Builder.properties()
+                                                                                                                                                                                                  .hasProperty(
+                                                                                                                                                                                                          SlabBlock.TYPE,
+                                                                                                                                                                                                          SlabType.DOUBLE
+                                                                                                                                                                                                  )))))));
         }
 
         private LootTable.Builder applyNbtCopy(LootTable.Builder table) {
@@ -159,10 +174,12 @@ public class ModLootTableProvider extends LootTableProvider {
             return table.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
                                               .copy("color", "color")
                                               .when(MatchTool.toolMatches(ItemPredicate.Builder.item()
-                                                                                               .hasEnchantment(new EnchantmentPredicate(
-                                                                                                       Enchantments.SILK_TOUCH,
-                                                                                                       MinMaxBounds.Ints.atLeast(
-                                                                                                               1))))));
+                                                                                               .hasEnchantment(
+                                                                                                       new EnchantmentPredicate(
+                                                                                                               Enchantments.SILK_TOUCH,
+                                                                                                               MinMaxBounds.Ints.atLeast(
+                                                                                                                       1)
+                                                                                                       )))));
         }
 
         @Override

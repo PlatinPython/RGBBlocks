@@ -1,13 +1,9 @@
 package platinpython.rgbblocks.item;
 
-import java.util.List;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -20,6 +16,8 @@ import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
 import platinpython.rgbblocks.util.ClientUtils;
 import platinpython.rgbblocks.util.Color;
 
+import java.util.List;
+
 public class RGBBlockItem extends BlockItem {
     public RGBBlockItem(Block blockIn) {
         super(blockIn, new Item.Properties().tab(RGBBlocks.ITEM_GROUP_RGB));
@@ -27,7 +25,7 @@ public class RGBBlockItem extends BlockItem {
 
     @Override
     public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-        if (allowdedIn(group)) {
+        if (allowedIn(group)) {
             items.add(getDefaultInstance());
         }
     }
@@ -44,23 +42,20 @@ public class RGBBlockItem extends BlockItem {
     public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         Color color = new Color(stack.getOrCreateTag().getInt("color"));
         if (ClientUtils.hasShiftDown()) {
-            MutableComponent red = new TranslatableComponent("gui.rgbblocks.red").append(": " + color.getRed());
-            MutableComponent green = new TranslatableComponent("gui.rgbblocks.green").append(": " + color.getGreen());
-            MutableComponent blue = new TranslatableComponent("gui.rgbblocks.blue").append(": " + color.getBlue());
+            MutableComponent red = Component.translatable("gui.rgbblocks.red").append(": " + color.getRed());
+            MutableComponent green = Component.translatable("gui.rgbblocks.green").append(": " + color.getGreen());
+            MutableComponent blue = Component.translatable("gui.rgbblocks.blue").append(": " + color.getBlue());
             tooltip.add(red.append(", ").append(green).append(", ").append(blue));
             float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue());
-            MutableComponent hue = new TranslatableComponent("gui.rgbblocks.hue").append(": " +
-                                                                                         Math.round(hsb[0] *
-                                                                                                    ColorSelectScreen.MAX_VALUE_HUE));
-            MutableComponent saturation = new TranslatableComponent("gui.rgbblocks.saturation").append(": " +
-                                                                                                       Math.round(hsb[1] *
-                                                                                                                  ColorSelectScreen.MAX_VALUE_SB));
-            MutableComponent brightness = new TranslatableComponent("gui.rgbblocks.brightness").append(": " +
-                                                                                                       Math.round(hsb[2] *
-                                                                                                                  ColorSelectScreen.MAX_VALUE_SB));
+            MutableComponent hue = Component.translatable("gui.rgbblocks.hue")
+                                            .append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
+            MutableComponent saturation = Component.translatable("gui.rgbblocks.saturation")
+                                                   .append(": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
+            MutableComponent brightness = Component.translatable("gui.rgbblocks.brightness")
+                                                   .append(": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
             tooltip.add(hue.append("°, ").append(saturation).append("%, ").append(brightness).append("%"));
         } else {
-            tooltip.add(new TextComponent("#" + Integer.toHexString(color.getRGB()).substring(2)));
+            tooltip.add(Component.literal("#" + Integer.toHexString(color.getRGB()).substring(2)));
         }
     }
 }

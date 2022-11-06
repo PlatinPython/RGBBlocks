@@ -4,8 +4,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -34,7 +32,7 @@ public class PaintBucketItem extends Item {
 
     @Override
     public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-        if (allowdedIn(group)) {
+        if (allowedIn(group)) {
             items.add(getDefaultInstance());
         }
     }
@@ -52,23 +50,20 @@ public class PaintBucketItem extends Item {
     public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         Color color = new Color(stack.getOrCreateTag().getInt("color"));
         if (ClientUtils.hasShiftDown()) {
-            MutableComponent red = new TranslatableComponent("gui.rgbblocks.red").append(": " + color.getRed());
-            MutableComponent green = new TranslatableComponent("gui.rgbblocks.green").append(": " + color.getGreen());
-            MutableComponent blue = new TranslatableComponent("gui.rgbblocks.blue").append(": " + color.getBlue());
+            MutableComponent red = Component.translatable("gui.rgbblocks.red").append(": " + color.getRed());
+            MutableComponent green = Component.translatable("gui.rgbblocks.green").append(": " + color.getGreen());
+            MutableComponent blue = Component.translatable("gui.rgbblocks.blue").append(": " + color.getBlue());
             tooltip.add(red.append(", ").append(green).append(", ").append(blue));
             float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue());
-            MutableComponent hue = new TranslatableComponent("gui.rgbblocks.hue").append(": " +
-                                                                                         Math.round(hsb[0] *
-                                                                                                    ColorSelectScreen.MAX_VALUE_HUE));
-            MutableComponent saturation = new TranslatableComponent("gui.rgbblocks.saturation").append(": " +
-                                                                                                       Math.round(hsb[1] *
-                                                                                                                  ColorSelectScreen.MAX_VALUE_SB));
-            MutableComponent brightness = new TranslatableComponent("gui.rgbblocks.brightness").append(": " +
-                                                                                                       Math.round(hsb[2] *
-                                                                                                                  ColorSelectScreen.MAX_VALUE_SB));
+            MutableComponent hue = Component.translatable("gui.rgbblocks.hue")
+                                            .append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
+            MutableComponent saturation = Component.translatable("gui.rgbblocks.saturation")
+                                                   .append(": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
+            MutableComponent brightness = Component.translatable("gui.rgbblocks.brightness")
+                                                   .append(": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
             tooltip.add(hue.append("\u00B0, ").append(saturation).append("%, ").append(brightness).append("%"));
         } else {
-            tooltip.add(new TextComponent("#" + Integer.toHexString(color.getRGB()).substring(2)));
+            tooltip.add(Component.literal("#" + Integer.toHexString(color.getRGB()).substring(2)));
         }
     }
 
@@ -87,7 +82,8 @@ public class PaintBucketItem extends Item {
         if (handIn == InteractionHand.MAIN_HAND && playerIn.isShiftKeyDown()) {
             if (worldIn.isClientSide) {
                 ClientUtils.openColorSelectScreen(playerIn.getMainHandItem().getTag().getInt("color"),
-                                                  playerIn.getMainHandItem().getTag().getBoolean("isRGBSelected"));
+                                                  playerIn.getMainHandItem().getTag().getBoolean("isRGBSelected")
+                );
                 return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, playerIn.getMainHandItem());
             }
         }
@@ -101,8 +97,9 @@ public class PaintBucketItem extends Item {
             if (context.getPlayer().isShiftKeyDown()) {
                 context.getItemInHand().getTag().putInt("color", ((RGBTileEntity) tileEntity).getColor());
             } else {
-                if (!context.getPlayer().getAbilities().instabuild && context.getItemInHand().getOrCreateTag().getInt("color") !=
-                    ((RGBTileEntity) tileEntity).getColor()) {
+                if (!context.getPlayer().getAbilities().instabuild && context.getItemInHand()
+                                                                             .getOrCreateTag()
+                                                                             .getInt("color") != ((RGBTileEntity) tileEntity).getColor()) {
                     if (context.getItemInHand().getDamageValue() == context.getItemInHand().getMaxDamage() - 1) {
                         context.getPlayer().setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
                     } else {
@@ -112,10 +109,9 @@ public class PaintBucketItem extends Item {
                 }
                 ((RGBTileEntity) tileEntity).setColor(context.getItemInHand().getTag().getInt("color"));
                 context.getLevel()
-                       .sendBlockUpdated(context.getClickedPos(),
-                                         tileEntity.getBlockState(),
-                                         tileEntity.getBlockState(),
-                                         Block.UPDATE_ALL_IMMEDIATE);
+                       .sendBlockUpdated(context.getClickedPos(), tileEntity.getBlockState(),
+                                         tileEntity.getBlockState(), Block.UPDATE_ALL_IMMEDIATE
+                       );
             }
             return InteractionResult.SUCCESS;
         } else {

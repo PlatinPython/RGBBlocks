@@ -3,7 +3,6 @@ package platinpython.rgbblocks.item.crafting;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -32,7 +31,7 @@ public class ShapelessNoReturnRecipe extends ShapelessRecipe {
         return NonNullList.withSize(craftingInventory.getContainerSize(), ItemStack.EMPTY);
     }
 
-    public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ShapelessNoReturnRecipe> {
+    public static class Serializer implements RecipeSerializer<ShapelessNoReturnRecipe> {
         @Override
         public ShapelessNoReturnRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
             String s = GsonHelper.getAsString(jsonObject, "group", "");

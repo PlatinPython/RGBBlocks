@@ -109,20 +109,13 @@ public class ShapelessNBTRecipeBuilder {
                         .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
                         .rewards(AdvancementRewards.Builder.recipe(id))
                         .requirements(RequirementsStrategy.OR);
-        consumer.accept(new ShapelessNBTRecipeBuilder.Result(id,
-                                                             this.result,
-                                                             this.count,
-                                                             this.compound,
-                                                             this.group == null ? "" : this.group,
-                                                             this.ingredients,
-                                                             this.advancement,
-                                                             new ResourceLocation(id.getNamespace(),
-                                                                                  "recipes/" +
-                                                                                  this.result.getItemCategory()
-                                                                                             .getRecipeFolderName() +
-                                                                                  "/" +
-                                                                                  id.getPath()),
-                                                             this.isNoReturnRecipe));
+        consumer.accept(new ShapelessNBTRecipeBuilder.Result(id, this.result, this.count, this.compound,
+                                                             this.group == null ? "" : this.group, this.ingredients,
+                                                             this.advancement, new ResourceLocation(id.getNamespace(),
+                                                                                                    "recipes/" + this.result.getItemCategory()
+                                                                                                                            .getRecipeFolderName() + "/" + id.getPath()
+        ), this.isNoReturnRecipe
+        ));
     }
 
     private void ensureValid(ResourceLocation id) {
@@ -186,9 +179,9 @@ public class ShapelessNBTRecipeBuilder {
         }
 
         public RecipeSerializer<?> getType() {
-            return isNoReturnRecipe
-                   ? RecipeSerializerRegistry.SHAPELESS_NO_RETURN_RECIPE.get()
-                   : RecipeSerializerRegistry.SHAPELESS_DURABILITY_AWARE_PAINT_BUCKET_RECIPE.get();
+            return isNoReturnRecipe ?
+                   RecipeSerializerRegistry.SHAPELESS_NO_RETURN_RECIPE.get() :
+                   RecipeSerializerRegistry.SHAPELESS_DURABILITY_AWARE_PAINT_BUCKET_RECIPE.get();
         }
 
         public ResourceLocation getId() {

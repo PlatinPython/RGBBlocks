@@ -1,29 +1,25 @@
 package platinpython.rgbblocks.data;
 
-import java.util.Collections;
-
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.data.event.GatherDataEvent;
+
+import java.util.Collections;
 
 public class DataGatherer {
     public static void onGatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
-        ExistingFileHelper existingFileHelper = new ExistingFileHelper(Collections.emptyList(),
-                                                                       Collections.emptySet(),
-                                                                       false,
-                                                                       null,
-                                                                       null);
+        ExistingFileHelper existingFileHelper = new ExistingFileHelper(Collections.emptyList(), Collections.emptySet(),
+                                                                       false, null, null
+        );
+        existingFileHelper = event.getExistingFileHelper();
 
-        if (event.includeClient()) {
-            generator.addProvider(new ModLanguageProvider(generator));
-            generator.addProvider(new ModItemModelProvider(generator, existingFileHelper));
-            generator.addProvider(new ModBlockStateProvider(generator, existingFileHelper));
-        }
-        if (event.includeServer()) {
-            generator.addProvider(new ModRecipeProvider(generator));
-            generator.addProvider(new ModLootTableProvider(generator));
-            generator.addProvider(new ModBlockTagsProvider(generator, existingFileHelper));
-        }
+        generator.addProvider(event.includeClient(), new ModLanguageProvider(generator));
+        generator.addProvider(event.includeClient(), new ModItemModelProvider(generator, existingFileHelper));
+        generator.addProvider(event.includeClient(), new ModBlockStateProvider(generator, existingFileHelper));
+
+        generator.addProvider(event.includeServer(), new ModRecipeProvider(generator));
+        generator.addProvider(event.includeServer(), new ModLootTableProvider(generator));
+        generator.addProvider(event.includeServer(), new ModBlockTagsProvider(generator, existingFileHelper));
     }
 }

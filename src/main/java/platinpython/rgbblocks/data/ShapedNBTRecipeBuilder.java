@@ -113,20 +113,13 @@ public class ShapedNBTRecipeBuilder {
                         .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
                         .rewards(AdvancementRewards.Builder.recipe(id))
                         .requirements(RequirementsStrategy.OR);
-        consumer.accept(new ShapedNBTRecipeBuilder.Result(id,
-                                                          this.result,
-                                                          this.count,
-                                                          this.compound,
-                                                          this.group == null ? "" : this.group,
-                                                          this.rows,
-                                                          this.key,
-                                                          this.advancement,
-                                                          new ResourceLocation(id.getNamespace(),
-                                                                               "recipes/" +
-                                                                               this.result.getItemCategory()
-                                                                                          .getRecipeFolderName() +
-                                                                               "/" +
-                                                                               id.getPath())));
+        consumer.accept(new ShapedNBTRecipeBuilder.Result(id, this.result, this.count, this.compound,
+                                                          this.group == null ? "" : this.group, this.rows, this.key,
+                                                          this.advancement, new ResourceLocation(id.getNamespace(),
+                                                                                                 "recipes/" + this.result.getItemCategory()
+                                                                                                                         .getRecipeFolderName() + "/" + id.getPath()
+        )
+        ));
     }
 
     private void ensureValid(ResourceLocation id) {
@@ -140,11 +133,8 @@ public class ShapedNBTRecipeBuilder {
                 for (int i = 0; i < s.length(); ++i) {
                     char c0 = s.charAt(i);
                     if (!this.key.containsKey(c0) && c0 != ' ') {
-                        throw new IllegalStateException("Pattern in recipe " +
-                                                        id +
-                                                        " uses undefined symbol '" +
-                                                        c0 +
-                                                        "'");
+                        throw new IllegalStateException(
+                                "Pattern in recipe " + id + " uses undefined symbol '" + c0 + "'");
                     }
 
                     set.remove(c0);
@@ -154,9 +144,8 @@ public class ShapedNBTRecipeBuilder {
             if (!set.isEmpty()) {
                 throw new IllegalStateException("Ingredients are defined but not used in pattern for recipe " + id);
             } else if (this.rows.size() == 1 && this.rows.get(0).length() == 1) {
-                throw new IllegalStateException("Shaped recipe " +
-                                                id +
-                                                " only takes in a single item - should it be a shapeless recipe instead?");
+                throw new IllegalStateException(
+                        "Shaped recipe " + id + " only takes in a single item - should it be a shapeless recipe instead?");
             } else if (this.advancement.getCriteria().isEmpty()) {
                 throw new IllegalStateException("No way of obtaining recipe " + id);
             }

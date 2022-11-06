@@ -1,13 +1,13 @@
 package platinpython.rgbblocks.block;
 
-import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.function.Supplier;
 
 public class RGBGlassStairsBlock extends RGBStairsBlock {
     public RGBGlassStairsBlock(Supplier<BlockState> state) {

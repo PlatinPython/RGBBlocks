@@ -1,7 +1,5 @@
 package platinpython.rgbblocks.block;
 
-import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -13,6 +11,8 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
+
+import java.util.function.Supplier;
 
 public class RGBStairsBlock extends StairBlock implements EntityBlock {
     public RGBStairsBlock(Supplier<BlockState> state, Properties properties) {
@@ -30,7 +30,8 @@ public class RGBStairsBlock extends StairBlock implements EntityBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos,
+                                       Player player) {
         return RGBBlockUtils.getCloneItemStack(state, target, world, pos, player);
     }
 }

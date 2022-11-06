@@ -1,10 +1,10 @@
 package platinpython.rgbblocks.client.colorhandlers;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 
 public class RGBBlockColor implements BlockColor {

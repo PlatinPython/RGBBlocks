@@ -1,9 +1,8 @@
 package platinpython.rgbblocks.block;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
@@ -36,22 +35,22 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos,
+                                       Player player) {
         return RGBBlockUtils.getCloneItemStack(state, target, world, pos, player);
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
+    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
         if (worldIn.isEmptyBlock(pos.below()) || isFree(worldIn.getBlockState(pos.below())) && pos.getY() >= 0) {
             BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-            RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(worldIn,
-                                                                                 (double) pos.getX() + 0.5D,
-                                                                                 (double) pos.getY(),
-                                                                                 (double) pos.getZ() + 0.5D,
+            RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(worldIn, (double) pos.getX() + 0.5D,
+                                                                                 pos.getY(), (double) pos.getZ() + 0.5D,
                                                                                  state,
-                                                                                 tileEntity instanceof RGBTileEntity
-                                                                                 ? ((RGBTileEntity) tileEntity).getColor()
-                                                                                 : 0);
+                                                                                 tileEntity instanceof RGBTileEntity ?
+                                                                                 ((RGBTileEntity) tileEntity).getColor() :
+                                                                                 0
+            );
             this.falling(fallingBlockEntity);
             worldIn.addFreshEntity(fallingBlockEntity);
         }

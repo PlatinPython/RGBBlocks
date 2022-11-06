@@ -1,8 +1,8 @@
 package platinpython.rgbblocks.client.colorhandlers;
 
 import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import platinpython.rgbblocks.item.RGBBlockItem;
 
 public class RGBBlockItemColor implements ItemColor {

@@ -1,5 +1,26 @@
 package platinpython.rgbblocks.util.pack;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.gson.JsonObject;
+import com.mojang.blaze3d.platform.NativeImage;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.AbstractPackResources;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.ResourcePackFileNotFoundException;
+import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSectionSerializer;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.util.profiling.ProfilerFiller;
+import org.apache.commons.io.IOUtils;
+import platinpython.rgbblocks.RGBBlocks;
+import platinpython.rgbblocks.util.Color;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -19,29 +40,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Predicate;
 
-import org.apache.commons.io.IOUtils;
-
-import com.google.common.collect.ImmutableSet;
-import com.google.gson.JsonObject;
-import com.mojang.blaze3d.platform.NativeImage;
-import com.mojang.datafixers.util.Pair;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.AbstractPackResources;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.ResourcePackFileNotFoundException;
-import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
-import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
-import net.minecraft.server.packs.metadata.pack.PackMetadataSectionSerializer;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.util.profiling.ProfilerFiller;
-import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.util.Color;
-
 public class RGBBlocksPack extends AbstractPackResources implements PreparableReloadListener {
     public static final String TEXTURE_DIRECTORY = "textures/";
     public static final String BLOCK_DIRECTORY = "block/";
@@ -54,7 +52,7 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
 
     public RGBBlocksPack() {
         super(new File("rgbblocks_virtual_pack"));
-        this.packInfo = new PackMetadataSection(new TranslatableComponent("rgbblocks.pack_description"), 7);
+        this.packInfo = new PackMetadataSection(Component.translatable("rgbblocks.pack_description"), 7);
         fillTexturesMap();
     }
 
@@ -76,9 +74,10 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
         map.put("dark_prismarine", "dark_prismarine");
         map.put("sea_lantern", "sea_lantern");
 
-        map.forEach((modName, vanillaName) -> textures.put(new ResourceLocation(RGBBlocks.MOD_ID,
-                                                                                BLOCK_DIRECTORY + modName),
-                                                           new ResourceLocation(BLOCK_DIRECTORY + vanillaName)));
+        map.forEach((modName, vanillaName) -> textures.put(
+                new ResourceLocation(RGBBlocks.MOD_ID, BLOCK_DIRECTORY + modName),
+                new ResourceLocation(BLOCK_DIRECTORY + vanillaName)
+        ));
     }
 
     @Override
@@ -96,15 +95,16 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
         Map<ResourceLocation, Callable<InputStream>> resourceStreams = new HashMap<>();
 
         textures.forEach((modLocation, vanillaLocation) -> {
-            generateImage(modLocation,
-                          vanillaLocation,
-                          Minecraft.getInstance().getResourceManager()).ifPresent(pair -> {
-                NativeImage image = pair.getFirst();
-                ResourceLocation textureID = makeTextureID(modLocation);
-                resourceStreams.put(textureID, () -> new ByteArrayInputStream(image.asByteArray()));
-                pair.getSecond()
-                    .ifPresent(metadataGetter -> resourceStreams.put(getMetadataLocation(textureID), metadataGetter));
-            });
+            generateImage(modLocation, vanillaLocation, Minecraft.getInstance().getResourceManager()).ifPresent(
+                    pair -> {
+                        NativeImage image = pair.getFirst();
+                        ResourceLocation textureID = makeTextureID(modLocation);
+                        resourceStreams.put(textureID, () -> new ByteArrayInputStream(image.asByteArray()));
+                        pair.getSecond()
+                            .ifPresent(metadataGetter -> resourceStreams.put(getMetadataLocation(textureID),
+                                                                             metadataGetter
+                            ));
+                    });
         });
 
         this.resources = resourceStreams;
@@ -122,26 +122,21 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
                                                                                       ResourceLocation vanillaLocation,
                                                                                       ResourceManager manager) {
         ResourceLocation parentFile = makeTextureID(vanillaLocation);
-        try (InputStream inputStream = manager.getResource(parentFile).getInputStream()) {
+        try (InputStream inputStream = manager.getResource(parentFile).orElseThrow().open()) {
             NativeImage image = NativeImage.read(inputStream);
             NativeImage transformedImage = this.transformImage(image);
             ResourceLocation metadata = getMetadataLocation(parentFile);
-            Optional<Callable<InputStream>> metadataLookup = Optional.empty();
-            if (manager.hasResource(metadata)) {
-                BufferedReader bufferedReader = null;
-                JsonObject metadataJson = null;
-                try (InputStream metadataStream = manager.getResource(metadata).getInputStream()) {
-                    bufferedReader = new BufferedReader(new InputStreamReader(metadataStream, StandardCharsets.UTF_8));
-                    metadataJson = GsonHelper.parse(bufferedReader);
-                } finally {
-                    IOUtils.closeQuietly(bufferedReader);
-                }
-                if (metadataJson != null) {
-                    JsonObject metaDataJsonForLambda = metadataJson;
-                    metadataLookup = Optional.of(() -> new ByteArrayInputStream(metaDataJsonForLambda.toString()
-                                                                                                     .getBytes()));
-                }
+            Optional<Callable<InputStream>> metadataLookup;
+            BufferedReader bufferedReader = null;
+            JsonObject metadataJson;
+            try (InputStream metadataStream = manager.getResource(metadata).orElseThrow().open()) {
+                bufferedReader = new BufferedReader(new InputStreamReader(metadataStream, StandardCharsets.UTF_8));
+                metadataJson = GsonHelper.parse(bufferedReader);
+            } finally {
+                IOUtils.closeQuietly(bufferedReader);
             }
+            JsonObject metaDataJsonForLambda = metadataJson;
+            metadataLookup = Optional.of(() -> new ByteArrayInputStream(metaDataJsonForLambda.toString().getBytes()));
             return Optional.of(Pair.of(transformedImage, metadataLookup));
         } catch (IOException e) {
             e.printStackTrace();
@@ -155,12 +150,9 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
                 int oldColor = image.getPixelRGBA(x, y);
                 float[] hsb = Color.RGBtoHSB((oldColor >> 0) & 0xFF, (oldColor >> 8) & 0xFF, (oldColor >> 16) & 0xFF);
                 int newColor = Color.HSBtoRGB(0, 0, hsb[2]);
-                image.setPixelRGBA(x,
-                                   y,
-                                   ((oldColor >> 24) & 0xFF) << 24 |
-                                   ((newColor >> 0) & 0xFF) << 16 |
-                                   ((newColor >> 8) & 0xFF) << 8 |
-                                   ((newColor >> 16) & 0xFF) << 0);
+                image.setPixelRGBA(x, y,
+                                   ((oldColor >> 24) & 0xFF) << 24 | ((newColor >> 0) & 0xFF) << 16 | ((newColor >> 8) & 0xFF) << 8 | ((newColor >> 16) & 0xFF) << 0
+                );
             }
         }
         return image;
@@ -168,7 +160,7 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
 
     @Override
     public String getName() {
-        return new TranslatableComponent("rgbblocks.pack_title").getString();
+        return Component.translatable("rgbblocks.pack_title").getString();
     }
 
     @SuppressWarnings("unchecked")
@@ -231,8 +223,8 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
     }
 
     @Override
-    public Collection<ResourceLocation> getResources(PackType type, String namespace, String id, int maxDepth,
-                                                     Predicate<String> filter) {
+    public Collection<ResourceLocation> getResources(PackType type, String namespace, String id,
+                                                     Predicate<ResourceLocation> filter) {
         return NO_RESOURCES;
     }
 

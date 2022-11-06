@@ -3,7 +3,6 @@ package platinpython.rgbblocks.item.crafting;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -33,7 +32,8 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
     @Override
     public NonNullList<ItemStack> getRemainingItems(CraftingContainer craftingInventory) {
         NonNullList<ItemStack> nonnulllist = NonNullList.withSize(craftingInventory.getContainerSize(),
-                                                                  ItemStack.EMPTY);
+                                                                  ItemStack.EMPTY
+        );
         ItemStack blockStack = ItemStack.EMPTY;
 
         for (int i = 0; i < nonnulllist.size(); i++) {
@@ -76,7 +76,7 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
         return result;
     }
 
-    public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ShapelessDurabilityAwarePaintBucketRecipe> {
+    public static class Serializer implements RecipeSerializer<ShapelessDurabilityAwarePaintBucketRecipe> {
         @Override
         public ShapelessDurabilityAwarePaintBucketRecipe fromJson(ResourceLocation resourceLocation,
                                                                   JsonObject jsonObject) {

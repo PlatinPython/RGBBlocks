@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
+import net.minecraftforge.registries.RegistryObject;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
@@ -79,41 +80,44 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         blockIItemProvider(consumer, BlockRegistry.RGB_DARK_PRISMARINE.get(), Blocks.DARK_PRISMARINE);
         blockIItemProvider(consumer, BlockRegistry.RGB_SEA_LANTERN.get(), Blocks.SEA_LANTERN);
 
-        slabBlock(consumer, BlockRegistry.RGB_CONCRETE_SLAB.get(), BlockRegistry.RGB_CONCRETE.get());
-        slabBlock(consumer, BlockRegistry.RGB_WOOL_SLAB.get(), BlockRegistry.RGB_WOOL.get());
-        slabBlock(consumer, BlockRegistry.RGB_PLANKS_SLAB.get(), BlockRegistry.RGB_PLANKS.get());
-        slabBlock(consumer, BlockRegistry.RGB_TERRACOTTA_SLAB.get(), BlockRegistry.RGB_TERRACOTTA.get());
-        slabBlock(consumer, BlockRegistry.RGB_GLASS_SLAB.get(), BlockRegistry.RGB_GLASS.get());
-        slabBlock(consumer, BlockRegistry.RGB_PRISMARINE_SLAB.get(), BlockRegistry.RGB_PRISMARINE.get());
-        slabBlock(consumer, BlockRegistry.RGB_PRISMARINE_BRICK_SLAB.get(), BlockRegistry.RGB_PRISMARINE_BRICKS.get());
-        slabBlock(consumer, BlockRegistry.RGB_DARK_PRISMARINE_SLAB.get(), BlockRegistry.RGB_DARK_PRISMARINE.get());
+        slabBlock(consumer, BlockRegistry.RGB_CONCRETE_SLAB, BlockRegistry.RGB_CONCRETE);
+        slabBlock(consumer, BlockRegistry.RGB_WOOL_SLAB, BlockRegistry.RGB_WOOL);
+        slabBlock(consumer, BlockRegistry.RGB_PLANKS_SLAB, BlockRegistry.RGB_PLANKS);
+        slabBlock(consumer, BlockRegistry.RGB_TERRACOTTA_SLAB, BlockRegistry.RGB_TERRACOTTA);
+        slabBlock(consumer, BlockRegistry.RGB_GLASS_SLAB, BlockRegistry.RGB_GLASS);
+        slabBlock(consumer, BlockRegistry.RGB_PRISMARINE_SLAB, BlockRegistry.RGB_PRISMARINE);
+        slabBlock(consumer, BlockRegistry.RGB_PRISMARINE_BRICK_SLAB, BlockRegistry.RGB_PRISMARINE_BRICKS);
+        slabBlock(consumer, BlockRegistry.RGB_DARK_PRISMARINE_SLAB, BlockRegistry.RGB_DARK_PRISMARINE);
 
-        stairBlock(consumer, BlockRegistry.RGB_CONCRETE_STAIRS.get(), BlockRegistry.RGB_CONCRETE.get());
-        stairBlock(consumer, BlockRegistry.RGB_WOOL_STAIRS.get(), BlockRegistry.RGB_WOOL.get());
-        stairBlock(consumer, BlockRegistry.RGB_PLANKS_STAIRS.get(), BlockRegistry.RGB_PLANKS.get());
-        stairBlock(consumer, BlockRegistry.RGB_TERRACOTTA_STAIRS.get(), BlockRegistry.RGB_TERRACOTTA.get());
-        stairBlock(consumer, BlockRegistry.RGB_GLASS_STAIRS.get(), BlockRegistry.RGB_GLASS.get());
-        stairBlock(consumer, BlockRegistry.RGB_PRISMARINE_STAIRS.get(), BlockRegistry.RGB_PRISMARINE.get());
-        stairBlock(consumer,
-                   BlockRegistry.RGB_PRISMARINE_BRICK_STAIRS.get(),
-                   BlockRegistry.RGB_PRISMARINE_BRICKS.get());
-        stairBlock(consumer, BlockRegistry.RGB_DARK_PRISMARINE_STAIRS.get(), BlockRegistry.RGB_DARK_PRISMARINE.get());
+        stairBlock(consumer, BlockRegistry.RGB_CONCRETE_STAIRS, BlockRegistry.RGB_CONCRETE);
+        stairBlock(consumer, BlockRegistry.RGB_WOOL_STAIRS, BlockRegistry.RGB_WOOL);
+        stairBlock(consumer, BlockRegistry.RGB_PLANKS_STAIRS, BlockRegistry.RGB_PLANKS);
+        stairBlock(consumer, BlockRegistry.RGB_TERRACOTTA_STAIRS, BlockRegistry.RGB_TERRACOTTA);
+        stairBlock(consumer, BlockRegistry.RGB_GLASS_STAIRS, BlockRegistry.RGB_GLASS);
+        stairBlock(consumer, BlockRegistry.RGB_PRISMARINE_STAIRS, BlockRegistry.RGB_PRISMARINE);
+        stairBlock(consumer, BlockRegistry.RGB_PRISMARINE_BRICK_STAIRS, BlockRegistry.RGB_PRISMARINE_BRICKS);
+        stairBlock(consumer, BlockRegistry.RGB_DARK_PRISMARINE_STAIRS, BlockRegistry.RGB_DARK_PRISMARINE);
 
 
         RegistryHandler.BLOCKS.getEntries()
                               .forEach((block) -> ShapelessNBTRecipeBuilder.shapeless(block.get().asItem())
                                                                            .requires(block.get())
                                                                            .requires(ItemRegistry.PAINT_BUCKET.get())
-                                                                           .unlockedBy("has_paint_bucket_and_" +
-                                                                                       block.getId().getPath(),
-                                                                                       inventoryTrigger(ItemPredicate.Builder.item()
-                                                                                                                             .of(ItemRegistry.PAINT_BUCKET.get())
-                                                                                                                             .build(),
-                                                                                                        ItemPredicate.Builder.item()
-                                                                                                                             .of(block.get())
-                                                                                                                             .build()))
+                                                                           .unlockedBy(
+                                                                                   "has_paint_bucket_and_" + block.getId()
+                                                                                                                  .getPath(),
+                                                                                   inventoryTrigger(
+                                                                                           ItemPredicate.Builder.item()
+                                                                                                                .of(ItemRegistry.PAINT_BUCKET.get())
+                                                                                                                .build(),
+                                                                                           ItemPredicate.Builder.item()
+                                                                                                                .of(block.get())
+                                                                                                                .build()
+                                                                                   )
+                                                                           )
                                                                            .save(consumer,
-                                                                                 block.getId() + "_coloring"));
+                                                                                 block.getId() + "_coloring"
+                                                                           ));
     }
 
     private void blockIItemProvider(Consumer<FinishedRecipe> consumer, Block result, ItemLike provider) {
@@ -132,21 +136,23 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                  .save(consumer);
     }
 
-    private void slabBlock(Consumer<FinishedRecipe> consumer, Block result, Block base) {
-        ShapedNBTRecipeBuilder.shaped(result.asItem(), 6, whiteNBT)
-                              .define('#', base.asItem())
+    private void slabBlock(Consumer<FinishedRecipe> consumer, RegistryObject<? extends Block> result,
+                           RegistryObject<? extends Block> base) {
+        ShapedNBTRecipeBuilder.shaped(result.get().asItem(), 6, whiteNBT)
+                              .define('#', base.get().asItem())
                               .pattern("###")
-                              .unlockedBy("has_rgb_" + base.getRegistryName().getPath(), has(base))
+                              .unlockedBy("has_rgb_" + base.getId().getPath(), has(base.get()))
                               .save(consumer);
     }
 
-    private void stairBlock(Consumer<FinishedRecipe> consumer, Block result, Block base) {
-        ShapedNBTRecipeBuilder.shaped(result.asItem(), 4, whiteNBT)
-                              .define('#', base.asItem())
+    private void stairBlock(Consumer<FinishedRecipe> consumer, RegistryObject<? extends Block> result,
+                            RegistryObject<? extends Block> base) {
+        ShapedNBTRecipeBuilder.shaped(result.get().asItem(), 4, whiteNBT)
+                              .define('#', base.get().asItem())
                               .pattern("#  ")
                               .pattern("## ")
                               .pattern("###")
-                              .unlockedBy("has_rgb_" + base.getRegistryName().getPath(), has(base))
+                              .unlockedBy("has_rgb_" + base.getId().getPath(), has(base.get()))
                               .save(consumer);
     }
 }

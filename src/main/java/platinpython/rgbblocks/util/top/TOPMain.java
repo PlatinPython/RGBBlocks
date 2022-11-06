@@ -1,8 +1,8 @@
 package platinpython.rgbblocks.util.top;
 
-import java.util.function.Function;
-
 import mcjty.theoneprobe.api.ITheOneProbe;
+
+import java.util.function.Function;
 
 public class TOPMain implements Function<ITheOneProbe, Void> {
     private static ITheOneProbe probe;

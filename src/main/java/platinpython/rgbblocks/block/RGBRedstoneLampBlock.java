@@ -30,7 +30,8 @@ public class RGBRedstoneLampBlock extends RedstoneLampBlock implements EntityBlo
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos,
+                                       Player player) {
         return RGBBlockUtils.getCloneItemStack(state, target, world, pos, player);
     }
 }

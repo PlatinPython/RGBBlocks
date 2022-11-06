@@ -4,8 +4,8 @@ import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ProbeMode;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -28,23 +28,19 @@ public class RGBBlockProvider implements IProbeInfoProvider {
 
             if (mode == ProbeMode.EXTENDED) {
                 Color color = new Color(((RGBTileEntity) tileEntity).getColor());
-                MutableComponent red = new TranslatableComponent("gui.rgbblocks.red").append(": " + color.getRed());
-                MutableComponent green = new TranslatableComponent("gui.rgbblocks.green").append(": " +
-                                                                                                 color.getGreen());
-                MutableComponent blue = new TranslatableComponent("gui.rgbblocks.blue").append(": " + color.getBlue());
+                MutableComponent red = Component.translatable("gui.rgbblocks.red").append(": " + color.getRed());
+                MutableComponent green = Component.translatable("gui.rgbblocks.green").append(": " + color.getGreen());
+                MutableComponent blue = Component.translatable("gui.rgbblocks.blue").append(": " + color.getBlue());
                 info.text(red.append(", ").append(green).append(", ").append(blue));
                 float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue());
-                MutableComponent hue = new TranslatableComponent("gui.rgbblocks.hue").append(": " +
-                                                                                             Math.round(hsb[0] *
-                                                                                                        ColorSelectScreen.MAX_VALUE_HUE));
-                MutableComponent saturation = new TranslatableComponent("gui.rgbblocks.saturation").append(": " +
-                                                                                                           Math.round(
-                                                                                                                   hsb[1] *
-                                                                                                                   ColorSelectScreen.MAX_VALUE_SB));
-                MutableComponent brightness = new TranslatableComponent("gui.rgbblocks.brightness").append(": " +
-                                                                                                           Math.round(
-                                                                                                                   hsb[2] *
-                                                                                                                   ColorSelectScreen.MAX_VALUE_SB));
+                MutableComponent hue = Component.translatable("gui.rgbblocks.hue")
+                                                .append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
+                MutableComponent saturation = Component.translatable("gui.rgbblocks.saturation")
+                                                       .append(": " + Math.round(
+                                                               hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
+                MutableComponent brightness = Component.translatable("gui.rgbblocks.brightness")
+                                                       .append(": " + Math.round(
+                                                               hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
                 info.text(hue.append("\u00B0, ").append(saturation).append("%, ").append(brightness).append("%"));
             }
         }

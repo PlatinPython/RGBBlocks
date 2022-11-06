@@ -8,12 +8,12 @@ import platinpython.rgbblocks.util.RegistryHandler;
 
 public class RecipeSerializerRegistry {
     public static final RegistryObject<RecipeSerializer<?>> SHAPELESS_NO_RETURN_RECIPE = RegistryHandler.RECIPE_SERIALIZERS.register(
-            "crafting_shapeless_no_return",
-            ShapelessNoReturnRecipe.Serializer::new);
+            "crafting_shapeless_no_return", ShapelessNoReturnRecipe.Serializer::new);
 
     public static final RegistryObject<RecipeSerializer<?>> SHAPELESS_DURABILITY_AWARE_PAINT_BUCKET_RECIPE = RegistryHandler.RECIPE_SERIALIZERS.register(
             "crafting_shapeless_durability_aware_paint_bucket",
-            ShapelessDurabilityAwarePaintBucketRecipe.Serializer::new);
+            ShapelessDurabilityAwarePaintBucketRecipe.Serializer::new
+    );
 
     public static void register() {
     }

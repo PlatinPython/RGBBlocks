@@ -1,19 +1,9 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.parchmentmc:librarian:1.+'
-    }
+plugins {
+    id 'eclipse'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
 
 version = "${minecraft_version}-${mod_version}"
 group = 'platinpython.rgbblocks'
@@ -21,9 +11,9 @@ archivesBaseName = 'RGB Blocks'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: 'parchment', version: '2022.05.22-1.18.2'
+    mappings channel: 'parchment', version: '2022.11.06-1.19.2'
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -86,11 +76,9 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.51'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.1.47'
 
-//    compileOnly fg.deobf("curse.maven:top-245211:3671753:api")
-//    runtimeOnly fg.deobf("curse.maven:top-245211:3671753")
-    implementation fg.deobf("curse.maven:top-245211:3671753")
+    implementation fg.deobf("curse.maven:top-245211:3965693")
 }
 
 jar {
@@ -100,7 +88,7 @@ jar {
                 "Specification-Vendor"    : "PlatinPython",
                 "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
-                "Implementation-Version"  : "${version}",
+                "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "PlatinPython",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
@@ -108,3 +96,7 @@ jar {
 }
 
 jar.finalizedBy('reobfJar')
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

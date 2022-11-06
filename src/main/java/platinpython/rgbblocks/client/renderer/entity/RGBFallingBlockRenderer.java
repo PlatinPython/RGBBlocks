@@ -1,7 +1,6 @@
 package platinpython.rgbblocks.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -29,13 +28,9 @@ public class RGBFallingBlockRenderer extends EntityRenderer<RGBFallingBlockEntit
         poseStack.translate(0.0D, 0.5D, 0.0D);
         ItemStack stack = new ItemStack(fallingBlockEntity.getBlockState().getBlock());
         stack.getOrCreateTag().putInt("color", fallingBlockEntity.getColor());
-        itemRenderer.renderStatic(stack,
-                                  TransformType.NONE,
-                                  packedLight,
-                                  OverlayTexture.NO_OVERLAY,
-                                  poseStack,
-                                  buffer,
-                                  fallingBlockEntity.getId());
+        itemRenderer.renderStatic(stack, TransformType.NONE, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer,
+                                  fallingBlockEntity.getId()
+        );
         poseStack.popPose();
     }
 
