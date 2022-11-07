@@ -1,34 +1,21 @@
 {
   "type": "minecraft:block",
-  "pools": [
+  "functions": [
     {
-      "rolls": 1.0,
-      "bonus_rolls": 0.0,
-      "entries": [
+      "function": "minecraft:copy_nbt",
+      "ops": [
         {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "conditions": [
-                {
-                  "condition": "minecraft:block_state_property",
-                  "block": "rgbblocks:glass_slab",
-                  "properties": {
-                    "type": "double"
-                  }
-                }
-              ],
-              "count": 2.0,
-              "add": false
-            },
-            {
-              "function": "minecraft:explosion_decay"
-            }
-          ],
-          "name": "rgbblocks:glass_slab"
+          "op": "replace",
+          "source": "color",
+          "target": "color"
         }
       ],
+      "source": "block_entity"
+    }
+  ],
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
       "conditions": [
         {
           "condition": "minecraft:match_tool",
@@ -43,20 +30,33 @@
             ]
           }
         }
-      ]
-    }
-  ],
-  "functions": [
-    {
-      "function": "minecraft:copy_nbt",
-      "source": "block_entity",
-      "ops": [
+      ],
+      "entries": [
         {
-          "source": "color",
-          "target": "color",
-          "op": "replace"
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "rgbblocks:glass_slab",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "type": "double"
+                  }
+                }
+              ],
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ],
+          "name": "rgbblocks:glass_slab"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

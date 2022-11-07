@@ -20,7 +20,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         singleTexture(BlockRegistry.RGB_GLASS_PANE.getId().getPath(), mcLoc(ITEM_FOLDER + "/generated"), "layer0",
                       modLoc(BLOCK_FOLDER + "/glass")
-        );
+        ).renderType("translucent");
     }
 
     private void item2Layers(RegistryObject<? extends Item> item) {

@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "###"
-  ],
   "key": {
     "#": {
       "item": "rgbblocks:prismarine"
     }
   },
+  "pattern": [
+    "###"
+  ],
   "result": {
-    "item": "rgbblocks:prismarine_slab",
     "count": 6,
+    "item": "rgbblocks:prismarine_slab",
     "nbt": "{\"color\":-1}"
   }
 }

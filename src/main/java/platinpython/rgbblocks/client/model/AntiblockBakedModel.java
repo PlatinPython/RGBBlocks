@@ -10,46 +10,50 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.*;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.IModelConfiguration;
-import net.minecraftforge.client.model.IModelLoader;
-import net.minecraftforge.client.model.data.EmptyModelData;
-import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.client.model.data.ModelDataMap;
+import net.minecraftforge.client.model.IQuadTransformer;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
-import net.minecraftforge.client.model.geometry.IModelGeometry;
-import net.minecraftforge.client.model.pipeline.LightUtil;
+import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
+import net.minecraftforge.client.model.geometry.IGeometryLoader;
+import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 @SuppressWarnings("deprecation")
 public class AntiblockBakedModel implements BakedModel {
-    private static final int ELEM_POSITION = findElementIndex(DefaultVertexFormat.ELEMENT_POSITION);
-    private static final int ELEM_UV0 = findElementIndex(DefaultVertexFormat.ELEMENT_UV0);
-    private static final int ELEM_LIGHT = findElementIndex(DefaultVertexFormat.ELEMENT_UV2);
-
     private final BakedModel base;
     private final Map<Direction, BakedQuad> bgQuads;
     private final Map<Direction, BakedQuad> frameQuads;
@@ -93,19 +97,21 @@ public class AntiblockBakedModel implements BakedModel {
     }
 
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random random) {
-        return this.getQuads(state, side, random, EmptyModelData.INSTANCE);
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource random) {
+        return this.getQuads(state, side, random, ModelData.EMPTY, null);
     }
 
     @NotNull
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull Random random,
-                                    @NotNull IModelData extraData) {
-        if (side == null) return Collections.emptyList();
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource random,
+                                    @NotNull ModelData extraData, RenderType renderType) {
+        if (side == null) {
+            return Collections.emptyList();
+        }
 
         List<BakedQuad> quads = new ArrayList<>();
 
-        AntiblockModelData modelData = extraData.getData(AntiblockModelData.ANTIBLOCK_MODEL_DATA);
+        AntiblockModelData modelData = extraData.get(AntiblockModelData.ANTIBLOCK_MODEL_DATA);
         if (modelData == null) {
             quads.add(bgQuads.get(side));
             quads.add(frameQuads.get(side));
@@ -134,7 +140,9 @@ public class AntiblockBakedModel implements BakedModel {
 
         float minX = right ? .5F : 0F;
         float minY = down ? 0F : .5F;
-        if (side == Direction.UP) minY = (minY + .5F) % 1F;
+        if (side == Direction.UP) {
+            minY = (minY + .5F) % 1F;
+        }
         cutQuad(vertexData, minX, minY, minX + .5F, minY + .5F, side);
 
         int u = right ? 8 : 0;
@@ -174,7 +182,9 @@ public class AntiblockBakedModel implements BakedModel {
                                         float minX, float minY, TextureAtlasSprite defSprite,
                                         TextureAtlasSprite ctmSprite, Direction side) {
         int[] vertexData = cloneVertexData(quad);
-        if (side == Direction.UP) minY = (minY + .5F) % 1F;
+        if (side == Direction.UP) {
+            minY = (minY + .5F) % 1F;
+        }
         cutQuad(vertexData, minX, minY, minX + .5F, minY + .5F, side);
 
         boolean closed = !x && !y;
@@ -224,7 +234,7 @@ public class AntiblockBakedModel implements BakedModel {
     private static void cutQuad(int[] vertexData, float minX, float minY, float maxX, float maxY, Direction side) {
         float[][] pos = new float[4][3];
         for (int i = 0; i < 4; i++) {
-            LightUtil.unpack(vertexData, pos[i], DefaultVertexFormat.BLOCK, i, ELEM_POSITION);
+            unpackPosition(vertexData, pos[i], i);
         }
 
         if (side.getAxis() != Direction.Axis.Y) {
@@ -253,7 +263,7 @@ public class AntiblockBakedModel implements BakedModel {
         }
 
         for (int i = 0; i < 4; i++) {
-            LightUtil.pack(pos[i], vertexData, DefaultVertexFormat.BLOCK, i, ELEM_POSITION);
+            packPosition(pos[i], vertexData, i);
         }
     }
 
@@ -266,7 +276,7 @@ public class AntiblockBakedModel implements BakedModel {
 
         float[][] uv = new float[4][2];
         for (int i = 0; i < 4; i++) {
-            LightUtil.unpack(vertexData, uv[i], DefaultVertexFormat.BLOCK, i, ELEM_UV0);
+            unpackUV(vertexData, uv[i], i);
         }
 
         boolean yAxis = side.getAxis() == Direction.Axis.Y;
@@ -282,18 +292,17 @@ public class AntiblockBakedModel implements BakedModel {
         uv[3][1] = yAxis ? vMax : vMin;
 
         for (int i = 0; i < 4; i++) {
-            LightUtil.pack(uv[i], vertexData, DefaultVertexFormat.BLOCK, i, ELEM_UV0);
+            packUV(uv[i], vertexData, i);
         }
     }
 
     @NotNull
     @Override
-    public IModelData getModelData(@NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull BlockState state,
-                                   @NotNull IModelData modelData) {
-        if (modelData == EmptyModelData.INSTANCE)
-            modelData = new ModelDataMap.Builder().withProperty(AntiblockModelData.ANTIBLOCK_MODEL_DATA).build();
-
-        if (!(getAntiblockAt(level, pos) instanceof RGBTileEntity blockEntity)) return modelData;
+    public ModelData getModelData(@NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull BlockState state,
+                                  @NotNull ModelData modelData) {
+        if (!(getAntiblockAt(level, pos) instanceof RGBTileEntity blockEntity)) {
+            return modelData;
+        }
 
         boolean north = false;
         boolean east = false;
@@ -326,18 +335,24 @@ public class AntiblockBakedModel implements BakedModel {
         boolean downWest = false;
         boolean downWestColor = false;
 
-        if (getAntiblockAt(level, pos.north()) instanceof RGBTileEntity otherBlockEntity)
+        if (getAntiblockAt(level, pos.north()) instanceof RGBTileEntity otherBlockEntity) {
             north = otherBlockEntity.getColor() == blockEntity.getColor();
-        if (getAntiblockAt(level, pos.east()) instanceof RGBTileEntity otherBlockEntity)
+        }
+        if (getAntiblockAt(level, pos.east()) instanceof RGBTileEntity otherBlockEntity) {
             east = otherBlockEntity.getColor() == blockEntity.getColor();
-        if (getAntiblockAt(level, pos.south()) instanceof RGBTileEntity otherBlockEntity)
+        }
+        if (getAntiblockAt(level, pos.south()) instanceof RGBTileEntity otherBlockEntity) {
             south = otherBlockEntity.getColor() == blockEntity.getColor();
-        if (getAntiblockAt(level, pos.west()) instanceof RGBTileEntity otherBlockEntity)
+        }
+        if (getAntiblockAt(level, pos.west()) instanceof RGBTileEntity otherBlockEntity) {
             west = otherBlockEntity.getColor() == blockEntity.getColor();
-        if (getAntiblockAt(level, pos.above()) instanceof RGBTileEntity otherBlockEntity)
+        }
+        if (getAntiblockAt(level, pos.above()) instanceof RGBTileEntity otherBlockEntity) {
             up = otherBlockEntity.getColor() == blockEntity.getColor();
-        if (getAntiblockAt(level, pos.below()) instanceof RGBTileEntity otherBlockEntity)
+        }
+        if (getAntiblockAt(level, pos.below()) instanceof RGBTileEntity otherBlockEntity) {
             down = otherBlockEntity.getColor() == blockEntity.getColor();
+        }
         if (getAntiblockAt(level, pos.above().north()) instanceof RGBTileEntity otherBlockEntity) {
             upNorth = true;
             upNorthColor = otherBlockEntity.getColor() == blockEntity.getColor();
@@ -395,31 +410,44 @@ public class AntiblockBakedModel implements BakedModel {
         boolean downSouthWest = getAntiblockAt(level, pos.below().south().west()) instanceof RGBTileEntity;
         boolean downNorthWest = getAntiblockAt(level, pos.below().north().west()) instanceof RGBTileEntity;
 
-        modelData.setData(AntiblockModelData.ANTIBLOCK_MODEL_DATA, new AntiblockModelData(
-                new Connections(Direction.NORTH, up && !upNorth, down && !downNorth, east && !northEast,
-                                west && !northWest, upEast && upEastColor && !upNorthEast,
-                                upWest && upWestColor && !upNorthWest, downEast && downEastColor && !downNorthEast,
-                                downWest && downWestColor && !downNorthWest
-                ), new Connections(Direction.EAST, up && !upEast, down && !downEast, south && !southEast,
-                                   north && !northEast, upSouth && upSouthColor && !upSouthEast,
-                                   upNorth && upNorthColor && !upNorthEast,
-                                   downSouth && downSouthColor && !downSouthEast,
-                                   downNorth && downNorthColor && !downNorthEast
-        ), new Connections(Direction.SOUTH, up && !upSouth, down && !downSouth, west && !southWest, east && !southEast,
-                           upWest && upWestColor && !upSouthWest, upEast && upEastColor && !upSouthEast,
-                           downWest && downWestColor && !downSouthWest, downEast && downEastColor && !downSouthEast
-        ), new Connections(Direction.WEST, up && !upWest, down && !downWest, north && !northWest, south && !southWest,
-                           upNorth && upNorthColor && !upNorthWest, upSouth && upSouthColor && !upSouthWest,
-                           downNorth && downNorthColor && !downNorthWest, downSouth && downSouthColor && !downSouthWest
-        ), new Connections(Direction.UP, north && !upNorth, south && !upSouth, west && !upWest, east && !upEast,
-                           northWest && northWestColor && !upNorthWest, northEast && northEastColor && !upNorthEast,
-                           southWest && southWestColor && !upSouthWest, southEast && southEastColor && !upSouthEast
-        ), new Connections(Direction.DOWN, south && !downSouth, north && !downNorth, west && !downWest,
-                           east && !downEast, southWest && southWestColor && !downSouthWest,
-                           southEast && southEastColor && !downSouthEast, northWest && northWestColor && !downNorthWest,
-                           northEast && northEastColor && !downNorthEast
-        )));
-        return modelData;
+        return modelData.derive()
+                        .with(AntiblockModelData.ANTIBLOCK_MODEL_DATA, new AntiblockModelData(
+                                new Connections(Direction.NORTH, up && !upNorth, down && !downNorth, east && !northEast,
+                                                west && !northWest, upEast && upEastColor && !upNorthEast,
+                                                upWest && upWestColor && !upNorthWest,
+                                                downEast && downEastColor && !downNorthEast,
+                                                downWest && downWestColor && !downNorthWest
+                                ),
+                                new Connections(Direction.EAST, up && !upEast, down && !downEast, south && !southEast,
+                                                north && !northEast, upSouth && upSouthColor && !upSouthEast,
+                                                upNorth && upNorthColor && !upNorthEast,
+                                                downSouth && downSouthColor && !downSouthEast,
+                                                downNorth && downNorthColor && !downNorthEast
+                                ),
+                                new Connections(Direction.SOUTH, up && !upSouth, down && !downSouth, west && !southWest,
+                                                east && !southEast, upWest && upWestColor && !upSouthWest,
+                                                upEast && upEastColor && !upSouthEast,
+                                                downWest && downWestColor && !downSouthWest,
+                                                downEast && downEastColor && !downSouthEast
+                                ),
+                                new Connections(Direction.WEST, up && !upWest, down && !downWest, north && !northWest,
+                                                south && !southWest, upNorth && upNorthColor && !upNorthWest,
+                                                upSouth && upSouthColor && !upSouthWest,
+                                                downNorth && downNorthColor && !downNorthWest,
+                                                downSouth && downSouthColor && !downSouthWest
+                                ), new Connections(Direction.UP, north && !upNorth, south && !upSouth, west && !upWest,
+                                                   east && !upEast, northWest && northWestColor && !upNorthWest,
+                                                   northEast && northEastColor && !upNorthEast,
+                                                   southWest && southWestColor && !upSouthWest,
+                                                   southEast && southEastColor && !upSouthEast
+                        ), new Connections(Direction.DOWN, south && !downSouth, north && !downNorth, west && !downWest,
+                                           east && !downEast, southWest && southWestColor && !downSouthWest,
+                                           southEast && southEastColor && !downSouthEast,
+                                           northWest && northWestColor && !downNorthWest,
+                                           northEast && northEastColor && !downNorthEast
+                        )
+                        ))
+                        .build();
     }
 
     private static BlockEntity getAntiblockAt(BlockAndTintGetter level, BlockPos pos) {
@@ -451,7 +479,7 @@ public class AntiblockBakedModel implements BakedModel {
 
     @Override
     public TextureAtlasSprite getParticleIcon() {
-        return base.getParticleIcon(EmptyModelData.INSTANCE);
+        return base.getParticleIcon(ModelData.EMPTY);
     }
 
     @Override
@@ -474,6 +502,77 @@ public class AntiblockBakedModel implements BakedModel {
         }
         throw new IllegalArgumentException(
                 String.format("VertexFormat %s doesn't have element %s", DefaultVertexFormat.BLOCK, element));
+    }
+
+    public static void unpackPosition(int[] vertexData, float[] pos, int vert) {
+        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.POSITION;
+        pos[0] = Float.intBitsToFloat(vertexData[offset]);
+        pos[1] = Float.intBitsToFloat(vertexData[offset + 1]);
+        pos[2] = Float.intBitsToFloat(vertexData[offset + 2]);
+    }
+
+    public static void unpackUV(int[] vertexData, float[] uv, int vert) {
+        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.UV0;
+        uv[0] = Float.intBitsToFloat(vertexData[offset]);
+        uv[1] = Float.intBitsToFloat(vertexData[offset + 1]);
+    }
+
+    public static void unpackNormals(int[] vertexData, float[] normal, int vert) {
+        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.NORMAL;
+        int packedNormal = vertexData[offset];
+
+        normal[0] = ((byte) (packedNormal & 0xFF)) / 127F;
+        normal[1] = ((byte) ((packedNormal >> 8) & 0xFF)) / 127F;
+        normal[2] = ((byte) ((packedNormal >> 16) & 0xFF)) / 127F;
+    }
+
+    public static void unpackColor(int[] vertexData, int[] color, int vert) {
+        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.COLOR;
+        int packedColor = vertexData[offset];
+
+        color[0] = packedColor & 0xFF;
+        color[1] = (packedColor >> 8) & 0xFF;
+        color[2] = (packedColor >> 16) & 0xFF;
+        color[3] = (packedColor >> 24) & 0xFF;
+    }
+
+    public static void unpackLight(int[] vertexData, int[] light, int vert) {
+        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.UV2;
+        int packedLight = vertexData[offset];
+
+        light[0] = packedLight & 0xFFFF;
+        light[1] = (packedLight >> 16) & 0xFFFF;
+    }
+
+    public static void packPosition(float[] pos, int[] vertexData, int vert) {
+        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.POSITION;
+        vertexData[offset] = Float.floatToRawIntBits(pos[0]);
+        vertexData[offset + 1] = Float.floatToRawIntBits(pos[1]);
+        vertexData[offset + 2] = Float.floatToRawIntBits(pos[2]);
+    }
+
+    public static void packUV(float[] uv, int[] vertexData, int vert) {
+        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.UV0;
+        vertexData[offset] = Float.floatToRawIntBits(uv[0]);
+        vertexData[offset + 1] = Float.floatToRawIntBits(uv[1]);
+    }
+
+    public static void packNormals(float[] normal, int[] vertexData, int vert) {
+        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.NORMAL;
+
+        int packedNormal = vertexData[offset];
+        vertexData[offset] = (((byte) (normal[0] * 127F)) & 0xFF) | ((((byte) (normal[1] * 127F)) & 0xFF) << 8) | ((((byte) (normal[2] * 127F)) & 0xFF) << 16) | (packedNormal & 0xFF000000);
+    }
+
+    public static void packColor(int[] color, int[] vertexData, int vert) {
+        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.COLOR;
+
+        vertexData[offset] = (color[0] & 0xFF) | ((color[1] & 0xFF) << 8) | ((color[2] & 0xFF) << 16) | ((color[3] & 0xFF) << 24);
+    }
+
+    public static void packLight(int[] light, int[] vertexData, int vert) {
+        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.UV2;
+        vertexData[offset] = (light[0] & 0xFFFF) | ((light[1] & 0xFFFF) << 16);
     }
 
     public record Connections(Direction side, boolean up, boolean down, boolean left, boolean right, boolean upLeft,
@@ -499,7 +598,7 @@ public class AntiblockBakedModel implements BakedModel {
         }
     }
 
-    public static class Model implements IModelGeometry<Model> {
+    public static class Model implements IUnbakedGeometry<Model> {
         private final BlockModel baseModel;
 
         public Model(BlockModel baseModel) {
@@ -507,36 +606,25 @@ public class AntiblockBakedModel implements BakedModel {
         }
 
         @Override
-        public BakedModel bake(IModelConfiguration owner, ModelBakery bakery,
+        public BakedModel bake(IGeometryBakingContext owner, ModelBakery bakery,
                                Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform,
                                ItemOverrides overrides, ResourceLocation modelLocation) {
 
             BakedModel bakedBase = baseModel.bake(bakery, baseModel, spriteGetter, modelTransform, modelLocation,
-                                                  owner.isShadedInGui()
+                                                  owner.isGui3d()
             );
             Map<Direction, BakedQuad> bgQuads = new EnumMap<>(Direction.class);
             Map<Direction, BakedQuad> frameQuads = new EnumMap<>(Direction.class);
 
-            Random rand = new Random();
+            RandomSource rand = RandomSource.create();
             for (Direction side : Direction.values()) {
                 List<BakedQuad> quads = bakedBase.getQuads(Blocks.STONE.defaultBlockState(), side, rand,
-                                                           EmptyModelData.INSTANCE
+                                                           ModelData.EMPTY, null
                 );
 
                 for (BakedQuad quad : quads) {
                     if (quad.getSprite().getName().equals(new ResourceLocation(RGBBlocks.MOD_ID, "block/white"))) {
-                        int[] vertexData = quad.getVertices();
-
-                        float[] light = new float[2];
-                        for (int i = 0; i < 4; i++) {
-                            LightUtil.unpack(vertexData, light, DefaultVertexFormat.BLOCK, i, ELEM_LIGHT);
-                            light[0] = light[1] = (float) LightTexture.FULL_BRIGHT / (float) Short.MAX_VALUE;
-                            LightUtil.pack(light, vertexData, DefaultVertexFormat.BLOCK, i, ELEM_LIGHT);
-                        }
-
-                        bgQuads.put(side, new BakedQuad(vertexData, quad.getTintIndex(), quad.getDirection(),
-                                                        quad.getSprite(), false
-                        ));
+                        bgQuads.put(side, quad);
                     } else if (quad.getSprite()
                                    .getName()
                                    .equals(new ResourceLocation(RGBBlocks.MOD_ID, "block/antiblock"))) {
@@ -549,9 +637,9 @@ public class AntiblockBakedModel implements BakedModel {
         }
 
         @Override
-        public Collection<Material> getTextures(IModelConfiguration owner,
-                                                Function<ResourceLocation, UnbakedModel> modelGetter,
-                                                Set<Pair<String, String>> missingTextureErrors) {
+        public Collection<Material> getMaterials(IGeometryBakingContext owner,
+                                                 Function<ResourceLocation, UnbakedModel> modelGetter,
+                                                 Set<Pair<String, String>> missingTextureErrors) {
             Set<Material> textures = Sets.newHashSet();
 
             textures.addAll(baseModel.getMaterials(modelGetter, missingTextureErrors));
@@ -563,14 +651,9 @@ public class AntiblockBakedModel implements BakedModel {
         }
     }
 
-    public static class ModelLoader implements IModelLoader<Model> {
+    public static class ModelLoader implements IGeometryLoader<Model> {
         @Override
-        public void onResourceManagerReload(ResourceManager resourceManager) {
-
-        }
-
-        @Override
-        public Model read(JsonDeserializationContext deserializationContext, JsonObject modelContents) {
+        public Model read(JsonObject modelContents, JsonDeserializationContext deserializationContext) {
             BlockModel baseModel = deserializationContext.deserialize(
                     GsonHelper.getAsJsonObject(modelContents, "base_model"), BlockModel.class);
             return new Model(baseModel);

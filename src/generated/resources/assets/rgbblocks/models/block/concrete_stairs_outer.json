@@ -1,5 +1,6 @@
 {
   "parent": "rgbblocks:block/outer_stairs",
+  "render_type": "minecraft:solid",
   "textures": {
     "all": "rgbblocks:block/concrete"
   }

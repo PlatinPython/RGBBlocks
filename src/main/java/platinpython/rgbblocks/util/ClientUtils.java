@@ -10,6 +10,7 @@ import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -75,10 +76,8 @@ public class ClientUtils {
     }
 
     @SubscribeEvent
-    public static void registerModelStuff(ModelRegistryEvent event) {
-        ModelLoaderRegistry.registerLoader(new ResourceLocation(RGBBlocks.MOD_ID, "antiblock_model"),
-                                           new AntiblockBakedModel.ModelLoader()
-        );
+    public static void registerModelStuff(ModelEvent.RegisterGeometryLoaders event) {
+        event.register("antiblock_model", new AntiblockBakedModel.ModelLoader());
     }
 
     public static void openColorSelectScreen(int color, boolean isRGBSelected) {

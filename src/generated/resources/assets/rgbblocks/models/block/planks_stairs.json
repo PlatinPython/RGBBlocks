@@ -1,5 +1,6 @@
 {
   "parent": "rgbblocks:block/stairs",
+  "render_type": "minecraft:solid",
   "textures": {
     "all": "rgbblocks:block/planks"
   }

@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "item": "rgbblocks:glowstone"
+    },
+    "S": {
+      "tag": "forge:stone"
+    }
+  },
   "pattern": [
     "SSS",
     "SGS",
     "SSS"
   ],
-  "key": {
-    "S": {
-      "tag": "forge:stone"
-    },
-    "G": {
-      "item": "rgbblocks:glowstone"
-    }
-  },
   "result": {
-    "item": "rgbblocks:antiblock",
     "count": 8,
+    "item": "rgbblocks:antiblock",
     "nbt": "{\"color\":-1}"
   }
 }

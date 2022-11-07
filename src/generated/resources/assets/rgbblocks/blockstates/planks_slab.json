@@ -1,13 +1,13 @@
 {
   "variants": {
-    "type=top": {
-      "model": "rgbblocks:block/planks_slab_top"
-    },
     "type=bottom": {
       "model": "rgbblocks:block/planks_slab"
     },
     "type=double": {
       "model": "rgbblocks:block/planks"
+    },
+    "type=top": {
+      "model": "rgbblocks:block/planks_slab_top"
     }
   }
 }

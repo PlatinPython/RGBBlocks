@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -126,20 +127,25 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
             NativeImage image = NativeImage.read(inputStream);
             NativeImage transformedImage = this.transformImage(image);
             ResourceLocation metadata = getMetadataLocation(parentFile);
-            Optional<Callable<InputStream>> metadataLookup;
+            Optional<Callable<InputStream>> metadataLookup = Optional.empty();
             BufferedReader bufferedReader = null;
             JsonObject metadataJson;
-            try (InputStream metadataStream = manager.getResource(metadata).orElseThrow().open()) {
-                bufferedReader = new BufferedReader(new InputStreamReader(metadataStream, StandardCharsets.UTF_8));
-                metadataJson = GsonHelper.parse(bufferedReader);
-            } finally {
-                IOUtils.closeQuietly(bufferedReader);
+            if (manager.getResource(metadata).isPresent()) {
+                try (InputStream metadataStream = manager.getResource(metadata).get().open()) {
+                    bufferedReader = new BufferedReader(new InputStreamReader(metadataStream, StandardCharsets.UTF_8));
+                    metadataJson = GsonHelper.parse(bufferedReader);
+                } finally {
+                    IOUtils.closeQuietly(bufferedReader);
+                }
+                JsonObject metaDataJsonForLambda = metadataJson;
+                metadataLookup = Optional.of(
+                        () -> new ByteArrayInputStream(metaDataJsonForLambda.toString().getBytes()));
             }
-            JsonObject metaDataJsonForLambda = metadataJson;
-            metadataLookup = Optional.of(() -> new ByteArrayInputStream(metaDataJsonForLambda.toString().getBytes()));
             return Optional.of(Pair.of(transformedImage, metadataLookup));
         } catch (IOException e) {
             e.printStackTrace();
+            return Optional.empty();
+        } catch (NoSuchElementException ignored) {
             return Optional.empty();
         }
     }

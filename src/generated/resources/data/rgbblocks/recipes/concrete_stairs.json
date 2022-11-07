@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "#  ",
-    "## ",
-    "###"
-  ],
   "key": {
     "#": {
       "item": "rgbblocks:concrete"
     }
   },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
   "result": {
-    "item": "rgbblocks:concrete_stairs",
     "count": 4,
+    "item": "rgbblocks:concrete_stairs",
     "nbt": "{\"color\":-1}"
   }
 }

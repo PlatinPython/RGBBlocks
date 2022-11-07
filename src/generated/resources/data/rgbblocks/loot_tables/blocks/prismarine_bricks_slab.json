@@ -1,26 +1,38 @@
 {
   "type": "minecraft:block",
+  "functions": [
+    {
+      "function": "minecraft:copy_nbt",
+      "ops": [
+        {
+          "op": "replace",
+          "source": "color",
+          "target": "color"
+        }
+      ],
+      "source": "block_entity"
+    }
+  ],
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "conditions": [
                 {
-                  "condition": "minecraft:block_state_property",
                   "block": "rgbblocks:prismarine_bricks_slab",
+                  "condition": "minecraft:block_state_property",
                   "properties": {
                     "type": "double"
                   }
                 }
               ],
               "count": 2.0,
-              "add": false
+              "function": "minecraft:set_count"
             },
             {
               "function": "minecraft:explosion_decay"
@@ -28,20 +40,8 @@
           ],
           "name": "rgbblocks:prismarine_bricks_slab"
         }
-      ]
-    }
-  ],
-  "functions": [
-    {
-      "function": "minecraft:copy_nbt",
-      "source": "block_entity",
-      "ops": [
-        {
-          "source": "color",
-          "target": "color",
-          "op": "replace"
-        }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

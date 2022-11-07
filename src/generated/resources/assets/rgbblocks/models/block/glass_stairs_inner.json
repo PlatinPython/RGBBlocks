@@ -1,5 +1,6 @@
 {
   "parent": "rgbblocks:block/inner_stairs",
+  "render_type": "minecraft:translucent",
   "textures": {
     "all": "rgbblocks:block/glass"
   }

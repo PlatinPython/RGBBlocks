@@ -1,13 +1,13 @@
 {
   "variants": {
-    "type=top": {
-      "model": "rgbblocks:block/terracotta_slab_top"
-    },
     "type=bottom": {
       "model": "rgbblocks:block/terracotta_slab"
     },
     "type=double": {
       "model": "rgbblocks:block/terracotta"
+    },
+    "type=top": {
+      "model": "rgbblocks:block/terracotta_slab_top"
     }
   }
 }

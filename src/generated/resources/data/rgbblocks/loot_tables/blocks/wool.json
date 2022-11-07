@@ -1,33 +1,33 @@
 {
   "type": "minecraft:block",
+  "functions": [
+    {
+      "function": "minecraft:copy_nbt",
+      "ops": [
+        {
+          "op": "replace",
+          "source": "color",
+          "target": "color"
+        }
+      ],
+      "source": "block_entity"
+    }
+  ],
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:item",
           "name": "rgbblocks:wool"
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ]
-    }
-  ],
-  "functions": [
-    {
-      "function": "minecraft:copy_nbt",
-      "source": "block_entity",
-      "ops": [
-        {
-          "source": "color",
-          "target": "color",
-          "op": "replace"
-        }
-      ]
+      "rolls": 1.0
     }
   ]
 }

@@ -84,11 +84,15 @@ public class ModBlockStateProvider extends BlockStateProvider {
                     models().withExistingParent(BlockRegistry.RGB_ANTIBLOCK.getId().getPath(),
                                                 new ResourceLocation("forge:block/default")
                             )
+                            .renderType("cutout")
                             .customLoader(AntiblockLoaderBuilder::new)
                             .baseModel(models().singleTexture(BlockRegistry.RGB_ANTIBLOCK.getId().getPath() + "_base",
                                                               modLoc(ModelProvider.BLOCK_FOLDER + "/no_shade_2_layer"),
                                                               "bot", modLoc(ModelProvider.BLOCK_FOLDER + "/white")
-                            ).texture("top", modLoc(ModelProvider.BLOCK_FOLDER + "/antiblock")).toJson())
+                                               )
+                                               .texture("top", modLoc(ModelProvider.BLOCK_FOLDER + "/antiblock"))
+                                               .renderType("cutout")
+                                               .toJson())
                             .end()
         );
         getVariantBuilder(BlockRegistry.RGB_REDSTONE_LAMP.get()).forAllStates(

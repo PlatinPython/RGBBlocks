@@ -1,0 +1,5 @@
+// 1.19.2	2022-11-07T01:06:06.1174756	Tags for minecraft:block
+81dc907e738fda3d3f8b79c4d0a66fe6baff7e70 data/minecraft/tags/blocks/impermeable.json
+feb61170734a0094e4b8d17b75e46fe30b14bc93 data/minecraft/tags/blocks/mineable/axe.json
+6e7e81b24ce634c93ef77dfa8c9ff94a0e58a483 data/minecraft/tags/blocks/mineable/pickaxe.json
+d57f2dfbeed7ccc75dcc96dd1042353be5fa47b7 data/minecraft/tags/blocks/mineable/shovel.json

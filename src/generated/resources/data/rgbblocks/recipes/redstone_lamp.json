@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "item": "rgbblocks:glowstone"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
   "pattern": [
     " R ",
     "RGR",
     " R "
   ],
-  "key": {
-    "R": {
-      "tag": "forge:dusts/redstone"
-    },
-    "G": {
-      "item": "rgbblocks:glowstone"
-    }
-  },
   "result": {
     "item": "rgbblocks:redstone_lamp",
     "nbt": "{\"color\":-1}"

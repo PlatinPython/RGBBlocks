@@ -1,15 +1,21 @@
 {
   "type": "minecraft:block",
-  "pools": [
+  "functions": [
     {
-      "rolls": 1.0,
-      "bonus_rolls": 0.0,
-      "entries": [
+      "function": "minecraft:copy_nbt",
+      "ops": [
         {
-          "type": "minecraft:item",
-          "name": "rgbblocks:glass"
+          "op": "replace",
+          "source": "color",
+          "target": "color"
         }
       ],
+      "source": "block_entity"
+    }
+  ],
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
       "conditions": [
         {
           "condition": "minecraft:match_tool",
@@ -24,20 +30,14 @@
             ]
           }
         }
-      ]
-    }
-  ],
-  "functions": [
-    {
-      "function": "minecraft:copy_nbt",
-      "source": "block_entity",
-      "ops": [
+      ],
+      "entries": [
         {
-          "source": "color",
-          "target": "color",
-          "op": "replace"
+          "type": "minecraft:item",
+          "name": "rgbblocks:glass"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

@@ -1,11 +1,13 @@
 {
   "parent": "forge:block/default",
-  "loader": "rgbblocks:antiblock_model",
   "base_model": {
     "parent": "rgbblocks:block/no_shade_2_layer",
+    "render_type": "minecraft:cutout",
     "textures": {
       "bot": "rgbblocks:block/white",
       "top": "rgbblocks:block/antiblock"
     }
-  }
+  },
+  "loader": "rgbblocks:antiblock_model",
+  "render_type": "minecraft:cutout"
 }

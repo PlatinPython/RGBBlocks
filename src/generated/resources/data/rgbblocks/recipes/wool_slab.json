@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "###"
-  ],
   "key": {
     "#": {
       "item": "rgbblocks:wool"
     }
   },
+  "pattern": [
+    "###"
+  ],
   "result": {
-    "item": "rgbblocks:wool_slab",
     "count": 6,
+    "item": "rgbblocks:wool_slab",
     "nbt": "{\"color\":-1}"
   }
 }

@@ -1,5 +1,6 @@
 {
   "parent": "rgbblocks:block/slab",
+  "render_type": "minecraft:solid",
   "textures": {
     "all": "rgbblocks:block/dark_prismarine"
   }
