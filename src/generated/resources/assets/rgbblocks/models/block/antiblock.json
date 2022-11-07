@@ -8,6 +8,5 @@
       "top": "rgbblocks:block/antiblock"
     }
   },
-  "loader": "rgbblocks:antiblock_model",
-  "render_type": "minecraft:cutout"
+  "loader": "rgbblocks:antiblock_model"
 }

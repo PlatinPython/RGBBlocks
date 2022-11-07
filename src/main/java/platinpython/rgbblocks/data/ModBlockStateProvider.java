@@ -84,7 +84,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
                     models().withExistingParent(BlockRegistry.RGB_ANTIBLOCK.getId().getPath(),
                                                 new ResourceLocation("forge:block/default")
                             )
-                            .renderType("cutout")
                             .customLoader(AntiblockLoaderBuilder::new)
                             .baseModel(models().singleTexture(BlockRegistry.RGB_ANTIBLOCK.getId().getPath() + "_base",
                                                               modLoc(ModelProvider.BLOCK_FOLDER + "/no_shade_2_layer"),

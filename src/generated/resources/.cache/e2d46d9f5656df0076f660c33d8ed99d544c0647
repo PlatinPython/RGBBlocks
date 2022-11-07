@@ -1,4 +1,4 @@
-// 1.19.2	2022-11-07T01:16:19.7355922	Block States: rgbblocks
+// 1.19.2	2022-11-07T23:01:46.2561362	Block States: rgbblocks
 102371feca683f8f2ccd789c8ea4ce5aafafa430 assets/rgbblocks/blockstates/antiblock.json
 f07dc049074727cc92afb1e122ce80290865a735 assets/rgbblocks/blockstates/carpet.json
 5631b35e07df51e70cae79895bf18ad998e53584 assets/rgbblocks/blockstates/concrete.json
@@ -30,7 +30,7 @@ f03abd1727c802e36fd56906f237f6fde8c9ce9b assets/rgbblocks/blockstates/redstone_l
 ff0bab9581ce2f9c7315ebc9be5bf1a8e336d539 assets/rgbblocks/blockstates/wool.json
 3967d53042b091eb2cd9ef040ad418b1c9d55d63 assets/rgbblocks/blockstates/wool_slab.json
 bbe5f224fda13c925fecd07d0bd7d030f5457d0d assets/rgbblocks/blockstates/wool_stairs.json
-be1a7395d178a8d7a700caad1116d3bb26160911 assets/rgbblocks/models/block/antiblock.json
+9f528d80e10ab6688c7184fb6ec734370ed5a932 assets/rgbblocks/models/block/antiblock.json
 23b85ca86204455e008dd7b686d1f72b144e1c7e assets/rgbblocks/models/block/carpet.json
 20eb4c8da56bea2c5c8eef7867fc619291e8d6bf assets/rgbblocks/models/block/concrete.json
 05713e11b5868bcb07ccd230220c5e45532bce60 assets/rgbblocks/models/block/concrete_powder.json

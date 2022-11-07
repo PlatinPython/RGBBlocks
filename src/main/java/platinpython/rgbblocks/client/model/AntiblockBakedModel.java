@@ -6,8 +6,6 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormatElement;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
@@ -31,6 +29,7 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.model.IQuadTransformer;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
@@ -492,16 +491,10 @@ public class AntiblockBakedModel implements BakedModel {
         return base.getOverrides();
     }
 
-    private static int findElementIndex(VertexFormatElement element) {
-        List<VertexFormatElement> elements = DefaultVertexFormat.BLOCK.getElements();
-        for (int i = 0; i < elements.size(); i++) {
-            VertexFormatElement elem = elements.get(i);
-            if (elem == element) {
-                return i;
-            }
-        }
-        throw new IllegalArgumentException(
-                String.format("VertexFormat %s doesn't have element %s", DefaultVertexFormat.BLOCK, element));
+    @Override
+    public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand,
+                                             @NotNull ModelData data) {
+        return base.getRenderTypes(state, rand, data);
     }
 
     public static void unpackPosition(int[] vertexData, float[] pos, int vert) {
@@ -517,33 +510,6 @@ public class AntiblockBakedModel implements BakedModel {
         uv[1] = Float.intBitsToFloat(vertexData[offset + 1]);
     }
 
-    public static void unpackNormals(int[] vertexData, float[] normal, int vert) {
-        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.NORMAL;
-        int packedNormal = vertexData[offset];
-
-        normal[0] = ((byte) (packedNormal & 0xFF)) / 127F;
-        normal[1] = ((byte) ((packedNormal >> 8) & 0xFF)) / 127F;
-        normal[2] = ((byte) ((packedNormal >> 16) & 0xFF)) / 127F;
-    }
-
-    public static void unpackColor(int[] vertexData, int[] color, int vert) {
-        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.COLOR;
-        int packedColor = vertexData[offset];
-
-        color[0] = packedColor & 0xFF;
-        color[1] = (packedColor >> 8) & 0xFF;
-        color[2] = (packedColor >> 16) & 0xFF;
-        color[3] = (packedColor >> 24) & 0xFF;
-    }
-
-    public static void unpackLight(int[] vertexData, int[] light, int vert) {
-        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.UV2;
-        int packedLight = vertexData[offset];
-
-        light[0] = packedLight & 0xFFFF;
-        light[1] = (packedLight >> 16) & 0xFFFF;
-    }
-
     public static void packPosition(float[] pos, int[] vertexData, int vert) {
         int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.POSITION;
         vertexData[offset] = Float.floatToRawIntBits(pos[0]);
@@ -555,24 +521,6 @@ public class AntiblockBakedModel implements BakedModel {
         int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.UV0;
         vertexData[offset] = Float.floatToRawIntBits(uv[0]);
         vertexData[offset + 1] = Float.floatToRawIntBits(uv[1]);
-    }
-
-    public static void packNormals(float[] normal, int[] vertexData, int vert) {
-        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.NORMAL;
-
-        int packedNormal = vertexData[offset];
-        vertexData[offset] = (((byte) (normal[0] * 127F)) & 0xFF) | ((((byte) (normal[1] * 127F)) & 0xFF) << 8) | ((((byte) (normal[2] * 127F)) & 0xFF) << 16) | (packedNormal & 0xFF000000);
-    }
-
-    public static void packColor(int[] color, int[] vertexData, int vert) {
-        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.COLOR;
-
-        vertexData[offset] = (color[0] & 0xFF) | ((color[1] & 0xFF) << 8) | ((color[2] & 0xFF) << 16) | ((color[3] & 0xFF) << 24);
-    }
-
-    public static void packLight(int[] light, int[] vertexData, int vert) {
-        int offset = vert * IQuadTransformer.STRIDE + IQuadTransformer.UV2;
-        vertexData[offset] = (light[0] & 0xFFFF) | ((light[1] & 0xFFFF) << 16);
     }
 
     public record Connections(Direction side, boolean up, boolean down, boolean left, boolean right, boolean upLeft,
