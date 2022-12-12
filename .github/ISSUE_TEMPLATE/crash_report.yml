@@ -1,0 +1,47 @@
+name: Crash Report
+description: Report of a crash
+title: "[Crash]: "
+assignees: PlatinPython
+labels:
+  - crash
+body:
+  - type: checkboxes
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the crash you encountered.
+      options:
+        - label: I have searched the existing issues
+          required: true
+  - type: input
+    attributes:
+      label: Minecraft Version
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Forge Version
+  - type: input
+    attributes:
+      label: Mod Version
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Description
+      description: A short description of the crash you're encountered.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: The steps needed to reproduce the crash.
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: A link to the the debug.log, preferably on https://gist.github.com
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional info

@@ -1,0 +1,24 @@
+name: Change/Improvement
+description: Suggest a change or improvement to an existing feature
+title: "[Change/Improvement]: "
+assignees: PlatinPython
+labels:
+  - enhancement
+body:
+  - type: checkboxes
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the change/improvement you want.
+      options:
+        - label: I have searched the existing issues
+          required: true
+  - type: textarea
+    attributes:
+      label: Description
+      description: A short description of the change/improvement you want.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Ideas on how to implement it
+      description: If you have ideas on how to implement the change/improvement you want.
