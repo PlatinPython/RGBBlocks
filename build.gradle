@@ -13,7 +13,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: 'parchment', version: '2022.11.06-1.19.2'
+    mappings channel: 'parchment', version: '2022.11.27-1.19.2'
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -76,7 +76,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.2-43.1.47'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.2.6'
 
     implementation fg.deobf("curse.maven:top-245211:3965693")
 }

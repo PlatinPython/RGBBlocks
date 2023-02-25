@@ -36,26 +36,23 @@ public class ModBlockStateProvider extends BlockStateProvider {
                                               modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_post")
                           )
                           .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
-                          .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top"))
-                          .renderType("translucent"),
+                          .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
                   models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_side",
                                               modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_side")
                           )
                           .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
-                          .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top"))
-                          .renderType("translucent"),
+                          .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
                   models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_side_alt",
                                               modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_side_alt")
                           )
                           .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
-                          .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top"))
-                          .renderType("translucent"),
+                          .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
                   models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_noside",
                                               modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_noside")
                   ).texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass")),
                   models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_noside_alt",
                                               modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_noside_alt")
-                  ).texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass")).renderType("translucent")
+                  ).texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
         );
         class AntiblockLoaderBuilder extends CustomLoaderBuilder<BlockModelBuilder> {
             private JsonObject baseModel;

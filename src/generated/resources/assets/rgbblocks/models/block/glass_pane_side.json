@@ -1,6 +1,5 @@
 {
   "parent": "rgbblocks:block/template_glass_pane_side",
-  "render_type": "minecraft:translucent",
   "textures": {
     "edge": "rgbblocks:block/glass_pane_top",
     "pane": "rgbblocks:block/glass"
