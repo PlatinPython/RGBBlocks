@@ -10,6 +10,7 @@ import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
@@ -112,8 +113,7 @@ public class ShapelessNBTRecipeBuilder {
         consumer.accept(new ShapelessNBTRecipeBuilder.Result(id, this.result, this.count, this.compound,
                                                              this.group == null ? "" : this.group, this.ingredients,
                                                              this.advancement, new ResourceLocation(id.getNamespace(),
-                                                                                                    "recipes/" + this.result.getItemCategory()
-                                                                                                                            .getRecipeFolderName() + "/" + id.getPath()
+                                                                                                    "recipes/" + RecipeCategory.MISC.getFolderName() + "/" + id.getPath()
         ), this.isNoReturnRecipe
         ));
     }

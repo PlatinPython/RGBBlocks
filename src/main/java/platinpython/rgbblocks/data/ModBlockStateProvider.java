@@ -1,7 +1,7 @@
 package platinpython.rgbblocks.data;
 
 import com.google.gson.JsonObject;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RedstoneLampBlock;
@@ -20,8 +20,8 @@ import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
 public class ModBlockStateProvider extends BlockStateProvider {
-    public ModBlockStateProvider(DataGenerator generator, ExistingFileHelper helper) {
-        super(generator, RGBBlocks.MOD_ID, helper);
+    public ModBlockStateProvider(PackOutput output, ExistingFileHelper helper) {
+        super(output, RGBBlocks.MOD_ID, helper);
     }
 
     @Override

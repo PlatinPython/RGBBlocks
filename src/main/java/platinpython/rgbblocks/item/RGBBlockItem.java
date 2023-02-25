@@ -1,17 +1,14 @@
 package platinpython.rgbblocks.item;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
 import platinpython.rgbblocks.util.ClientUtils;
 import platinpython.rgbblocks.util.Color;
@@ -20,14 +17,7 @@ import java.util.List;
 
 public class RGBBlockItem extends BlockItem {
     public RGBBlockItem(Block blockIn) {
-        super(blockIn, new Item.Properties().tab(RGBBlocks.ITEM_GROUP_RGB));
-    }
-
-    @Override
-    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-        if (allowedIn(group)) {
-            items.add(getDefaultInstance());
-        }
+        super(blockIn, new Item.Properties());
     }
 
     @Override

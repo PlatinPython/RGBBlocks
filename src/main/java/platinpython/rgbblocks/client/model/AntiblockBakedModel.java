@@ -3,10 +3,8 @@ package platinpython.rgbblocks.client.model;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.Sets;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -16,7 +14,7 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.BlockPos;
@@ -43,12 +41,10 @@ import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 
 @SuppressWarnings("deprecation")
@@ -554,7 +550,7 @@ public class AntiblockBakedModel implements BakedModel {
         }
 
         @Override
-        public BakedModel bake(IGeometryBakingContext owner, ModelBakery bakery,
+        public BakedModel bake(IGeometryBakingContext owner, ModelBaker bakery,
                                Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform,
                                ItemOverrides overrides, ResourceLocation modelLocation) {
 
@@ -571,11 +567,10 @@ public class AntiblockBakedModel implements BakedModel {
                 );
 
                 for (BakedQuad quad : quads) {
-                    if (quad.getSprite().getName().equals(new ResourceLocation(RGBBlocks.MOD_ID, "block/white"))) {
+                    ResourceLocation name = quad.getSprite().contents().name();
+                    if (name.equals(new ResourceLocation(RGBBlocks.MOD_ID, "block/white"))) {
                         bgQuads.put(side, quad);
-                    } else if (quad.getSprite()
-                                   .getName()
-                                   .equals(new ResourceLocation(RGBBlocks.MOD_ID, "block/antiblock"))) {
+                    } else if (name.equals(new ResourceLocation(RGBBlocks.MOD_ID, "block/antiblock"))) {
                         frameQuads.put(side, quad);
                     }
                 }
@@ -585,17 +580,9 @@ public class AntiblockBakedModel implements BakedModel {
         }
 
         @Override
-        public Collection<Material> getMaterials(IGeometryBakingContext owner,
-                                                 Function<ResourceLocation, UnbakedModel> modelGetter,
-                                                 Set<Pair<String, String>> missingTextureErrors) {
-            Set<Material> textures = Sets.newHashSet();
-
-            textures.addAll(baseModel.getMaterials(modelGetter, missingTextureErrors));
-            textures.add(new Material(InventoryMenu.BLOCK_ATLAS,
-                                      new ResourceLocation(RGBBlocks.MOD_ID, "block/antiblock_ctm")
-            ));
-
-            return textures;
+        public void resolveParents(Function<ResourceLocation, UnbakedModel> modelGetter,
+                                   IGeometryBakingContext context) {
+            baseModel.resolveParents(modelGetter);
         }
     }
 

@@ -1,19 +1,23 @@
 package platinpython.rgbblocks.data;
 
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
+import java.util.concurrent.CompletableFuture;
+
 public class ModBlockTagsProvider extends BlockTagsProvider {
-    public ModBlockTagsProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, RGBBlocks.MOD_ID, existingFileHelper);
+    public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
+                                ExistingFileHelper existingFileHelper) {
+        super(output, lookupProvider, RGBBlocks.MOD_ID, existingFileHelper);
     }
 
     @Override
-    protected void addTags() {
+    protected void addTags(HolderLookup.Provider provider) {
         this.tag(BlockTags.IMPERMEABLE)
             .add(BlockRegistry.RGB_GLASS.get(), BlockRegistry.RGB_GLASS_SLAB.get(),
                  BlockRegistry.RGB_GLASS_STAIRS.get()

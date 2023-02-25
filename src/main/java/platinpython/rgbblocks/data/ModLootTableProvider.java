@@ -1,15 +1,13 @@
 package platinpython.rgbblocks.data;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
@@ -18,15 +16,11 @@ import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.storage.loot.IntRange;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.LootTable.Builder;
-import net.minecraft.world.level.storage.loot.LootTables;
-import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.LimitCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
@@ -38,53 +32,46 @@ import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class ModLootTableProvider extends LootTableProvider {
-    public ModLootTableProvider(DataGenerator generator) {
-        super(generator);
+    public ModLootTableProvider(PackOutput output) {
+        super(output, Collections.emptySet(),
+              List.of(new LootTableProvider.SubProviderEntry(Blocks::new, LootContextParamSets.BLOCK))
+        );
     }
 
-    @Override
-    protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, Builder>>>, LootContextParamSet>> getTables() {
-        return ImmutableList.of(Pair.of(Blocks::new, LootContextParamSets.BLOCK));
-    }
+    private static class Blocks extends BlockLootSubProvider {
+        protected Blocks() {
+            super(Collections.emptySet(), FeatureFlags.REGISTRY.allFlags());
+        }
 
-    @Override
-    protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker) {
-        map.forEach((name, table) -> LootTables.validate(validationtracker, name, table));
-    }
-
-    private class Blocks extends BlockLoot {
         @Override
-        protected void addTables() {
+        public void generate() {
             HashMap<Block, Function<Block, LootTable.Builder>> map = new HashMap<>();
 
-            map.put(BlockRegistry.RGB_CONCRETE.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_CONCRETE_SLAB.get(), BlockLoot::createSlabItemTable);
-            map.put(BlockRegistry.RGB_CONCRETE_STAIRS.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_CONCRETE_POWDER.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_WOOL.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_WOOL_SLAB.get(), BlockLoot::createSlabItemTable);
-            map.put(BlockRegistry.RGB_WOOL_STAIRS.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_CARPET.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_PLANKS.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_PLANKS_SLAB.get(), BlockLoot::createSlabItemTable);
-            map.put(BlockRegistry.RGB_PLANKS_STAIRS.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_TERRACOTTA.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_TERRACOTTA_SLAB.get(), BlockLoot::createSlabItemTable);
-            map.put(BlockRegistry.RGB_TERRACOTTA_STAIRS.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_GLASS.get(), BlockLoot::createSilkTouchOnlyTable);
+            map.put(BlockRegistry.RGB_CONCRETE.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_CONCRETE_SLAB.get(), this::createSlabItemTable);
+            map.put(BlockRegistry.RGB_CONCRETE_STAIRS.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_CONCRETE_POWDER.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_WOOL.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_WOOL_SLAB.get(), this::createSlabItemTable);
+            map.put(BlockRegistry.RGB_WOOL_STAIRS.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_CARPET.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_PLANKS.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_PLANKS_SLAB.get(), this::createSlabItemTable);
+            map.put(BlockRegistry.RGB_PLANKS_STAIRS.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_TERRACOTTA.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_TERRACOTTA_SLAB.get(), this::createSlabItemTable);
+            map.put(BlockRegistry.RGB_TERRACOTTA_STAIRS.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_GLASS.get(), Blocks::createSilkTouchOnlyTable);
             map.put(BlockRegistry.RGB_GLASS_SLAB.get(), this::createSilkTouchOnlySlabItemTable);
-            map.put(BlockRegistry.RGB_GLASS_STAIRS.get(), BlockLoot::createSilkTouchOnlyTable);
-            map.put(BlockRegistry.RGB_GLASS_PANE.get(), BlockLoot::createSilkTouchOnlyTable);
-            map.put(BlockRegistry.RGB_ANTIBLOCK.get(), BlockLoot::createSingleItemTable);
+            map.put(BlockRegistry.RGB_GLASS_STAIRS.get(), Blocks::createSilkTouchOnlyTable);
+            map.put(BlockRegistry.RGB_GLASS_PANE.get(), Blocks::createSilkTouchOnlyTable);
+            map.put(BlockRegistry.RGB_ANTIBLOCK.get(), this::createSingleItemTable);
             map.put(BlockRegistry.RGB_GLOWSTONE.get(), (block) -> createSilkTouchDispatchTable(block,
                                                                                                applyExplosionDecay(
                                                                                                        block,
@@ -104,16 +91,16 @@ public class ModLootTableProvider extends LootTableProvider {
                                                                                                                        )))
                                                                                                )
             ));
-            map.put(BlockRegistry.RGB_REDSTONE_LAMP.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_PRISMARINE.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_PRISMARINE_SLAB.get(), BlockLoot::createSlabItemTable);
-            map.put(BlockRegistry.RGB_PRISMARINE_STAIRS.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_PRISMARINE_BRICKS.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_PRISMARINE_BRICK_SLAB.get(), BlockLoot::createSlabItemTable);
-            map.put(BlockRegistry.RGB_PRISMARINE_BRICK_STAIRS.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_DARK_PRISMARINE.get(), BlockLoot::createSingleItemTable);
-            map.put(BlockRegistry.RGB_DARK_PRISMARINE_SLAB.get(), BlockLoot::createSlabItemTable);
-            map.put(BlockRegistry.RGB_DARK_PRISMARINE_STAIRS.get(), BlockLoot::createSingleItemTable);
+            map.put(BlockRegistry.RGB_REDSTONE_LAMP.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_PRISMARINE.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_PRISMARINE_SLAB.get(), this::createSlabItemTable);
+            map.put(BlockRegistry.RGB_PRISMARINE_STAIRS.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_PRISMARINE_BRICKS.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_PRISMARINE_BRICK_SLAB.get(), this::createSlabItemTable);
+            map.put(BlockRegistry.RGB_PRISMARINE_BRICK_STAIRS.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_DARK_PRISMARINE.get(), this::createSingleItemTable);
+            map.put(BlockRegistry.RGB_DARK_PRISMARINE_SLAB.get(), this::createSlabItemTable);
+            map.put(BlockRegistry.RGB_DARK_PRISMARINE_STAIRS.get(), this::createSingleItemTable);
             map.put(BlockRegistry.RGB_SEA_LANTERN.get(), (block) -> createSilkTouchDispatchTable(block,
                                                                                                  applyExplosionDecay(
                                                                                                          block,

@@ -66,7 +66,7 @@ public class ColorSlider extends AbstractSliderButton {
     public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (this.visible) {
             Minecraft minecraft = Minecraft.getInstance();
-            fill(matrixStack, this.x, this.y, this.x + this.width, this.y + this.height, 0xFF000000);
+            fill(matrixStack, this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, 0xFF000000);
             if (minecraft.screen instanceof ColorSelectScreen) {
                 ColorSelectScreen screen = (ColorSelectScreen) minecraft.screen;
                 switch (type) {
@@ -93,8 +93,8 @@ public class ColorSlider extends AbstractSliderButton {
 
             this.renderBg(matrixStack, minecraft, mouseX, mouseY);
 
-            drawCenteredString(matrixStack, minecraft.font, this.getMessage(), this.x + this.width / 2,
-                               this.y - (this.height) / 10 * 7, getFGColor()
+            drawCenteredString(matrixStack, minecraft.font, this.getMessage(), this.getX() + this.width / 2,
+                               this.getY() - (this.height) / 10 * 7, getFGColor()
             );
         }
     }
@@ -102,7 +102,7 @@ public class ColorSlider extends AbstractSliderButton {
     private void renderRedBackground(PoseStack matrixStack, ColorSelectScreen screen) {
         int leftColor = new Color(0x00, screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB();
         int rightColor = new Color(0xFF, screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB();
-        ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1,
+        ScreenUtils.fillGradient(matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
                                  leftColor, rightColor, this.getBlitOffset()
         );
     }
@@ -110,7 +110,7 @@ public class ColorSlider extends AbstractSliderButton {
     private void renderGreenBackground(PoseStack matrixStack, ColorSelectScreen screen) {
         int leftColor = new Color(screen.redSlider.getValueInt(), 0x00, screen.blueSlider.getValueInt()).getRGB();
         int rightColor = new Color(screen.redSlider.getValueInt(), 0xFF, screen.blueSlider.getValueInt()).getRGB();
-        ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1,
+        ScreenUtils.fillGradient(matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
                                  leftColor, rightColor, this.getBlitOffset()
         );
     }
@@ -118,34 +118,34 @@ public class ColorSlider extends AbstractSliderButton {
     private void renderBlueBackground(PoseStack matrixStack, ColorSelectScreen screen) {
         int leftColor = new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), 0x00).getRGB();
         int rightColor = new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), 0xFF).getRGB();
-        ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1,
+        ScreenUtils.fillGradient(matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
                                  leftColor, rightColor, this.getBlitOffset()
         );
     }
 
     private void renderHueBackground(PoseStack matrixStack, ColorSelectScreen screen) {
         Function<Integer, Integer> lerp = (pct) -> (int) Math.floor(
-                Mth.lerp(pct / 100f, this.x + 1, this.x + this.width - 1));
+                Mth.lerp(pct / 100f, this.getX() + 1, this.getX() + this.width - 1));
         Function<Integer, Integer> color = (pct) -> Color.HSBtoRGB((float) ((pct / 100f)),
                                                                    (float) (screen.saturationSlider.getValueInt() / ColorSelectScreen.MAX_VALUE_SB),
                                                                    (float) (screen.brightnessSlider.getValueInt() / ColorSelectScreen.MAX_VALUE_SB)
         );
-        ScreenUtils.fillGradient(matrixStack, lerp.apply(0), this.y + 1, lerp.apply(17), this.y + this.height - 1,
+        ScreenUtils.fillGradient(matrixStack, lerp.apply(0), this.getY() + 1, lerp.apply(17), this.getY() + this.height - 1,
                                  color.apply(0), color.apply(17), this.getBlitOffset()
         );
-        ScreenUtils.fillGradient(matrixStack, lerp.apply(17), this.y + 1, lerp.apply(34), this.y + this.height - 1,
+        ScreenUtils.fillGradient(matrixStack, lerp.apply(17), this.getY() + 1, lerp.apply(34), this.getY() + this.height - 1,
                                  color.apply(17), color.apply(34), this.getBlitOffset()
         );
-        ScreenUtils.fillGradient(matrixStack, lerp.apply(34), this.y + 1, lerp.apply(50), this.y + this.height - 1,
+        ScreenUtils.fillGradient(matrixStack, lerp.apply(34), this.getY() + 1, lerp.apply(50), this.getY() + this.height - 1,
                                  color.apply(34), color.apply(50), this.getBlitOffset()
         );
-        ScreenUtils.fillGradient(matrixStack, lerp.apply(50), this.y + 1, lerp.apply(66), this.y + this.height - 1,
+        ScreenUtils.fillGradient(matrixStack, lerp.apply(50), this.getY() + 1, lerp.apply(66), this.getY() + this.height - 1,
                                  color.apply(50), color.apply(66), this.getBlitOffset()
         );
-        ScreenUtils.fillGradient(matrixStack, lerp.apply(66), this.y + 1, lerp.apply(82), this.y + this.height - 1,
+        ScreenUtils.fillGradient(matrixStack, lerp.apply(66), this.getY() + 1, lerp.apply(82), this.getY() + this.height - 1,
                                  color.apply(66), color.apply(82), this.getBlitOffset()
         );
-        ScreenUtils.fillGradient(matrixStack, lerp.apply(82), this.y + 1, lerp.apply(100), this.y + this.height - 1,
+        ScreenUtils.fillGradient(matrixStack, lerp.apply(82), this.getY() + 1, lerp.apply(100), this.getY() + this.height - 1,
                                  color.apply(82), color.apply(100), this.getBlitOffset()
         );
     }
@@ -157,7 +157,7 @@ public class ColorSlider extends AbstractSliderButton {
         int rightColor = Color.HSBtoRGB((float) (screen.hueSlider.getValue() / ColorSelectScreen.MAX_VALUE_HUE), 1.0f,
                                         (float) (screen.brightnessSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB)
         );
-        ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1,
+        ScreenUtils.fillGradient(matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
                                  leftColor, rightColor, this.getBlitOffset()
         );
     }
@@ -171,7 +171,7 @@ public class ColorSlider extends AbstractSliderButton {
                                         (float) (screen.saturationSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB),
                                         1.0f
         );
-        ScreenUtils.fillGradient(matrixStack, this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1,
+        ScreenUtils.fillGradient(matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
                                  leftColor, rightColor, this.getBlitOffset()
         );
     }
