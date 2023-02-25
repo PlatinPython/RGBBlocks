@@ -210,8 +210,11 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
     @Override
     public void listResources(PackType type, String namespace, String id, ResourceOutput output) {
         if (namespace.equals(RGBBlocks.MOD_ID)) {
-            ResourceLocation resLoc = new ResourceLocation(namespace, id);
-            output.accept(resLoc, getResource(type, resLoc));
+            this.resources.forEach((name, supplier) -> {
+                if (name.getPath().startsWith(id)) {
+                    output.accept(name, getResource(type, name));
+                }
+            });
         }
     }
 }
