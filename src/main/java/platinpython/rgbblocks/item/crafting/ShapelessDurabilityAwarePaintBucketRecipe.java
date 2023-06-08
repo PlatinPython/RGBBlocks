@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -64,7 +65,7 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer craftingInventory) {
+    public ItemStack assemble(CraftingContainer craftingInventory, RegistryAccess registryAccess) {
         int color = 0;
         for (int i = 0; i < craftingInventory.getContainerSize(); i++) {
             if (craftingInventory.getItem(i).getItem() instanceof PaintBucketItem) {
@@ -72,7 +73,7 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
                 break;
             }
         }
-        ItemStack result = super.assemble(craftingInventory);
+        ItemStack result = super.assemble(craftingInventory, registryAccess);
         result.getOrCreateTag().putInt("color", color);
         return result;
     }
@@ -129,7 +130,7 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
                 ingredient.toNetwork(buffer);
             }
 
-            buffer.writeItem(recipe.getResultItem());
+            buffer.writeItem(recipe.getResultItem(RegistryAccess.EMPTY));
         }
     }
 }

@@ -10,19 +10,15 @@ import net.minecraft.client.renderer.GameRenderer;
 import org.joml.Matrix4f;
 
 public class ScreenUtils {
-    public static void fillGradient(PoseStack pPoseStack, int x1, int y1, int x2, int y2, int colorFrom, int colorTo,
-                                    int blitOffset) {
-        RenderSystem.disableTexture();
+    public static void fillGradient(PoseStack pPoseStack, int x1, int y1, int x2, int y2, int colorFrom, int colorTo) {
         RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder bufferbuilder = tesselator.getBuilder();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        fillGradient(pPoseStack.last().pose(), bufferbuilder, x1, y1, x2, y2, blitOffset, colorFrom, colorTo);
+        fillGradient(pPoseStack.last().pose(), bufferbuilder, x1, y1, x2, y2, 0, colorFrom, colorTo);
         tesselator.end();
         RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
     }
 
     private static void fillGradient(Matrix4f matrix4f, BufferBuilder builder, int x1, int y1, int x2, int y2, int z,

@@ -40,9 +40,9 @@ public class ColorSelectScreen extends Screen {
     public ColorSelectScreen(int colorIn, boolean isRGBSelected) {
         super(Component.empty());
         Color color = new Color(colorIn);
-        this.red = (double) color.getRed();
-        this.green = (double) color.getGreen();
-        this.blue = (double) color.getBlue();
+        this.red = color.getRed();
+        this.green = color.getGreen();
+        this.blue = color.getBlue();
 
         float[] hsb = Color.RGBtoHSB((int) red, (int) green, (int) blue);
         this.hue = hsb[0] * MAX_VALUE_HUE;

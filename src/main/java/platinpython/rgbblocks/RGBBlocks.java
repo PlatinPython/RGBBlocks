@@ -77,7 +77,7 @@ public class RGBBlocks {
                 ItemStack stack = new ItemStack(ItemRegistry.PAINT_BUCKET.get());
                 stack.getOrCreateTag().putInt("color", -1);
                 return stack;
-            }).displayItems((enabledFeatures, output, displayOperatorCreativeTab) -> {
+            }).displayItems((displayParameters, output) -> {
                 List<ItemStack> items = new ArrayList<>(
                         RegistryHandler.ITEMS.getEntries()
                                              .stream()

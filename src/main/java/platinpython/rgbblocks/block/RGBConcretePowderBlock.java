@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.ConcretePowderBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.HitResult;
 import platinpython.rgbblocks.entity.RGBFallingBlockEntity;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
@@ -46,13 +47,20 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
             BlockEntity tileEntity = worldIn.getBlockEntity(pos);
             RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(worldIn, (double) pos.getX() + 0.5D,
                                                                                  pos.getY(), (double) pos.getZ() + 0.5D,
+                                                                                 state.hasProperty(
+                                                                                         BlockStateProperties.WATERLOGGED) ?
+                                                                                 state.setValue(
+                                                                                         BlockStateProperties.WATERLOGGED,
+                                                                                         Boolean.valueOf(false)
+                                                                                 ) :
                                                                                  state,
                                                                                  tileEntity instanceof RGBTileEntity ?
                                                                                  ((RGBTileEntity) tileEntity).getColor() :
                                                                                  0
             );
-            this.falling(fallingBlockEntity);
+            worldIn.setBlock(pos, state.getFluidState().createLegacyBlock(), 3);
             worldIn.addFreshEntity(fallingBlockEntity);
+            this.falling(fallingBlockEntity);
         }
     }
 

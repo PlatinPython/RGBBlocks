@@ -54,13 +54,13 @@ public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntity
     @Override
     public void writeSpawnData(FriendlyByteBuf buffer) {
         buffer.writeInt(color);
-        buffer.writeWithCodec(BlockState.CODEC, blockState);
+        buffer.writeJsonWithCodec(BlockState.CODEC, blockState);
     }
 
     @Override
     public void readSpawnData(FriendlyByteBuf additionalData) {
         color = additionalData.readInt();
-        blockState = additionalData.readWithCodec(BlockState.CODEC);
+        blockState = additionalData.readJsonWithCodec(BlockState.CODEC);
     }
 
     @Override
