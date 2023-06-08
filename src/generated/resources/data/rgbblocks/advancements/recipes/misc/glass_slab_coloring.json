@@ -35,5 +35,6 @@
     "recipes": [
       "rgbblocks:glass_slab_coloring"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

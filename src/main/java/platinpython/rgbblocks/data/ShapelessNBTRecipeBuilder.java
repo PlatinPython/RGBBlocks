@@ -31,7 +31,7 @@ public class ShapelessNBTRecipeBuilder {
     private final int count;
     private final CompoundTag compound;
     private final List<Ingredient> ingredients = Lists.newArrayList();
-    private final Advancement.Builder advancement = Advancement.Builder.advancement();
+    private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
     private String group;
     private boolean isNoReturnRecipe = false;
 

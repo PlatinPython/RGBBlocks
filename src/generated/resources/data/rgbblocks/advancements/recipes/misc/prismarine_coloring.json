@@ -35,5 +35,6 @@
     "recipes": [
       "rgbblocks:prismarine_coloring"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

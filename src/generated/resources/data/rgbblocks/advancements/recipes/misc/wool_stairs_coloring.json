@@ -35,5 +35,6 @@
     "recipes": [
       "rgbblocks:wool_stairs_coloring"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -13,7 +13,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.19.4'
+    mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.20'
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -66,6 +66,11 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+// TODO Remove once TOP for 1.20 releases
+sourceSets.main.java {
+    exclude 'platinpython/rgbblocks/util/top/**'
+}
+
 repositories {
     maven { // TOP
         url "https://www.cursemaven.com/"
@@ -76,9 +81,10 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.4-45.1.0'
+    minecraft 'net.minecraftforge:forge:1.20-46.0.1'
 
-    implementation fg.deobf("curse.maven:the-one-probe-245211:4442439")
+    // TODO Uncomment and change once TOP for 1.20 releases
+//    implementation fg.deobf("curse.maven:the-one-probe-245211:4442439")
 }
 
 jar {

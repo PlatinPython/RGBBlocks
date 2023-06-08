@@ -1,6 +1,8 @@
 package platinpython.rgbblocks.util;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
@@ -10,6 +12,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
+import platinpython.rgbblocks.util.registries.CreativeTabRegistry;
 import platinpython.rgbblocks.util.registries.EntityRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 import platinpython.rgbblocks.util.registries.RecipeSerializerRegistry;
@@ -31,17 +34,22 @@ public class RegistryHandler {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(
             ForgeRegistries.RECIPE_SERIALIZERS, RGBBlocks.MOD_ID);
 
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(
+            Registries.CREATIVE_MODE_TAB, RGBBlocks.MOD_ID);
+
     public static void register() {
         ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         BLOCK_ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
         ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
         RECIPE_SERIALIZERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        CREATIVE_MODE_TABS.register(FMLJavaModLoadingContext.get().getModEventBus());
 
         ItemRegistry.register();
         BlockRegistry.register();
         TileEntityRegistry.register();
         EntityRegistry.register();
         RecipeSerializerRegistry.register();
+        CreativeTabRegistry.register();
     }
 }

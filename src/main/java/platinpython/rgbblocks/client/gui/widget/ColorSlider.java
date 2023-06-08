@@ -3,6 +3,7 @@ package platinpython.rgbblocks.client.gui.widget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -64,30 +65,30 @@ public class ColorSlider extends AbstractSliderButton {
     }
 
     @Override
-    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         if (this.visible) {
             Minecraft minecraft = Minecraft.getInstance();
-            fill(poseStack, this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, 0xFF000000);
+            guiGraphics.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, 0xFF000000);
             if (minecraft.screen instanceof ColorSelectScreen) {
                 ColorSelectScreen screen = (ColorSelectScreen) minecraft.screen;
                 switch (type) {
                     case RED:
-                        renderRedBackground(poseStack, screen);
+                        renderRedBackground(guiGraphics.pose(), screen);
                         break;
                     case GREEN:
-                        renderGreenBackground(poseStack, screen);
+                        renderGreenBackground(guiGraphics.pose(), screen);
                         break;
                     case BLUE:
-                        renderBlueBackground(poseStack, screen);
+                        renderBlueBackground(guiGraphics.pose(), screen);
                         break;
                     case HUE:
-                        renderHueBackground(poseStack, screen);
+                        renderHueBackground(guiGraphics.pose(), screen);
                         break;
                     case SATURATION:
-                        renderSaturationBackground(poseStack, screen);
+                        renderSaturationBackground(guiGraphics.pose(), screen);
                         break;
                     case BRIGHTNESS:
-                        renderBrightnessBackground(poseStack, screen);
+                        renderBrightnessBackground(guiGraphics.pose(), screen);
                         break;
                 }
             }
@@ -97,12 +98,12 @@ public class ColorSlider extends AbstractSliderButton {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableDepthTest();
-            AbstractSliderButton.blitNineSliced(poseStack, this.getX() + (int) (this.value * (double) (this.width - 8)),
-                                                this.getY(), 8, 20, 20, 4, 200, 20, 0, this.getHandleTextureY()
+            guiGraphics.blitNineSliced(SLIDER_LOCATION, this.getX() + (int) (this.value * (double) (this.width - 8)),
+                                       this.getY(), 8, 20, 20, 4, 200, 20, 0, this.getHandleTextureY()
             );
 
-            drawCenteredString(poseStack, minecraft.font, this.getMessage(), this.getX() + this.width / 2,
-                               this.getY() - this.height / 10 * 7, getFGColor()
+            guiGraphics.drawCenteredString(minecraft.font, this.getMessage(), this.getX() + this.width / 2,
+                                           this.getY() - this.height / 10 * 7, getFGColor()
             );
         }
     }

@@ -35,5 +35,6 @@
     "recipes": [
       "rgbblocks:wool_coloring"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

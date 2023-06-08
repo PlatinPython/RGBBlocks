@@ -35,5 +35,6 @@
     "recipes": [
       "rgbblocks:concrete_powder_coloring"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

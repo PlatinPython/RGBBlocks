@@ -30,5 +30,6 @@
     "recipes": [
       "rgbblocks:paint_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

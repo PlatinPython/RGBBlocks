@@ -35,5 +35,6 @@
     "recipes": [
       "rgbblocks:redstone_lamp_coloring"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

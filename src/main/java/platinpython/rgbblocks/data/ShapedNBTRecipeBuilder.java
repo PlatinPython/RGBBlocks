@@ -36,7 +36,7 @@ public class ShapedNBTRecipeBuilder {
     private final CompoundTag compound;
     private final List<String> rows = Lists.newArrayList();
     private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
-    private final Advancement.Builder advancement = Advancement.Builder.advancement();
+    private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
     private String group;
 
     public ShapedNBTRecipeBuilder(ItemLike result, int count, CompoundTag compound) {

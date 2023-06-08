@@ -30,5 +30,6 @@
     "recipes": [
       "rgbblocks:antiblock"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
