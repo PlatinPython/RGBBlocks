@@ -20,11 +20,12 @@ import org.apache.logging.log4j.Logger;
 import platinpython.rgbblocks.data.DataGatherer;
 import platinpython.rgbblocks.dispenser.DispensePaintbucketBehaviour;
 import platinpython.rgbblocks.util.RegistryHandler;
+import platinpython.rgbblocks.util.compat.framedblocks.RGBBlocksFramedBlocks;
 import platinpython.rgbblocks.util.network.PacketHandler;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
-import platinpython.rgbblocks.util.top.TOPMain;
+import platinpython.rgbblocks.util.compat.top.TOPMain;
 
-@Mod("rgbblocks")
+@Mod(RGBBlocks.MOD_ID)
 public class RGBBlocks {
     public static final String MOD_ID = "rgbblocks";
 
@@ -38,13 +39,18 @@ public class RGBBlocks {
         RegistryHandler.register();
 
         MinecraftForge.EVENT_BUS.register(this);
+
+        if (ModList.get().isLoaded("framedblocks")) {
+            RGBBlocksFramedBlocks.register();
+        }
     }
 
     public void setup(final FMLCommonSetupEvent event) {
         PacketHandler.register();
 
-        event.enqueueWork(() -> DispenserBlock.registerBehavior(ItemRegistry.PAINT_BUCKET.get(),
-                                                                new DispensePaintbucketBehaviour()
+        event.enqueueWork(() -> DispenserBlock.registerBehavior(
+                ItemRegistry.PAINT_BUCKET.get(),
+                new DispensePaintbucketBehaviour()
         ));
     }
 

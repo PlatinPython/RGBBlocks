@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '5.1.+'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 version = "${minecraft_version}-${mod_version}"
@@ -79,6 +80,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.6'
 
     implementation fg.deobf("curse.maven:top-245211:3965693")
+    implementation fg.deobf("curse.maven:framedblocks-441647:4565543")
 }
 
 jar {

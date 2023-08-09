@@ -17,11 +17,13 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.fml.ModList;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.ClientUtils;
 import platinpython.rgbblocks.util.Color;
+import platinpython.rgbblocks.util.compat.framedblocks.RGBBlocksFramedBlocks;
 
 import java.util.List;
 
@@ -114,9 +116,12 @@ public class PaintBucketItem extends Item {
                        );
             }
             return InteractionResult.SUCCESS;
-        } else {
-            return InteractionResult.PASS;
         }
+        if (ModList.get().isLoaded("framedblocks")) {
+            RGBBlocks.LOGGER.info("Handling FramedBlocks");
+            return RGBBlocksFramedBlocks.handlePaintBucketInteraction(context);
+        }
+        return InteractionResult.PASS;
     }
 
     @Override

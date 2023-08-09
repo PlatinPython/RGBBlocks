@@ -1,4 +1,6 @@
-// 1.19.2	2022-11-07T01:06:06.1174756	Tags for minecraft:block
+// 1.19.2	2023-08-09T17:17:16.985128	Tags for minecraft:block
+81dc907e738fda3d3f8b79c4d0a66fe6baff7e70 data/forge/tags/blocks/stained_glass.json
+b2c3b9ff1aa4363bca7e1501a7252a8fd3f10098 data/framedblocks/tags/blocks/blockentity_whitelisted.json
 81dc907e738fda3d3f8b79c4d0a66fe6baff7e70 data/minecraft/tags/blocks/impermeable.json
 feb61170734a0094e4b8d17b75e46fe30b14bc93 data/minecraft/tags/blocks/mineable/axe.json
 6e7e81b24ce634c93ef77dfa8c9ff94a0e58a483 data/minecraft/tags/blocks/mineable/pickaxe.json
