@@ -1,8 +1,9 @@
 plugins {
     id 'eclipse'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'net.neoforged.gradle' version '[6.0.18,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 version = "${minecraft_version}-${mod_version}"
@@ -13,7 +14,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.20'
+    mappings channel: 'parchment', version: '2023.08.06-1.20.1'
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -68,7 +69,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 // TODO Remove once TOP for 1.20 releases
 sourceSets.main.java {
-    exclude 'platinpython/rgbblocks/util/top/**'
+    exclude 'platinpython/rgbblocks/util/compat/top/**'
 }
 
 repositories {
@@ -81,10 +82,11 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.20-46.0.1'
+    minecraft 'net.neoforged:forge:1.20.1-47.1.65'
 
     // TODO Uncomment and change once TOP for 1.20 releases
 //    implementation fg.deobf("curse.maven:the-one-probe-245211:4442439")
+    implementation fg.deobf("curse.maven:framedblocks-441647:4657096")
 }
 
 jar {

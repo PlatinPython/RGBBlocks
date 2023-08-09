@@ -3,22 +3,34 @@ package platinpython.rgbblocks.data;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 import platinpython.rgbblocks.RGBBlocks;
+import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
+import xfacthd.framedblocks.api.util.Utils;
 
 import java.util.concurrent.CompletableFuture;
 
 public class ModBlockTagsProvider extends BlockTagsProvider {
-    public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
-                                ExistingFileHelper existingFileHelper) {
+    public ModBlockTagsProvider(
+            PackOutput output,
+            CompletableFuture<HolderLookup.Provider> lookupProvider,
+            ExistingFileHelper existingFileHelper
+    ) {
         super(output, lookupProvider, RGBBlocks.MOD_ID, existingFileHelper);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         this.tag(BlockTags.IMPERMEABLE)
+            .add(BlockRegistry.RGB_GLASS.get(), BlockRegistry.RGB_GLASS_SLAB.get(),
+                 BlockRegistry.RGB_GLASS_STAIRS.get()
+            );
+        this.tag(Tags.Blocks.STAINED_GLASS)
             .add(BlockRegistry.RGB_GLASS.get(), BlockRegistry.RGB_GLASS_SLAB.get(),
                  BlockRegistry.RGB_GLASS_STAIRS.get()
             );
@@ -38,5 +50,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                  BlockRegistry.RGB_DARK_PRISMARINE_SLAB.get(), BlockRegistry.RGB_DARK_PRISMARINE_STAIRS.get()
             );
         this.tag(BlockTags.MINEABLE_WITH_SHOVEL).add(BlockRegistry.RGB_CONCRETE_POWDER.get());
+
+        this.tag(Utils.BE_WHITELIST)
+            .add(RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
     }
 }

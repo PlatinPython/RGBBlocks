@@ -1,4 +1,4 @@
-package platinpython.rgbblocks.util.top;
+package platinpython.rgbblocks.util.compat.top;
 
 import mcjty.theoneprobe.api.ITheOneProbe;
 
