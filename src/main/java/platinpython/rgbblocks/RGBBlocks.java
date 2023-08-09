@@ -4,6 +4,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -17,6 +18,7 @@ import platinpython.rgbblocks.data.DataGatherer;
 import platinpython.rgbblocks.dispenser.DispensePaintbucketBehaviour;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.compat.framedblocks.RGBBlocksFramedBlocks;
+import platinpython.rgbblocks.util.compat.top.TOPMain;
 import platinpython.rgbblocks.util.network.PacketHandler;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
@@ -50,10 +52,9 @@ public class RGBBlocks {
     }
 
     public void enqueueIMC(final InterModEnqueueEvent event) {
-        // TODO Uncomment once TOP for 1.20 releases
-//        if (ModList.get().isLoaded("theoneprobe")) {
-//            InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPMain::new);
-//        }
+        if (ModList.get().isLoaded("theoneprobe")) {
+            InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPMain::new);
+        }
     }
 
     @SubscribeEvent

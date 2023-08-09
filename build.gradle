@@ -67,11 +67,6 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-// TODO Remove once TOP for 1.20 releases
-sourceSets.main.java {
-    exclude 'platinpython/rgbblocks/util/compat/top/**'
-}
-
 repositories {
     maven { // TOP
         url "https://www.cursemaven.com/"
@@ -84,8 +79,7 @@ repositories {
 dependencies {
     minecraft 'net.neoforged:forge:1.20.1-47.1.65'
 
-    // TODO Uncomment and change once TOP for 1.20 releases
-//    implementation fg.deobf("curse.maven:the-one-probe-245211:4442439")
+    implementation fg.deobf("curse.maven:the-one-probe-245211:4629624")
     implementation fg.deobf("curse.maven:framedblocks-441647:4657096")
 }
 
