@@ -40,7 +40,7 @@
   "gui.rgbblocks.useHSB": "使用 HSB 值",
   "gui.rgbblocks.useRGB": "使用 RGB 值",
   "item.rgbblocks.paint_bucket": "调色桶",
-  "item_group.rgbblocks.tab": "调色方块",
+  "itemGroup.rgbblocks": "调色方块",
   "rgbblocks.pack_description": "调色方块模组生成、使用的材质",
   "rgbblocks.pack_title": "调色方块材质"
 }
