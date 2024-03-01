@@ -18,16 +18,16 @@ public class ModItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         item2Layers(ItemRegistry.PAINT_BUCKET);
 
-        singleTexture(BlockRegistry.RGB_GLASS_PANE.getId().getPath(), mcLoc(ITEM_FOLDER + "/generated"), "layer0",
-                      modLoc(BLOCK_FOLDER + "/glass")
+        singleTexture(
+            BlockRegistry.RGB_GLASS_PANE.getId().getPath(), mcLoc(ITEM_FOLDER + "/generated"), "layer0",
+            modLoc(BLOCK_FOLDER + "/glass")
         ).renderType("translucent");
     }
 
     private void item2Layers(RegistryObject<? extends Item> item) {
         String path = item.getId().getPath();
         String loc = ITEM_FOLDER + "/" + path;
-        singleTexture(path, mcLoc(ITEM_FOLDER + "/generated"), "layer0", modLoc(loc)).texture("layer1",
-                                                                                              modLoc(loc + "_color")
-        );
+        singleTexture(path, mcLoc(ITEM_FOLDER + "/generated"), "layer0", modLoc(loc))
+            .texture("layer1", modLoc(loc + "_color"));
     }
 }

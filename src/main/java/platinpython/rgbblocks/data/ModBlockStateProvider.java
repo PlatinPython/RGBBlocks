@@ -26,33 +26,48 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        simpleBlock(BlockRegistry.RGB_CARPET.get(), models().singleTexture(BlockRegistry.RGB_CARPET.getId().getPath(),
-                                                                           modLoc(ModelProvider.BLOCK_FOLDER + "/thin_block"),
-                                                                           "all",
-                                                                           modLoc(ModelProvider.BLOCK_FOLDER + "/wool")
-        ));
-        paneBlock(BlockRegistry.RGB_GLASS_PANE.get(),
-                  models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_post",
-                                              modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_post")
-                          )
-                          .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
-                          .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
-                  models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_side",
-                                              modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_side")
-                          )
-                          .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
-                          .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
-                  models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_side_alt",
-                                              modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_side_alt")
-                          )
-                          .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
-                          .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
-                  models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_noside",
-                                              modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_noside")
-                  ).texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass")),
-                  models().withExistingParent(BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_noside_alt",
-                                              modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_noside_alt")
-                  ).texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
+        simpleBlock(
+            BlockRegistry.RGB_CARPET.get(),
+            models().singleTexture(
+                BlockRegistry.RGB_CARPET.getId().getPath(), modLoc(ModelProvider.BLOCK_FOLDER + "/thin_block"), "all",
+                modLoc(ModelProvider.BLOCK_FOLDER + "/wool")
+            )
+        );
+        paneBlock(
+            BlockRegistry.RGB_GLASS_PANE.get(),
+            models()
+                .withExistingParent(
+                    BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_post",
+                    modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_post")
+                )
+                .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
+                .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
+            models()
+                .withExistingParent(
+                    BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_side",
+                    modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_side")
+                )
+                .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
+                .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
+            models()
+                .withExistingParent(
+                    BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_side_alt",
+                    modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_side_alt")
+                )
+                .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
+                .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
+            models()
+                .withExistingParent(
+                    BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_noside",
+                    modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_noside")
+                )
+                .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass")),
+            models()
+                .withExistingParent(
+                    BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_noside_alt",
+                    modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_noside_alt")
+                )
+                .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
         );
         class AntiblockLoaderBuilder extends CustomLoaderBuilder<BlockModelBuilder> {
             private JsonObject baseModel;
@@ -63,8 +78,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
             public AntiblockLoaderBuilder baseModel(JsonObject baseModel) {
                 this.baseModel = baseModel;
-                models().generatedModels.remove(
-                        modLoc("block/" + BlockRegistry.RGB_ANTIBLOCK.getId().getPath() + "_base"));
+                models().generatedModels
+                    .remove(modLoc("block/" + BlockRegistry.RGB_ANTIBLOCK.getId().getPath() + "_base"));
                 return this;
             }
 
@@ -77,36 +92,47 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 return json;
             }
         }
-        simpleBlock(BlockRegistry.RGB_ANTIBLOCK.get(),
-                    models().withExistingParent(BlockRegistry.RGB_ANTIBLOCK.getId().getPath(),
-                                                new ResourceLocation("forge:block/default")
-                            )
-                            .customLoader(AntiblockLoaderBuilder::new)
-                            .baseModel(models().singleTexture(BlockRegistry.RGB_ANTIBLOCK.getId().getPath() + "_base",
-                                                              modLoc(ModelProvider.BLOCK_FOLDER + "/no_shade_2_layer"),
-                                                              "bot", modLoc(ModelProvider.BLOCK_FOLDER + "/white")
-                                               )
-                                               .texture("top", modLoc(ModelProvider.BLOCK_FOLDER + "/antiblock"))
-                                               .renderType("cutout")
-                                               .toJson())
-                            .end()
+        simpleBlock(
+            BlockRegistry.RGB_ANTIBLOCK.get(),
+            models()
+                .withExistingParent(
+                    BlockRegistry.RGB_ANTIBLOCK.getId().getPath(), new ResourceLocation("forge:block/default")
+                )
+                .customLoader(AntiblockLoaderBuilder::new)
+                .baseModel(
+                    models()
+                        .singleTexture(
+                            BlockRegistry.RGB_ANTIBLOCK.getId().getPath() + "_base",
+                            modLoc(ModelProvider.BLOCK_FOLDER + "/no_shade_2_layer"), "bot",
+                            modLoc(ModelProvider.BLOCK_FOLDER + "/white")
+                        )
+                        .texture("top", modLoc(ModelProvider.BLOCK_FOLDER + "/antiblock"))
+                        .renderType("cutout")
+                        .toJson()
+                )
+                .end()
         );
         getVariantBuilder(BlockRegistry.RGB_REDSTONE_LAMP.get()).forAllStates(
-                state -> state.getValue(RedstoneLampBlock.LIT) ?
-                         ConfiguredModel.builder()
-                                        .modelFile(models().singleTexture(
-                                                BlockRegistry.RGB_REDSTONE_LAMP.getId().getPath() + "_on",
-                                                modLoc(ModelProvider.BLOCK_FOLDER + "/block"), "all",
-                                                modLoc(ModelProvider.BLOCK_FOLDER + "/redstone_lamp_on")
-                                        ))
-                                        .build() :
-                         ConfiguredModel.builder()
-                                        .modelFile(models().singleTexture(
-                                                BlockRegistry.RGB_REDSTONE_LAMP.getId().getPath(),
-                                                modLoc(ModelProvider.BLOCK_FOLDER + "/block"), "all",
-                                                modLoc(ModelProvider.BLOCK_FOLDER + "/redstone_lamp")
-                                        ))
-                                        .build());
+            state -> state.getValue(RedstoneLampBlock.LIT)
+                ? ConfiguredModel.builder()
+                    .modelFile(
+                        models().singleTexture(
+                            BlockRegistry.RGB_REDSTONE_LAMP.getId().getPath() + "_on",
+                            modLoc(ModelProvider.BLOCK_FOLDER + "/block"), "all",
+                            modLoc(ModelProvider.BLOCK_FOLDER + "/redstone_lamp_on")
+                        )
+                    )
+                    .build()
+                : ConfiguredModel.builder()
+                    .modelFile(
+                        models().singleTexture(
+                            BlockRegistry.RGB_REDSTONE_LAMP.getId().getPath(),
+                            modLoc(ModelProvider.BLOCK_FOLDER + "/block"), "all",
+                            modLoc(ModelProvider.BLOCK_FOLDER + "/redstone_lamp")
+                        )
+                    )
+                    .build()
+        );
 
         blocks(BlockRegistry.RGB_CONCRETE);
         blocks(BlockRegistry.RGB_CONCRETE_POWDER);
@@ -139,9 +165,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
         stairBlocks(BlockRegistry.RGB_DARK_PRISMARINE_STAIRS);
 
         RegistryHandler.BLOCKS.getEntries()
-                              .stream()
-                              .filter((block) -> block.get() != BlockRegistry.RGB_GLASS_PANE.get())
-                              .forEach(this::blockItems);
+            .stream()
+            .filter((block) -> block.get() != BlockRegistry.RGB_GLASS_PANE.get())
+            .forEach(this::blockItems);
     }
 
     private void blocks(RegistryObject<? extends Block> block) {
@@ -151,9 +177,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
     private void blocks(RegistryObject<? extends Block> block, boolean isTranslucent) {
         String path = block.getId().getPath();
         String loc = ModelProvider.BLOCK_FOLDER + "/" + path;
-        simpleBlock(block.get(),
-                    models().singleTexture(path, modLoc(ModelProvider.BLOCK_FOLDER + "/block"), "all", modLoc(loc))
-                            .renderType(isTranslucent ? "translucent" : "solid")
+        simpleBlock(
+            block.get(),
+            models().singleTexture(path, modLoc(ModelProvider.BLOCK_FOLDER + "/block"), "all", modLoc(loc))
+                .renderType(isTranslucent ? "translucent" : "solid")
         );
     }
 
@@ -165,11 +192,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
         String path = block.getId().getPath();
         String loc = ModelProvider.BLOCK_FOLDER + "/" + path.replace("_slab", "");
         ModelFile slabBottom = models().withExistingParent(path, modLoc(ModelProvider.BLOCK_FOLDER + "/slab"))
-                                       .texture("all", loc)
-                                       .renderType(isTranslucent ? "translucent" : "solid");
+            .texture("all", loc)
+            .renderType(isTranslucent ? "translucent" : "solid");
         ModelFile slabTop = models().withExistingParent(path + "_top", modLoc(ModelProvider.BLOCK_FOLDER + "/slab_top"))
-                                    .texture("all", loc)
-                                    .renderType(isTranslucent ? "translucent" : "solid");
+            .texture("all", loc)
+            .renderType(isTranslucent ? "translucent" : "solid");
         ModelFile slabDouble = models().getExistingFile(modLoc(loc));
         slabBlock(block.get(), slabBottom, slabTop, slabDouble);
         ConfiguredModel.builder().modelFile(slabBottom).build();
@@ -183,14 +210,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
         String path = block.getId().getPath();
         String loc = ModelProvider.BLOCK_FOLDER + "/" + path.replace("_stairs", "");
         ModelFile stairs = models().withExistingParent(path, modLoc(ModelProvider.BLOCK_FOLDER + "/stairs"))
-                                   .texture("all", loc)
-                                   .renderType(isTranslucent ? "translucent" : "solid");
-        ModelFile stairsInner = models().withExistingParent(path + "_inner",
-                                                            modLoc(ModelProvider.BLOCK_FOLDER + "/inner_stairs")
-        ).texture("all", loc).renderType(isTranslucent ? "translucent" : "solid");
-        ModelFile stairsOuter = models().withExistingParent(path + "_outer",
-                                                            modLoc(ModelProvider.BLOCK_FOLDER + "/outer_stairs")
-        ).texture("all", loc).renderType(isTranslucent ? "translucent" : "solid");
+            .texture("all", loc)
+            .renderType(isTranslucent ? "translucent" : "solid");
+        ModelFile stairsInner =
+            models().withExistingParent(path + "_inner", modLoc(ModelProvider.BLOCK_FOLDER + "/inner_stairs"))
+                .texture("all", loc)
+                .renderType(isTranslucent ? "translucent" : "solid");
+        ModelFile stairsOuter =
+            models().withExistingParent(path + "_outer", modLoc(ModelProvider.BLOCK_FOLDER + "/outer_stairs"))
+                .texture("all", loc)
+                .renderType(isTranslucent ? "translucent" : "solid");
         stairsBlock(block.get(), stairs, stairsInner, stairsOuter);
         ConfiguredModel.builder().modelFile(stairs).build();
     }

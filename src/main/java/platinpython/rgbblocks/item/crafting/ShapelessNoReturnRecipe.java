@@ -18,8 +18,12 @@ import net.minecraft.world.item.crafting.ShapelessRecipe;
 import platinpython.rgbblocks.util.registries.RecipeSerializerRegistry;
 
 public class ShapelessNoReturnRecipe extends ShapelessRecipe {
-    public ShapelessNoReturnRecipe(ResourceLocation id, String group, ItemStack result,
-                                   NonNullList<Ingredient> ingredients) {
+    public ShapelessNoReturnRecipe(
+        ResourceLocation id,
+        String group,
+        ItemStack result,
+        NonNullList<Ingredient> ingredients
+    ) {
         super(id, group, CraftingBookCategory.MISC, result, ingredients);
     }
 

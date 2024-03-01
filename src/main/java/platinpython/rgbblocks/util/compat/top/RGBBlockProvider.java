@@ -18,8 +18,14 @@ import platinpython.rgbblocks.util.Color;
 
 public class RGBBlockProvider implements IProbeInfoProvider {
     @Override
-    public void addProbeInfo(ProbeMode mode, IProbeInfo info, Player player, Level world, BlockState state,
-                             IProbeHitData hitData) {
+    public void addProbeInfo(
+        ProbeMode mode,
+        IProbeInfo info,
+        Player player,
+        Level world,
+        BlockState state,
+        IProbeHitData hitData
+    ) {
         BlockEntity tileEntity = world.getBlockEntity(hitData.getPos());
         if (tileEntity instanceof RGBTileEntity) {
             if (mode == ProbeMode.NORMAL) {
@@ -34,13 +40,11 @@ public class RGBBlockProvider implements IProbeInfoProvider {
                 info.text(red.append(", ").append(green).append(", ").append(blue));
                 float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue());
                 MutableComponent hue = Component.translatable("gui.rgbblocks.hue")
-                                                .append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
+                    .append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
                 MutableComponent saturation = Component.translatable("gui.rgbblocks.saturation")
-                                                       .append(": " + Math.round(
-                                                               hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
+                    .append(": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
                 MutableComponent brightness = Component.translatable("gui.rgbblocks.brightness")
-                                                       .append(": " + Math.round(
-                                                               hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
+                    .append(": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
                 info.text(hue.append("\u00B0, ").append(saturation).append("%, ").append(brightness).append("%"));
             }
         }

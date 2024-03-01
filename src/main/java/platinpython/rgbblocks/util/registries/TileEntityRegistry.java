@@ -7,13 +7,16 @@ import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.RegistryHandler;
 
 public class TileEntityRegistry {
-    public static final RegistryObject<BlockEntityType<RGBTileEntity>> RGB = RegistryHandler.BLOCK_ENTITY_TYPES.register(
-            "rgb", () -> BlockEntityType.Builder.of(RGBTileEntity::new, RegistryHandler.BLOCKS.getEntries()
-                                                                                              .stream()
-                                                                                              .map(RegistryObject::get)
-                                                                                              .toArray(Block[]::new))
-                                                .build(null));
+    public static final RegistryObject<BlockEntityType<RGBTileEntity>> RGB =
+        RegistryHandler.BLOCK_ENTITY_TYPES.register(
+            "rgb",
+            () -> BlockEntityType.Builder
+                .of(
+                    RGBTileEntity::new,
+                    RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new)
+                )
+                .build(null)
+        );
 
-    public static void register() {
-    }
+    public static void register() {}
 }

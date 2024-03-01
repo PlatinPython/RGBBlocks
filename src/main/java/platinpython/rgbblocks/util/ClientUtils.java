@@ -35,13 +35,16 @@ public class ClientUtils {
 
     @SubscribeEvent
     public static void addPackFinders(AddPackFindersEvent event) {
-        event.addRepositorySource((infoConsumer) -> infoConsumer.accept(
-                Pack.create("rgbblocks_textures", Component.translatable("rgbblocks.pack_title"), true,
-                            id -> VIRTUAL_PACK,
-                            new Pack.Info(Component.translatable("rgbblocks.pack_description"), 0, 0,
-                                          FeatureFlagSet.of(), false
-                            ), PackType.CLIENT_RESOURCES, Pack.Position.TOP, true, PackSource.BUILT_IN
-                )));
+        event.addRepositorySource(
+            (infoConsumer) -> infoConsumer.accept(
+                Pack.create(
+                    "rgbblocks_textures", Component.translatable("rgbblocks.pack_title"), true, id -> VIRTUAL_PACK,
+                    new Pack.Info(
+                        Component.translatable("rgbblocks.pack_description"), 0, 0, FeatureFlagSet.of(), false
+                    ), PackType.CLIENT_RESOURCES, Pack.Position.TOP, true, PackSource.BUILT_IN
+                )
+            )
+        );
     }
 
     @SubscribeEvent
@@ -56,8 +59,9 @@ public class ClientUtils {
 
     @SubscribeEvent
     public static void registerColorHandlers(RegisterColorHandlersEvent.Item event) {
-        event.register(new RGBBlockItemColor(),
-                       RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new)
+        event.register(
+            new RGBBlockItemColor(),
+            RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new)
         );
 
         event.register(new PaintBucketItemColor(), ItemRegistry.PAINT_BUCKET.get());
@@ -65,8 +69,9 @@ public class ClientUtils {
 
     @SubscribeEvent
     public static void registerColorHandlers(RegisterColorHandlersEvent.Block event) {
-        event.register(new RGBBlockColor(),
-                       RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new)
+        event.register(
+            new RGBBlockColor(),
+            RegistryHandler.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new)
         );
     }
 

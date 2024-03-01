@@ -21,8 +21,12 @@ import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.registries.RecipeSerializerRegistry;
 
 public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
-    public ShapelessDurabilityAwarePaintBucketRecipe(ResourceLocation id, String group, ItemStack result,
-                                                     NonNullList<Ingredient> ingredients) {
+    public ShapelessDurabilityAwarePaintBucketRecipe(
+        ResourceLocation id,
+        String group,
+        ItemStack result,
+        NonNullList<Ingredient> ingredients
+    ) {
         super(id, group, CraftingBookCategory.MISC, result, ingredients);
     }
 
@@ -33,9 +37,8 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
 
     @Override
     public NonNullList<ItemStack> getRemainingItems(CraftingContainer craftingInventory) {
-        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(craftingInventory.getContainerSize(),
-                                                                  ItemStack.EMPTY
-        );
+        NonNullList<ItemStack> nonnulllist =
+            NonNullList.withSize(craftingInventory.getContainerSize(), ItemStack.EMPTY);
         ItemStack blockStack = ItemStack.EMPTY;
 
         for (int i = 0; i < nonnulllist.size(); i++) {
@@ -80,8 +83,10 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
 
     public static class Serializer implements RecipeSerializer<ShapelessDurabilityAwarePaintBucketRecipe> {
         @Override
-        public ShapelessDurabilityAwarePaintBucketRecipe fromJson(ResourceLocation resourceLocation,
-                                                                  JsonObject jsonObject) {
+        public ShapelessDurabilityAwarePaintBucketRecipe fromJson(
+            ResourceLocation resourceLocation,
+            JsonObject jsonObject
+        ) {
             String s = GsonHelper.getAsString(jsonObject, "group", "");
             NonNullList<Ingredient> nonnulllist = itemsFromJson(GsonHelper.getAsJsonArray(jsonObject, "ingredients"));
             if (nonnulllist.isEmpty()) {
@@ -107,8 +112,10 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
         }
 
         @Override
-        public ShapelessDurabilityAwarePaintBucketRecipe fromNetwork(ResourceLocation resourceLocation,
-                                                                     FriendlyByteBuf buffer) {
+        public ShapelessDurabilityAwarePaintBucketRecipe fromNetwork(
+            ResourceLocation resourceLocation,
+            FriendlyByteBuf buffer
+        ) {
             String s = buffer.readUtf(32767);
             int i = buffer.readVarInt();
             NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i, Ingredient.EMPTY);

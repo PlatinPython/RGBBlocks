@@ -57,14 +57,17 @@ public class ColorSelectScreen extends Screen {
 
     public int getColor() {
         if (isRGBSelected) {
-            return new Color(this.redSlider.getValueInt(), this.greenSlider.getValueInt(),
-                             this.blueSlider.getValueInt()
+            return new Color(
+                this.redSlider.getValueInt(), this.greenSlider.getValueInt(), this.blueSlider.getValueInt()
             ).getRGB();
         } else {
-            return Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
-                                     (float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
-                                     (float) (brightnessSlider.getValueInt() / MAX_VALUE_SB)
-            ).getRGB();
+            return Color
+                .getHSBColor(
+                    (float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
+                    (float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
+                    (float) (brightnessSlider.getValueInt() / MAX_VALUE_SB)
+                )
+                .getRGB();
         }
     }
 
@@ -79,9 +82,9 @@ public class ColorSelectScreen extends Screen {
         int y = this.height / 2 - WIDGET_HEIGHT / 2 - SPACING;
 
         if (redSlider == null) {
-            this.redSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT,
-                                             Component.translatable("gui.rgbblocks.red").append(": "), MIN_VALUE,
-                                             MAX_VALUE_RGB, this.red, SliderType.RED
+            this.redSlider = new ColorSlider(
+                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.rgbblocks.red").append(": "), MIN_VALUE,
+                MAX_VALUE_RGB, this.red, SliderType.RED
             );
         } else {
             this.redSlider.setX(x);
@@ -89,9 +92,9 @@ public class ColorSelectScreen extends Screen {
         }
 
         if (hueSlider == null) {
-            this.hueSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT,
-                                             Component.translatable("gui.rgbblocks.hue").append(": "), MIN_VALUE,
-                                             MAX_VALUE_HUE, this.hue, SliderType.HUE
+            this.hueSlider = new ColorSlider(
+                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.rgbblocks.hue").append(": "), MIN_VALUE,
+                MAX_VALUE_HUE, this.hue, SliderType.HUE
             );
         } else {
             this.hueSlider.setX(x);
@@ -101,9 +104,9 @@ public class ColorSelectScreen extends Screen {
         y += SPACING + 15;
 
         if (greenSlider == null) {
-            this.greenSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT,
-                                               Component.translatable("gui.rgbblocks.green").append(": "), MIN_VALUE,
-                                               MAX_VALUE_RGB, this.green, SliderType.GREEN
+            this.greenSlider = new ColorSlider(
+                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.rgbblocks.green").append(": "),
+                MIN_VALUE, MAX_VALUE_RGB, this.green, SliderType.GREEN
             );
         } else {
             this.greenSlider.setX(x);
@@ -111,9 +114,9 @@ public class ColorSelectScreen extends Screen {
         }
 
         if (saturationSlider == null) {
-            this.saturationSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT,
-                                                    Component.translatable("gui.rgbblocks.saturation").append(": "),
-                                                    MIN_VALUE, MAX_VALUE_SB, this.saturation, SliderType.SATURATION
+            this.saturationSlider = new ColorSlider(
+                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.rgbblocks.saturation").append(": "),
+                MIN_VALUE, MAX_VALUE_SB, this.saturation, SliderType.SATURATION
             );
         } else {
             this.saturationSlider.setX(x);
@@ -123,9 +126,9 @@ public class ColorSelectScreen extends Screen {
         y += SPACING + 15;
 
         if (blueSlider == null) {
-            this.blueSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT,
-                                              Component.translatable("gui.rgbblocks.blue").append(": "), MIN_VALUE,
-                                              MAX_VALUE_RGB, this.blue, SliderType.BLUE
+            this.blueSlider = new ColorSlider(
+                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.rgbblocks.blue").append(": "), MIN_VALUE,
+                MAX_VALUE_RGB, this.blue, SliderType.BLUE
             );
         } else {
             this.blueSlider.setX(x);
@@ -133,9 +136,9 @@ public class ColorSelectScreen extends Screen {
         }
 
         if (brightnessSlider == null) {
-            this.brightnessSlider = new ColorSlider(x, y, SLIDER_WIDTH, WIDGET_HEIGHT,
-                                                    Component.translatable("gui.rgbblocks.brightness").append(": "),
-                                                    MIN_VALUE, MAX_VALUE_SB, this.brightness, SliderType.BRIGHTNESS
+            this.brightnessSlider = new ColorSlider(
+                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.rgbblocks.brightness").append(": "),
+                MIN_VALUE, MAX_VALUE_SB, this.brightness, SliderType.BRIGHTNESS
             );
         } else {
             this.brightnessSlider.setX(x);
@@ -207,10 +210,14 @@ public class ColorSelectScreen extends Screen {
 
         this.hexBox.setMaxLength(7);
         this.hexBox.setFilter((string) -> string.matches("(#|)([0-9A-F]){0,6}"));
-        this.hexBox.setValue("#" + Integer.toHexString(
-                                                  new Color(redSlider.getValueInt(), greenSlider.getValueInt(), blueSlider.getValueInt()).getRGB())
-                                          .substring(2)
-                                          .toUpperCase(Locale.ENGLISH));
+        this.hexBox.setValue(
+            "#" + Integer
+                .toHexString(
+                    new Color(redSlider.getValueInt(), greenSlider.getValueInt(), blueSlider.getValueInt()).getRGB()
+                )
+                .substring(2)
+                .toUpperCase(Locale.ENGLISH)
+        );
 
         y += SPACING;
 
@@ -230,9 +237,10 @@ public class ColorSelectScreen extends Screen {
             isRGBSelected = !isRGBSelected;
 
             if (isRGBSelected) {
-                Color color = Color.getHSBColor((float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
-                                                (float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
-                                                (float) (brightnessSlider.getValueInt() / MAX_VALUE_SB)
+                Color color = Color.getHSBColor(
+                    (float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
+                    (float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
+                    (float) (brightnessSlider.getValueInt() / MAX_VALUE_SB)
                 );
 
                 redSlider.setValueInt(color.getRed());
@@ -245,9 +253,8 @@ public class ColorSelectScreen extends Screen {
 
                 button.setMessage(useHSBText);
             } else {
-                float[] hsb = Color.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(),
-                                             blueSlider.getValueInt()
-                );
+                float[] hsb =
+                    Color.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(), blueSlider.getValueInt());
 
                 hueSlider.setValueInt((int) (hsb[0] * MAX_VALUE_HUE));
                 saturationSlider.setValueInt((int) (hsb[1] * MAX_VALUE_SB));
@@ -291,9 +298,8 @@ public class ColorSelectScreen extends Screen {
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(this.width / 2, this.height / 2 - WIDGET_HEIGHT / 2 - 2 * SPACING - 15, 0);
         guiGraphics.fill(-SLIDER_WIDTH / 2, -WIDGET_HEIGHT, SLIDER_WIDTH / 2, WIDGET_HEIGHT, 0xFF000000);
-        guiGraphics.fill(-SLIDER_WIDTH / 2 + 1, -WIDGET_HEIGHT + 1, SLIDER_WIDTH / 2 - 1, WIDGET_HEIGHT - 1,
-                         getColor()
-        );
+        guiGraphics
+            .fill(-SLIDER_WIDTH / 2 + 1, -WIDGET_HEIGHT + 1, SLIDER_WIDTH / 2 - 1, WIDGET_HEIGHT - 1, getColor());
         guiGraphics.pose().popPose();
     }
 

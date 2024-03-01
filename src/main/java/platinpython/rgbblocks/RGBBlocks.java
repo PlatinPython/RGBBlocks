@@ -45,10 +45,9 @@ public class RGBBlocks {
     public void setup(final FMLCommonSetupEvent event) {
         PacketHandler.register();
 
-        event.enqueueWork(() -> DispenserBlock.registerBehavior(
-                ItemRegistry.PAINT_BUCKET.get(),
-                new DispensePaintbucketBehaviour()
-        ));
+        event.enqueueWork(
+            () -> DispenserBlock.registerBehavior(ItemRegistry.PAINT_BUCKET.get(), new DispensePaintbucketBehaviour())
+        );
     }
 
     public void enqueueIMC(final InterModEnqueueEvent event) {
@@ -59,8 +58,9 @@ public class RGBBlocks {
 
     @SubscribeEvent
     public void replaceMappings(MissingMappingsEvent event) {
-        for (MissingMappingsEvent.Mapping<Item> mapping : event.getAllMappings(
-                ForgeRegistries.ITEMS.getRegistryKey())) {
+        for (
+            MissingMappingsEvent.Mapping<Item> mapping : event.getAllMappings(ForgeRegistries.ITEMS.getRegistryKey())
+        ) {
             if (mapping.getKey().toString().equals("rgbblocks:bucket_of_paint")) {
                 mapping.remap(ItemRegistry.PAINT_BUCKET.get());
             }

@@ -39,8 +39,9 @@ import java.util.function.Function;
 
 public class ModLootTableProvider extends LootTableProvider {
     public ModLootTableProvider(PackOutput output) {
-        super(output, Collections.emptySet(),
-              List.of(new LootTableProvider.SubProviderEntry(Blocks::new, LootContextParamSets.BLOCK))
+        super(
+            output, Collections.emptySet(),
+            List.of(new LootTableProvider.SubProviderEntry(Blocks::new, LootContextParamSets.BLOCK))
         );
     }
 
@@ -72,25 +73,19 @@ public class ModLootTableProvider extends LootTableProvider {
             map.put(BlockRegistry.RGB_GLASS_STAIRS.get(), Blocks::createSilkTouchOnlyTable);
             map.put(BlockRegistry.RGB_GLASS_PANE.get(), Blocks::createSilkTouchOnlyTable);
             map.put(BlockRegistry.RGB_ANTIBLOCK.get(), this::createSingleItemTable);
-            map.put(BlockRegistry.RGB_GLOWSTONE.get(), (block) -> createSilkTouchDispatchTable(block,
-                                                                                               applyExplosionDecay(
-                                                                                                       block,
-                                                                                                       LootItem.lootTableItem(
-                                                                                                                       Items.GLOWSTONE_DUST)
-                                                                                                               .apply(SetItemCountFunction.setCount(
-                                                                                                                       UniformGenerator.between(
-                                                                                                                               2.0F,
-                                                                                                                               4.0F
-                                                                                                                       )))
-                                                                                                               .apply(ApplyBonusCount.addUniformBonusCount(
-                                                                                                                       Enchantments.BLOCK_FORTUNE))
-                                                                                                               .apply(LimitCount.limitCount(
-                                                                                                                       IntRange.range(
-                                                                                                                               1,
-                                                                                                                               4
-                                                                                                                       )))
-                                                                                               )
-            ));
+            map.put(
+                BlockRegistry.RGB_GLOWSTONE.get(),
+                (block) -> createSilkTouchDispatchTable(
+                    block,
+                    applyExplosionDecay(
+                        block,
+                        LootItem.lootTableItem(Items.GLOWSTONE_DUST)
+                            .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F)))
+                            .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE))
+                            .apply(LimitCount.limitCount(IntRange.range(1, 4)))
+                    )
+                )
+            );
             map.put(BlockRegistry.RGB_REDSTONE_LAMP.get(), this::createSingleItemTable);
             map.put(BlockRegistry.RGB_PRISMARINE.get(), this::createSingleItemTable);
             map.put(BlockRegistry.RGB_PRISMARINE_SLAB.get(), this::createSlabItemTable);
@@ -101,55 +96,60 @@ public class ModLootTableProvider extends LootTableProvider {
             map.put(BlockRegistry.RGB_DARK_PRISMARINE.get(), this::createSingleItemTable);
             map.put(BlockRegistry.RGB_DARK_PRISMARINE_SLAB.get(), this::createSlabItemTable);
             map.put(BlockRegistry.RGB_DARK_PRISMARINE_STAIRS.get(), this::createSingleItemTable);
-            map.put(BlockRegistry.RGB_SEA_LANTERN.get(), (block) -> createSilkTouchDispatchTable(block,
-                                                                                                 applyExplosionDecay(
-                                                                                                         block,
-                                                                                                         LootItem.lootTableItem(
-                                                                                                                         Items.PRISMARINE_CRYSTALS)
-                                                                                                                 .apply(SetItemCountFunction.setCount(
-                                                                                                                         UniformGenerator.between(
-                                                                                                                                 2.0F,
-                                                                                                                                 3.0F
-                                                                                                                         )))
-                                                                                                                 .apply(ApplyBonusCount.addUniformBonusCount(
-                                                                                                                         Enchantments.BLOCK_FORTUNE))
-                                                                                                                 .apply(LimitCount.limitCount(
-                                                                                                                         IntRange.range(
-                                                                                                                                 1,
-                                                                                                                                 5
-                                                                                                                         )))
-                                                                                                 )
-            ));
+            map.put(
+                BlockRegistry.RGB_SEA_LANTERN.get(),
+                (block) -> createSilkTouchDispatchTable(
+                    block,
+                    applyExplosionDecay(
+                        block,
+                        LootItem.lootTableItem(Items.PRISMARINE_CRYSTALS)
+                            .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F)))
+                            .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE))
+                            .apply(LimitCount.limitCount(IntRange.range(1, 5)))
+                    )
+                )
+            );
 
-            map.forEach((block, function) -> add(block,
-                                                 block == BlockRegistry.RGB_GLOWSTONE.get() || block == BlockRegistry.RGB_SEA_LANTERN.get() ?
-                                                 applyConditionalNbtCopy(function.apply(block)) :
-                                                 applyNbtCopy(function.apply(block))
-            ));
+            map.forEach(
+                (block, function) -> add(
+                    block,
+                    block == BlockRegistry.RGB_GLOWSTONE.get() || block == BlockRegistry.RGB_SEA_LANTERN.get()
+                        ? applyConditionalNbtCopy(function.apply(block))
+                        : applyNbtCopy(function.apply(block))
+                )
+            );
         }
 
         private LootTable.Builder createSilkTouchOnlySlabItemTable(Block block) {
             return LootTable.lootTable()
-                            .withPool(LootPool.lootPool()
-                                              .when(MatchTool.toolMatches(ItemPredicate.Builder.item()
-                                                                                               .hasEnchantment(
-                                                                                                       new EnchantmentPredicate(
-                                                                                                               Enchantments.SILK_TOUCH,
-                                                                                                               MinMaxBounds.Ints.atLeast(
-                                                                                                                       1)
-                                                                                                       ))))
-                                              .setRolls(ConstantValue.exactly(1))
-                                              .add(applyExplosionDecay(block, LootItem.lootTableItem(block)
-                                                                                      .apply(SetItemCountFunction.setCount(
-                                                                                                                         ConstantValue.exactly(2))
-                                                                                                                 .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(
-                                                                                                                                                                  block)
-                                                                                                                                                          .setProperties(
-                                                                                                                                                                  StatePropertiesPredicate.Builder.properties()
-                                                                                                                                                                                                  .hasProperty(
-                                                                                                                                                                                                          SlabBlock.TYPE,
-                                                                                                                                                                                                          SlabType.DOUBLE
-                                                                                                                                                                                                  )))))));
+                .withPool(
+                    LootPool.lootPool()
+                        .when(
+                            MatchTool.toolMatches(
+                                ItemPredicate.Builder.item()
+                                    .hasEnchantment(
+                                        new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))
+                                    )
+                            )
+                        )
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(
+                            applyExplosionDecay(
+                                block,
+                                LootItem.lootTableItem(block)
+                                    .apply(
+                                        SetItemCountFunction.setCount(ConstantValue.exactly(2))
+                                            .when(
+                                                LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                                    .setProperties(
+                                                        StatePropertiesPredicate.Builder.properties()
+                                                            .hasProperty(SlabBlock.TYPE, SlabType.DOUBLE)
+                                                    )
+                                            )
+                                    )
+                            )
+                        )
+                );
         }
 
         private LootTable.Builder applyNbtCopy(LootTable.Builder table) {
@@ -158,15 +158,18 @@ public class ModLootTableProvider extends LootTableProvider {
         }
 
         private LootTable.Builder applyConditionalNbtCopy(LootTable.Builder table) {
-            return table.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
-                                              .copy("color", "color")
-                                              .when(MatchTool.toolMatches(ItemPredicate.Builder.item()
-                                                                                               .hasEnchantment(
-                                                                                                       new EnchantmentPredicate(
-                                                                                                               Enchantments.SILK_TOUCH,
-                                                                                                               MinMaxBounds.Ints.atLeast(
-                                                                                                                       1)
-                                                                                                       )))));
+            return table.apply(
+                CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
+                    .copy("color", "color")
+                    .when(
+                        MatchTool.toolMatches(
+                            ItemPredicate.Builder.item()
+                                .hasEnchantment(
+                                    new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))
+                                )
+                        )
+                    )
+            );
         }
 
         @Override

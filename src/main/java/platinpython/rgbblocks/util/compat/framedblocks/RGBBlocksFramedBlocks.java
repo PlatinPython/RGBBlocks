@@ -21,23 +21,21 @@ import xfacthd.framedblocks.api.camo.CamoContainer;
 import xfacthd.framedblocks.api.util.FramedConstants;
 
 public class RGBBlocksFramedBlocks {
-    public static final DeferredRegister<CamoContainer.Factory> CAMO_CONTAINER_FACTORIES = DeferredRegister.create(
-            FramedConstants.CAMO_CONTAINER_FACTORY_REGISTRY_NAME, RGBBlocks.MOD_ID);
+    public static final DeferredRegister<CamoContainer.Factory> CAMO_CONTAINER_FACTORIES =
+        DeferredRegister.create(FramedConstants.CAMO_CONTAINER_FACTORY_REGISTRY_NAME, RGBBlocks.MOD_ID);
 
-    public static final RegistryObject<RGBBlocksCamoContainer.Factory> RGBBLOCKS_CONTAINER_FACTORY = CAMO_CONTAINER_FACTORIES.register(
-            "container_factory", RGBBlocksCamoContainer.Factory::new);
+    public static final RegistryObject<RGBBlocksCamoContainer.Factory> RGBBLOCKS_CONTAINER_FACTORY =
+        CAMO_CONTAINER_FACTORIES.register("container_factory", RGBBlocksCamoContainer.Factory::new);
 
     @SubscribeEvent
     public static void registerFramedBlocksStuff(FMLCommonSetupEvent event) {
         RegistryHandler.ITEMS.getEntries()
-                             .stream()
-                             .map(RegistryObject::get)
-                             .filter(i -> i instanceof RGBBlockItem)
-                             .forEach(i -> FramedBlocksAPI.getInstance()
-                                                          .registerCamoContainerFactory(
-                                                                  i,
-                                                                  RGBBLOCKS_CONTAINER_FACTORY.get()
-                                                          ));
+            .stream()
+            .map(RegistryObject::get)
+            .filter(i -> i instanceof RGBBlockItem)
+            .forEach(
+                i -> FramedBlocksAPI.getInstance().registerCamoContainerFactory(i, RGBBLOCKS_CONTAINER_FACTORY.get())
+            );
     }
 
     public static void register() {
@@ -51,28 +49,29 @@ public class RGBBlocksFramedBlocks {
             return InteractionResult.PASS;
         }
         BlockHitResult blockHitResult = new BlockHitResult(
-                context.getClickLocation(), context.getClickedFace(), context.getClickedPos(), context.isInside());
+            context.getClickLocation(), context.getClickedFace(), context.getClickedPos(), context.isInside()
+        );
         if (!(framedBlockEntity.getCamo(blockHitResult) instanceof RGBBlocksCamoContainer camoContainer)) {
             return InteractionResult.PASS;
         }
         if (context.getPlayer().isShiftKeyDown()) {
             context.getItemInHand().getOrCreateTag().putInt("color", camoContainer.color);
         } else {
-            if (!context.getPlayer().getAbilities().instabuild && context.getItemInHand()
-                                                                         .getOrCreateTag()
-                                                                         .getInt("color") != camoContainer.color) {
+            if (!context.getPlayer().getAbilities().instabuild
+                && context.getItemInHand().getOrCreateTag().getInt("color") != camoContainer.color) {
                 if (context.getItemInHand().getDamageValue() == context.getItemInHand().getMaxDamage() - 1) {
                     context.getPlayer().setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
                 } else {
                     context.getItemInHand()
-                           .hurtAndBreak(1, context.getPlayer(), e -> e.broadcastBreakEvent(context.getHand()));
+                        .hurtAndBreak(1, context.getPlayer(), e -> e.broadcastBreakEvent(context.getHand()));
                 }
             }
             camoContainer.color = context.getItemInHand().getOrCreateTag().getInt("color");
             context.getLevel()
-                   .sendBlockUpdated(context.getClickedPos(), framedBlockEntity.getBlockState(),
-                                     framedBlockEntity.getBlockState(), Block.UPDATE_ALL_IMMEDIATE
-                   );
+                .sendBlockUpdated(
+                    context.getClickedPos(), framedBlockEntity.getBlockState(), framedBlockEntity.getBlockState(),
+                    Block.UPDATE_ALL_IMMEDIATE
+                );
         }
         return InteractionResult.SUCCESS;
     }

@@ -22,14 +22,21 @@ public class RGBFallingBlockRenderer extends EntityRenderer<RGBFallingBlockEntit
     }
 
     @Override
-    public void render(RGBFallingBlockEntity fallingBlockEntity, float entityYaw, float partialTicks,
-                       PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(
+        RGBFallingBlockEntity fallingBlockEntity,
+        float entityYaw,
+        float partialTicks,
+        PoseStack poseStack,
+        MultiBufferSource buffer,
+        int packedLight
+    ) {
         poseStack.pushPose();
         poseStack.translate(0.0D, 0.5D, 0.0D);
         ItemStack stack = new ItemStack(fallingBlockEntity.getBlockState().getBlock());
         stack.getOrCreateTag().putInt("color", fallingBlockEntity.getColor());
-        itemRenderer.renderStatic(stack, ItemDisplayContext.NONE, packedLight, OverlayTexture.NO_OVERLAY, poseStack,
-                                  buffer, null, fallingBlockEntity.getId()
+        itemRenderer.renderStatic(
+            stack, ItemDisplayContext.NONE, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null,
+            fallingBlockEntity.getId()
         );
         poseStack.popPose();
     }

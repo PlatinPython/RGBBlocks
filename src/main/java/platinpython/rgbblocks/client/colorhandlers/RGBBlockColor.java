@@ -8,8 +8,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 
 public class RGBBlockColor implements BlockColor {
-    public int getColor(BlockState blockState, BlockAndTintGetter blockDisplayReader, BlockPos blockPos,
-                        int tintindex) {
+    public int getColor(
+        BlockState blockState,
+        BlockAndTintGetter blockDisplayReader,
+        BlockPos blockPos,
+        int tintindex
+    ) {
         if (blockDisplayReader == null) {
             return -1;
         }

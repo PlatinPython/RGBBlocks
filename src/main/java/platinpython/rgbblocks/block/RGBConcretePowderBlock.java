@@ -36,8 +36,13 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos,
-                                       Player player) {
+    public ItemStack getCloneItemStack(
+        BlockState state,
+        HitResult target,
+        BlockGetter world,
+        BlockPos pos,
+        Player player
+    ) {
         return RGBBlockUtils.getCloneItemStack(state, target, world, pos, player);
     }
 
@@ -45,18 +50,12 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
     public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
         if (worldIn.isEmptyBlock(pos.below()) || isFree(worldIn.getBlockState(pos.below())) && pos.getY() >= 0) {
             BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-            RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(worldIn, (double) pos.getX() + 0.5D,
-                                                                                 pos.getY(), (double) pos.getZ() + 0.5D,
-                                                                                 state.hasProperty(
-                                                                                         BlockStateProperties.WATERLOGGED) ?
-                                                                                 state.setValue(
-                                                                                         BlockStateProperties.WATERLOGGED,
-                                                                                         Boolean.valueOf(false)
-                                                                                 ) :
-                                                                                 state,
-                                                                                 tileEntity instanceof RGBTileEntity ?
-                                                                                 ((RGBTileEntity) tileEntity).getColor() :
-                                                                                 0
+            RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(
+                worldIn, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D,
+                state.hasProperty(BlockStateProperties.WATERLOGGED)
+                    ? state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false))
+                    : state,
+                tileEntity instanceof RGBTileEntity ? ((RGBTileEntity) tileEntity).getColor() : 0
             );
             worldIn.setBlock(pos, state.getFluidState().createLegacyBlock(), 3);
             worldIn.addFreshEntity(fallingBlockEntity);
@@ -74,8 +73,13 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
     }
 
     @Override
-    public void onLand(Level world, BlockPos blockPos, BlockState blockBlockState, BlockState entityBlockState,
-                       FallingBlockEntity entity) {
+    public void onLand(
+        Level world,
+        BlockPos blockPos,
+        BlockState blockBlockState,
+        BlockState entityBlockState,
+        FallingBlockEntity entity
+    ) {
         super.onLand(world, blockPos, blockBlockState, entityBlockState, entity);
         if (entity instanceof RGBFallingBlockEntity) {
             RGBTileEntity tileEntity = new RGBTileEntity(blockPos, entityBlockState);

@@ -33,41 +33,41 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
         ShapelessNBTRecipeBuilder.shapeless(ItemRegistry.PAINT_BUCKET.get(), 1, whiteNBT)
-                                 .makeNoReturnRecipe()
-                                 .requires(Tags.Items.DYES_RED)
-                                 .requires(Tags.Items.DYES_GREEN)
-                                 .requires(Tags.Items.DYES_BLUE)
-                                 .requires(Items.WATER_BUCKET)
-                                 .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
-                                 .save(consumer);
+            .makeNoReturnRecipe()
+            .requires(Tags.Items.DYES_RED)
+            .requires(Tags.Items.DYES_GREEN)
+            .requires(Tags.Items.DYES_BLUE)
+            .requires(Items.WATER_BUCKET)
+            .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
+            .save(consumer);
 
         ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_CARPET.get(), 3, whiteNBT)
-                              .define('#', BlockRegistry.RGB_WOOL.get())
-                              .pattern("##")
-                              .unlockedBy("has_rgb_wool", has(BlockRegistry.RGB_WOOL.get()))
-                              .save(consumer);
+            .define('#', BlockRegistry.RGB_WOOL.get())
+            .pattern("##")
+            .unlockedBy("has_rgb_wool", has(BlockRegistry.RGB_WOOL.get()))
+            .save(consumer);
         ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_GLASS_PANE.get(), 16, whiteNBT)
-                              .define('#', BlockRegistry.RGB_GLASS.get())
-                              .pattern("###")
-                              .pattern("###")
-                              .unlockedBy("has_rgb_glass", has(BlockRegistry.RGB_GLASS.get()))
-                              .save(consumer);
+            .define('#', BlockRegistry.RGB_GLASS.get())
+            .pattern("###")
+            .pattern("###")
+            .unlockedBy("has_rgb_glass", has(BlockRegistry.RGB_GLASS.get()))
+            .save(consumer);
         ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_ANTIBLOCK.get(), 8, whiteNBT)
-                              .define('S', Tags.Items.STONE)
-                              .define('G', BlockRegistry.RGB_GLOWSTONE.get())
-                              .pattern("SSS")
-                              .pattern("SGS")
-                              .pattern("SSS")
-                              .unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get()))
-                              .save(consumer);
+            .define('S', Tags.Items.STONE)
+            .define('G', BlockRegistry.RGB_GLOWSTONE.get())
+            .pattern("SSS")
+            .pattern("SGS")
+            .pattern("SSS")
+            .unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get()))
+            .save(consumer);
         ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_REDSTONE_LAMP.get(), 1, whiteNBT)
-                              .define('R', Tags.Items.DUSTS_REDSTONE)
-                              .define('G', BlockRegistry.RGB_GLOWSTONE.get())
-                              .pattern(" R ")
-                              .pattern("RGR")
-                              .pattern(" R ")
-                              .unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get()))
-                              .save(consumer);
+            .define('R', Tags.Items.DUSTS_REDSTONE)
+            .define('G', BlockRegistry.RGB_GLOWSTONE.get())
+            .pattern(" R ")
+            .pattern("RGR")
+            .pattern(" R ")
+            .unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get()))
+            .save(consumer);
 
         blockIItemProvider(consumer, BlockRegistry.RGB_CONCRETE_POWDER.get(), Blocks.WHITE_CONCRETE_POWDER);
         blockTag(consumer, BlockRegistry.RGB_WOOL.get(), ItemTags.WOOL);
@@ -98,26 +98,20 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         stairBlock(consumer, BlockRegistry.RGB_PRISMARINE_BRICK_STAIRS, BlockRegistry.RGB_PRISMARINE_BRICKS);
         stairBlock(consumer, BlockRegistry.RGB_DARK_PRISMARINE_STAIRS, BlockRegistry.RGB_DARK_PRISMARINE);
 
-
         RegistryHandler.BLOCKS.getEntries()
-                              .forEach((block) -> ShapelessNBTRecipeBuilder.shapeless(block.get().asItem())
-                                                                           .requires(block.get())
-                                                                           .requires(ItemRegistry.PAINT_BUCKET.get())
-                                                                           .unlockedBy(
-                                                                                   "has_paint_bucket_and_" + block.getId()
-                                                                                                                  .getPath(),
-                                                                                   inventoryTrigger(
-                                                                                           ItemPredicate.Builder.item()
-                                                                                                                .of(ItemRegistry.PAINT_BUCKET.get())
-                                                                                                                .build(),
-                                                                                           ItemPredicate.Builder.item()
-                                                                                                                .of(block.get())
-                                                                                                                .build()
-                                                                                   )
-                                                                           )
-                                                                           .save(consumer,
-                                                                                 block.getId() + "_coloring"
-                                                                           ));
+            .forEach(
+                (block) -> ShapelessNBTRecipeBuilder.shapeless(block.get().asItem())
+                    .requires(block.get())
+                    .requires(ItemRegistry.PAINT_BUCKET.get())
+                    .unlockedBy(
+                        "has_paint_bucket_and_" + block.getId().getPath(),
+                        inventoryTrigger(
+                            ItemPredicate.Builder.item().of(ItemRegistry.PAINT_BUCKET.get()).build(),
+                            ItemPredicate.Builder.item().of(block.get()).build()
+                        )
+                    )
+                    .save(consumer, block.getId() + "_coloring")
+            );
     }
 
     private void blockIItemProvider(Consumer<FinishedRecipe> consumer, Block result, ItemLike provider) {
@@ -130,29 +124,35 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     private void block(Consumer<FinishedRecipe> consumer, Block result, Ingredient ingredient) {
         ShapelessNBTRecipeBuilder.shapeless(result.asItem())
-                                 .requires(ingredient)
-                                 .requires(ItemRegistry.PAINT_BUCKET.get())
-                                 .unlockedBy("has_paint_bucket", has(ItemRegistry.PAINT_BUCKET.get()))
-                                 .save(consumer);
+            .requires(ingredient)
+            .requires(ItemRegistry.PAINT_BUCKET.get())
+            .unlockedBy("has_paint_bucket", has(ItemRegistry.PAINT_BUCKET.get()))
+            .save(consumer);
     }
 
-    private void slabBlock(Consumer<FinishedRecipe> consumer, RegistryObject<? extends Block> result,
-                           RegistryObject<? extends Block> base) {
+    private void slabBlock(
+        Consumer<FinishedRecipe> consumer,
+        RegistryObject<? extends Block> result,
+        RegistryObject<? extends Block> base
+    ) {
         ShapedNBTRecipeBuilder.shaped(result.get().asItem(), 6, whiteNBT)
-                              .define('#', base.get().asItem())
-                              .pattern("###")
-                              .unlockedBy("has_rgb_" + base.getId().getPath(), has(base.get()))
-                              .save(consumer);
+            .define('#', base.get().asItem())
+            .pattern("###")
+            .unlockedBy("has_rgb_" + base.getId().getPath(), has(base.get()))
+            .save(consumer);
     }
 
-    private void stairBlock(Consumer<FinishedRecipe> consumer, RegistryObject<? extends Block> result,
-                            RegistryObject<? extends Block> base) {
+    private void stairBlock(
+        Consumer<FinishedRecipe> consumer,
+        RegistryObject<? extends Block> result,
+        RegistryObject<? extends Block> base
+    ) {
         ShapedNBTRecipeBuilder.shaped(result.get().asItem(), 4, whiteNBT)
-                              .define('#', base.get().asItem())
-                              .pattern("#  ")
-                              .pattern("## ")
-                              .pattern("###")
-                              .unlockedBy("has_rgb_" + base.getId().getPath(), has(base.get()))
-                              .save(consumer);
+            .define('#', base.get().asItem())
+            .pattern("#  ")
+            .pattern("## ")
+            .pattern("###")
+            .unlockedBy("has_rgb_" + base.getId().getPath(), has(base.get()))
+            .save(consumer);
     }
 }

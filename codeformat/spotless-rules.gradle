@@ -1,0 +1,10 @@
+spotless {
+    java {
+        endWithNewline()
+        indentWithSpaces()
+        trimTrailingWhitespace()
+        removeUnusedImports()
+        toggleOffOn()
+        eclipse().configFile rootProject.file('codeformat/formatter-config.xml')
+    }
+}

@@ -58,10 +58,10 @@ public class RGBBlocksCamoContainer extends CamoContainer {
     public static class Factory extends CamoContainer.Factory {
         @Override
         public CamoContainer fromNbt(CompoundTag tag) {
-            //noinspection deprecation
+            // noinspection deprecation
             return new RGBBlocksCamoContainer(
-                    NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), tag.getCompound("state")),
-                    tag.getInt("color")
+                NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), tag.getCompound("state")),
+                tag.getInt("color")
             );
         }
 
@@ -74,8 +74,7 @@ public class RGBBlocksCamoContainer extends CamoContainer {
         public CamoContainer fromItem(ItemStack stack) {
             if (stack.getItem() instanceof RGBBlockItem item) {
                 return new RGBBlocksCamoContainer(
-                        item.getBlock().defaultBlockState(),
-                        stack.getOrCreateTag().getInt("color")
+                    item.getBlock().defaultBlockState(), stack.getOrCreateTag().getInt("color")
                 );
             }
             return EmptyCamoContainer.EMPTY;

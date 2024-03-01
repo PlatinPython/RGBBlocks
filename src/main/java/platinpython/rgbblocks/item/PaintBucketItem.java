@@ -49,11 +49,11 @@ public class PaintBucketItem extends Item {
             tooltip.add(red.append(", ").append(green).append(", ").append(blue));
             float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue());
             MutableComponent hue = Component.translatable("gui.rgbblocks.hue")
-                                            .append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
+                .append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
             MutableComponent saturation = Component.translatable("gui.rgbblocks.saturation")
-                                                   .append(": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
+                .append(": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
             MutableComponent brightness = Component.translatable("gui.rgbblocks.brightness")
-                                                   .append(": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
+                .append(": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
             tooltip.add(hue.append("\u00B0, ").append(saturation).append("%, ").append(brightness).append("%"));
         } else {
             tooltip.add(Component.literal("#" + Integer.toHexString(color.getRGB()).substring(2)));
@@ -74,8 +74,9 @@ public class PaintBucketItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         if (handIn == InteractionHand.MAIN_HAND && playerIn.isShiftKeyDown()) {
             if (worldIn.isClientSide) {
-                ClientUtils.openColorSelectScreen(playerIn.getMainHandItem().getTag().getInt("color"),
-                                                  playerIn.getMainHandItem().getTag().getBoolean("isRGBSelected")
+                ClientUtils.openColorSelectScreen(
+                    playerIn.getMainHandItem().getTag().getInt("color"),
+                    playerIn.getMainHandItem().getTag().getBoolean("isRGBSelected")
                 );
                 return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, playerIn.getMainHandItem());
             }
@@ -90,21 +91,22 @@ public class PaintBucketItem extends Item {
             if (context.getPlayer().isShiftKeyDown()) {
                 context.getItemInHand().getTag().putInt("color", ((RGBTileEntity) tileEntity).getColor());
             } else {
-                if (!context.getPlayer().getAbilities().instabuild && context.getItemInHand()
-                                                                             .getOrCreateTag()
-                                                                             .getInt("color") != ((RGBTileEntity) tileEntity).getColor()) {
+                if (!context.getPlayer().getAbilities().instabuild
+                    && context.getItemInHand().getOrCreateTag().getInt("color")
+                        != ((RGBTileEntity) tileEntity).getColor()) {
                     if (context.getItemInHand().getDamageValue() == context.getItemInHand().getMaxDamage() - 1) {
                         context.getPlayer().setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
                     } else {
                         context.getItemInHand()
-                               .hurtAndBreak(1, context.getPlayer(), e -> e.broadcastBreakEvent(context.getHand()));
+                            .hurtAndBreak(1, context.getPlayer(), e -> e.broadcastBreakEvent(context.getHand()));
                     }
                 }
                 ((RGBTileEntity) tileEntity).setColor(context.getItemInHand().getTag().getInt("color"));
                 context.getLevel()
-                       .sendBlockUpdated(context.getClickedPos(), tileEntity.getBlockState(),
-                                         tileEntity.getBlockState(), Block.UPDATE_ALL_IMMEDIATE
-                       );
+                    .sendBlockUpdated(
+                        context.getClickedPos(), tileEntity.getBlockState(), tileEntity.getBlockState(),
+                        Block.UPDATE_ALL_IMMEDIATE
+                    );
             }
             return InteractionResult.SUCCESS;
         }

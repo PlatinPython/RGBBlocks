@@ -38,11 +38,11 @@ public class RGBBlockItem extends BlockItem {
             tooltip.add(red.append(", ").append(green).append(", ").append(blue));
             float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue());
             MutableComponent hue = Component.translatable("gui.rgbblocks.hue")
-                                            .append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
+                .append(": " + Math.round(hsb[0] * ColorSelectScreen.MAX_VALUE_HUE));
             MutableComponent saturation = Component.translatable("gui.rgbblocks.saturation")
-                                                   .append(": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
+                .append(": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
             MutableComponent brightness = Component.translatable("gui.rgbblocks.brightness")
-                                                   .append(": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
+                .append(": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
             tooltip.add(hue.append("°, ").append(saturation).append("%, ").append(brightness).append("%"));
         } else {
             tooltip.add(Component.literal("#" + Integer.toHexString(color.getRGB()).substring(2)));

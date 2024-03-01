@@ -21,8 +21,17 @@ public class ScreenUtils {
         RenderSystem.disableBlend();
     }
 
-    private static void fillGradient(Matrix4f matrix4f, BufferBuilder builder, int x1, int y1, int x2, int y2, int z,
-                                     int colorA, int colorB) {
+    private static void fillGradient(
+        Matrix4f matrix4f,
+        BufferBuilder builder,
+        int x1,
+        int y1,
+        int x2,
+        int y2,
+        int z,
+        int colorA,
+        int colorB
+    ) {
         int alphaA = colorA >> 24 & 0xFF;
         int redA = colorA >> 16 & 0xFF;
         int greenA = colorA >> 8 & 0xFF;

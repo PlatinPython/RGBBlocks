@@ -52,40 +52,29 @@ public class AntiblockBakedModel implements BakedModel {
     private final BakedModel base;
     private final Map<Direction, BakedQuad> bgQuads;
     private final Map<Direction, BakedQuad> frameQuads;
-    private final LoadingCache<Direction, List<BakedQuad>> bgCache = CacheBuilder.newBuilder()
-                                                                                 .build(new CacheLoader<>() {
-                                                                                     @Override
-                                                                                     public List<BakedQuad> load(
-                                                                                             Direction key) {
-                                                                                         return genBackgroundQuads(
-                                                                                                 bgQuads.get(key), key);
-                                                                                     }
-                                                                                 });
-    private final LoadingCache<Connections, List<BakedQuad>> quadCache = CacheBuilder.newBuilder()
-                                                                                     .build(new CacheLoader<>() {
-                                                                                         @Override
-                                                                                         public List<BakedQuad> load(
-                                                                                                 Connections key) {
-                                                                                             if (key.isClosed()) {
-                                                                                                 return List.of(
-                                                                                                         bgQuads.get(
-                                                                                                                 key.side),
-                                                                                                         frameQuads.get(
-                                                                                                                 key.side)
-                                                                                                 );
-                                                                                             }
-                                                                                             return genCtmQuads(
-                                                                                                     frameQuads.get(
-                                                                                                             key.side),
-                                                                                                     bgCache.getUnchecked(
-                                                                                                             key.side),
-                                                                                                     key
-                                                                                             );
-                                                                                         }
-                                                                                     });
+    private final LoadingCache<Direction, List<BakedQuad>> bgCache =
+        CacheBuilder.newBuilder().build(new CacheLoader<>() {
+            @Override
+            public List<BakedQuad> load(Direction key) {
+                return genBackgroundQuads(bgQuads.get(key), key);
+            }
+        });
+    private final LoadingCache<Connections, List<BakedQuad>> quadCache =
+        CacheBuilder.newBuilder().build(new CacheLoader<>() {
+            @Override
+            public List<BakedQuad> load(Connections key) {
+                if (key.isClosed()) {
+                    return List.of(bgQuads.get(key.side), frameQuads.get(key.side));
+                }
+                return genCtmQuads(frameQuads.get(key.side), bgCache.getUnchecked(key.side), key);
+            }
+        });
 
-    public AntiblockBakedModel(BakedModel baseModel, Map<Direction, BakedQuad> bgQuads,
-                               Map<Direction, BakedQuad> frameQuads) {
+    public AntiblockBakedModel(
+        BakedModel baseModel,
+        Map<Direction, BakedQuad> bgQuads,
+        Map<Direction, BakedQuad> frameQuads
+    ) {
         this.base = baseModel;
         this.bgQuads = bgQuads;
         this.frameQuads = frameQuads;
@@ -98,8 +87,13 @@ public class AntiblockBakedModel implements BakedModel {
 
     @NotNull
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource random,
-                                    @NotNull ModelData extraData, RenderType renderType) {
+    public List<BakedQuad> getQuads(
+        @Nullable BlockState state,
+        @Nullable Direction side,
+        @NotNull RandomSource random,
+        @NotNull ModelData extraData,
+        RenderType renderType
+    ) {
         if (side == null) {
             return Collections.emptyList();
         }
@@ -129,8 +123,13 @@ public class AntiblockBakedModel implements BakedModel {
         return quads;
     }
 
-    private static BakedQuad genBackgroundQuad(BakedQuad quad, boolean down, boolean right, TextureAtlasSprite sprite,
-                                               Direction side) {
+    private static BakedQuad genBackgroundQuad(
+        BakedQuad quad,
+        boolean down,
+        boolean right,
+        TextureAtlasSprite sprite,
+        Direction side
+    ) {
         int[] vertexData = cloneVertexData(quad);
 
         float minX = right ? .5F : 0F;
@@ -150,32 +149,54 @@ public class AntiblockBakedModel implements BakedModel {
     private static List<BakedQuad> genCtmQuads(BakedQuad frameQuad, List<BakedQuad> bgQuads, Connections connections) {
         TextureAtlasSprite sprite = frameQuad.getSprite();
         TextureAtlasSprite ctmSprite = Minecraft.getInstance()
-                                                .getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
-                                                .apply(new ResourceLocation(RGBBlocks.MOD_ID, "block/antiblock_ctm"));
+            .getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+            .apply(new ResourceLocation(RGBBlocks.MOD_ID, "block/antiblock_ctm"));
 
         List<BakedQuad> quads = new ArrayList<>(bgQuads);
 
         Direction side = connections.side;
 
-        quads.add(genCtmQuad(frameQuad, connections.left, connections.up, connections.upLeft, false, false, 0F, .5F,
-                             sprite, ctmSprite, side
-        ));
-        quads.add(genCtmQuad(frameQuad, connections.left, connections.down, connections.downLeft, true, false, 0F, 0F,
-                             sprite, ctmSprite, side
-        ));
-        quads.add(genCtmQuad(frameQuad, connections.right, connections.up, connections.upRight, false, true, .5F, .5F,
-                             sprite, ctmSprite, side
-        ));
-        quads.add(genCtmQuad(frameQuad, connections.right, connections.down, connections.downRight, true, true, .5F, 0F,
-                             sprite, ctmSprite, side
-        ));
+        quads.add(
+            genCtmQuad(
+                frameQuad, connections.left, connections.up, connections.upLeft, false, false, 0F, .5F, sprite,
+                ctmSprite, side
+            )
+        );
+        quads.add(
+            genCtmQuad(
+                frameQuad, connections.left, connections.down, connections.downLeft, true, false, 0F, 0F, sprite,
+                ctmSprite, side
+            )
+        );
+        quads.add(
+            genCtmQuad(
+                frameQuad, connections.right, connections.up, connections.upRight, false, true, .5F, .5F, sprite,
+                ctmSprite, side
+            )
+        );
+        quads.add(
+            genCtmQuad(
+                frameQuad, connections.right, connections.down, connections.downRight, true, true, .5F, 0F, sprite,
+                ctmSprite, side
+            )
+        );
 
         return quads;
     }
 
-    private static BakedQuad genCtmQuad(BakedQuad quad, boolean x, boolean y, boolean xy, boolean down, boolean right,
-                                        float minX, float minY, TextureAtlasSprite defSprite,
-                                        TextureAtlasSprite ctmSprite, Direction side) {
+    private static BakedQuad genCtmQuad(
+        BakedQuad quad,
+        boolean x,
+        boolean y,
+        boolean xy,
+        boolean down,
+        boolean right,
+        float minX,
+        float minY,
+        TextureAtlasSprite defSprite,
+        TextureAtlasSprite ctmSprite,
+        Direction side
+    ) {
         int[] vertexData = cloneVertexData(quad);
         if (side == Direction.UP) {
             minY = (minY + .5F) % 1F;
@@ -262,8 +283,14 @@ public class AntiblockBakedModel implements BakedModel {
         }
     }
 
-    private static void applyUVs(int[] vertexData, boolean closed, TextureAtlasSprite sprite, int u0, int v0,
-                                 Direction side) {
+    private static void applyUVs(
+        int[] vertexData,
+        boolean closed,
+        TextureAtlasSprite sprite,
+        int u0,
+        int v0,
+        Direction side
+    ) {
         float uMin = sprite.getU(u0);
         float vMin = sprite.getV(v0);
         float uMax = sprite.getU(u0 + (closed ? 8 : 4));
@@ -293,8 +320,12 @@ public class AntiblockBakedModel implements BakedModel {
 
     @NotNull
     @Override
-    public ModelData getModelData(@NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull BlockState state,
-                                  @NotNull ModelData modelData) {
+    public ModelData getModelData(
+        @NotNull BlockAndTintGetter level,
+        @NotNull BlockPos pos,
+        @NotNull BlockState state,
+        @NotNull ModelData modelData
+    ) {
         if (!(getAntiblockAt(level, pos) instanceof RGBTileEntity blockEntity)) {
             return modelData;
         }
@@ -406,43 +437,42 @@ public class AntiblockBakedModel implements BakedModel {
         boolean downNorthWest = getAntiblockAt(level, pos.below().north().west()) instanceof RGBTileEntity;
 
         return modelData.derive()
-                        .with(AntiblockModelData.ANTIBLOCK_MODEL_DATA, new AntiblockModelData(
-                                new Connections(Direction.NORTH, up && !upNorth, down && !downNorth, east && !northEast,
-                                                west && !northWest, upEast && upEastColor && !upNorthEast,
-                                                upWest && upWestColor && !upNorthWest,
-                                                downEast && downEastColor && !downNorthEast,
-                                                downWest && downWestColor && !downNorthWest
-                                ),
-                                new Connections(Direction.EAST, up && !upEast, down && !downEast, south && !southEast,
-                                                north && !northEast, upSouth && upSouthColor && !upSouthEast,
-                                                upNorth && upNorthColor && !upNorthEast,
-                                                downSouth && downSouthColor && !downSouthEast,
-                                                downNorth && downNorthColor && !downNorthEast
-                                ),
-                                new Connections(Direction.SOUTH, up && !upSouth, down && !downSouth, west && !southWest,
-                                                east && !southEast, upWest && upWestColor && !upSouthWest,
-                                                upEast && upEastColor && !upSouthEast,
-                                                downWest && downWestColor && !downSouthWest,
-                                                downEast && downEastColor && !downSouthEast
-                                ),
-                                new Connections(Direction.WEST, up && !upWest, down && !downWest, north && !northWest,
-                                                south && !southWest, upNorth && upNorthColor && !upNorthWest,
-                                                upSouth && upSouthColor && !upSouthWest,
-                                                downNorth && downNorthColor && !downNorthWest,
-                                                downSouth && downSouthColor && !downSouthWest
-                                ), new Connections(Direction.UP, north && !upNorth, south && !upSouth, west && !upWest,
-                                                   east && !upEast, northWest && northWestColor && !upNorthWest,
-                                                   northEast && northEastColor && !upNorthEast,
-                                                   southWest && southWestColor && !upSouthWest,
-                                                   southEast && southEastColor && !upSouthEast
-                        ), new Connections(Direction.DOWN, south && !downSouth, north && !downNorth, west && !downWest,
-                                           east && !downEast, southWest && southWestColor && !downSouthWest,
-                                           southEast && southEastColor && !downSouthEast,
-                                           northWest && northWestColor && !downNorthWest,
-                                           northEast && northEastColor && !downNorthEast
-                        )
-                        ))
-                        .build();
+            .with(
+                AntiblockModelData.ANTIBLOCK_MODEL_DATA,
+                new AntiblockModelData(
+                    new Connections(
+                        Direction.NORTH, up && !upNorth, down && !downNorth, east && !northEast, west && !northWest,
+                        upEast && upEastColor && !upNorthEast, upWest && upWestColor && !upNorthWest,
+                        downEast && downEastColor && !downNorthEast, downWest && downWestColor && !downNorthWest
+                    ),
+                    new Connections(
+                        Direction.EAST, up && !upEast, down && !downEast, south && !southEast, north && !northEast,
+                        upSouth && upSouthColor && !upSouthEast, upNorth && upNorthColor && !upNorthEast,
+                        downSouth && downSouthColor && !downSouthEast, downNorth && downNorthColor && !downNorthEast
+                    ),
+                    new Connections(
+                        Direction.SOUTH, up && !upSouth, down && !downSouth, west && !southWest, east && !southEast,
+                        upWest && upWestColor && !upSouthWest, upEast && upEastColor && !upSouthEast,
+                        downWest && downWestColor && !downSouthWest, downEast && downEastColor && !downSouthEast
+                    ),
+                    new Connections(
+                        Direction.WEST, up && !upWest, down && !downWest, north && !northWest, south && !southWest,
+                        upNorth && upNorthColor && !upNorthWest, upSouth && upSouthColor && !upSouthWest,
+                        downNorth && downNorthColor && !downNorthWest, downSouth && downSouthColor && !downSouthWest
+                    ),
+                    new Connections(
+                        Direction.UP, north && !upNorth, south && !upSouth, west && !upWest, east && !upEast,
+                        northWest && northWestColor && !upNorthWest, northEast && northEastColor && !upNorthEast,
+                        southWest && southWestColor && !upSouthWest, southEast && southEastColor && !upSouthEast
+                    ),
+                    new Connections(
+                        Direction.DOWN, south && !downSouth, north && !downNorth, west && !downWest, east && !downEast,
+                        southWest && southWestColor && !downSouthWest, southEast && southEastColor && !downSouthEast,
+                        northWest && northWestColor && !downNorthWest, northEast && northEastColor && !downNorthEast
+                    )
+                )
+            )
+            .build();
     }
 
     private static BlockEntity getAntiblockAt(BlockAndTintGetter level, BlockPos pos) {
@@ -488,8 +518,11 @@ public class AntiblockBakedModel implements BakedModel {
     }
 
     @Override
-    public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand,
-                                             @NotNull ModelData data) {
+    public ChunkRenderTypeSet getRenderTypes(
+        @NotNull BlockState state,
+        @NotNull RandomSource rand,
+        @NotNull ModelData data
+    ) {
         return base.getRenderTypes(state, rand, data);
     }
 
@@ -519,8 +552,17 @@ public class AntiblockBakedModel implements BakedModel {
         vertexData[offset + 1] = Float.floatToRawIntBits(uv[1]);
     }
 
-    public record Connections(Direction side, boolean up, boolean down, boolean left, boolean right, boolean upLeft,
-                              boolean upRight, boolean downLeft, boolean downRight) {
+    public record Connections(
+        Direction side,
+        boolean up,
+        boolean down,
+        boolean left,
+        boolean right,
+        boolean upLeft,
+        boolean upRight,
+        boolean downLeft,
+        boolean downRight
+    ) {
         public boolean isClosed() {
             return !up && !down && !left && !right;
         }
@@ -531,8 +573,14 @@ public class AntiblockBakedModel implements BakedModel {
 
         public final Map<Direction, Connections> connections = new EnumMap<>(Direction.class);
 
-        public AntiblockModelData(Connections north, Connections east, Connections south, Connections west,
-                                  Connections up, Connections down) {
+        public AntiblockModelData(
+            Connections north,
+            Connections east,
+            Connections south,
+            Connections west,
+            Connections up,
+            Connections down
+        ) {
             connections.put(Direction.NORTH, north);
             connections.put(Direction.EAST, east);
             connections.put(Direction.SOUTH, south);
@@ -550,21 +598,23 @@ public class AntiblockBakedModel implements BakedModel {
         }
 
         @Override
-        public BakedModel bake(IGeometryBakingContext owner, ModelBaker bakery,
-                               Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform,
-                               ItemOverrides overrides, ResourceLocation modelLocation) {
-
-            BakedModel bakedBase = baseModel.bake(bakery, baseModel, spriteGetter, modelTransform, modelLocation,
-                                                  owner.isGui3d()
-            );
+        public BakedModel bake(
+            IGeometryBakingContext owner,
+            ModelBaker bakery,
+            Function<Material, TextureAtlasSprite> spriteGetter,
+            ModelState modelTransform,
+            ItemOverrides overrides,
+            ResourceLocation modelLocation
+        ) {
+            BakedModel bakedBase =
+                baseModel.bake(bakery, baseModel, spriteGetter, modelTransform, modelLocation, owner.isGui3d());
             Map<Direction, BakedQuad> bgQuads = new EnumMap<>(Direction.class);
             Map<Direction, BakedQuad> frameQuads = new EnumMap<>(Direction.class);
 
             RandomSource rand = RandomSource.create();
             for (Direction side : Direction.values()) {
-                List<BakedQuad> quads = bakedBase.getQuads(Blocks.STONE.defaultBlockState(), side, rand,
-                                                           ModelData.EMPTY, null
-                );
+                List<BakedQuad> quads =
+                    bakedBase.getQuads(Blocks.STONE.defaultBlockState(), side, rand, ModelData.EMPTY, null);
 
                 for (BakedQuad quad : quads) {
                     ResourceLocation name = quad.getSprite().contents().name();
@@ -580,8 +630,10 @@ public class AntiblockBakedModel implements BakedModel {
         }
 
         @Override
-        public void resolveParents(Function<ResourceLocation, UnbakedModel> modelGetter,
-                                   IGeometryBakingContext context) {
+        public void resolveParents(
+            Function<ResourceLocation, UnbakedModel> modelGetter,
+            IGeometryBakingContext context
+        ) {
             baseModel.resolveParents(modelGetter);
         }
     }
@@ -589,8 +641,8 @@ public class AntiblockBakedModel implements BakedModel {
     public static class ModelLoader implements IGeometryLoader<Model> {
         @Override
         public Model read(JsonObject modelContents, JsonDeserializationContext deserializationContext) {
-            BlockModel baseModel = deserializationContext.deserialize(
-                    GsonHelper.getAsJsonObject(modelContents, "base_model"), BlockModel.class);
+            BlockModel baseModel = deserializationContext
+                .deserialize(GsonHelper.getAsJsonObject(modelContents, "base_model"), BlockModel.class);
             return new Model(baseModel);
         }
     }
