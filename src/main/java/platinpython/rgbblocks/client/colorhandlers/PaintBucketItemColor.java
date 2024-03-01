@@ -9,6 +9,7 @@ public class PaintBucketItemColor implements ItemColor {
     public int getColor(ItemStack stack, int tintindex) {
         if (stack.getItem() instanceof PaintBucketItem) {
             if (tintindex == 1) {
+                // noinspection DataFlowIssue
                 if (!stack.hasTag() || !stack.getTag().contains("color")) {
                     return 0;
                 } else {

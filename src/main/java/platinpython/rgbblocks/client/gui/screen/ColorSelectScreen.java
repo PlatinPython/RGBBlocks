@@ -5,7 +5,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import platinpython.rgbblocks.RGBBlocks;
+import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.client.gui.widget.ColorSlider;
 import platinpython.rgbblocks.client.gui.widget.SliderType;
 import platinpython.rgbblocks.util.Color;
@@ -16,11 +16,11 @@ import java.util.Locale;
 import java.util.function.UnaryOperator;
 
 public class ColorSelectScreen extends Screen {
-    private double red, green, blue;
-    public ColorSlider redSlider, greenSlider, blueSlider;
-    private double hue, saturation, brightness;
-    public ColorSlider hueSlider, saturationSlider, brightnessSlider;
-    public EditBox hexBox;
+    private final double red, green, blue;
+    public @Nullable ColorSlider redSlider, greenSlider, blueSlider;
+    private final double hue, saturation, brightness;
+    public @Nullable ColorSlider hueSlider, saturationSlider, brightnessSlider;
+    public @Nullable EditBox hexBox;
 
     public final int WIDGET_HEIGHT = 20;
     public final int SLIDER_WIDTH = 310;
@@ -56,19 +56,20 @@ public class ColorSelectScreen extends Screen {
     }
 
     public int getColor() {
-        if (isRGBSelected) {
+        if (isRGBSelected && this.redSlider != null && this.greenSlider != null && this.blueSlider != null) {
             return new Color(
                 this.redSlider.getValueInt(), this.greenSlider.getValueInt(), this.blueSlider.getValueInt()
             ).getRGB();
-        } else {
+        } else if (this.hueSlider != null && this.saturationSlider != null && this.brightnessSlider != null) {
             return Color
                 .getHSBColor(
-                    (float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
-                    (float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
-                    (float) (brightnessSlider.getValueInt() / MAX_VALUE_SB)
+                    (float) (this.hueSlider.getValueInt() / MAX_VALUE_HUE),
+                    (float) (this.saturationSlider.getValueInt() / MAX_VALUE_SB),
+                    (float) (this.brightnessSlider.getValueInt() / MAX_VALUE_SB)
                 )
                 .getRGB();
         }
+        return 0;
     }
 
     @Override
@@ -150,7 +151,7 @@ public class ColorSelectScreen extends Screen {
         x = this.width / 2 - BOX_WIDTH / 2;
 
         this.hexBox = new EditBox(this.font, x, y, BOX_WIDTH, WIDGET_HEIGHT, Component.literal("Hex")) {
-            UnaryOperator<String> formatter = string -> {
+            final UnaryOperator<String> formatter = string -> {
                 if (string.contains("#")) {
                     String substringed = string.substring(1);
                     if (substringed.length() < 6) {
@@ -172,14 +173,10 @@ public class ColorSelectScreen extends Screen {
                 textToWrite = textToWrite.contains("#") ? textToWrite.substring(1) : textToWrite;
                 textToWrite = textToWrite.toUpperCase(Locale.ENGLISH);
                 super.insertText(textToWrite);
-                try {
-                    Color color = new Color(Integer.parseInt(formatter.apply(getValue()), 16));
-                    redSlider.setValueInt(color.getRed());
-                    greenSlider.setValueInt(color.getGreen());
-                    blueSlider.setValueInt(color.getBlue());
-                } catch (NumberFormatException e) {
-                    RGBBlocks.LOGGER.debug(textToWrite);
-                }
+                Color color = new Color(Integer.parseInt(formatter.apply(getValue()), 16));
+                redSlider.setValueInt(color.getRed());
+                greenSlider.setValueInt(color.getGreen());
+                blueSlider.setValueInt(color.getBlue());
                 int cursorPosition = this.getCursorPosition();
                 this.setValue("#" + (getValue().contains("#") ? getValue().substring(1) : getValue()));
                 if (this.getCursorPosition() != cursorPosition) {
@@ -191,14 +188,10 @@ public class ColorSelectScreen extends Screen {
             @Override
             public void deleteChars(int pNum) {
                 super.deleteChars(pNum);
-                try {
-                    Color color = new Color(Integer.parseInt(formatter.apply(getValue()), 16));
-                    redSlider.setValueInt(color.getRed());
-                    greenSlider.setValueInt(color.getGreen());
-                    blueSlider.setValueInt(color.getBlue());
-                } catch (NumberFormatException e) {
-                    RGBBlocks.LOGGER.debug(getValue());
-                }
+                Color color = new Color(Integer.parseInt(formatter.apply(getValue()), 16));
+                redSlider.setValueInt(color.getRed());
+                greenSlider.setValueInt(color.getGreen());
+                blueSlider.setValueInt(color.getBlue());
                 int cursorPosition = this.getCursorPosition();
                 this.setValue("#" + (getValue().contains("#") ? getValue().substring(1) : getValue()));
                 if (this.getCursorPosition() != cursorPosition) {
@@ -296,7 +289,7 @@ public class ColorSelectScreen extends Screen {
         this.renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(this.width / 2, this.height / 2 - WIDGET_HEIGHT / 2 - 2 * SPACING - 15, 0);
+        guiGraphics.pose().translate(this.width / 2F, this.height / 2F - WIDGET_HEIGHT / 2F - 2 * SPACING - 15, 0);
         guiGraphics.fill(-SLIDER_WIDTH / 2, -WIDGET_HEIGHT, SLIDER_WIDTH / 2, WIDGET_HEIGHT, 0xFF000000);
         guiGraphics
             .fill(-SLIDER_WIDTH / 2 + 1, -WIDGET_HEIGHT + 1, SLIDER_WIDTH / 2 - 1, WIDGET_HEIGHT - 1, getColor());

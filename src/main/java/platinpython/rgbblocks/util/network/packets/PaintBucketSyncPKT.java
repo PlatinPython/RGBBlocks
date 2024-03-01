@@ -1,6 +1,7 @@
 package platinpython.rgbblocks.util.network.packets;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import platinpython.rgbblocks.item.PaintBucketItem;
@@ -28,7 +29,11 @@ public class PaintBucketSyncPKT {
     public static class Handler {
         public static void handle(PaintBucketSyncPKT message, Supplier<NetworkEvent.Context> context) {
             context.get().enqueueWork(() -> {
-                ItemStack stack = context.get().getSender().getMainHandItem();
+                Player player = context.get().getSender();
+                if (player == null) {
+                    return;
+                }
+                ItemStack stack = player.getMainHandItem();
                 if (stack.getItem() instanceof PaintBucketItem) {
                     stack.getOrCreateTag().putInt("color", message.color);
                     stack.getOrCreateTag().putBoolean("isRGBSelected", message.isRGBSelected);

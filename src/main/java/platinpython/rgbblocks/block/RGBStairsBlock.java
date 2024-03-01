@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.Supplier;
 
@@ -25,7 +26,13 @@ public class RGBStairsBlock extends StairBlock implements EntityBlock {
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(
+        Level worldIn,
+        BlockPos pos,
+        BlockState state,
+        @Nullable LivingEntity placer,
+        ItemStack stack
+    ) {
         RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
     }
 

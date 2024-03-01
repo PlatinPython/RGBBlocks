@@ -28,7 +28,6 @@ import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.RegistryObject;
-import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
@@ -153,7 +152,6 @@ public class ModLootTableProvider extends LootTableProvider {
         }
 
         private LootTable.Builder applyNbtCopy(LootTable.Builder table) {
-            RGBBlocks.LOGGER.debug(table.toString());
             return table.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("color", "color"));
         }
 

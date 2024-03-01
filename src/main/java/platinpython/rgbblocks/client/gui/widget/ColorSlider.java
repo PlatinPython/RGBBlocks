@@ -15,12 +15,12 @@ import java.util.Locale;
 import java.util.function.Function;
 
 public class ColorSlider extends AbstractSliderButton {
-    private SliderType type;
+    private final SliderType type;
 
-    private double minValue;
-    private double maxValue;
+    private final double minValue;
+    private final double maxValue;
 
-    private Component displayText;
+    private final Component displayText;
 
     public ColorSlider(
         int x,
@@ -54,7 +54,8 @@ public class ColorSlider extends AbstractSliderButton {
     @Override
     protected void applyValue() {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.screen instanceof ColorSelectScreen screen) {
+        if (minecraft.screen instanceof ColorSelectScreen screen && screen.hexBox != null && screen.redSlider != null
+            && screen.greenSlider != null && screen.blueSlider != null) {
             screen.hexBox.setValue(
                 "#" + Integer
                     .toHexString(
@@ -87,8 +88,7 @@ public class ColorSlider extends AbstractSliderButton {
         if (this.visible) {
             Minecraft minecraft = Minecraft.getInstance();
             guiGraphics.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, 0xFF000000);
-            if (minecraft.screen instanceof ColorSelectScreen) {
-                ColorSelectScreen screen = (ColorSelectScreen) minecraft.screen;
+            if (minecraft.screen instanceof ColorSelectScreen screen) {
                 switch (type) {
                     case RED:
                         renderRedBackground(guiGraphics.pose(), screen);
@@ -129,6 +129,9 @@ public class ColorSlider extends AbstractSliderButton {
     }
 
     private void renderRedBackground(PoseStack matrixStack, ColorSelectScreen screen) {
+        if (screen.greenSlider == null || screen.blueSlider == null) {
+            return;
+        }
         int leftColor = new Color(0x00, screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB();
         int rightColor = new Color(0xFF, screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB();
         ScreenUtils.fillGradient(
@@ -138,6 +141,9 @@ public class ColorSlider extends AbstractSliderButton {
     }
 
     private void renderGreenBackground(PoseStack matrixStack, ColorSelectScreen screen) {
+        if (screen.redSlider == null || screen.blueSlider == null) {
+            return;
+        }
         int leftColor = new Color(screen.redSlider.getValueInt(), 0x00, screen.blueSlider.getValueInt()).getRGB();
         int rightColor = new Color(screen.redSlider.getValueInt(), 0xFF, screen.blueSlider.getValueInt()).getRGB();
         ScreenUtils.fillGradient(
@@ -147,6 +153,9 @@ public class ColorSlider extends AbstractSliderButton {
     }
 
     private void renderBlueBackground(PoseStack matrixStack, ColorSelectScreen screen) {
+        if (screen.redSlider == null || screen.greenSlider == null) {
+            return;
+        }
         int leftColor = new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), 0x00).getRGB();
         int rightColor = new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), 0xFF).getRGB();
         ScreenUtils.fillGradient(
@@ -156,10 +165,13 @@ public class ColorSlider extends AbstractSliderButton {
     }
 
     private void renderHueBackground(PoseStack matrixStack, ColorSelectScreen screen) {
+        if (screen.saturationSlider == null || screen.brightnessSlider == null) {
+            return;
+        }
         Function<Integer, Integer> lerp =
             (pct) -> (int) Math.floor(Mth.lerp(pct / 100f, this.getX() + 1, this.getX() + this.width - 1));
         Function<Integer, Integer> color = (pct) -> Color.HSBtoRGB(
-            (float) ((pct / 100f)), (float) (screen.saturationSlider.getValueInt() / ColorSelectScreen.MAX_VALUE_SB),
+            (pct / 100f), (float) (screen.saturationSlider.getValueInt() / ColorSelectScreen.MAX_VALUE_SB),
             (float) (screen.brightnessSlider.getValueInt() / ColorSelectScreen.MAX_VALUE_SB)
         );
         ScreenUtils.fillGradient(
@@ -189,6 +201,9 @@ public class ColorSlider extends AbstractSliderButton {
     }
 
     private void renderSaturationBackground(PoseStack matrixStack, ColorSelectScreen screen) {
+        if (screen.hueSlider == null || screen.brightnessSlider == null) {
+            return;
+        }
         int leftColor = Color.HSBtoRGB(
             (float) (screen.hueSlider.getValue() / ColorSelectScreen.MAX_VALUE_HUE), 0.0f,
             (float) (screen.brightnessSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB)
@@ -204,6 +219,9 @@ public class ColorSlider extends AbstractSliderButton {
     }
 
     private void renderBrightnessBackground(PoseStack matrixStack, ColorSelectScreen screen) {
+        if (screen.hueSlider == null || screen.saturationSlider == null) {
+            return;
+        }
         int leftColor = Color.HSBtoRGB(
             (float) (screen.hueSlider.getValue() / ColorSelectScreen.MAX_VALUE_HUE),
             (float) (screen.saturationSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB), 0.0f

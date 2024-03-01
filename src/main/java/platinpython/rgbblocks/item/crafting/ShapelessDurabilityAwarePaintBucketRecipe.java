@@ -120,9 +120,7 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
             int i = buffer.readVarInt();
             NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i, Ingredient.EMPTY);
 
-            for (int j = 0; j < nonnulllist.size(); ++j) {
-                nonnulllist.set(j, Ingredient.fromNetwork(buffer));
-            }
+            nonnulllist.replaceAll(ignored -> Ingredient.fromNetwork(buffer));
 
             ItemStack itemstack = buffer.readItem();
             return new ShapelessDurabilityAwarePaintBucketRecipe(resourceLocation, s, itemstack, nonnulllist);

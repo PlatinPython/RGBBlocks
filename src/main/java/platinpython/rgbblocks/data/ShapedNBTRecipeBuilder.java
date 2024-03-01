@@ -22,24 +22,25 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 
 public class ShapedNBTRecipeBuilder {
     private final Item result;
     private final int count;
-    private final CompoundTag compound;
+    private final @Nullable CompoundTag compound;
     private final List<String> rows = Lists.newArrayList();
     private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
     private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
-    private String group;
+    private @Nullable String group;
 
-    public ShapedNBTRecipeBuilder(ItemLike result, int count, CompoundTag compound) {
+    public ShapedNBTRecipeBuilder(ItemLike result, int count, @Nullable CompoundTag compound) {
         this.result = result.asItem();
         this.count = count;
         this.compound = compound;
@@ -96,7 +97,7 @@ public class ShapedNBTRecipeBuilder {
     }
 
     public void save(Consumer<FinishedRecipe> consumer) {
-        this.save(consumer, ForgeRegistries.ITEMS.getKey(this.result));
+        this.save(consumer, Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(this.result)));
     }
 
     public void save(Consumer<FinishedRecipe> consumer, String save) {
@@ -115,7 +116,7 @@ public class ShapedNBTRecipeBuilder {
             .rewards(AdvancementRewards.Builder.recipe(id))
             .requirements(RequirementsStrategy.OR);
         consumer.accept(
-            new ShapedNBTRecipeBuilder.Result(
+            new Result(
                 id, this.result, this.count, this.compound, this.group == null ? "" : this.group, this.rows, this.key,
                 this.advancement,
                 new ResourceLocation(
@@ -157,11 +158,11 @@ public class ShapedNBTRecipeBuilder {
         }
     }
 
-    public class Result implements FinishedRecipe {
+    public static class Result implements FinishedRecipe {
         private final ResourceLocation id;
         private final Item result;
         private final int count;
-        private final CompoundTag compound;
+        private final @Nullable CompoundTag compound;
         private final String group;
         private final List<String> pattern;
         private final Map<Character, Ingredient> key;
@@ -172,7 +173,7 @@ public class ShapedNBTRecipeBuilder {
             ResourceLocation id,
             Item result,
             int count,
-            CompoundTag compound,
+            @Nullable CompoundTag compound,
             String group,
             List<String> pattern,
             Map<Character, Ingredient> key,
@@ -210,7 +211,8 @@ public class ShapedNBTRecipeBuilder {
 
             json.add("key", keyJson);
             JsonObject resultJson = new JsonObject();
-            resultJson.addProperty("item", ForgeRegistries.ITEMS.getKey(this.result).toString());
+            resultJson
+                .addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(this.result)).toString());
             if (this.count > 1) {
                 resultJson.addProperty("count", this.count);
             }
@@ -229,12 +231,10 @@ public class ShapedNBTRecipeBuilder {
             return this.id;
         }
 
-        @Nullable
         public JsonObject serializeAdvancement() {
             return this.advancement.serializeToJson();
         }
 
-        @Nullable
         public ResourceLocation getAdvancementId() {
             return this.advancementId;
         }

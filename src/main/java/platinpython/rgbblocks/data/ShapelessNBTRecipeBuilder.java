@@ -20,22 +20,23 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.util.registries.RecipeSerializerRegistry;
 
-import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class ShapelessNBTRecipeBuilder {
     private final Item result;
     private final int count;
-    private final CompoundTag compound;
+    private final @Nullable CompoundTag compound;
     private final List<Ingredient> ingredients = Lists.newArrayList();
     private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
-    private String group;
+    private @Nullable String group;
     private boolean isNoReturnRecipe = false;
 
-    private ShapelessNBTRecipeBuilder(ItemLike result, int count, CompoundTag compound) {
+    private ShapelessNBTRecipeBuilder(ItemLike result, int count, @Nullable CompoundTag compound) {
         this.result = result.asItem();
         this.count = count;
         this.compound = compound;
@@ -92,7 +93,7 @@ public class ShapelessNBTRecipeBuilder {
     }
 
     public void save(Consumer<FinishedRecipe> consumer) {
-        this.save(consumer, ForgeRegistries.ITEMS.getKey(this.result));
+        this.save(consumer, Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(this.result)));
     }
 
     public void save(Consumer<FinishedRecipe> consumer, String save) {
@@ -136,7 +137,7 @@ public class ShapelessNBTRecipeBuilder {
         private final ResourceLocation id;
         private final Item result;
         private final int count;
-        private final CompoundTag compound;
+        private final @Nullable CompoundTag compound;
         private final String group;
         private final List<Ingredient> ingredients;
         private final Advancement.Builder advancement;
@@ -147,7 +148,7 @@ public class ShapelessNBTRecipeBuilder {
             ResourceLocation id,
             Item result,
             int count,
-            CompoundTag compound,
+            @Nullable CompoundTag compound,
             String group,
             List<Ingredient> ingredients,
             Advancement.Builder advancementBuilder,
@@ -178,7 +179,8 @@ public class ShapelessNBTRecipeBuilder {
 
             json.add("ingredients", ingredientsJson);
             JsonObject resultJson = new JsonObject();
-            resultJson.addProperty("item", ForgeRegistries.ITEMS.getKey(this.result).toString());
+            resultJson
+                .addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(this.result)).toString());
             if (this.count > 1) {
                 resultJson.addProperty("count", this.count);
             }
@@ -199,12 +201,10 @@ public class ShapelessNBTRecipeBuilder {
             return this.id;
         }
 
-        @Nullable
         public JsonObject serializeAdvancement() {
             return this.advancement.serializeToJson();
         }
 
-        @Nullable
         public ResourceLocation getAdvancementId() {
             return this.advancementId;
         }

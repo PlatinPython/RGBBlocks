@@ -80,6 +80,8 @@ repositories {
 dependencies {
     minecraft 'net.neoforged:forge:1.20.1-47.1.65'
 
+    compileOnly "org.jspecify:jspecify:0.3.0"
+
     implementation fg.deobf("curse.maven:the-one-probe-245211:4629624")
     implementation fg.deobf("curse.maven:framedblocks-441647:4657096")
 }

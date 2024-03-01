@@ -6,6 +6,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jspecify.annotations.Nullable;
 
 public class RGBGlassPaneBlock extends RGBIronBarsBlock {
     public RGBGlassPaneBlock() {
@@ -13,7 +14,12 @@ public class RGBGlassPaneBlock extends RGBIronBarsBlock {
     }
 
     @Override
-    public float[] getBeaconColorMultiplier(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos) {
+    public float @Nullable [] getBeaconColorMultiplier(
+        BlockState state,
+        LevelReader world,
+        BlockPos pos,
+        BlockPos beaconPos
+    ) {
         return RGBBlockUtils.getBeaconColorMultiplier(state, world, pos, beaconPos);
     }
 
@@ -22,6 +28,7 @@ public class RGBGlassPaneBlock extends RGBIronBarsBlock {
         return RGBBlockUtils.blockSkipRendering(state, adjacentBlockState, side);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
         return 1.0F;

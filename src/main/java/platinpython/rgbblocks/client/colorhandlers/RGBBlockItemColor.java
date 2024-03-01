@@ -8,6 +8,7 @@ import platinpython.rgbblocks.item.RGBBlockItem;
 public class RGBBlockItemColor implements ItemColor {
     public int getColor(ItemStack stack, int tintindex) {
         if (stack.getItem() instanceof RGBBlockItem) {
+            // noinspection DataFlowIssue
             if (!stack.hasTag() || !stack.getTag().contains("color")) {
                 return 0;
             }

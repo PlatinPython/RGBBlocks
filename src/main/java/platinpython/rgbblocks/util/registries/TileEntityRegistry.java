@@ -7,6 +7,7 @@ import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.RegistryHandler;
 
 public class TileEntityRegistry {
+    @SuppressWarnings("DataFlowIssue")
     public static final RegistryObject<BlockEntityType<RGBTileEntity>> RGB =
         RegistryHandler.BLOCK_ENTITY_TYPES.register(
             "rgb",

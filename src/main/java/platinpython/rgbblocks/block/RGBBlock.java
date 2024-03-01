@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
+import org.jspecify.annotations.Nullable;
 
 public class RGBBlock extends Block implements EntityBlock {
     public RGBBlock(Properties properties) {
@@ -23,7 +24,13 @@ public class RGBBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(
+        Level worldIn,
+        BlockPos pos,
+        BlockState state,
+        @Nullable LivingEntity placer,
+        ItemStack stack
+    ) {
         RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
     }
 

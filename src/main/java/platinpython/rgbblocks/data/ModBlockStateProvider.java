@@ -15,6 +15,7 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
+import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
@@ -70,7 +71,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
         );
         class AntiblockLoaderBuilder extends CustomLoaderBuilder<BlockModelBuilder> {
-            private JsonObject baseModel;
+            private @Nullable JsonObject baseModel;
 
             protected AntiblockLoaderBuilder(BlockModelBuilder parent, ExistingFileHelper existingFileHelper) {
                 super(new ResourceLocation(RGBBlocks.MOD_ID, "antiblock_model"), parent, existingFileHelper);

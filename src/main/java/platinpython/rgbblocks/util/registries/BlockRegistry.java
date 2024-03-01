@@ -81,10 +81,8 @@ public class BlockRegistry {
 
     public static final RegistryObject<RGBBlock> RGB_PRISMARINE =
         register("prismarine", () -> new RGBBlock(Properties.copy(Blocks.PRISMARINE)));
-
     public static final RegistryObject<RGBSlabBlock> RGB_PRISMARINE_SLAB =
         register("prismarine_slab", () -> new RGBSlabBlock(Properties.copy(Blocks.PRISMARINE_SLAB)));
-
     public static final RegistryObject<RGBStairsBlock> RGB_PRISMARINE_STAIRS = register(
         "prismarine_stairs",
         () -> new RGBStairsBlock(RGB_PRISMARINE.get()::defaultBlockState, Properties.copy(Blocks.PRISMARINE_STAIRS))
@@ -92,10 +90,8 @@ public class BlockRegistry {
 
     public static final RegistryObject<RGBBlock> RGB_PRISMARINE_BRICKS =
         register("prismarine_bricks", () -> new RGBBlock(Properties.copy(Blocks.PRISMARINE_BRICKS)));
-
     public static final RegistryObject<RGBSlabBlock> RGB_PRISMARINE_BRICK_SLAB =
         register("prismarine_bricks_slab", () -> new RGBSlabBlock(Properties.copy(Blocks.PRISMARINE_BRICK_SLAB)));
-
     public static final RegistryObject<RGBStairsBlock> RGB_PRISMARINE_BRICK_STAIRS = register(
         "prismarine_bricks_stairs",
         () -> new RGBStairsBlock(
@@ -105,10 +101,8 @@ public class BlockRegistry {
 
     public static final RegistryObject<RGBBlock> RGB_DARK_PRISMARINE =
         register("dark_prismarine", () -> new RGBBlock(Properties.copy(Blocks.DARK_PRISMARINE)));
-
     public static final RegistryObject<RGBSlabBlock> RGB_DARK_PRISMARINE_SLAB =
         register("dark_prismarine_slab", () -> new RGBSlabBlock(Properties.copy(Blocks.DARK_PRISMARINE_SLAB)));
-
     public static final RegistryObject<RGBStairsBlock> RGB_DARK_PRISMARINE_STAIRS = register(
         "dark_prismarine_stairs",
         () -> new RGBStairsBlock(

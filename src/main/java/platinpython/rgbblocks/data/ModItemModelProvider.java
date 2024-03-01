@@ -24,7 +24,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         ).renderType("translucent");
     }
 
-    private void item2Layers(RegistryObject<? extends Item> item) {
+    private void item2Layers(@SuppressWarnings("SameParameterValue") RegistryObject<? extends Item> item) {
         String path = item.getId().getPath();
         String loc = ITEM_FOLDER + "/" + path;
         singleTexture(path, mcLoc(ITEM_FOLDER + "/generated"), "layer0", modLoc(loc))

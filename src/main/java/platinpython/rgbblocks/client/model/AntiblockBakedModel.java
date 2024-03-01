@@ -34,8 +34,7 @@ import net.minecraftforge.client.model.data.ModelProperty;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
@@ -47,7 +46,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-@SuppressWarnings("deprecation")
 public class AntiblockBakedModel implements BakedModel {
     private final BakedModel base;
     private final Map<Direction, BakedQuad> bgQuads;
@@ -85,14 +83,13 @@ public class AntiblockBakedModel implements BakedModel {
         return this.getQuads(state, side, random, ModelData.EMPTY, null);
     }
 
-    @NotNull
     @Override
     public List<BakedQuad> getQuads(
         @Nullable BlockState state,
         @Nullable Direction side,
-        @NotNull RandomSource random,
-        @NotNull ModelData extraData,
-        RenderType renderType
+        RandomSource random,
+        ModelData extraData,
+        @Nullable RenderType renderType
     ) {
         if (side == null) {
             return Collections.emptyList();
@@ -318,14 +315,8 @@ public class AntiblockBakedModel implements BakedModel {
         }
     }
 
-    @NotNull
     @Override
-    public ModelData getModelData(
-        @NotNull BlockAndTintGetter level,
-        @NotNull BlockPos pos,
-        @NotNull BlockState state,
-        @NotNull ModelData modelData
-    ) {
+    public ModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, ModelData modelData) {
         if (!(getAntiblockAt(level, pos) instanceof RGBTileEntity blockEntity)) {
             return modelData;
         }
@@ -475,7 +466,7 @@ public class AntiblockBakedModel implements BakedModel {
             .build();
     }
 
-    private static BlockEntity getAntiblockAt(BlockAndTintGetter level, BlockPos pos) {
+    private static @Nullable BlockEntity getAntiblockAt(BlockAndTintGetter level, BlockPos pos) {
         if (!level.getBlockState(pos).is(BlockRegistry.RGB_ANTIBLOCK.get())) {
             return null;
         }
@@ -507,6 +498,7 @@ public class AntiblockBakedModel implements BakedModel {
         return base.getParticleIcon(ModelData.EMPTY);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public ItemTransforms getTransforms() {
         return base.getTransforms();
@@ -518,11 +510,7 @@ public class AntiblockBakedModel implements BakedModel {
     }
 
     @Override
-    public ChunkRenderTypeSet getRenderTypes(
-        @NotNull BlockState state,
-        @NotNull RandomSource rand,
-        @NotNull ModelData data
-    ) {
+    public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData data) {
         return base.getRenderTypes(state, rand, data);
     }
 
@@ -617,6 +605,7 @@ public class AntiblockBakedModel implements BakedModel {
                     bakedBase.getQuads(Blocks.STONE.defaultBlockState(), side, rand, ModelData.EMPTY, null);
 
                 for (BakedQuad quad : quads) {
+                    // noinspection resource
                     ResourceLocation name = quad.getSprite().contents().name();
                     if (name.equals(new ResourceLocation(RGBBlocks.MOD_ID, "block/white"))) {
                         bgQuads.put(side, quad);

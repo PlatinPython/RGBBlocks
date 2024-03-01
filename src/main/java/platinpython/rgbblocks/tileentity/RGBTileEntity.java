@@ -56,7 +56,11 @@ public class RGBTileEntity extends BlockEntity {
     }
 
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-        setColor(packet.getTag().getInt("color"));
-        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL_IMMEDIATE);
+        if (packet.getTag() != null) {
+            setColor(packet.getTag().getInt("color"));
+        }
+        if (this.level != null) {
+            this.level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL_IMMEDIATE);
+        }
     }
 }

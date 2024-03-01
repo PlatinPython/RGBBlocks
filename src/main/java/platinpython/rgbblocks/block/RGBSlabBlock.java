@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
+import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
 public class RGBSlabBlock extends SlabBlock implements EntityBlock {
@@ -24,7 +25,13 @@ public class RGBSlabBlock extends SlabBlock implements EntityBlock {
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(
+        Level worldIn,
+        BlockPos pos,
+        BlockState state,
+        @Nullable LivingEntity placer,
+        ItemStack stack
+    ) {
         RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
     }
 

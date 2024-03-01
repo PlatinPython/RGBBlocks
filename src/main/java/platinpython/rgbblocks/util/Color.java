@@ -8,7 +8,7 @@ public class Color {
     }
 
     public Color(int r, int g, int b, int a) {
-        value = ((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0);
+        value = ((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF));
         testColorValueRange(r, g, b, a);
     }
 
@@ -36,7 +36,7 @@ public class Color {
             rangeError = true;
             badComponentString = badComponentString + " Blue";
         }
-        if (rangeError == true) {
+        if (rangeError) {
             throw new IllegalArgumentException("Color parameter outside of expected range:" + badComponentString);
         }
     }
@@ -50,7 +50,7 @@ public class Color {
     }
 
     public int getBlue() {
-        return (getRGB() >> 0) & 0xFF;
+        return (getRGB()) & 0xFF;
     }
 
     public int getRGB() {
@@ -60,10 +60,10 @@ public class Color {
     public static float[] RGBtoHSB(int r, int g, int b) {
         float hue, saturation, brightness;
         float[] hsbvals = new float[3];
-        int cmax = (r > g) ? r : g;
+        int cmax = Math.max(r, g);
         if (b > cmax)
             cmax = b;
-        int cmin = (r < g) ? r : g;
+        int cmin = Math.min(r, g);
         if (b < cmin)
             cmin = b;
 
@@ -137,7 +137,7 @@ public class Color {
                     break;
             }
         }
-        return 0xff000000 | (r << 16) | (g << 8) | (b << 0);
+        return 0xff000000 | (r << 16) | (g << 8) | b;
     }
 
     public static Color getHSBColor(float h, float s, float b) {

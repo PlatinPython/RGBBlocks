@@ -16,7 +16,7 @@ public class ScreenUtils {
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder bufferbuilder = tesselator.getBuilder();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        fillGradient(pPoseStack.last().pose(), bufferbuilder, x1, y1, x2, y2, 0, colorFrom, colorTo);
+        fillGradient(pPoseStack.last().pose(), bufferbuilder, x1, y1, x2, y2, colorFrom, colorTo);
         tesselator.end();
         RenderSystem.disableBlend();
     }
@@ -28,7 +28,6 @@ public class ScreenUtils {
         int y1,
         int x2,
         int y2,
-        int z,
         int colorA,
         int colorB
     ) {
@@ -40,9 +39,9 @@ public class ScreenUtils {
         int redB = colorB >> 16 & 0xFF;
         int greenB = colorB >> 8 & 0xFF;
         int blueB = colorB & 0xFF;
-        builder.vertex(matrix4f, (float) x2, (float) y1, (float) z).color(redB, greenB, blueB, alphaB).endVertex();
-        builder.vertex(matrix4f, (float) x1, (float) y1, (float) z).color(redA, greenA, blueA, alphaA).endVertex();
-        builder.vertex(matrix4f, (float) x1, (float) y2, (float) z).color(redA, greenA, blueA, alphaA).endVertex();
-        builder.vertex(matrix4f, (float) x2, (float) y2, (float) z).color(redB, greenB, blueB, alphaB).endVertex();
+        builder.vertex(matrix4f, (float) x2, (float) y1, (float) 0).color(redB, greenB, blueB, alphaB).endVertex();
+        builder.vertex(matrix4f, (float) x1, (float) y1, (float) 0).color(redA, greenA, blueA, alphaA).endVertex();
+        builder.vertex(matrix4f, (float) x1, (float) y2, (float) 0).color(redA, greenA, blueA, alphaA).endVertex();
+        builder.vertex(matrix4f, (float) x2, (float) y2, (float) 0).color(redB, greenB, blueB, alphaB).endVertex();
     }
 }

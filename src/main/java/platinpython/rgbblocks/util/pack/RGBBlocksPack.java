@@ -27,9 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -41,11 +39,10 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
     public static final String TEXTURE_DIRECTORY = "textures/";
     public static final String BLOCK_DIRECTORY = "block/";
     public static final Set<String> NAMESPACES = ImmutableSet.of(RGBBlocks.MOD_ID);
-    public static final List<ResourceLocation> NO_RESOURCES = Collections.emptyList();
 
     private final PackMetadataSection packInfo;
     private Map<ResourceLocation, IoSupplier<InputStream>> resources = new HashMap<>();
-    private Map<ResourceLocation, ResourceLocation> textures = new HashMap<>();
+    private final Map<ResourceLocation, ResourceLocation> textures = new HashMap<>();
 
     public RGBBlocksPack() {
         super("rgbblocks_virtual_pack", true);
@@ -97,8 +94,11 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
     protected void gatherTextureData(ResourceManager manager, ProfilerFiller profiler) {
         Map<ResourceLocation, IoSupplier<InputStream>> resourceStreams = new HashMap<>();
 
-        textures.forEach((modLocation, vanillaLocation) -> {
-            generateImage(modLocation, vanillaLocation, Minecraft.getInstance().getResourceManager())
+        textures.forEach(
+            (
+                modLocation,
+                vanillaLocation
+            ) -> generateImage(modLocation, vanillaLocation, Minecraft.getInstance().getResourceManager())
                 .ifPresent(pair -> {
                     NativeImage image = pair.getFirst();
                     ResourceLocation textureID = makeTextureID(modLocation);
@@ -107,8 +107,8 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
                         .ifPresent(
                             metadataGetter -> resourceStreams.put(getMetadataLocation(textureID), metadataGetter)
                         );
-                });
-        });
+                })
+        );
 
         this.resources = resourceStreams;
     }
@@ -139,7 +139,6 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
                     bufferedReader = new BufferedReader(new InputStreamReader(metadataStream, StandardCharsets.UTF_8));
                     metadataJson = GsonHelper.parse(bufferedReader);
                 } catch (Exception e) {
-                    e.printStackTrace();
                     return Optional.empty();
                 } finally {
                     IOUtils.closeQuietly(bufferedReader);
@@ -149,10 +148,7 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
                     Optional.of(() -> new ByteArrayInputStream(metaDataJsonForLambda.toString().getBytes()));
             }
             return Optional.of(Pair.of(transformedImage, metadataLookup));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Optional.empty();
-        } catch (NoSuchElementException ignored) {
+        } catch (IOException | NoSuchElementException e) {
             return Optional.empty();
         }
     }
@@ -161,12 +157,12 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
                 int oldColor = image.getPixelRGBA(x, y);
-                float[] hsb = Color.RGBtoHSB((oldColor >> 0) & 0xFF, (oldColor >> 8) & 0xFF, (oldColor >> 16) & 0xFF);
+                float[] hsb = Color.RGBtoHSB(oldColor & 0xFF, (oldColor >> 8) & 0xFF, (oldColor >> 16) & 0xFF);
                 int newColor = Color.HSBtoRGB(0, 0, hsb[2]);
                 image.setPixelRGBA(
                     x, y,
-                    ((oldColor >> 24) & 0xFF) << 24 | ((newColor >> 0) & 0xFF) << 16 | ((newColor >> 8) & 0xFF) << 8
-                        | ((newColor >> 16) & 0xFF) << 0
+                    ((oldColor >> 24) & 0xFF) << 24 | (newColor & 0xFF) << 16 | ((newColor >> 8) & 0xFF) << 8
+                        | (newColor >> 16) & 0xFF
                 );
             }
         }
@@ -208,7 +204,6 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
             try {
                 return streamGetter;
             } catch (Exception e) {
-                e.printStackTrace();
                 return null;
             }
         } else {

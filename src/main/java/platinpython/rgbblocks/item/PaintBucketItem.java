@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fml.ModList;
-import platinpython.rgbblocks.RGBBlocks;
+import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.ClientUtils;
@@ -40,7 +40,7 @@ public class PaintBucketItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         Color color = new Color(stack.getOrCreateTag().getInt("color"));
         if (ClientUtils.hasShiftDown()) {
             MutableComponent red = Component.translatable("gui.rgbblocks.red").append(": " + color.getRed());
@@ -54,7 +54,7 @@ public class PaintBucketItem extends Item {
                 .append(": " + Math.round(hsb[1] * ColorSelectScreen.MAX_VALUE_SB));
             MutableComponent brightness = Component.translatable("gui.rgbblocks.brightness")
                 .append(": " + Math.round(hsb[2] * ColorSelectScreen.MAX_VALUE_SB));
-            tooltip.add(hue.append("\u00B0, ").append(saturation).append("%, ").append(brightness).append("%"));
+            tooltip.add(hue.append("°, ").append(saturation).append("%, ").append(brightness).append("%"));
         } else {
             tooltip.add(Component.literal("#" + Integer.toHexString(color.getRGB()).substring(2)));
         }
@@ -72,28 +72,32 @@ public class PaintBucketItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-        if (handIn == InteractionHand.MAIN_HAND && playerIn.isShiftKeyDown()) {
+        if (handIn == InteractionHand.MAIN_HAND && playerIn.isShiftKeyDown()
+            && playerIn.getMainHandItem().getTag() != null) {
             if (worldIn.isClientSide) {
                 ClientUtils.openColorSelectScreen(
                     playerIn.getMainHandItem().getTag().getInt("color"),
                     playerIn.getMainHandItem().getTag().getBoolean("isRGBSelected")
                 );
-                return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, playerIn.getMainHandItem());
+                return new InteractionResultHolder<>(InteractionResult.SUCCESS, playerIn.getMainHandItem());
             }
         }
-        return new InteractionResultHolder<ItemStack>(InteractionResult.PASS, playerIn.getItemInHand(handIn));
+        return new InteractionResultHolder<>(InteractionResult.PASS, playerIn.getItemInHand(handIn));
     }
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
         BlockEntity tileEntity = context.getLevel().getBlockEntity(context.getClickedPos());
-        if (tileEntity instanceof RGBTileEntity) {
-            if (context.getPlayer().isShiftKeyDown()) {
-                context.getItemInHand().getTag().putInt("color", ((RGBTileEntity) tileEntity).getColor());
+        if (tileEntity instanceof RGBTileEntity rgbTileEntity) {
+            if (context.getPlayer() != null && context.getPlayer().isShiftKeyDown()) {
+                context.getItemInHand().getOrCreateTag().putInt("color", rgbTileEntity.getColor());
             } else {
-                if (!context.getPlayer().getAbilities().instabuild
-                    && context.getItemInHand().getOrCreateTag().getInt("color")
-                        != ((RGBTileEntity) tileEntity).getColor()) {
+                if (!context.getItemInHand().hasTag()) {
+                    return InteractionResult.PASS;
+                }
+                // noinspection DataFlowIssue
+                int color = context.getItemInHand().getTag().getInt("color");
+                if (!context.getPlayer().isCreative() && color != rgbTileEntity.getColor()) {
                     if (context.getItemInHand().getDamageValue() == context.getItemInHand().getMaxDamage() - 1) {
                         context.getPlayer().setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
                     } else {
@@ -101,7 +105,7 @@ public class PaintBucketItem extends Item {
                             .hurtAndBreak(1, context.getPlayer(), e -> e.broadcastBreakEvent(context.getHand()));
                     }
                 }
-                ((RGBTileEntity) tileEntity).setColor(context.getItemInHand().getTag().getInt("color"));
+                rgbTileEntity.setColor(color);
                 context.getLevel()
                     .sendBlockUpdated(
                         context.getClickedPos(), tileEntity.getBlockState(), tileEntity.getBlockState(),
@@ -111,7 +115,6 @@ public class PaintBucketItem extends Item {
             return InteractionResult.SUCCESS;
         }
         if (ModList.get().isLoaded("framedblocks")) {
-            RGBBlocks.LOGGER.info("Handling FramedBlocks");
             return RGBBlocksFramedBlocks.handlePaintBucketInteraction(context);
         }
         return InteractionResult.PASS;

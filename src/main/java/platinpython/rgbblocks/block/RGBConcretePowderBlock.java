@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.HitResult;
+import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.entity.RGBFallingBlockEntity;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
@@ -31,7 +32,13 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(
+        Level worldIn,
+        BlockPos pos,
+        BlockState state,
+        @Nullable LivingEntity placer,
+        ItemStack stack
+    ) {
         RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
     }
 
@@ -53,7 +60,7 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
             RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(
                 worldIn, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D,
                 state.hasProperty(BlockStateProperties.WATERLOGGED)
-                    ? state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false))
+                    ? state.setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE)
                     : state,
                 tileEntity instanceof RGBTileEntity ? ((RGBTileEntity) tileEntity).getColor() : 0
             );
@@ -63,6 +70,7 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.is(BlockRegistry.RGB_CONCRETE_POWDER.get()) && !newState.is(BlockRegistry.RGB_CONCRETE.get())) {
@@ -90,11 +98,9 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
 
     @Override
     public int getDustColor(BlockState blockState, BlockGetter blockReader, BlockPos blockPos) {
-        if (blockReader != null) {
-            BlockEntity tileEntity = blockReader.getBlockEntity(blockPos.above());
-            if (tileEntity instanceof RGBTileEntity) {
-                return ((RGBTileEntity) tileEntity).getColor();
-            }
+        BlockEntity tileEntity = blockReader.getBlockEntity(blockPos.above());
+        if (tileEntity instanceof RGBTileEntity rgbTileEntity) {
+            return rgbTileEntity.getColor();
         }
         return super.getDustColor(blockState, blockReader, blockPos);
     }

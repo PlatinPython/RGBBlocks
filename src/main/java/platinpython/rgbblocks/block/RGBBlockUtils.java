@@ -17,12 +17,13 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.phys.HitResult;
+import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.Color;
 import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
 public final class RGBBlockUtils {
-    public static BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public static @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return TileEntityRegistry.RGB.get().create(pos, state);
     }
 
@@ -30,12 +31,13 @@ public final class RGBBlockUtils {
         Level worldIn,
         BlockPos pos,
         BlockState state,
-        LivingEntity placer,
+        @Nullable LivingEntity placer,
         ItemStack stack
     ) {
         BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        if (stack.hasTag() && tileEntity instanceof RGBTileEntity) {
-            ((RGBTileEntity) tileEntity).setColor(stack.getTag().getInt("color"));
+        if (stack.hasTag() && tileEntity instanceof RGBTileEntity rgbTileEntity) {
+            // noinspection DataFlowIssue
+            rgbTileEntity.setColor(stack.getTag().getInt("color"));
         }
     }
 
@@ -56,15 +58,15 @@ public final class RGBBlockUtils {
         return stack;
     }
 
-    public static float[] getBeaconColorMultiplier(
+    public static float @Nullable [] getBeaconColorMultiplier(
         BlockState state,
         LevelReader world,
         BlockPos pos,
         BlockPos beaconPos
     ) {
         BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof RGBTileEntity) {
-            return new Color(((RGBTileEntity) tileEntity).getColor()).getRGBColorComponents();
+        if (tileEntity instanceof RGBTileEntity rgbTileEntity) {
+            return new Color(rgbTileEntity.getColor()).getRGBColorComponents();
         } else {
             return null;
         }
@@ -122,18 +124,11 @@ public final class RGBBlockUtils {
             return true;
         }
 
-        switch (side) {
-            case UP:
-            case DOWN:
-                return (state.getValue(SlabBlock.TYPE) != adjacentBlockState.getValue(SlabBlock.TYPE));
-            case NORTH:
-            case EAST:
-            case SOUTH:
-            case WEST:
-                return (state.getValue(SlabBlock.TYPE) == adjacentBlockState.getValue(SlabBlock.TYPE));
-        }
-
-        return false;
+        return switch (side) {
+            case UP, DOWN -> (state.getValue(SlabBlock.TYPE) != adjacentBlockState.getValue(SlabBlock.TYPE));
+            case NORTH, EAST, SOUTH, WEST ->
+                (state.getValue(SlabBlock.TYPE) == adjacentBlockState.getValue(SlabBlock.TYPE));
+        };
     }
 
     public static boolean slabSkipRenderingAdjacentGlassStairs(
@@ -157,9 +152,9 @@ public final class RGBBlockUtils {
             if (state.getValue(SlabBlock.TYPE) == SlabType.BOTTOM
                 && adjacentBlockState.getValue(StairBlock.HALF) == Half.BOTTOM) {
                 return true;
-            } else if (state.getValue(SlabBlock.TYPE) == SlabType.TOP
-                && adjacentBlockState.getValue(StairBlock.HALF) == Half.TOP) {
-                return true;
+            } else {
+                return state.getValue(SlabBlock.TYPE) == SlabType.TOP
+                    && adjacentBlockState.getValue(StairBlock.HALF) == Half.TOP;
             }
         }
 
@@ -221,9 +216,9 @@ public final class RGBBlockUtils {
             if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.TOP
                 && state.getValue(StairBlock.HALF) == Half.TOP) {
                 return true;
-            } else if (adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.BOTTOM
-                && state.getValue(StairBlock.HALF) == Half.BOTTOM) {
-                return true;
+            } else {
+                return adjacentBlockState.getValue(SlabBlock.TYPE) == SlabType.BOTTOM
+                    && state.getValue(StairBlock.HALF) == Half.BOTTOM;
             }
         }
 
@@ -419,10 +414,10 @@ public final class RGBBlockUtils {
                 } else if (adjacentBlockState.getValue(StairBlock.FACING) == state.getValue(StairBlock.FACING)
                     && adjacentBlockState.getValue(StairBlock.SHAPE) != StairsShape.OUTER_RIGHT) {
                     return true;
-                } else if (adjacentBlockState.getValue(StairBlock.FACING)
-                    == state.getValue(StairBlock.FACING).getOpposite()
-                    && state.getValue(StairBlock.SHAPE) == StairsShape.OUTER_LEFT) {
-                    return true;
+                } else {
+                    return adjacentBlockState.getValue(StairBlock.FACING)
+                        == state.getValue(StairBlock.FACING).getOpposite()
+                        && state.getValue(StairBlock.SHAPE) == StairsShape.OUTER_LEFT;
                 }
             }
         }

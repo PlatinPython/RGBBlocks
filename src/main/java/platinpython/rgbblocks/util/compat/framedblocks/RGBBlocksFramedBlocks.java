@@ -54,7 +54,7 @@ public class RGBBlocksFramedBlocks {
         if (!(framedBlockEntity.getCamo(blockHitResult) instanceof RGBBlocksCamoContainer camoContainer)) {
             return InteractionResult.PASS;
         }
-        if (context.getPlayer().isShiftKeyDown()) {
+        if (context.getPlayer() != null && context.getPlayer().isShiftKeyDown()) {
             context.getItemInHand().getOrCreateTag().putInt("color", camoContainer.color);
         } else {
             if (!context.getPlayer().getAbilities().instabuild

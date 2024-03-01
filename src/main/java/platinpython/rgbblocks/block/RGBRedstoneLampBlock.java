@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.RedstoneLampBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
+import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.util.registries.TileEntityRegistry;
 
 public class RGBRedstoneLampBlock extends RedstoneLampBlock implements EntityBlock {
@@ -25,7 +26,13 @@ public class RGBRedstoneLampBlock extends RedstoneLampBlock implements EntityBlo
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(
+        Level worldIn,
+        BlockPos pos,
+        BlockState state,
+        @Nullable LivingEntity placer,
+        ItemStack stack
+    ) {
         RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
     }
 

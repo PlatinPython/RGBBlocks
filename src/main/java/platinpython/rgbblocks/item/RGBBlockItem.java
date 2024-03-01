@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
 import platinpython.rgbblocks.util.ClientUtils;
 import platinpython.rgbblocks.util.Color;
@@ -29,7 +30,7 @@ public class RGBBlockItem extends BlockItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         Color color = new Color(stack.getOrCreateTag().getInt("color"));
         if (ClientUtils.hasShiftDown()) {
             MutableComponent red = Component.translatable("gui.rgbblocks.red").append(": " + color.getRed());
