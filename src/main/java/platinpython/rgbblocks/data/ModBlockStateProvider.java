@@ -7,14 +7,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RedstoneLampBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.CustomLoaderBuilder;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.ModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ModelProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.RegistryHandler;
@@ -74,7 +75,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
             private @Nullable JsonObject baseModel;
 
             protected AntiblockLoaderBuilder(BlockModelBuilder parent, ExistingFileHelper existingFileHelper) {
-                super(new ResourceLocation(RGBBlocks.MOD_ID, "antiblock_model"), parent, existingFileHelper);
+                super(new ResourceLocation(RGBBlocks.MOD_ID, "antiblock_model"), parent, existingFileHelper, false);
             }
 
             public AntiblockLoaderBuilder baseModel(JsonObject baseModel) {
@@ -96,9 +97,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlock(
             BlockRegistry.RGB_ANTIBLOCK.get(),
             models()
-                .withExistingParent(
-                    BlockRegistry.RGB_ANTIBLOCK.getId().getPath(), new ResourceLocation("forge:block/default")
-                )
+                .withExistingParent(BlockRegistry.RGB_ANTIBLOCK.getId().getPath(), new ResourceLocation("block/block"))
                 .customLoader(AntiblockLoaderBuilder::new)
                 .baseModel(
                     models()
@@ -171,11 +170,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
             .forEach(this::blockItems);
     }
 
-    private void blocks(RegistryObject<? extends Block> block) {
+    private void blocks(DeferredBlock<? extends Block> block) {
         this.blocks(block, false);
     }
 
-    private void blocks(RegistryObject<? extends Block> block, boolean isTranslucent) {
+    private void blocks(DeferredBlock<? extends Block> block, boolean isTranslucent) {
         String path = block.getId().getPath();
         String loc = ModelProvider.BLOCK_FOLDER + "/" + path;
         simpleBlock(
@@ -185,11 +184,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
         );
     }
 
-    private void slabBlocks(RegistryObject<? extends SlabBlock> block) {
+    private void slabBlocks(DeferredBlock<? extends SlabBlock> block) {
         this.slabBlocks(block, false);
     }
 
-    private void slabBlocks(RegistryObject<? extends SlabBlock> block, boolean isTranslucent) {
+    private void slabBlocks(DeferredBlock<? extends SlabBlock> block, boolean isTranslucent) {
         String path = block.getId().getPath();
         String loc = ModelProvider.BLOCK_FOLDER + "/" + path.replace("_slab", "");
         ModelFile slabBottom = models().withExistingParent(path, modLoc(ModelProvider.BLOCK_FOLDER + "/slab"))
@@ -203,11 +202,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
         ConfiguredModel.builder().modelFile(slabBottom).build();
     }
 
-    private void stairBlocks(RegistryObject<? extends StairBlock> block) {
+    private void stairBlocks(DeferredBlock<? extends StairBlock> block) {
         this.stairBlocks(block, false);
     }
 
-    private void stairBlocks(RegistryObject<? extends StairBlock> block, boolean isTranslucent) {
+    private void stairBlocks(DeferredBlock<? extends StairBlock> block, boolean isTranslucent) {
         String path = block.getId().getPath();
         String loc = ModelProvider.BLOCK_FOLDER + "/" + path.replace("_stairs", "");
         ModelFile stairs = models().withExistingParent(path, modLoc(ModelProvider.BLOCK_FOLDER + "/stairs"))
@@ -225,7 +224,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         ConfiguredModel.builder().modelFile(stairs).build();
     }
 
-    private void blockItems(RegistryObject<? extends Block> block) {
+    private void blockItems(DeferredHolder<Block, ? extends Block> block) {
         String path = block.getId().getPath();
         simpleBlockItem(block.get(), models().getExistingFile(modLoc(ModelProvider.BLOCK_FOLDER + "/" + path)));
     }

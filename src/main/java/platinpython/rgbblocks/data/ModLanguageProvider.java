@@ -1,7 +1,7 @@
 package platinpython.rgbblocks.data;
 
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.EntityRegistry;

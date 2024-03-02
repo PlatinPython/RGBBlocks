@@ -3,13 +3,13 @@ package platinpython.rgbblocks.util.registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.entity.RGBFallingBlockEntity;
 import platinpython.rgbblocks.util.RegistryHandler;
 
 public class EntityRegistry {
-    public static final RegistryObject<EntityType<RGBFallingBlockEntity>> RGB_FALLING_BLOCK =
+    public static final DeferredHolder<EntityType<?>, EntityType<RGBFallingBlockEntity>> RGB_FALLING_BLOCK =
         RegistryHandler.ENTITY_TYPES.register(
             "rgb_falling_block",
             () -> EntityType.Builder.<RGBFallingBlockEntity>of(RGBFallingBlockEntity::new, MobCategory.MISC)

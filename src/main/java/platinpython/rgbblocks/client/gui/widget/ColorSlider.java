@@ -111,14 +111,13 @@ public class ColorSlider extends AbstractSliderButton {
                 }
             }
 
-            RenderSystem.setShaderTexture(0, SLIDER_LOCATION);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableDepthTest();
-            guiGraphics.blitNineSliced(
-                SLIDER_LOCATION, this.getX() + (int) (this.value * (double) (this.width - 8)), this.getY(), 8, 20, 20,
-                4, 200, 20, 0, this.getHandleTextureY()
+            guiGraphics.blitSprite(
+                this.getHandleSprite(), (int) (this.getX() + (this.value * (this.width - 8))), this.getY(), 8,
+                this.getHeight()
             );
 
             guiGraphics.drawCenteredString(

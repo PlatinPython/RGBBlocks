@@ -7,45 +7,28 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.item.RGBBlockItem;
-import platinpython.rgbblocks.util.RegistryHandler;
-import xfacthd.framedblocks.api.FramedBlocksAPI;
 import xfacthd.framedblocks.api.block.FramedBlockEntity;
-import xfacthd.framedblocks.api.camo.CamoContainer;
+import xfacthd.framedblocks.api.camo.CamoContainerFactory;
 import xfacthd.framedblocks.api.util.FramedConstants;
 
 public class RGBBlocksFramedBlocks {
-    public static final DeferredRegister<CamoContainer.Factory> CAMO_CONTAINER_FACTORIES =
+    public static final DeferredRegister<CamoContainerFactory> CAMO_CONTAINER_FACTORIES =
         DeferredRegister.create(FramedConstants.CAMO_CONTAINER_FACTORY_REGISTRY_NAME, RGBBlocks.MOD_ID);
 
-    public static final RegistryObject<RGBBlocksCamoContainer.Factory> RGBBLOCKS_CONTAINER_FACTORY =
+    public static final DeferredHolder<CamoContainerFactory, RGBBlocksCamoContainer.Factory> RGBBLOCKS_CONTAINER_FACTORY =
         CAMO_CONTAINER_FACTORIES.register("container_factory", RGBBlocksCamoContainer.Factory::new);
 
-    @SubscribeEvent
-    public static void registerFramedBlocksStuff(FMLCommonSetupEvent event) {
-        RegistryHandler.ITEMS.getEntries()
-            .stream()
-            .map(RegistryObject::get)
-            .filter(i -> i instanceof RGBBlockItem)
-            .forEach(
-                i -> FramedBlocksAPI.getInstance().registerCamoContainerFactory(i, RGBBLOCKS_CONTAINER_FACTORY.get())
-            );
-    }
-
-    public static void register() {
-        RGBBlocksFramedBlocks.CAMO_CONTAINER_FACTORIES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        FMLJavaModLoadingContext.get().getModEventBus().register(RGBBlocksFramedBlocks.class);
+    public static void register(IEventBus bus) {
+        RGBBlocksFramedBlocks.CAMO_CONTAINER_FACTORIES.register(bus);
     }
 
     public static InteractionResult handlePaintBucketInteraction(UseOnContext context) {
-        BlockEntity tileEntity = context.getLevel().getBlockEntity(context.getClickedPos());
-        if (!(tileEntity instanceof FramedBlockEntity framedBlockEntity)) {
+        BlockEntity blockEntity = context.getLevel().getBlockEntity(context.getClickedPos());
+        if (!(blockEntity instanceof FramedBlockEntity framedBlockEntity)) {
             return InteractionResult.PASS;
         }
         BlockHitResult blockHitResult = new BlockHitResult(

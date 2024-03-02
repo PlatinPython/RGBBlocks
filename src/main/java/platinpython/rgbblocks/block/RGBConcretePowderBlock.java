@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ConcretePowderBlock;
 import net.minecraft.world.level.block.EntityBlock;
@@ -17,13 +18,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.HitResult;
 import org.jspecify.annotations.Nullable;
+import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.entity.RGBFallingBlockEntity;
-import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
 public class RGBConcretePowderBlock extends ConcretePowderBlock implements EntityBlock {
     public RGBConcretePowderBlock() {
-        super(BlockRegistry.RGB_CONCRETE.get(), Properties.copy(Blocks.WHITE_CONCRETE_POWDER));
+        super(BlockRegistry.RGB_CONCRETE.get(), Properties.ofFullCopy(Blocks.WHITE_CONCRETE_POWDER));
     }
 
     @Override
@@ -33,74 +34,74 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
 
     @Override
     public void setPlacedBy(
-        Level worldIn,
+        Level level,
         BlockPos pos,
         BlockState state,
         @Nullable LivingEntity placer,
         ItemStack stack
     ) {
-        RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
+        RGBBlockUtils.setPlacedBy(level, pos, state, placer, stack);
     }
 
     @Override
     public ItemStack getCloneItemStack(
         BlockState state,
         HitResult target,
-        BlockGetter world,
+        LevelReader level,
         BlockPos pos,
         Player player
     ) {
-        return RGBBlockUtils.getCloneItemStack(state, target, world, pos, player);
+        return RGBBlockUtils.getCloneItemStack(state, target, level, pos, player);
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
-        if (worldIn.isEmptyBlock(pos.below()) || isFree(worldIn.getBlockState(pos.below())) && pos.getY() >= 0) {
-            BlockEntity tileEntity = worldIn.getBlockEntity(pos);
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
+        if (level.isEmptyBlock(pos.below()) || isFree(level.getBlockState(pos.below())) && pos.getY() >= 0) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
             RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(
-                worldIn, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D,
+                level, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D,
                 state.hasProperty(BlockStateProperties.WATERLOGGED)
                     ? state.setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE)
                     : state,
-                tileEntity instanceof RGBTileEntity ? ((RGBTileEntity) tileEntity).getColor() : 0
+                blockEntity instanceof RGBBlockEntity rgbBlockEntity ? rgbBlockEntity.getColor() : 0
             );
-            worldIn.setBlock(pos, state.getFluidState().createLegacyBlock(), 3);
-            worldIn.addFreshEntity(fallingBlockEntity);
+            level.setBlock(pos, state.getFluidState().createLegacyBlock(), 3);
+            level.addFreshEntity(fallingBlockEntity);
             this.falling(fallingBlockEntity);
         }
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.is(BlockRegistry.RGB_CONCRETE_POWDER.get()) && !newState.is(BlockRegistry.RGB_CONCRETE.get())) {
             if (state.hasBlockEntity() && (!state.is(newState.getBlock()) || !newState.hasBlockEntity())) {
-                worldIn.removeBlockEntity(pos);
+                level.removeBlockEntity(pos);
             }
         }
     }
 
     @Override
     public void onLand(
-        Level world,
+        Level level,
         BlockPos blockPos,
         BlockState blockBlockState,
         BlockState entityBlockState,
         FallingBlockEntity entity
     ) {
-        super.onLand(world, blockPos, blockBlockState, entityBlockState, entity);
-        if (entity instanceof RGBFallingBlockEntity) {
-            RGBTileEntity tileEntity = new RGBTileEntity(blockPos, entityBlockState);
-            tileEntity.setColor(((RGBFallingBlockEntity) entity).getColor());
-            world.setBlockEntity(tileEntity);
+        super.onLand(level, blockPos, blockBlockState, entityBlockState, entity);
+        if (entity instanceof RGBFallingBlockEntity rgbFallingBlockEntity) {
+            RGBBlockEntity blockEntity = new RGBBlockEntity(blockPos, entityBlockState);
+            blockEntity.setColor(rgbFallingBlockEntity.getColor());
+            level.setBlockEntity(blockEntity);
         }
     }
 
     @Override
     public int getDustColor(BlockState blockState, BlockGetter blockReader, BlockPos blockPos) {
-        BlockEntity tileEntity = blockReader.getBlockEntity(blockPos.above());
-        if (tileEntity instanceof RGBTileEntity rgbTileEntity) {
-            return rgbTileEntity.getColor();
+        BlockEntity blockEntity = blockReader.getBlockEntity(blockPos.above());
+        if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
+            return rgbBlockEntity.getColor();
         }
         return super.getDustColor(blockState, blockReader, blockPos);
     }

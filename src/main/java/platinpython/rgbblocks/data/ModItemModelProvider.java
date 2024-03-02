@@ -2,9 +2,9 @@ package platinpython.rgbblocks.data;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredItem;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
@@ -24,7 +24,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         ).renderType("translucent");
     }
 
-    private void item2Layers(@SuppressWarnings("SameParameterValue") RegistryObject<? extends Item> item) {
+    private void item2Layers(@SuppressWarnings("SameParameterValue") DeferredItem<? extends Item> item) {
         String path = item.getId().getPath();
         String loc = ITEM_FOLDER + "/" + path;
         singleTexture(path, mcLoc(ITEM_FOLDER + "/generated"), "layer0", modLoc(loc))

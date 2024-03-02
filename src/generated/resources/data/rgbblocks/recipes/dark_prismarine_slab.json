@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "item": "rgbblocks:dark_prismarine"
@@ -11,6 +12,6 @@
   "result": {
     "count": 6,
     "item": "rgbblocks:dark_prismarine_slab",
-    "nbt": "{\"color\":-1}"
+    "nbt": "{Damage:0,color:-1}"
   }
 }

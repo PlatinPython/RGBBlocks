@@ -1,7 +1,7 @@
 package platinpython.rgbblocks.util;
 
 public class Color {
-    private int value;
+    private final int value;
 
     public Color(int r, int g, int b) {
         this(r, g, b, 255);

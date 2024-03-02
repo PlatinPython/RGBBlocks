@@ -27,16 +27,16 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.ChunkRenderTypeSet;
-import net.minecraftforge.client.model.IQuadTransformer;
-import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.client.model.data.ModelProperty;
-import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
-import net.minecraftforge.client.model.geometry.IGeometryLoader;
-import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
+import net.neoforged.neoforge.client.ChunkRenderTypeSet;
+import net.neoforged.neoforge.client.model.IQuadTransformer;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelProperty;
+import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
+import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
+import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
 import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.tileentity.RGBTileEntity;
+import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
 import java.util.ArrayList;
@@ -136,8 +136,8 @@ public class AntiblockBakedModel implements BakedModel {
         }
         cutQuad(vertexData, minX, minY, minX + .5F, minY + .5F, side);
 
-        int u = right ? 8 : 0;
-        int v = down ? 8 : 0;
+        float u = right ? 0.5F : 0;
+        float v = down ? 0.5F : 0;
         applyUVs(vertexData, true, sprite, u, v, side);
 
         return new BakedQuad(vertexData, quad.getTintIndex(), quad.getDirection(), sprite, quad.isShade());
@@ -202,8 +202,8 @@ public class AntiblockBakedModel implements BakedModel {
 
         boolean closed = !x && !y;
         TextureAtlasSprite sprite = closed ? defSprite : ctmSprite;
-        int u = getU(x, y, xy) + (right ? (closed ? 8 : 4) : 0);
-        int v = getV(x, y, xy) + (down ? (closed ? 8 : 4) : 0);
+        float u = getU(x, y, xy) + (right ? (closed ? 0.5F : 0.25F) : 0);
+        float v = getV(x, y, xy) + (down ? (closed ? 0.5F : 0.25F) : 0);
         applyUVs(vertexData, closed, sprite, u, v, side);
 
         return new BakedQuad(vertexData, quad.getTintIndex(), quad.getDirection(), sprite, quad.isShade());
@@ -216,7 +216,7 @@ public class AntiblockBakedModel implements BakedModel {
         return vertexData;
     }
 
-    private static int getU(boolean x, boolean y, boolean xy) {
+    private static float getU(boolean x, boolean y, boolean xy) {
         if (!x && !y) {
             return 0;
         }
@@ -224,23 +224,23 @@ public class AntiblockBakedModel implements BakedModel {
         if (x && !y) {
             return 0;
         } else if (!x && y) {
-            return 8;
+            return 0.5F;
         } else {
-            return xy ? 0 : 8;
+            return xy ? 0 : 0.5F;
         }
     }
 
-    private static int getV(boolean x, boolean y, boolean xy) {
+    private static float getV(boolean x, boolean y, boolean xy) {
         if (!x && !y) {
             return 0;
         }
 
         if (x && !y) {
-            return 8;
+            return 0.5F;
         } else if (!x && y) {
             return 0;
         } else {
-            return xy ? 0 : 8;
+            return xy ? 0 : 0.5F;
         }
     }
 
@@ -284,14 +284,14 @@ public class AntiblockBakedModel implements BakedModel {
         int[] vertexData,
         boolean closed,
         TextureAtlasSprite sprite,
-        int u0,
-        int v0,
+        float u0,
+        float v0,
         Direction side
     ) {
         float uMin = sprite.getU(u0);
         float vMin = sprite.getV(v0);
-        float uMax = sprite.getU(u0 + (closed ? 8 : 4));
-        float vMax = sprite.getV(v0 + (closed ? 8 : 4));
+        float uMax = sprite.getU(u0 + (closed ? 0.5F : 0.25F));
+        float vMax = sprite.getV(v0 + (closed ? 0.5F : 0.25F));
 
         float[][] uv = new float[4][2];
         for (int i = 0; i < 4; i++) {
@@ -317,7 +317,7 @@ public class AntiblockBakedModel implements BakedModel {
 
     @Override
     public ModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, ModelData modelData) {
-        if (!(getAntiblockAt(level, pos) instanceof RGBTileEntity blockEntity)) {
+        if (!(getAntiblockAt(level, pos) instanceof RGBBlockEntity blockEntity)) {
             return modelData;
         }
 
@@ -352,80 +352,80 @@ public class AntiblockBakedModel implements BakedModel {
         boolean downWest = false;
         boolean downWestColor = false;
 
-        if (getAntiblockAt(level, pos.north()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.north()) instanceof RGBBlockEntity otherBlockEntity) {
             north = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.east()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.east()) instanceof RGBBlockEntity otherBlockEntity) {
             east = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.south()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.south()) instanceof RGBBlockEntity otherBlockEntity) {
             south = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.west()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.west()) instanceof RGBBlockEntity otherBlockEntity) {
             west = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.above()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.above()) instanceof RGBBlockEntity otherBlockEntity) {
             up = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.below()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.below()) instanceof RGBBlockEntity otherBlockEntity) {
             down = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.above().north()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.above().north()) instanceof RGBBlockEntity otherBlockEntity) {
             upNorth = true;
             upNorthColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.above().east()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.above().east()) instanceof RGBBlockEntity otherBlockEntity) {
             upEast = true;
             upEastColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.above().south()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.above().south()) instanceof RGBBlockEntity otherBlockEntity) {
             upSouth = true;
             upSouthColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.above().west()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.above().west()) instanceof RGBBlockEntity otherBlockEntity) {
             upWest = true;
             upWestColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.north().east()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.north().east()) instanceof RGBBlockEntity otherBlockEntity) {
             northEast = true;
             northEastColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.south().east()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.south().east()) instanceof RGBBlockEntity otherBlockEntity) {
             southEast = true;
             southEastColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.south().west()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.south().west()) instanceof RGBBlockEntity otherBlockEntity) {
             southWest = true;
             southWestColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.north().west()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.north().west()) instanceof RGBBlockEntity otherBlockEntity) {
             northWest = true;
             northWestColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.below().north()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.below().north()) instanceof RGBBlockEntity otherBlockEntity) {
             downNorth = true;
             downNorthColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.below().east()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.below().east()) instanceof RGBBlockEntity otherBlockEntity) {
             downEast = true;
             downEastColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.below().south()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.below().south()) instanceof RGBBlockEntity otherBlockEntity) {
             downSouth = true;
             downSouthColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.below().west()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.below().west()) instanceof RGBBlockEntity otherBlockEntity) {
             downWest = true;
             downWestColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        boolean upNorthEast = getAntiblockAt(level, pos.above().north().east()) instanceof RGBTileEntity;
-        boolean upSouthEast = getAntiblockAt(level, pos.above().south().east()) instanceof RGBTileEntity;
-        boolean upSouthWest = getAntiblockAt(level, pos.above().south().west()) instanceof RGBTileEntity;
-        boolean upNorthWest = getAntiblockAt(level, pos.above().north().west()) instanceof RGBTileEntity;
-        boolean downNorthEast = getAntiblockAt(level, pos.below().north().east()) instanceof RGBTileEntity;
-        boolean downSouthEast = getAntiblockAt(level, pos.below().south().east()) instanceof RGBTileEntity;
-        boolean downSouthWest = getAntiblockAt(level, pos.below().south().west()) instanceof RGBTileEntity;
-        boolean downNorthWest = getAntiblockAt(level, pos.below().north().west()) instanceof RGBTileEntity;
+        boolean upNorthEast = getAntiblockAt(level, pos.above().north().east()) instanceof RGBBlockEntity;
+        boolean upSouthEast = getAntiblockAt(level, pos.above().south().east()) instanceof RGBBlockEntity;
+        boolean upSouthWest = getAntiblockAt(level, pos.above().south().west()) instanceof RGBBlockEntity;
+        boolean upNorthWest = getAntiblockAt(level, pos.above().north().west()) instanceof RGBBlockEntity;
+        boolean downNorthEast = getAntiblockAt(level, pos.below().north().east()) instanceof RGBBlockEntity;
+        boolean downSouthEast = getAntiblockAt(level, pos.below().south().east()) instanceof RGBBlockEntity;
+        boolean downSouthWest = getAntiblockAt(level, pos.below().south().west()) instanceof RGBBlockEntity;
+        boolean downNorthWest = getAntiblockAt(level, pos.below().north().west()) instanceof RGBBlockEntity;
 
         return modelData.derive()
             .with(

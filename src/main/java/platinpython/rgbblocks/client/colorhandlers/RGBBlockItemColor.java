@@ -6,7 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import platinpython.rgbblocks.item.RGBBlockItem;
 
 public class RGBBlockItemColor implements ItemColor {
-    public int getColor(ItemStack stack, int tintindex) {
+    public int getColor(ItemStack stack, int tintIndex) {
         if (stack.getItem() instanceof RGBBlockItem) {
             // noinspection DataFlowIssue
             if (!stack.hasTag() || !stack.getTag().contains("color")) {

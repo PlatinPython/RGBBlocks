@@ -6,7 +6,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.SlabBlock;
@@ -18,41 +17,40 @@ import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.phys.HitResult;
 import org.jspecify.annotations.Nullable;
-import platinpython.rgbblocks.tileentity.RGBTileEntity;
+import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.util.Color;
-import platinpython.rgbblocks.util.registries.TileEntityRegistry;
+import platinpython.rgbblocks.util.registries.BlockEntityRegistry;
 
 public final class RGBBlockUtils {
     public static @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return TileEntityRegistry.RGB.get().create(pos, state);
+        return BlockEntityRegistry.RGB.get().create(pos, state);
     }
 
     public static void setPlacedBy(
-        Level worldIn,
+        Level level,
         BlockPos pos,
         BlockState state,
         @Nullable LivingEntity placer,
         ItemStack stack
     ) {
-        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        if (stack.hasTag() && tileEntity instanceof RGBTileEntity rgbTileEntity) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (stack.hasTag() && blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
             // noinspection DataFlowIssue
-            rgbTileEntity.setColor(stack.getTag().getInt("color"));
+            rgbBlockEntity.setColor(stack.getTag().getInt("color"));
         }
     }
 
     public static ItemStack getCloneItemStack(
         BlockState state,
         HitResult target,
-        BlockGetter world,
+        LevelReader level,
         BlockPos pos,
         Player player
     ) {
         ItemStack stack = new ItemStack(state.getBlock().asItem());
-        BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof RGBTileEntity) {
+        if (level.getBlockEntity(pos) instanceof RGBBlockEntity blockEntity) {
             CompoundTag tag = new CompoundTag();
-            tag.putInt("color", ((RGBTileEntity) tileEntity).getColor());
+            tag.putInt("color", blockEntity.getColor());
             stack.setTag(tag);
         }
         return stack;
@@ -60,13 +58,13 @@ public final class RGBBlockUtils {
 
     public static float @Nullable [] getBeaconColorMultiplier(
         BlockState state,
-        LevelReader world,
+        LevelReader level,
         BlockPos pos,
         BlockPos beaconPos
     ) {
-        BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof RGBTileEntity rgbTileEntity) {
-            return new Color(rgbTileEntity.getColor()).getRGBColorComponents();
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
+            return new Color(rgbBlockEntity.getColor()).getRGBColorComponents();
         } else {
             return null;
         }

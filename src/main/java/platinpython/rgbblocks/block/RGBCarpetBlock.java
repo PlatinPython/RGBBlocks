@@ -5,8 +5,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.WoolCarpetBlock;
@@ -17,7 +17,7 @@ import org.jspecify.annotations.Nullable;
 
 public class RGBCarpetBlock extends WoolCarpetBlock implements EntityBlock {
     public RGBCarpetBlock() {
-        super(DyeColor.WHITE, Properties.copy(Blocks.WHITE_CARPET));
+        super(DyeColor.WHITE, Properties.ofFullCopy(Blocks.WHITE_CARPET));
     }
 
     @Override
@@ -27,23 +27,23 @@ public class RGBCarpetBlock extends WoolCarpetBlock implements EntityBlock {
 
     @Override
     public void setPlacedBy(
-        Level worldIn,
+        Level level,
         BlockPos pos,
         BlockState state,
         @Nullable LivingEntity placer,
         ItemStack stack
     ) {
-        RGBBlockUtils.setPlacedBy(worldIn, pos, state, placer, stack);
+        RGBBlockUtils.setPlacedBy(level, pos, state, placer, stack);
     }
 
     @Override
     public ItemStack getCloneItemStack(
         BlockState state,
         HitResult target,
-        BlockGetter world,
+        LevelReader level,
         BlockPos pos,
         Player player
     ) {
-        return RGBBlockUtils.getCloneItemStack(state, target, world, pos, player);
+        return RGBBlockUtils.getCloneItemStack(state, target, level, pos, player);
     }
 }

@@ -6,9 +6,9 @@ import platinpython.rgbblocks.item.PaintBucketItem;
 
 public class PaintBucketItemColor implements ItemColor {
     @Override
-    public int getColor(ItemStack stack, int tintindex) {
+    public int getColor(ItemStack stack, int tintIndex) {
         if (stack.getItem() instanceof PaintBucketItem) {
-            if (tintindex == 1) {
+            if (tintIndex == 1) {
                 // noinspection DataFlowIssue
                 if (!stack.hasTag() || !stack.getTag().contains("color")) {
                     return 0;

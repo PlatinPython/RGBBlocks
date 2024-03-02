@@ -1,20 +1,20 @@
 package platinpython.rgbblocks.util.registries;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.RegistryHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.function.Supplier;
 
 public class CreativeTabRegistry {
-    public static final RegistryObject<CreativeModeTab> TAB =
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB =
         RegistryHandler.CREATIVE_MODE_TABS.register("tab", CreativeTabRegistry::getTab);
 
     private static CreativeModeTab getTab() {
@@ -29,16 +29,20 @@ public class CreativeTabRegistry {
                 List<ItemStack> items = new ArrayList<>(
                     RegistryHandler.ITEMS.getEntries()
                         .stream()
-                        .map(RegistryObject::get)
+                        .map(Supplier::get)
                         .map(Item::getDefaultInstance)
                         .toList()
                 );
-                items.sort(
-                    (i1, i2) -> Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(i1.getItem()))
-                        .compareNamespaced(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(i2.getItem())))
-                );
-                items.removeIf(i -> i.getItem().equals(ItemRegistry.PAINT_BUCKET.get()));
-                items.add(0, ItemRegistry.PAINT_BUCKET.get().getDefaultInstance());
+                items.sort((i1, i2) -> {
+                    if (i1.getItem() == ItemRegistry.PAINT_BUCKET.get()) {
+                        return -1;
+                    } else if (i2.getItem() == ItemRegistry.PAINT_BUCKET.get()) {
+                        return 1;
+                    } else {
+                        return BuiltInRegistries.ITEM.getKey(i1.getItem())
+                            .compareNamespaced(BuiltInRegistries.ITEM.getKey(i2.getItem()));
+                    }
+                });
                 output.acceptAll(items);
             })
             .build();

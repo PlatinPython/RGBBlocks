@@ -10,17 +10,17 @@ import org.jspecify.annotations.Nullable;
 
 public class RGBGlassSlabBlock extends RGBSlabBlock {
     public RGBGlassSlabBlock() {
-        super(Properties.copy(Blocks.GLASS));
+        super(Properties.ofFullCopy(Blocks.GLASS));
     }
 
     @Override
     public float @Nullable [] getBeaconColorMultiplier(
         BlockState state,
-        LevelReader world,
+        LevelReader level,
         BlockPos pos,
         BlockPos beaconPos
     ) {
-        return RGBBlockUtils.getBeaconColorMultiplier(state, world, pos, beaconPos);
+        return RGBBlockUtils.getBeaconColorMultiplier(state, level, pos, beaconPos);
     }
 
     @SuppressWarnings("deprecation")
@@ -31,7 +31,7 @@ public class RGBGlassSlabBlock extends RGBSlabBlock {
 
     @SuppressWarnings("deprecation")
     @Override
-    public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
+    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
         return 1.0F;
     }
 

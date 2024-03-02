@@ -15,10 +15,10 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 import org.jspecify.annotations.Nullable;
+import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
-import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.ClientUtils;
 import platinpython.rgbblocks.util.Color;
 import platinpython.rgbblocks.util.compat.framedblocks.RGBBlocksFramedBlocks;
@@ -40,7 +40,7 @@ public class PaintBucketItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
         Color color = new Color(stack.getOrCreateTag().getInt("color"));
         if (ClientUtils.hasShiftDown()) {
             MutableComponent red = Component.translatable("gui.rgbblocks.red").append(": " + color.getRed());
@@ -71,10 +71,10 @@ public class PaintBucketItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player playerIn, InteractionHand handIn) {
         if (handIn == InteractionHand.MAIN_HAND && playerIn.isShiftKeyDown()
             && playerIn.getMainHandItem().getTag() != null) {
-            if (worldIn.isClientSide) {
+            if (level.isClientSide) {
                 ClientUtils.openColorSelectScreen(
                     playerIn.getMainHandItem().getTag().getInt("color"),
                     playerIn.getMainHandItem().getTag().getBoolean("isRGBSelected")
@@ -87,17 +87,17 @@ public class PaintBucketItem extends Item {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        BlockEntity tileEntity = context.getLevel().getBlockEntity(context.getClickedPos());
-        if (tileEntity instanceof RGBTileEntity rgbTileEntity) {
+        BlockEntity blockEntity = context.getLevel().getBlockEntity(context.getClickedPos());
+        if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
             if (context.getPlayer() != null && context.getPlayer().isShiftKeyDown()) {
-                context.getItemInHand().getOrCreateTag().putInt("color", rgbTileEntity.getColor());
+                context.getItemInHand().getOrCreateTag().putInt("color", rgbBlockEntity.getColor());
             } else {
                 if (!context.getItemInHand().hasTag()) {
                     return InteractionResult.PASS;
                 }
                 // noinspection DataFlowIssue
                 int color = context.getItemInHand().getTag().getInt("color");
-                if (!context.getPlayer().isCreative() && color != rgbTileEntity.getColor()) {
+                if (!context.getPlayer().isCreative() && color != rgbBlockEntity.getColor()) {
                     if (context.getItemInHand().getDamageValue() == context.getItemInHand().getMaxDamage() - 1) {
                         context.getPlayer().setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
                     } else {
@@ -105,10 +105,10 @@ public class PaintBucketItem extends Item {
                             .hurtAndBreak(1, context.getPlayer(), e -> e.broadcastBreakEvent(context.getHand()));
                     }
                 }
-                rgbTileEntity.setColor(color);
+                rgbBlockEntity.setColor(color);
                 context.getLevel()
                     .sendBlockUpdated(
-                        context.getClickedPos(), tileEntity.getBlockState(), tileEntity.getBlockState(),
+                        context.getClickedPos(), blockEntity.getBlockState(), blockEntity.getBlockState(),
                         Block.UPDATE_ALL_IMMEDIATE
                     );
             }

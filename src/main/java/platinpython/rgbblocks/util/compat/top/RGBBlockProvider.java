@@ -12,28 +12,32 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import platinpython.rgbblocks.RGBBlocks;
+import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
-import platinpython.rgbblocks.tileentity.RGBTileEntity;
 import platinpython.rgbblocks.util.Color;
 
+import java.util.HexFormat;
+
 public class RGBBlockProvider implements IProbeInfoProvider {
+    private static final HexFormat HEX_FORMAT = HexFormat.of().withUpperCase();
+
     @Override
     public void addProbeInfo(
         ProbeMode mode,
         IProbeInfo info,
         Player player,
-        Level world,
+        Level level,
         BlockState state,
         IProbeHitData hitData
     ) {
-        BlockEntity tileEntity = world.getBlockEntity(hitData.getPos());
-        if (tileEntity instanceof RGBTileEntity) {
+        BlockEntity blockEntity = level.getBlockEntity(hitData.getPos());
+        if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
             if (mode == ProbeMode.NORMAL) {
-                info.text("#" + Integer.toHexString(((RGBTileEntity) tileEntity).getColor()).substring(2));
+                info.text("#" + HEX_FORMAT.toHexDigits(rgbBlockEntity.getColor()).substring(2));
             }
 
             if (mode == ProbeMode.EXTENDED) {
-                Color color = new Color(((RGBTileEntity) tileEntity).getColor());
+                Color color = new Color(rgbBlockEntity.getColor());
                 MutableComponent red = Component.translatable("gui.rgbblocks.red").append(": " + color.getRed());
                 MutableComponent green = Component.translatable("gui.rgbblocks.green").append(": " + color.getGreen());
                 MutableComponent blue = Component.translatable("gui.rgbblocks.blue").append(": " + color.getBlue());

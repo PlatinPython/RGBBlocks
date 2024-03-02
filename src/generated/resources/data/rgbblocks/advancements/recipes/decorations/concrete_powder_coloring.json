@@ -1,0 +1,39 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_paint_bucket_and_concrete_powder": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rgbblocks:paint_bucket"
+            ]
+          },
+          {
+            "items": [
+              "rgbblocks:concrete_powder"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rgbblocks:concrete_powder_coloring"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_paint_bucket_and_concrete_powder"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rgbblocks:concrete_powder_coloring"
+    ]
+  }
+}

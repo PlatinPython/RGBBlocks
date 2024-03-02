@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +12,6 @@ import net.minecraft.server.packs.AbstractPackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
-import net.minecraft.server.packs.metadata.pack.PackMetadataSectionSerializer;
 import net.minecraft.server.packs.resources.IoSupplier;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -46,7 +46,10 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
 
     public RGBBlocksPack() {
         super("rgbblocks_virtual_pack", true);
-        this.packInfo = new PackMetadataSection(Component.translatable("rgbblocks.pack_description"), 7);
+        this.packInfo = new PackMetadataSection(
+            Component.translatable("rgbblocks.pack_description"),
+            SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES)
+        );
         fillTexturesMap();
     }
 
@@ -177,7 +180,7 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getMetadataSection(MetadataSectionSerializer<T> serializer) {
-        return serializer instanceof PackMetadataSectionSerializer ? (T) this.packInfo : null;
+        return serializer == PackMetadataSection.TYPE ? (T) this.packInfo : null;
     }
 
     @Override

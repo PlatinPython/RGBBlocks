@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "G": {
       "item": "rgbblocks:glowstone"
@@ -15,6 +16,6 @@
   ],
   "result": {
     "item": "rgbblocks:redstone_lamp",
-    "nbt": "{\"color\":-1}"
+    "nbt": "{Damage:0,color:-1}"
   }
 }

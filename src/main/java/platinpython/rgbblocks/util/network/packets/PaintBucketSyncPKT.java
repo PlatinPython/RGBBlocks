@@ -1,45 +1,43 @@
 package platinpython.rgbblocks.util.network.packets;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.item.PaintBucketItem;
 
-import java.util.function.Supplier;
+public record PaintBucketSyncPKT(int color, boolean isRGBSelected) implements CustomPacketPayload {
 
-public class PaintBucketSyncPKT {
-    private final int color;
-    private final boolean isRGBSelected;
+    public static final ResourceLocation ID = new ResourceLocation(RGBBlocks.MOD_ID, "paint_bucket_sync");
 
-    public PaintBucketSyncPKT(int color, boolean isRGBSelected) {
-        this.color = color;
-        this.isRGBSelected = isRGBSelected;
+    public PaintBucketSyncPKT(FriendlyByteBuf buffer) {
+        this(buffer.readInt(), buffer.readBoolean());
     }
 
-    public static void encode(PaintBucketSyncPKT message, FriendlyByteBuf buffer) {
-        buffer.writeInt(message.color);
-        buffer.writeBoolean(message.isRGBSelected);
+    @Override
+    public void write(FriendlyByteBuf buffer) {
+        buffer.writeInt(color);
+        buffer.writeBoolean(isRGBSelected);
     }
 
-    public static PaintBucketSyncPKT decode(FriendlyByteBuf buffer) {
-        return new PaintBucketSyncPKT(buffer.readInt(), buffer.readBoolean());
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
-
     public static class Handler {
-        public static void handle(PaintBucketSyncPKT message, Supplier<NetworkEvent.Context> context) {
-            context.get().enqueueWork(() -> {
-                Player player = context.get().getSender();
-                if (player == null) {
-                    return;
-                }
-                ItemStack stack = player.getMainHandItem();
-                if (stack.getItem() instanceof PaintBucketItem) {
-                    stack.getOrCreateTag().putInt("color", message.color);
-                    stack.getOrCreateTag().putBoolean("isRGBSelected", message.isRGBSelected);
-                }
-            });
-            context.get().setPacketHandled(true);
+        public static void handle(PaintBucketSyncPKT message, PlayPayloadContext context) {
+            context.workHandler()
+                .submitAsync(
+                    () -> context.player()
+                        .map(LivingEntity::getMainHandItem)
+                        .filter(stack -> stack.getItem() instanceof PaintBucketItem)
+                        .ifPresent(stack -> {
+                            stack.getOrCreateTag().putInt("color", message.color);
+                            stack.getOrCreateTag().putBoolean("isRGBSelected", message.isRGBSelected);
+                        })
+                );
         }
     }
 }

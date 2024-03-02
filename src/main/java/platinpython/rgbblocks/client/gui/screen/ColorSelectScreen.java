@@ -9,7 +9,7 @@ import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.client.gui.widget.ColorSlider;
 import platinpython.rgbblocks.client.gui.widget.SliderType;
 import platinpython.rgbblocks.util.Color;
-import platinpython.rgbblocks.util.network.PacketHandler;
+import platinpython.rgbblocks.util.network.NetworkHandler;
 import platinpython.rgbblocks.util.network.packets.PaintBucketSyncPKT;
 
 import java.util.Locale;
@@ -286,7 +286,7 @@ public class ColorSelectScreen extends Screen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(guiGraphics);
+        this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(this.width / 2F, this.height / 2F - WIDGET_HEIGHT / 2F - 2 * SPACING - 15, 0);
@@ -298,7 +298,7 @@ public class ColorSelectScreen extends Screen {
 
     @Override
     public void onClose() {
-        PacketHandler.sendToServer(new PaintBucketSyncPKT(getColor(), isRGBSelected));
+        NetworkHandler.sendToServer(new PaintBucketSyncPKT(getColor(), isRGBSelected));
         super.onClose();
     }
 }

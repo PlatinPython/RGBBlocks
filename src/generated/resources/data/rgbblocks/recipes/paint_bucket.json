@@ -1,5 +1,6 @@
 {
   "type": "rgbblocks:crafting_shapeless_no_return",
+  "category": "misc",
   "ingredients": [
     {
       "tag": "forge:dyes/red"
@@ -16,6 +17,6 @@
   ],
   "result": {
     "item": "rgbblocks:paint_bucket",
-    "nbt": "{\"color\":-1}"
+    "nbt": "{Damage:0,color:-1}"
   }
 }

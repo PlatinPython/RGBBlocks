@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_water_bucket",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_water_bucket"
     ]
   ],
   "rewards": {
     "recipes": [
       "rgbblocks:paint_bucket"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "parent": "forge:block/default",
+  "parent": "minecraft:block/block",
   "base_model": {
     "parent": "rgbblocks:block/no_shade_2_layer",
     "render_type": "minecraft:cutout",

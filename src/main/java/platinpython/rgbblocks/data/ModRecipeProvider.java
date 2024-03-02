@@ -2,25 +2,28 @@ package platinpython.rgbblocks.data;
 
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.conditions.IConditionBuilder;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
-import java.util.function.Consumer;
+import java.util.Optional;
 
 public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
     private final CompoundTag whiteNBT = new CompoundTag();
@@ -31,128 +34,137 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-        ShapelessNBTRecipeBuilder.shapeless(ItemRegistry.PAINT_BUCKET.get(), 1, whiteNBT)
+    protected void buildRecipes(RecipeOutput recipeOutput) {
+        SpecialShapelessRecipeBuilder
+            .shapeless(RecipeCategory.MISC, new ItemStack(ItemRegistry.PAINT_BUCKET.get(), 1, Optional.of(whiteNBT)))
             .makeNoReturnRecipe()
             .requires(Tags.Items.DYES_RED)
             .requires(Tags.Items.DYES_GREEN)
             .requires(Tags.Items.DYES_BLUE)
             .requires(Items.WATER_BUCKET)
             .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
-            .save(consumer);
+            .save(recipeOutput);
 
-        ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_CARPET.get(), 3, whiteNBT)
+        ShapedRecipeBuilder
+            .shaped(RecipeCategory.DECORATIONS, new ItemStack(BlockRegistry.RGB_CARPET, 3, Optional.of(whiteNBT)))
             .define('#', BlockRegistry.RGB_WOOL.get())
             .pattern("##")
             .unlockedBy("has_rgb_wool", has(BlockRegistry.RGB_WOOL.get()))
-            .save(consumer);
-        ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_GLASS_PANE.get(), 16, whiteNBT)
+            .save(recipeOutput);
+        ShapedRecipeBuilder
+            .shaped(RecipeCategory.DECORATIONS, new ItemStack(BlockRegistry.RGB_GLASS_PANE, 16, Optional.of(whiteNBT)))
             .define('#', BlockRegistry.RGB_GLASS.get())
             .pattern("###")
             .pattern("###")
             .unlockedBy("has_rgb_glass", has(BlockRegistry.RGB_GLASS.get()))
-            .save(consumer);
-        ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_ANTIBLOCK.get(), 8, whiteNBT)
+            .save(recipeOutput);
+        ShapedRecipeBuilder
+            .shaped(RecipeCategory.DECORATIONS, new ItemStack(BlockRegistry.RGB_ANTIBLOCK, 8, Optional.of(whiteNBT)))
             .define('S', Tags.Items.STONE)
             .define('G', BlockRegistry.RGB_GLOWSTONE.get())
             .pattern("SSS")
             .pattern("SGS")
             .pattern("SSS")
             .unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get()))
-            .save(consumer);
-        ShapedNBTRecipeBuilder.shaped(BlockRegistry.RGB_REDSTONE_LAMP.get(), 1, whiteNBT)
+            .save(recipeOutput);
+        ShapedRecipeBuilder
+            .shaped(
+                RecipeCategory.DECORATIONS,
+                new ItemStack(BlockRegistry.RGB_REDSTONE_LAMP.get(), 1, Optional.of(whiteNBT))
+            )
             .define('R', Tags.Items.DUSTS_REDSTONE)
             .define('G', BlockRegistry.RGB_GLOWSTONE.get())
             .pattern(" R ")
             .pattern("RGR")
             .pattern(" R ")
             .unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get()))
-            .save(consumer);
+            .save(recipeOutput);
 
-        blockIItemProvider(consumer, BlockRegistry.RGB_CONCRETE_POWDER.get(), Blocks.WHITE_CONCRETE_POWDER);
-        blockTag(consumer, BlockRegistry.RGB_WOOL.get(), ItemTags.WOOL);
-        blockTag(consumer, BlockRegistry.RGB_PLANKS.get(), ItemTags.PLANKS);
-        blockIItemProvider(consumer, BlockRegistry.RGB_TERRACOTTA.get(), Blocks.WHITE_TERRACOTTA);
-        blockTag(consumer, BlockRegistry.RGB_GLASS.get(), Tags.Items.STAINED_GLASS);
-        blockIItemProvider(consumer, BlockRegistry.RGB_GLOWSTONE.get(), Blocks.GLOWSTONE);
-        blockIItemProvider(consumer, BlockRegistry.RGB_PRISMARINE.get(), Blocks.PRISMARINE);
-        blockIItemProvider(consumer, BlockRegistry.RGB_PRISMARINE_BRICKS.get(), Blocks.PRISMARINE_BRICKS);
-        blockIItemProvider(consumer, BlockRegistry.RGB_DARK_PRISMARINE.get(), Blocks.DARK_PRISMARINE);
-        blockIItemProvider(consumer, BlockRegistry.RGB_SEA_LANTERN.get(), Blocks.SEA_LANTERN);
+        blockIItemProvider(recipeOutput, BlockRegistry.RGB_CONCRETE_POWDER.get(), Blocks.WHITE_CONCRETE_POWDER);
+        blockTag(recipeOutput, BlockRegistry.RGB_WOOL.get(), ItemTags.WOOL);
+        blockTag(recipeOutput, BlockRegistry.RGB_PLANKS.get(), ItemTags.PLANKS);
+        blockIItemProvider(recipeOutput, BlockRegistry.RGB_TERRACOTTA.get(), Blocks.WHITE_TERRACOTTA);
+        blockTag(recipeOutput, BlockRegistry.RGB_GLASS.get(), Tags.Items.STAINED_GLASS);
+        blockIItemProvider(recipeOutput, BlockRegistry.RGB_GLOWSTONE.get(), Blocks.GLOWSTONE);
+        blockIItemProvider(recipeOutput, BlockRegistry.RGB_PRISMARINE.get(), Blocks.PRISMARINE);
+        blockIItemProvider(recipeOutput, BlockRegistry.RGB_PRISMARINE_BRICKS.get(), Blocks.PRISMARINE_BRICKS);
+        blockIItemProvider(recipeOutput, BlockRegistry.RGB_DARK_PRISMARINE.get(), Blocks.DARK_PRISMARINE);
+        blockIItemProvider(recipeOutput, BlockRegistry.RGB_SEA_LANTERN.get(), Blocks.SEA_LANTERN);
 
-        slabBlock(consumer, BlockRegistry.RGB_CONCRETE_SLAB, BlockRegistry.RGB_CONCRETE);
-        slabBlock(consumer, BlockRegistry.RGB_WOOL_SLAB, BlockRegistry.RGB_WOOL);
-        slabBlock(consumer, BlockRegistry.RGB_PLANKS_SLAB, BlockRegistry.RGB_PLANKS);
-        slabBlock(consumer, BlockRegistry.RGB_TERRACOTTA_SLAB, BlockRegistry.RGB_TERRACOTTA);
-        slabBlock(consumer, BlockRegistry.RGB_GLASS_SLAB, BlockRegistry.RGB_GLASS);
-        slabBlock(consumer, BlockRegistry.RGB_PRISMARINE_SLAB, BlockRegistry.RGB_PRISMARINE);
-        slabBlock(consumer, BlockRegistry.RGB_PRISMARINE_BRICK_SLAB, BlockRegistry.RGB_PRISMARINE_BRICKS);
-        slabBlock(consumer, BlockRegistry.RGB_DARK_PRISMARINE_SLAB, BlockRegistry.RGB_DARK_PRISMARINE);
+        slabBlock(recipeOutput, BlockRegistry.RGB_CONCRETE_SLAB, BlockRegistry.RGB_CONCRETE);
+        slabBlock(recipeOutput, BlockRegistry.RGB_WOOL_SLAB, BlockRegistry.RGB_WOOL);
+        slabBlock(recipeOutput, BlockRegistry.RGB_PLANKS_SLAB, BlockRegistry.RGB_PLANKS);
+        slabBlock(recipeOutput, BlockRegistry.RGB_TERRACOTTA_SLAB, BlockRegistry.RGB_TERRACOTTA);
+        slabBlock(recipeOutput, BlockRegistry.RGB_GLASS_SLAB, BlockRegistry.RGB_GLASS);
+        slabBlock(recipeOutput, BlockRegistry.RGB_PRISMARINE_SLAB, BlockRegistry.RGB_PRISMARINE);
+        slabBlock(recipeOutput, BlockRegistry.RGB_PRISMARINE_BRICK_SLAB, BlockRegistry.RGB_PRISMARINE_BRICKS);
+        slabBlock(recipeOutput, BlockRegistry.RGB_DARK_PRISMARINE_SLAB, BlockRegistry.RGB_DARK_PRISMARINE);
 
-        stairBlock(consumer, BlockRegistry.RGB_CONCRETE_STAIRS, BlockRegistry.RGB_CONCRETE);
-        stairBlock(consumer, BlockRegistry.RGB_WOOL_STAIRS, BlockRegistry.RGB_WOOL);
-        stairBlock(consumer, BlockRegistry.RGB_PLANKS_STAIRS, BlockRegistry.RGB_PLANKS);
-        stairBlock(consumer, BlockRegistry.RGB_TERRACOTTA_STAIRS, BlockRegistry.RGB_TERRACOTTA);
-        stairBlock(consumer, BlockRegistry.RGB_GLASS_STAIRS, BlockRegistry.RGB_GLASS);
-        stairBlock(consumer, BlockRegistry.RGB_PRISMARINE_STAIRS, BlockRegistry.RGB_PRISMARINE);
-        stairBlock(consumer, BlockRegistry.RGB_PRISMARINE_BRICK_STAIRS, BlockRegistry.RGB_PRISMARINE_BRICKS);
-        stairBlock(consumer, BlockRegistry.RGB_DARK_PRISMARINE_STAIRS, BlockRegistry.RGB_DARK_PRISMARINE);
+        stairBlock(recipeOutput, BlockRegistry.RGB_CONCRETE_STAIRS, BlockRegistry.RGB_CONCRETE);
+        stairBlock(recipeOutput, BlockRegistry.RGB_WOOL_STAIRS, BlockRegistry.RGB_WOOL);
+        stairBlock(recipeOutput, BlockRegistry.RGB_PLANKS_STAIRS, BlockRegistry.RGB_PLANKS);
+        stairBlock(recipeOutput, BlockRegistry.RGB_TERRACOTTA_STAIRS, BlockRegistry.RGB_TERRACOTTA);
+        stairBlock(recipeOutput, BlockRegistry.RGB_GLASS_STAIRS, BlockRegistry.RGB_GLASS);
+        stairBlock(recipeOutput, BlockRegistry.RGB_PRISMARINE_STAIRS, BlockRegistry.RGB_PRISMARINE);
+        stairBlock(recipeOutput, BlockRegistry.RGB_PRISMARINE_BRICK_STAIRS, BlockRegistry.RGB_PRISMARINE_BRICKS);
+        stairBlock(recipeOutput, BlockRegistry.RGB_DARK_PRISMARINE_STAIRS, BlockRegistry.RGB_DARK_PRISMARINE);
 
         RegistryHandler.BLOCKS.getEntries()
             .forEach(
-                (block) -> ShapelessNBTRecipeBuilder.shapeless(block.get().asItem())
+                (block) -> SpecialShapelessRecipeBuilder
+                    .shapeless(RecipeCategory.DECORATIONS, new ItemStack(block.get()))
                     .requires(block.get())
-                    .requires(ItemRegistry.PAINT_BUCKET.get())
+                    .requires(ItemRegistry.PAINT_BUCKET)
                     .unlockedBy(
                         "has_paint_bucket_and_" + block.getId().getPath(),
                         inventoryTrigger(
-                            ItemPredicate.Builder.item().of(ItemRegistry.PAINT_BUCKET.get()).build(),
+                            ItemPredicate.Builder.item().of(ItemRegistry.PAINT_BUCKET).build(),
                             ItemPredicate.Builder.item().of(block.get()).build()
                         )
                     )
-                    .save(consumer, block.getId() + "_coloring")
+                    .save(recipeOutput, block.getId() + "_coloring")
             );
     }
 
-    private void blockIItemProvider(Consumer<FinishedRecipe> consumer, Block result, ItemLike provider) {
-        block(consumer, result, Ingredient.of(provider));
+    private void blockIItemProvider(RecipeOutput recipeOutput, Block result, ItemLike provider) {
+        block(recipeOutput, result, Ingredient.of(provider));
     }
 
-    private void blockTag(Consumer<FinishedRecipe> consumer, Block result, TagKey<Item> tag) {
-        block(consumer, result, Ingredient.of(tag));
+    private void blockTag(RecipeOutput recipeOutput, Block result, TagKey<Item> tag) {
+        block(recipeOutput, result, Ingredient.of(tag));
     }
 
-    private void block(Consumer<FinishedRecipe> consumer, Block result, Ingredient ingredient) {
-        ShapelessNBTRecipeBuilder.shapeless(result.asItem())
+    private void block(RecipeOutput recipeOutput, Block result, Ingredient ingredient) {
+        SpecialShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, new ItemStack(result))
             .requires(ingredient)
-            .requires(ItemRegistry.PAINT_BUCKET.get())
-            .unlockedBy("has_paint_bucket", has(ItemRegistry.PAINT_BUCKET.get()))
-            .save(consumer);
+            .requires(ItemRegistry.PAINT_BUCKET)
+            .unlockedBy("has_paint_bucket", has(ItemRegistry.PAINT_BUCKET))
+            .save(recipeOutput);
     }
 
     private void slabBlock(
-        Consumer<FinishedRecipe> consumer,
-        RegistryObject<? extends Block> result,
-        RegistryObject<? extends Block> base
+        RecipeOutput recipeOutput,
+        DeferredBlock<? extends Block> result,
+        DeferredBlock<? extends Block> base
     ) {
-        ShapedNBTRecipeBuilder.shaped(result.get().asItem(), 6, whiteNBT)
-            .define('#', base.get().asItem())
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, new ItemStack(result, 6, Optional.of(whiteNBT)))
+            .define('#', base)
             .pattern("###")
-            .unlockedBy("has_rgb_" + base.getId().getPath(), has(base.get()))
-            .save(consumer);
+            .unlockedBy("has_rgb_" + base.getId().getPath(), has(base))
+            .save(recipeOutput);
     }
 
     private void stairBlock(
-        Consumer<FinishedRecipe> consumer,
-        RegistryObject<? extends Block> result,
-        RegistryObject<? extends Block> base
+        RecipeOutput recipeOutput,
+        DeferredBlock<? extends Block> result,
+        DeferredBlock<? extends Block> base
     ) {
-        ShapedNBTRecipeBuilder.shaped(result.get().asItem(), 4, whiteNBT)
-            .define('#', base.get().asItem())
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, new ItemStack(result, 4, Optional.of(whiteNBT)))
+            .define('#', base)
             .pattern("#  ")
             .pattern("## ")
             .pattern("###")
-            .unlockedBy("has_rgb_" + base.getId().getPath(), has(base.get()))
-            .save(consumer);
+            .unlockedBy("has_rgb_" + base.getId().getPath(), has(base))
+            .save(recipeOutput);
     }
 }

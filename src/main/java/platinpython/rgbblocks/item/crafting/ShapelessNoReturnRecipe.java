@@ -1,30 +1,31 @@
 package platinpython.rgbblocks.item.crafting;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import platinpython.rgbblocks.util.registries.RecipeSerializerRegistry;
 
+import java.util.function.Function;
+
 public class ShapelessNoReturnRecipe extends ShapelessRecipe {
     public ShapelessNoReturnRecipe(
-        ResourceLocation id,
         String group,
+        CraftingBookCategory category,
         ItemStack result,
         NonNullList<Ingredient> ingredients
     ) {
-        super(id, group, CraftingBookCategory.MISC, result, ingredients);
+        super(group, category, result, ingredients);
     }
 
     @Override
@@ -38,53 +39,50 @@ public class ShapelessNoReturnRecipe extends ShapelessRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<ShapelessNoReturnRecipe> {
-        @Override
-        public ShapelessNoReturnRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
-            String s = GsonHelper.getAsString(jsonObject, "group", "");
-            NonNullList<Ingredient> nonnulllist = itemsFromJson(GsonHelper.getAsJsonArray(jsonObject, "ingredients"));
-            if (nonnulllist.isEmpty()) {
-                throw new JsonParseException("No ingredients for shapeless recipe");
-            } else if (nonnulllist.size() > 9) {
-                throw new JsonParseException("Too many ingredients for shapeless recipe the max is " + 9);
-            } else {
-                ItemStack itemstack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "result"));
-                return new ShapelessNoReturnRecipe(resourceLocation, s, itemstack, nonnulllist);
-            }
-        }
-
-        private static NonNullList<Ingredient> itemsFromJson(JsonArray jsonArray) {
-            NonNullList<Ingredient> nonnulllist = NonNullList.create();
-
-            for (int i = 0; i < jsonArray.size(); ++i) {
-                Ingredient ingredient = Ingredient.fromJson(jsonArray.get(i));
-                if (!ingredient.isEmpty()) {
-                    nonnulllist.add(ingredient);
-                }
-            }
-            return nonnulllist;
-        }
+        private static final Codec<ShapelessNoReturnRecipe> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                ExtraCodecs.strictOptionalField(Codec.STRING, "group", "").forGetter(ShapelessRecipe::getGroup),
+                CraftingBookCategory.CODEC.fieldOf("category")
+                    .orElse(CraftingBookCategory.MISC)
+                    .forGetter(ShapelessRecipe::category),
+                ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result")
+                    .forGetter(recipe -> recipe.getResultItem(RegistryAccess.EMPTY)),
+                Ingredient.CODEC_NONEMPTY.listOf().comapFlatMap(list -> {
+                    if (list.isEmpty()) {
+                        return DataResult.error(() -> "No ingredients for shapeless recipe");
+                    }
+                    return list.size() > ShapedRecipePattern.getMaxHeight() * ShapedRecipePattern.getMaxWidth()
+                        ? DataResult.error(
+                            () -> "Too many ingredients for shapeless recipe. The maximum is: %s"
+                                .formatted(ShapedRecipePattern.getMaxHeight() * ShapedRecipePattern.getMaxWidth())
+                        )
+                        : DataResult.success(NonNullList.of(Ingredient.EMPTY, list.toArray(Ingredient[]::new)));
+                }, Function.identity()).fieldOf("ingredients").forGetter(ShapelessRecipe::getIngredients)
+            ).apply(instance, ShapelessNoReturnRecipe::new)
+        );
 
         @Override
-        public ShapelessNoReturnRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf buffer) {
-            String s = buffer.readUtf(32767);
+        public Codec<ShapelessNoReturnRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public ShapelessNoReturnRecipe fromNetwork(FriendlyByteBuf buffer) {
+            String group = buffer.readUtf();
+            CraftingBookCategory craftingBookCategory = buffer.readEnum(CraftingBookCategory.class);
             int i = buffer.readVarInt();
-            NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i, Ingredient.EMPTY);
-
-            nonnulllist.replaceAll(ignored -> Ingredient.fromNetwork(buffer));
-
-            ItemStack itemstack = buffer.readItem();
-            return new ShapelessNoReturnRecipe(resourceLocation, s, itemstack, nonnulllist);
+            NonNullList<Ingredient> ingredients = NonNullList.withSize(i, Ingredient.EMPTY);
+            ingredients.replaceAll(ignored -> Ingredient.fromNetwork(buffer));
+            ItemStack itemStack = buffer.readItem();
+            return new ShapelessNoReturnRecipe(group, craftingBookCategory, itemStack, ingredients);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buffer, ShapelessNoReturnRecipe recipe) {
             buffer.writeUtf(recipe.getGroup());
+            buffer.writeEnum(recipe.category());
             buffer.writeVarInt(recipe.getIngredients().size());
-
-            for (Ingredient ingredient : recipe.getIngredients()) {
-                ingredient.toNetwork(buffer);
-            }
-
+            recipe.getIngredients().forEach(i -> i.toNetwork(buffer));
             buffer.writeItem(recipe.getResultItem(RegistryAccess.EMPTY));
         }
     }
