@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.HitResult;
 import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.block.entity.RGBBlockEntity;
@@ -40,7 +41,7 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
         @Nullable LivingEntity placer,
         ItemStack stack
     ) {
-        RGBBlockUtils.setPlacedBy(level, pos, state, placer, stack);
+        RGBBlockUtils.setPlacedBy(level, pos, stack);
     }
 
     @Override
@@ -51,7 +52,12 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
         BlockPos pos,
         Player player
     ) {
-        return RGBBlockUtils.getCloneItemStack(state, target, level, pos, player);
+        return RGBBlockUtils.getCloneItemStack(state, level, pos);
+    }
+
+    @Override
+    public MapColor getMapColor(BlockState state, BlockGetter level, BlockPos pos, MapColor defaultColor) {
+        return RGBBlockUtils.getMapColor(level, pos, defaultColor);
     }
 
     @Override

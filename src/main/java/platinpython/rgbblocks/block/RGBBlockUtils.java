@@ -3,9 +3,8 @@ package platinpython.rgbblocks.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.SlabBlock;
@@ -15,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.material.MapColor;
 import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.util.Color;
@@ -26,13 +25,7 @@ public final class RGBBlockUtils {
         return BlockEntityRegistry.RGB.get().create(pos, state);
     }
 
-    public static void setPlacedBy(
-        Level level,
-        BlockPos pos,
-        BlockState state,
-        @Nullable LivingEntity placer,
-        ItemStack stack
-    ) {
+    public static void setPlacedBy(Level level, BlockPos pos, ItemStack stack) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (stack.hasTag() && blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
             // noinspection DataFlowIssue
@@ -40,13 +33,7 @@ public final class RGBBlockUtils {
         }
     }
 
-    public static ItemStack getCloneItemStack(
-        BlockState state,
-        HitResult target,
-        LevelReader level,
-        BlockPos pos,
-        Player player
-    ) {
+    public static ItemStack getCloneItemStack(BlockState state, LevelReader level, BlockPos pos) {
         ItemStack stack = new ItemStack(state.getBlock().asItem());
         if (level.getBlockEntity(pos) instanceof RGBBlockEntity blockEntity) {
             CompoundTag tag = new CompoundTag();
@@ -56,12 +43,16 @@ public final class RGBBlockUtils {
         return stack;
     }
 
-    public static float @Nullable [] getBeaconColorMultiplier(
-        BlockState state,
-        LevelReader level,
-        BlockPos pos,
-        BlockPos beaconPos
-    ) {
+    public static MapColor getMapColor(BlockGetter level, BlockPos pos, MapColor defaultColor) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
+            return rgbBlockEntity.getMapColor();
+        } else {
+            return defaultColor;
+        }
+    }
+
+    public static float @Nullable [] getBeaconColorMultiplier(LevelReader level, BlockPos pos) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
             return new Color(rgbBlockEntity.getColor()).getRGBColorComponents();
@@ -70,7 +61,7 @@ public final class RGBBlockUtils {
         }
     }
 
-    public static boolean blockSkipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
+    public static boolean blockSkipRendering(BlockState adjacentBlockState, Direction side) {
         if (adjacentBlockState.getBlock() instanceof RGBBlock) {
             return true;
         } else if (adjacentBlockState.getBlock() instanceof RGBGlassSlabBlock) {

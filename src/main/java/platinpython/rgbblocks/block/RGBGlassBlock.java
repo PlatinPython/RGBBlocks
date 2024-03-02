@@ -20,13 +20,13 @@ public class RGBGlassBlock extends RGBBlock {
         BlockPos pos,
         BlockPos beaconPos
     ) {
-        return RGBBlockUtils.getBeaconColorMultiplier(state, level, pos, beaconPos);
+        return RGBBlockUtils.getBeaconColorMultiplier(level, pos);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-        return RGBBlockUtils.blockSkipRendering(state, adjacentBlockState, side);
+        return RGBBlockUtils.blockSkipRendering(adjacentBlockState, side);
     }
 
     @SuppressWarnings("deprecation")

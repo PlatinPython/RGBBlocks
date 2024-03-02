@@ -11,6 +11,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import platinpython.rgbblocks.RGBBlocks;
+import platinpython.rgbblocks.util.Color;
 import xfacthd.framedblocks.api.block.FramedBlockEntity;
 import xfacthd.framedblocks.api.camo.CamoContainerFactory;
 import xfacthd.framedblocks.api.util.FramedConstants;
@@ -50,6 +51,7 @@ public class RGBBlocksFramedBlocks {
                 }
             }
             camoContainer.color = context.getItemInHand().getOrCreateTag().getInt("color");
+            camoContainer.mapColor = Color.getNearestMapColor(camoContainer.color);
             context.getLevel()
                 .sendBlockUpdated(
                     context.getClickedPos(), framedBlockEntity.getBlockState(), framedBlockEntity.getBlockState(),

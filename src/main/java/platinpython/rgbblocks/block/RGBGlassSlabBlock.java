@@ -20,7 +20,7 @@ public class RGBGlassSlabBlock extends RGBSlabBlock {
         BlockPos pos,
         BlockPos beaconPos
     ) {
-        return RGBBlockUtils.getBeaconColorMultiplier(state, level, pos, beaconPos);
+        return RGBBlockUtils.getBeaconColorMultiplier(level, pos);
     }
 
     @SuppressWarnings("deprecation")

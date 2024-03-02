@@ -22,7 +22,7 @@ public class RGBGlassStairsBlock extends RGBStairsBlock {
         BlockPos pos,
         BlockPos beaconPos
     ) {
-        return RGBBlockUtils.getBeaconColorMultiplier(state, level, pos, beaconPos);
+        return RGBBlockUtils.getBeaconColorMultiplier(level, pos);
     }
 
     @SuppressWarnings("deprecation")

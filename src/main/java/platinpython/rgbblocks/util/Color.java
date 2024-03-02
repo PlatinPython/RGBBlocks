@@ -1,5 +1,11 @@
 package platinpython.rgbblocks.util;
 
+import net.minecraft.world.level.material.MapColor;
+
+import java.util.Comparator;
+import java.util.Objects;
+import java.util.stream.Stream;
+
 public class Color {
     private final int value;
 
@@ -150,5 +156,19 @@ public class Color {
         components[1] = ((float) getGreen()) / 255f;
         components[2] = ((float) getBlue()) / 255f;
         return components;
+    }
+
+    public static int squaredColorDistance(int rgb1, int rgb2) {
+        int dr = (rgb2 >> 16 & 0xFF) - (rgb1 >> 16 & 0xFF);
+        int dg = (rgb2 >> 8 & 0xFF) - (rgb1 >> 8 & 0xFF);
+        int db = (rgb2 & 0xFF) - (rgb1 & 0xFF);
+        return dr * dr + dg * dg + db * db;
+    }
+
+    public static MapColor getNearestMapColor(int rgb) {
+        return Stream.of(MapColor.MATERIAL_COLORS)
+            .filter(Objects::nonNull)
+            .min(Comparator.comparing(mapColor -> Color.squaredColorDistance(mapColor.col, rgb)))
+            .orElse(MapColor.NONE);
     }
 }

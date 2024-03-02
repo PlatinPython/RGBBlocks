@@ -7,11 +7,13 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 import platinpython.rgbblocks.util.Color;
 import platinpython.rgbblocks.util.registries.BlockEntityRegistry;
 
 public class RGBBlockEntity extends BlockEntity {
     private int color;
+    private MapColor mapColor = MapColor.NONE;
 
     public RGBBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityRegistry.RGB.get(), pos, state);
@@ -19,11 +21,16 @@ public class RGBBlockEntity extends BlockEntity {
 
     public void setColor(int color) {
         this.color = new Color(color).getRGB();
+        this.mapColor = Color.getNearestMapColor(this.color);
         setChanged();
     }
 
     public int getColor() {
         return color;
+    }
+
+    public MapColor getMapColor() {
+        return mapColor;
     }
 
     @Override
