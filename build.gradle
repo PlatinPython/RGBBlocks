@@ -14,8 +14,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 
-minecraft.accessTransformers.entry 'public net.minecraft.world.entity.item.FallingBlockEntity blockState'
-minecraft.accessTransformers.entry 'public net.minecraft.world.level.material.MapColor MATERIAL_COLORS'
+minecraft.accessTransformers.file 'src/main/resources/META-INF/accesstransformers.cfg'
 
 runs {
     configureEach {

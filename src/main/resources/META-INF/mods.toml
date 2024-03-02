@@ -14,6 +14,9 @@ credits = "Thanks TobiBenzi for the logo and some textures, Thanks XFactHD for i
 authors = "PlatinPython"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/rgb-blocks-forge"
 
+[[accessTransformers]]
+file = "META-INF/accesstransformers.cfg"
+
 [[dependencies.rgbblocks]]
 modId = "neoforge"
 versionRange = "[20.4,)"
