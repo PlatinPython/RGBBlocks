@@ -168,6 +168,7 @@ public class Color {
     public static MapColor getNearestMapColor(int rgb) {
         return Stream.of(MapColor.MATERIAL_COLORS)
             .filter(Objects::nonNull)
+            .filter(mapColor -> mapColor != MapColor.NONE)
             .min(Comparator.comparing(mapColor -> Color.squaredColorDistance(mapColor.col, rgb)))
             .orElse(MapColor.NONE);
     }
