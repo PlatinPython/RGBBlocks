@@ -13,10 +13,8 @@ import platinpython.rgbblocks.item.PaintBucketItem;
 import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 
 public record PaintBucketSyncPayload(int color, boolean isRGBSelected) implements CustomPacketPayload {
-
     public static final Type<PaintBucketSyncPayload> TYPE =
         new Type<>(new ResourceLocation(RGBBlocks.MOD_ID, "paint_bucket_sync"));
-
     public static final StreamCodec<ByteBuf, PaintBucketSyncPayload> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.INT, PaintBucketSyncPayload::color, ByteBufCodecs.BOOL, PaintBucketSyncPayload::isRGBSelected,
         PaintBucketSyncPayload::new
@@ -26,6 +24,7 @@ public record PaintBucketSyncPayload(int color, boolean isRGBSelected) implement
     public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
+
     public static class Handler implements IPayloadHandler<PaintBucketSyncPayload> {
         public void handle(PaintBucketSyncPayload message, IPayloadContext context) {
             ItemStack stack = context.player().getMainHandItem();
