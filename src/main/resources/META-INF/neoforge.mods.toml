@@ -19,8 +19,8 @@ file = "META-INF/accesstransformers.cfg"
 
 [[dependencies.rgbblocks]]
 modId = "neoforge"
-versionRange = "[20.4,)"
+versionRange = "[20.5,)"
 
 [[dependencies.rgbblocks]]
 modId = "minecraft"
-versionRange = "[1.20.4,)"
+versionRange = "[1.20.5,)"

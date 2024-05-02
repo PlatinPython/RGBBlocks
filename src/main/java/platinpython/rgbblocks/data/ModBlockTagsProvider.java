@@ -30,7 +30,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             .add(
                 BlockRegistry.RGB_GLASS.get(), BlockRegistry.RGB_GLASS_SLAB.get(), BlockRegistry.RGB_GLASS_STAIRS.get()
             );
-        this.tag(Tags.Blocks.STAINED_GLASS)
+        this.tag(Tags.Blocks.GLASS_BLOCKS)
             .add(
                 BlockRegistry.RGB_GLASS.get(), BlockRegistry.RGB_GLASS_SLAB.get(), BlockRegistry.RGB_GLASS_STAIRS.get()
             );

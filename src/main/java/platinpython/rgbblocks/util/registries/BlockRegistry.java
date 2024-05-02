@@ -27,7 +27,7 @@ public class BlockRegistry {
     public static final DeferredBlock<RGBSlabBlock> RGB_CONCRETE_SLAB =
         register("concrete_slab", RGBSlabBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_CONCRETE));
     public static final DeferredBlock<RGBStairsBlock> RGB_CONCRETE_STAIRS = register(
-        "concrete_stairs", properties -> new RGBStairsBlock(RGB_CONCRETE.get()::defaultBlockState, properties),
+        "concrete_stairs", properties -> new RGBStairsBlock(RGB_CONCRETE.get().defaultBlockState(), properties),
         BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_CONCRETE)
     );
 
@@ -39,7 +39,7 @@ public class BlockRegistry {
     public static final DeferredBlock<RGBSlabBlock> RGB_WOOL_SLAB =
         register("wool_slab", RGBSlabBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL));
     public static final DeferredBlock<RGBStairsBlock> RGB_WOOL_STAIRS = register(
-        "wool_stairs", properties -> new RGBStairsBlock(RGB_WOOL.get()::defaultBlockState, properties),
+        "wool_stairs", properties -> new RGBStairsBlock(RGB_WOOL.get().defaultBlockState(), properties),
         BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL)
     );
 
@@ -50,7 +50,7 @@ public class BlockRegistry {
     public static final DeferredBlock<RGBSlabBlock> RGB_PLANKS_SLAB =
         register("planks_slab", RGBSlabBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.BIRCH_PLANKS));
     public static final DeferredBlock<RGBStairsBlock> RGB_PLANKS_STAIRS = register(
-        "planks_stairs", properties -> new RGBStairsBlock(RGB_PLANKS.get()::defaultBlockState, properties),
+        "planks_stairs", properties -> new RGBStairsBlock(RGB_PLANKS.get().defaultBlockState(), properties),
         BlockBehaviour.Properties.ofFullCopy(Blocks.BIRCH_PLANKS)
     );
 
@@ -59,7 +59,7 @@ public class BlockRegistry {
     public static final DeferredBlock<RGBSlabBlock> RGB_TERRACOTTA_SLAB =
         register("terracotta_slab", RGBSlabBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA));
     public static final DeferredBlock<RGBStairsBlock> RGB_TERRACOTTA_STAIRS = register(
-        "terracotta_stairs", properties -> new RGBStairsBlock(RGB_TERRACOTTA.get()::defaultBlockState, properties),
+        "terracotta_stairs", properties -> new RGBStairsBlock(RGB_TERRACOTTA.get().defaultBlockState(), properties),
         BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA)
     );
 
@@ -67,7 +67,7 @@ public class BlockRegistry {
     public static final DeferredBlock<RGBGlassSlabBlock> RGB_GLASS_SLAB =
         register("glass_slab", RGBGlassSlabBlock::new);
     public static final DeferredBlock<RGBGlassStairsBlock> RGB_GLASS_STAIRS =
-        register("glass_stairs", () -> new RGBGlassStairsBlock(RGB_GLASS.get()::defaultBlockState));
+        register("glass_stairs", () -> new RGBGlassStairsBlock(RGB_GLASS.get().defaultBlockState()));
 
     public static final DeferredBlock<IronBarsBlock> RGB_GLASS_PANE = register("glass_pane", RGBGlassPaneBlock::new);
 
@@ -85,7 +85,7 @@ public class BlockRegistry {
     public static final DeferredBlock<RGBSlabBlock> RGB_PRISMARINE_SLAB =
         register("prismarine_slab", RGBSlabBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.PRISMARINE_SLAB));
     public static final DeferredBlock<RGBStairsBlock> RGB_PRISMARINE_STAIRS = register(
-        "prismarine_stairs", properties -> new RGBStairsBlock(RGB_PRISMARINE.get()::defaultBlockState, properties),
+        "prismarine_stairs", properties -> new RGBStairsBlock(RGB_PRISMARINE.get().defaultBlockState(), properties),
         BlockBehaviour.Properties.ofFullCopy(Blocks.PRISMARINE_STAIRS)
     );
 
@@ -96,7 +96,7 @@ public class BlockRegistry {
     );
     public static final DeferredBlock<RGBStairsBlock> RGB_PRISMARINE_BRICK_STAIRS = register(
         "prismarine_bricks_stairs",
-        properties -> new RGBStairsBlock(RGB_PRISMARINE_BRICKS.get()::defaultBlockState, properties),
+        properties -> new RGBStairsBlock(RGB_PRISMARINE_BRICKS.get().defaultBlockState(), properties),
         BlockBehaviour.Properties.ofFullCopy(Blocks.PRISMARINE_BRICK_STAIRS)
     );
 
@@ -107,7 +107,7 @@ public class BlockRegistry {
     );
     public static final DeferredBlock<RGBStairsBlock> RGB_DARK_PRISMARINE_STAIRS = register(
         "dark_prismarine_stairs",
-        properties -> new RGBStairsBlock(RGB_DARK_PRISMARINE.get()::defaultBlockState, properties),
+        properties -> new RGBStairsBlock(RGB_DARK_PRISMARINE.get().defaultBlockState(), properties),
         BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_PRISMARINE_STAIRS)
     );
 

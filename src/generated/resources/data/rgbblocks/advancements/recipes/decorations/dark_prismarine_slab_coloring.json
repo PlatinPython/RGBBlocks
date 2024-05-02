@@ -5,14 +5,10 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "rgbblocks:paint_bucket"
-            ]
+            "items": "rgbblocks:paint_bucket"
           },
           {
-            "items": [
-              "rgbblocks:dark_prismarine_slab"
-            ]
+            "items": "rgbblocks:dark_prismarine_slab"
           }
         ]
       },

@@ -1,10 +1,13 @@
 package platinpython.rgbblocks.data;
 
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
+import net.minecraft.advancements.critereon.ItemEnchantmentsPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.ItemSubPredicates;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
@@ -19,28 +22,30 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
-import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
+import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.LimitCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
-import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
+import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 public class ModLootTableProvider extends LootTableProvider {
-    public ModLootTableProvider(PackOutput output) {
+    public ModLootTableProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(
-            output, Collections.emptySet(),
-            List.of(new LootTableProvider.SubProviderEntry(Blocks::new, LootContextParamSets.BLOCK))
+            output, Set.of(), List.of(new LootTableProvider.SubProviderEntry(Blocks::new, LootContextParamSets.BLOCK)),
+            lookupProvider
         );
     }
 
@@ -80,7 +85,7 @@ public class ModLootTableProvider extends LootTableProvider {
                         block,
                         LootItem.lootTableItem(Items.GLOWSTONE_DUST)
                             .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F)))
-                            .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE))
+                            .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.FORTUNE))
                             .apply(LimitCount.limitCount(IntRange.range(1, 4)))
                     )
                 )
@@ -103,7 +108,7 @@ public class ModLootTableProvider extends LootTableProvider {
                         block,
                         LootItem.lootTableItem(Items.PRISMARINE_CRYSTALS)
                             .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F)))
-                            .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE))
+                            .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.FORTUNE))
                             .apply(LimitCount.limitCount(IntRange.range(1, 5)))
                     )
                 )
@@ -126,8 +131,15 @@ public class ModLootTableProvider extends LootTableProvider {
                         .when(
                             MatchTool.toolMatches(
                                 ItemPredicate.Builder.item()
-                                    .hasEnchantment(
-                                        new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))
+                                    .withSubPredicate(
+                                        ItemSubPredicates.ENCHANTMENTS,
+                                        ItemEnchantmentsPredicate.enchantments(
+                                            List.of(
+                                                new EnchantmentPredicate(
+                                                    Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1)
+                                                )
+                                            )
+                                        )
                                     )
                             )
                         )
@@ -152,18 +164,28 @@ public class ModLootTableProvider extends LootTableProvider {
         }
 
         private LootTable.Builder applyNbtCopy(LootTable.Builder table) {
-            return table.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("color", "color"));
+            return table.apply(
+                CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+                    .include(DataComponentRegistry.COLOR.get())
+            );
         }
 
         private LootTable.Builder applyConditionalNbtCopy(LootTable.Builder table) {
             return table.apply(
-                CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
-                    .copy("color", "color")
+                CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+                    .include(DataComponentRegistry.COLOR.get())
                     .when(
                         MatchTool.toolMatches(
                             ItemPredicate.Builder.item()
-                                .hasEnchantment(
-                                    new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))
+                                .withSubPredicate(
+                                    ItemSubPredicates.ENCHANTMENTS,
+                                    ItemEnchantmentsPredicate.enchantments(
+                                        List.of(
+                                            new EnchantmentPredicate(
+                                                Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1)
+                                            )
+                                        )
+                                    )
                                 )
                         )
                     )

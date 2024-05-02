@@ -1,5 +1,5 @@
-// 1.20.4	2024-03-02T02:46:54.9821561	Tags for minecraft:block mod id rgbblocks
-81dc907e738fda3d3f8b79c4d0a66fe6baff7e70 data/forge/tags/blocks/stained_glass.json
+// 1.20.6	2024-05-01T22:13:35.30175	Tags for minecraft:block mod id rgbblocks
+81dc907e738fda3d3f8b79c4d0a66fe6baff7e70 data/c/tags/blocks/glass_blocks.json
 b2c3b9ff1aa4363bca7e1501a7252a8fd3f10098 data/framedblocks/tags/blocks/blockentity_whitelisted.json
 81dc907e738fda3d3f8b79c4d0a66fe6baff7e70 data/minecraft/tags/blocks/impermeable.json
 feb61170734a0094e4b8d17b75e46fe30b14bc93 data/minecraft/tags/blocks/mineable/axe.json

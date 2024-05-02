@@ -11,7 +11,6 @@
   ],
   "result": {
     "count": 6,
-    "item": "rgbblocks:prismarine_bricks_slab",
-    "nbt": "{Damage:0,color:-1}"
+    "id": "rgbblocks:prismarine_bricks_slab"
   }
 }

@@ -20,11 +20,7 @@ public class CreativeTabRegistry {
     private static CreativeModeTab getTab() {
         return CreativeModeTab.builder()
             .title(Component.translatable("item_group." + RGBBlocks.MOD_ID + ".tab"))
-            .icon(() -> {
-                ItemStack stack = new ItemStack(ItemRegistry.PAINT_BUCKET.get());
-                stack.getOrCreateTag().putInt("color", -1);
-                return stack;
-            })
+            .icon(ItemRegistry.PAINT_BUCKET.get()::getDefaultInstance)
             .displayItems((displayParameters, output) -> {
                 List<ItemStack> items = new ArrayList<>(
                     RegistryHandler.ITEMS.getEntries()

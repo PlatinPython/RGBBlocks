@@ -1,12 +1,12 @@
 package platinpython.rgbblocks.data;
 
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -18,25 +18,22 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
+import net.neoforged.neoforge.common.crafting.IntersectionIngredient;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
-import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
-    private final CompoundTag whiteNBT = new CompoundTag();
-
-    public ModRecipeProvider(PackOutput output) {
-        super(output);
-        whiteNBT.putInt("color", -1);
+    public ModRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider);
     }
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput) {
-        SpecialShapelessRecipeBuilder
-            .shapeless(RecipeCategory.MISC, new ItemStack(ItemRegistry.PAINT_BUCKET.get(), 1, Optional.of(whiteNBT)))
+        SpecialShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, new ItemStack(ItemRegistry.PAINT_BUCKET.get(), 1))
             .makeNoReturnRecipe()
             .requires(Tags.Items.DYES_RED)
             .requires(Tags.Items.DYES_GREEN)
@@ -45,33 +42,26 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
             .save(recipeOutput);
 
-        ShapedRecipeBuilder
-            .shaped(RecipeCategory.DECORATIONS, new ItemStack(BlockRegistry.RGB_CARPET, 3, Optional.of(whiteNBT)))
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, new ItemStack(BlockRegistry.RGB_CARPET, 3))
             .define('#', BlockRegistry.RGB_WOOL.get())
             .pattern("##")
             .unlockedBy("has_rgb_wool", has(BlockRegistry.RGB_WOOL.get()))
             .save(recipeOutput);
-        ShapedRecipeBuilder
-            .shaped(RecipeCategory.DECORATIONS, new ItemStack(BlockRegistry.RGB_GLASS_PANE, 16, Optional.of(whiteNBT)))
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, new ItemStack(BlockRegistry.RGB_GLASS_PANE, 16))
             .define('#', BlockRegistry.RGB_GLASS.get())
             .pattern("###")
             .pattern("###")
             .unlockedBy("has_rgb_glass", has(BlockRegistry.RGB_GLASS.get()))
             .save(recipeOutput);
-        ShapedRecipeBuilder
-            .shaped(RecipeCategory.DECORATIONS, new ItemStack(BlockRegistry.RGB_ANTIBLOCK, 8, Optional.of(whiteNBT)))
-            .define('S', Tags.Items.STONE)
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, new ItemStack(BlockRegistry.RGB_ANTIBLOCK, 8))
+            .define('S', Tags.Items.STONES)
             .define('G', BlockRegistry.RGB_GLOWSTONE.get())
             .pattern("SSS")
             .pattern("SGS")
             .pattern("SSS")
             .unlockedBy("has_rgb_glowstone", has(BlockRegistry.RGB_GLOWSTONE.get()))
             .save(recipeOutput);
-        ShapedRecipeBuilder
-            .shaped(
-                RecipeCategory.DECORATIONS,
-                new ItemStack(BlockRegistry.RGB_REDSTONE_LAMP.get(), 1, Optional.of(whiteNBT))
-            )
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, new ItemStack(BlockRegistry.RGB_REDSTONE_LAMP.get(), 1))
             .define('R', Tags.Items.DUSTS_REDSTONE)
             .define('G', BlockRegistry.RGB_GLOWSTONE.get())
             .pattern(" R ")
@@ -84,7 +74,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         blockTag(recipeOutput, BlockRegistry.RGB_WOOL.get(), ItemTags.WOOL);
         blockTag(recipeOutput, BlockRegistry.RGB_PLANKS.get(), ItemTags.PLANKS);
         blockIItemProvider(recipeOutput, BlockRegistry.RGB_TERRACOTTA.get(), Blocks.WHITE_TERRACOTTA);
-        blockTag(recipeOutput, BlockRegistry.RGB_GLASS.get(), Tags.Items.STAINED_GLASS);
+        block(
+            recipeOutput, BlockRegistry.RGB_GLASS.get(),
+            IntersectionIngredient.of(Ingredient.of(Tags.Items.GLASS_BLOCKS), Ingredient.of(Tags.Items.DYED))
+        );
         blockIItemProvider(recipeOutput, BlockRegistry.RGB_GLOWSTONE.get(), Blocks.GLOWSTONE);
         blockIItemProvider(recipeOutput, BlockRegistry.RGB_PRISMARINE.get(), Blocks.PRISMARINE);
         blockIItemProvider(recipeOutput, BlockRegistry.RGB_PRISMARINE_BRICKS.get(), Blocks.PRISMARINE_BRICKS);
@@ -147,7 +140,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         DeferredBlock<? extends Block> result,
         DeferredBlock<? extends Block> base
     ) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, new ItemStack(result, 6, Optional.of(whiteNBT)))
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, new ItemStack(result, 6))
             .define('#', base)
             .pattern("###")
             .unlockedBy("has_rgb_" + base.getId().getPath(), has(base))
@@ -159,7 +152,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         DeferredBlock<? extends Block> result,
         DeferredBlock<? extends Block> base
     ) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, new ItemStack(result, 4, Optional.of(whiteNBT)))
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, new ItemStack(result, 4))
             .define('#', base)
             .pattern("#  ")
             .pattern("## ")

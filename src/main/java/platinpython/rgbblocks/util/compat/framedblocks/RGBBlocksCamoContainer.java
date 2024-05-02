@@ -1,30 +1,41 @@
 package platinpython.rgbblocks.util.compat.framedblocks;
 
 import com.google.common.base.Objects;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.world.item.Item;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
+import org.jetbrains.annotations.Nullable;
 import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.Color;
 import platinpython.rgbblocks.util.RegistryHandler;
-import xfacthd.framedblocks.api.camo.CamoContainer;
-import xfacthd.framedblocks.api.camo.CamoContainerFactory;
-import xfacthd.framedblocks.api.camo.CamoContainerType;
-import xfacthd.framedblocks.api.camo.EmptyCamoContainer;
+import platinpython.rgbblocks.util.registries.DataComponentRegistry;
+import xfacthd.framedblocks.api.camo.TriggerRegistrar;
+import xfacthd.framedblocks.api.camo.block.AbstractBlockCamoContainer;
+import xfacthd.framedblocks.api.camo.block.AbstractBlockCamoContainerFactory;
+import xfacthd.framedblocks.api.util.CamoMessageVerbosity;
+import xfacthd.framedblocks.api.util.ConfigView;
+import xfacthd.framedblocks.api.util.Utils;
 
-import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class RGBBlocksCamoContainer extends CamoContainer {
+public class RGBBlocksCamoContainer extends AbstractBlockCamoContainer<RGBBlocksCamoContainer> {
     int color;
     MapColor mapColor;
 
@@ -45,15 +56,8 @@ public class RGBBlocksCamoContainer extends CamoContainer {
     }
 
     @Override
-    public int getColor(BlockAndTintGetter level, BlockPos pos, int tintIndex) {
+    public int getTintColor(BlockAndTintGetter level, BlockPos pos, int tintIndex) {
         return color;
-    }
-
-    @Override
-    public ItemStack toItemStack(ItemStack _ignored) {
-        ItemStack stack = new ItemStack(state.getBlock());
-        stack.getOrCreateTag().putInt("color", color);
-        return stack;
     }
 
     @Override
@@ -65,67 +69,121 @@ public class RGBBlocksCamoContainer extends CamoContainer {
             return false;
         }
         RGBBlocksCamoContainer that = (RGBBlocksCamoContainer) o;
-        return color == that.color && state == that.state;
+        return color == that.color && mapColor == that.mapColor && content.equals(that.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(this.state, this.color);
+        return Objects.hashCode(this.content.getState(), this.color);
     }
 
     @Override
-    public CamoContainerType getType() {
-        return CamoContainerType.BLOCK;
-    }
-
-    @Override
-    public Factory getFactory() {
+    public AbstractBlockCamoContainerFactory<RGBBlocksCamoContainer> getFactory() {
         return RGBBlocksFramedBlocks.RGBBLOCKS_CONTAINER_FACTORY.get();
     }
 
-    @Override
-    public void save(CompoundTag tag) {
-        tag.put("state", NbtUtils.writeBlockState(state));
-        tag.putInt("color", color);
-    }
+    public static class Factory extends AbstractBlockCamoContainerFactory<RGBBlocksCamoContainer> {
+        private static final MapCodec<RGBBlocksCamoContainer> CODEC = RecordCodecBuilder.mapCodec(
+            instance -> instance
+                .group(
+                    BlockState.CODEC.fieldOf("state").forGetter(RGBBlocksCamoContainer::getState),
+                    Codec.INT.fieldOf("color").forGetter(container -> container.color)
+                )
+                .apply(instance, RGBBlocksCamoContainer::new)
+        );
+        @SuppressWarnings("deprecation")
+        private static final StreamCodec<ByteBuf, RGBBlocksCamoContainer> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.idMapper(Block.BLOCK_STATE_REGISTRY), RGBBlocksCamoContainer::getState, ByteBufCodecs.INT,
+            container -> container.color, RGBBlocksCamoContainer::new
+        );
+        public static final Component MSG_BLOCK_ENTITY = Utils.translate("msg", "camo.block_entity");
+        public static final Component MSG_NON_SOLID = Utils.translate("msg", "camo.non_solid");
 
-    @Override
-    public void toNetwork(CompoundTag tag) {
-        tag.putInt("state", Block.getId(state));
-        tag.putInt("color", color);
-    }
-
-    public static class Factory extends CamoContainerFactory {
         @Override
-        public CamoContainer fromNbt(CompoundTag tag) {
-            return new RGBBlocksCamoContainer(
-                NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), tag.getCompound("state")),
-                tag.getInt("color")
-            );
+        protected RGBBlocksCamoContainer createContainer(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            ItemStack stack
+        ) {
+            return new RGBBlocksCamoContainer(state, stack.getOrDefault(DataComponentRegistry.COLOR, -1));
         }
 
         @Override
-        public CamoContainer fromNetwork(CompoundTag tag) {
+        protected RGBBlocksCamoContainer copyContainerWithState(RGBBlocksCamoContainer container, BlockState state) {
+            return new RGBBlocksCamoContainer(state, container.color);
+        }
+
+        @Override
+        protected ItemStack createItemStack(
+            Level level,
+            BlockPos pos,
+            Player player,
+            ItemStack stack,
+            RGBBlocksCamoContainer container
+        ) {
+            return this.dropCamo(container);
+        }
+
+        @Override
+        protected boolean isValidBlock(BlockState state, BlockGetter level, BlockPos pos, @Nullable Player player) {
+            if (state.is(Utils.BLOCK_BLACKLIST)) {
+                displayValidationMessage(player, MSG_BLACKLISTED, CamoMessageVerbosity.DEFAULT);
+                return false;
+            }
+            if (state.hasBlockEntity() && !ConfigView.Server.INSTANCE.allowBlockEntities()
+                && !state.is(Utils.BE_WHITELIST)) {
+                displayValidationMessage(player, MSG_BLOCK_ENTITY, CamoMessageVerbosity.DEFAULT);
+                return false;
+            }
+            if (!state.isSolidRender(level, pos) && !state.is(Utils.FRAMEABLE)) {
+                displayValidationMessage(player, MSG_NON_SOLID, CamoMessageVerbosity.DETAILED);
+                return false;
+            }
+            return RegistryHandler.BLOCKS.getEntries()
+                .stream()
+                .map(Supplier::get)
+                .anyMatch(Predicate.isEqual(state.getBlock()));
+        }
+
+        @Override
+        protected void writeToNetwork(CompoundTag tag, RGBBlocksCamoContainer container) {
+            tag.putInt("state", Block.getId(container.getState()));
+            tag.putInt("color", container.color);
+        }
+
+        @Override
+        protected RGBBlocksCamoContainer readFromNetwork(CompoundTag tag) {
             return new RGBBlocksCamoContainer(Block.stateById(tag.getInt("state")), tag.getInt("color"));
         }
 
         @Override
-        public CamoContainer fromItem(ItemStack stack) {
-            if (stack.getItem() instanceof RGBBlockItem item) {
-                return new RGBBlocksCamoContainer(
-                    item.getBlock().defaultBlockState(), stack.getOrCreateTag().getInt("color")
-                );
-            }
-            return EmptyCamoContainer.EMPTY;
+        public boolean canTriviallyConvertToItemStack() {
+            return false;
         }
 
         @Override
-        public void registerTriggerItems(Consumer<Item> registrar) {
-            RegistryHandler.ITEMS.getEntries()
-                .stream()
-                .map(Supplier::get)
-                .filter(i -> i instanceof RGBBlockItem)
-                .forEach(registrar);
+        public ItemStack dropCamo(RGBBlocksCamoContainer container) {
+            ItemStack stack = new ItemStack(container.getState().getBlock());
+            stack.set(DataComponentRegistry.COLOR, container.color);
+            return stack;
+        }
+
+        @Override
+        public MapCodec<RGBBlocksCamoContainer> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public StreamCodec<? super RegistryFriendlyByteBuf, RGBBlocksCamoContainer> streamCodec() {
+            return STREAM_CODEC;
+        }
+
+        @Override
+        public void registerTriggerItems(TriggerRegistrar registrar) {
+            registrar.registerApplicationPredicate(stack -> stack.getItem() instanceof RGBBlockItem);
+            registrar.registerRemovalItem(Utils.FRAMED_HAMMER.value());
         }
     }
 }

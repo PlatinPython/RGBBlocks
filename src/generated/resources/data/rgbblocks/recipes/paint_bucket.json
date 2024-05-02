@@ -3,20 +3,20 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:dyes/red"
+      "tag": "c:dyes/red"
     },
     {
-      "tag": "forge:dyes/green"
+      "tag": "c:dyes/green"
     },
     {
-      "tag": "forge:dyes/blue"
+      "tag": "c:dyes/blue"
     },
     {
       "item": "minecraft:water_bucket"
     }
   ],
   "result": {
-    "item": "rgbblocks:paint_bucket",
-    "nbt": "{Damage:0,color:-1}"
+    "count": 1,
+    "id": "rgbblocks:paint_bucket"
   }
 }

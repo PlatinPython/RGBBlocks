@@ -2,17 +2,16 @@ package platinpython.rgbblocks.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.PackSelectionConfig;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
-import net.minecraft.server.packs.repository.PackCompatibility;
-import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
@@ -29,36 +28,27 @@ import platinpython.rgbblocks.util.pack.RGBBlocksPack;
 import platinpython.rgbblocks.util.registries.EntityRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
-import java.util.List;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(modid = RGBBlocks.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = RGBBlocks.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientUtils {
     public static final RGBBlocksPack VIRTUAL_PACK = new RGBBlocksPack();
 
     @SubscribeEvent
     public static void addPackFinders(AddPackFindersEvent event) {
         event.addRepositorySource(
-            (infoConsumer) -> infoConsumer.accept(
-                Pack.create(
-                    "rgbblocks_textures", Component.translatable("rgbblocks.pack_title"), true,
-                    new Pack.ResourcesSupplier() {
-                        @Override
-                        public PackResources openPrimary(String pId) {
-                            return VIRTUAL_PACK;
-                        }
+            (infoConsumer) -> infoConsumer
+                .accept(Pack.readMetaAndCreate(RGBBlocksPack.LOCATION_INFO, new Pack.ResourcesSupplier() {
+                    @Override
+                    public PackResources openPrimary(PackLocationInfo p_326301_) {
+                        return VIRTUAL_PACK;
+                    }
 
-                        @Override
-                        public PackResources openFull(String pId, Pack.Info pInfo) {
-                            return VIRTUAL_PACK;
-                        }
-                    },
-                    new Pack.Info(
-                        Component.translatable("rgbblocks.pack_description"), PackCompatibility.COMPATIBLE,
-                        FeatureFlagSet.of(), List.of(), false
-                    ), Pack.Position.TOP, true, PackSource.BUILT_IN
-                )
-            )
+                    @Override
+                    public PackResources openFull(PackLocationInfo p_326241_, Pack.Metadata p_325959_) {
+                        return VIRTUAL_PACK;
+                    }
+                }, PackType.CLIENT_RESOURCES, new PackSelectionConfig(true, Pack.Position.TOP, false)))
         );
     }
 

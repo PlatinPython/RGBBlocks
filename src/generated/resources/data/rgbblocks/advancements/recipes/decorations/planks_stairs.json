@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "rgbblocks:planks"
-            ]
+            "items": "rgbblocks:planks"
           }
         ]
       },

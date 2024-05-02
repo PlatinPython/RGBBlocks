@@ -9,9 +9,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.AbstractPackResources;
+import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.IoSupplier;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -36,6 +38,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class RGBBlocksPack extends AbstractPackResources implements PreparableReloadListener {
+    public static final PackLocationInfo LOCATION_INFO = new PackLocationInfo(
+        "rgbblocks_textures", Component.translatable("rgbblocks.pack_title"), PackSource.BUILT_IN, Optional.empty()
+    );
     public static final String TEXTURE_DIRECTORY = "textures/";
     public static final String BLOCK_DIRECTORY = "block/";
     public static final Set<String> NAMESPACES = ImmutableSet.of(RGBBlocks.MOD_ID);
@@ -45,7 +50,7 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
     private final Map<ResourceLocation, ResourceLocation> textures = new HashMap<>();
 
     public RGBBlocksPack() {
-        super("rgbblocks_virtual_pack", true);
+        super(LOCATION_INFO);
         this.packInfo = new PackMetadataSection(
             Component.translatable("rgbblocks.pack_description"),
             SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES)

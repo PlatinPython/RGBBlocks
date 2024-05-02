@@ -8,10 +8,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
-import java.util.function.Supplier;
-
 public class RGBGlassStairsBlock extends RGBStairsBlock {
-    public RGBGlassStairsBlock(Supplier<BlockState> state) {
+    public RGBGlassStairsBlock(BlockState state) {
         super(state, Properties.ofFullCopy(Blocks.GLASS));
     }
 

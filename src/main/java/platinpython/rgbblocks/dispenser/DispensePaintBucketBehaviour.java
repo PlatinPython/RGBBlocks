@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import platinpython.rgbblocks.block.entity.RGBBlockEntity;
+import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 
 public class DispensePaintBucketBehaviour extends DefaultDispenseItemBehavior {
     @SuppressWarnings("resource")
@@ -20,14 +21,14 @@ public class DispensePaintBucketBehaviour extends DefaultDispenseItemBehavior {
         BlockEntity blockEntity = source.level().getBlockEntity(blockPos);
         if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
             boolean broke = false;
-            if (itemStack.getOrCreateTag().getInt("color") != rgbBlockEntity.getColor()) {
+            if (itemStack.getOrDefault(DataComponentRegistry.COLOR, -1) != rgbBlockEntity.getColor()) {
                 if (itemStack.getDamageValue() == itemStack.getMaxDamage() - 1) {
                     broke = true;
                 } else {
-                    itemStack.hurt(1, source.level().random, null);
+                    itemStack.hurtAndBreak(1, source.level().random, null, () -> {});
                 }
             }
-            rgbBlockEntity.setColor(itemStack.getOrCreateTag().getInt("color"));
+            rgbBlockEntity.setColor(itemStack.getOrDefault(DataComponentRegistry.COLOR, -1));
             source.level()
                 .sendBlockUpdated(
                     blockPos, blockEntity.getBlockState(), blockEntity.getBlockState(), Block.UPDATE_ALL_IMMEDIATE

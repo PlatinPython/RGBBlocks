@@ -6,24 +6,22 @@
         {
           "condition": "minecraft:match_tool",
           "predicate": {
-            "enchantments": [
-              {
-                "enchantment": "minecraft:silk_touch",
-                "levels": {
-                  "min": 1
+            "predicates": {
+              "minecraft:enchantments": [
+                {
+                  "enchantment": "minecraft:silk_touch",
+                  "levels": {
+                    "min": 1
+                  }
                 }
-              }
-            ]
+              ]
+            }
           }
         }
       ],
-      "function": "minecraft:copy_nbt",
-      "ops": [
-        {
-          "op": "replace",
-          "source": "color",
-          "target": "color"
-        }
+      "function": "minecraft:copy_components",
+      "include": [
+        "rgbblocks:color"
       ],
       "source": "block_entity"
     }
@@ -41,14 +39,16 @@
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
-                    "enchantments": [
-                      {
-                        "enchantment": "minecraft:silk_touch",
-                        "levels": {
-                          "min": 1
+                    "predicates": {
+                      "minecraft:enchantments": [
+                        {
+                          "enchantment": "minecraft:silk_touch",
+                          "levels": {
+                            "min": 1
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   }
                 }
               ],

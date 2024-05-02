@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "rgbblocks:paint_bucket"
-            ]
+            "items": "rgbblocks:paint_bucket"
           }
         ]
       },

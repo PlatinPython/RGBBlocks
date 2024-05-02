@@ -1,6 +1,7 @@
 package platinpython.rgbblocks.util.compat.framedblocks;
 
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
@@ -12,15 +13,16 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.Color;
-import xfacthd.framedblocks.api.block.FramedBlockEntity;
+import platinpython.rgbblocks.util.registries.DataComponentRegistry;
+import xfacthd.framedblocks.api.block.blockentity.FramedBlockEntity;
 import xfacthd.framedblocks.api.camo.CamoContainerFactory;
 import xfacthd.framedblocks.api.util.FramedConstants;
 
 public class RGBBlocksFramedBlocks {
-    public static final DeferredRegister<CamoContainerFactory> CAMO_CONTAINER_FACTORIES =
+    public static final DeferredRegister<CamoContainerFactory<RGBBlocksCamoContainer>> CAMO_CONTAINER_FACTORIES =
         DeferredRegister.create(FramedConstants.CAMO_CONTAINER_FACTORY_REGISTRY_NAME, RGBBlocks.MOD_ID);
 
-    public static final DeferredHolder<CamoContainerFactory, RGBBlocksCamoContainer.Factory> RGBBLOCKS_CONTAINER_FACTORY =
+    public static final DeferredHolder<CamoContainerFactory<RGBBlocksCamoContainer>, RGBBlocksCamoContainer.Factory> RGBBLOCKS_CONTAINER_FACTORY =
         CAMO_CONTAINER_FACTORIES.register("container_factory", RGBBlocksCamoContainer.Factory::new);
 
     public static void register(IEventBus bus) {
@@ -39,18 +41,18 @@ public class RGBBlocksFramedBlocks {
             return InteractionResult.PASS;
         }
         if (context.getPlayer() != null && context.getPlayer().isShiftKeyDown()) {
-            context.getItemInHand().getOrCreateTag().putInt("color", camoContainer.color);
+            context.getItemInHand().set(DataComponentRegistry.COLOR, camoContainer.color);
         } else {
             if (!context.getPlayer().getAbilities().instabuild
-                && context.getItemInHand().getOrCreateTag().getInt("color") != camoContainer.color) {
+                && context.getItemInHand().getOrDefault(DataComponentRegistry.COLOR, -1) != camoContainer.color) {
                 if (context.getItemInHand().getDamageValue() == context.getItemInHand().getMaxDamage() - 1) {
                     context.getPlayer().setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
                 } else {
                     context.getItemInHand()
-                        .hurtAndBreak(1, context.getPlayer(), e -> e.broadcastBreakEvent(context.getHand()));
+                        .hurtAndBreak(1, context.getPlayer(), LivingEntity.getSlotForHand(context.getHand()));
                 }
             }
-            camoContainer.color = context.getItemInHand().getOrCreateTag().getInt("color");
+            camoContainer.color = context.getItemInHand().getOrDefault(DataComponentRegistry.COLOR, -1);
             camoContainer.mapColor = Color.getNearestMapColor(camoContainer.color);
             context.getLevel()
                 .sendBlockUpdated(

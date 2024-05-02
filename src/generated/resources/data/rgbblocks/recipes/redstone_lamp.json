@@ -6,7 +6,7 @@
       "item": "rgbblocks:glowstone"
     },
     "R": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "pattern": [
@@ -15,7 +15,7 @@
     " R "
   ],
   "result": {
-    "item": "rgbblocks:redstone_lamp",
-    "nbt": "{Damage:0,color:-1}"
+    "count": 1,
+    "id": "rgbblocks:redstone_lamp"
   }
 }

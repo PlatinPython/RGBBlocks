@@ -5,12 +5,12 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.client.gui.widget.ColorSlider;
 import platinpython.rgbblocks.client.gui.widget.SliderType;
 import platinpython.rgbblocks.util.Color;
-import platinpython.rgbblocks.util.network.NetworkHandler;
-import platinpython.rgbblocks.util.network.packets.PaintBucketSyncPKT;
+import platinpython.rgbblocks.util.network.packets.PaintBucketSyncPayload;
 
 import java.util.Locale;
 import java.util.function.UnaryOperator;
@@ -298,7 +298,7 @@ public class ColorSelectScreen extends Screen {
 
     @Override
     public void onClose() {
-        NetworkHandler.sendToServer(new PaintBucketSyncPKT(getColor(), isRGBSelected));
+        PacketDistributor.sendToServer(new PaintBucketSyncPayload(getColor(), isRGBSelected));
         super.onClose();
     }
 }

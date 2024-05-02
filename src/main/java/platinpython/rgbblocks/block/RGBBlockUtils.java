@@ -2,10 +2,8 @@ package platinpython.rgbblocks.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
@@ -19,26 +17,17 @@ import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.util.Color;
 import platinpython.rgbblocks.util.registries.BlockEntityRegistry;
+import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 
 public final class RGBBlockUtils {
     public static @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return BlockEntityRegistry.RGB.get().create(pos, state);
     }
 
-    public static void setPlacedBy(Level level, BlockPos pos, ItemStack stack) {
-        BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (stack.hasTag() && blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
-            // noinspection DataFlowIssue
-            rgbBlockEntity.setColor(stack.getTag().getInt("color"));
-        }
-    }
-
     public static ItemStack getCloneItemStack(BlockState state, LevelReader level, BlockPos pos) {
         ItemStack stack = new ItemStack(state.getBlock().asItem());
         if (level.getBlockEntity(pos) instanceof RGBBlockEntity blockEntity) {
-            CompoundTag tag = new CompoundTag();
-            tag.putInt("color", blockEntity.getColor());
-            stack.setTag(tag);
+            stack.set(DataComponentRegistry.COLOR, blockEntity.getColor());
         }
         return stack;
     }

@@ -5,14 +5,10 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "rgbblocks:paint_bucket"
-            ]
+            "items": "rgbblocks:paint_bucket"
           },
           {
-            "items": [
-              "rgbblocks:prismarine_bricks_stairs"
-            ]
+            "items": "rgbblocks:prismarine_bricks_stairs"
           }
         ]
       },

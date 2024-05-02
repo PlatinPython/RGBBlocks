@@ -3,7 +3,6 @@ package platinpython.rgbblocks.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.HitResult;
-import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.entity.RGBFallingBlockEntity;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
@@ -31,17 +29,6 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return RGBBlockUtils.newBlockEntity(pos, state);
-    }
-
-    @Override
-    public void setPlacedBy(
-        Level level,
-        BlockPos pos,
-        BlockState state,
-        @Nullable LivingEntity placer,
-        ItemStack stack
-    ) {
-        RGBBlockUtils.setPlacedBy(level, pos, stack);
     }
 
     @Override

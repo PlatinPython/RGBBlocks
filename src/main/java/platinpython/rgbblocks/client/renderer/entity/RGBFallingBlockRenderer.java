@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.entity.RGBFallingBlockEntity;
+import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 
 public class RGBFallingBlockRenderer extends EntityRenderer<RGBFallingBlockEntity> {
     private final ItemRenderer itemRenderer;
@@ -33,7 +34,7 @@ public class RGBFallingBlockRenderer extends EntityRenderer<RGBFallingBlockEntit
         poseStack.pushPose();
         poseStack.translate(0.0D, 0.5D, 0.0D);
         ItemStack stack = new ItemStack(fallingBlockEntity.getBlockState().getBlock());
-        stack.getOrCreateTag().putInt("color", fallingBlockEntity.getColor());
+        stack.set(DataComponentRegistry.COLOR, fallingBlockEntity.getColor());
         itemRenderer.renderStatic(
             stack, ItemDisplayContext.NONE, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null,
             fallingBlockEntity.getId()

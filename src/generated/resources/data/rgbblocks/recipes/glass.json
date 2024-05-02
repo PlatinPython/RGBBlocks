@@ -3,13 +3,22 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:stained_glass"
+      "type": "neoforge:intersection",
+      "children": [
+        {
+          "tag": "c:glass_blocks"
+        },
+        {
+          "tag": "c:dyed"
+        }
+      ]
     },
     {
       "item": "rgbblocks:paint_bucket"
     }
   ],
   "result": {
-    "item": "rgbblocks:glass"
+    "count": 1,
+    "id": "rgbblocks:glass"
   }
 }

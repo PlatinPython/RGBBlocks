@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
     id 'eclipse'
     id 'idea'
-    id 'net.neoforged.gradle.userdev' version '7.0.96'
+    id 'net.neoforged.gradle.userdev' version '7.0.109'
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
@@ -10,7 +10,7 @@ version = "${minecraft_version}-${mod_version}"
 group = 'platinpython.rgbblocks'
 base.archivesName = 'RGB Blocks'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 
@@ -51,13 +51,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'net.neoforged:neoforge:20.4.167'
+    implementation 'net.neoforged:neoforge:20.6.12-beta'
 
     compileOnly 'org.jspecify:jspecify:0.3.0'
 
-    compileOnly 'curse.maven:the-one-probe-245211:5082106'
-    if (rootProject.file('libs/FramedBlocks-10.0.0.1.jar').exists()) {
-        implementation files('libs/FramedBlocks-10.0.0.1.jar')
+    implementation 'curse.maven:the-one-probe-245211:5304322'
+    if (rootProject.file('libs/FramedBlocks-10.0.0.jar').exists()) {
+        implementation files('libs/FramedBlocks-10.0.0.jar')
     }
 }
 
@@ -75,6 +75,7 @@ jar {
     }
 }
 
+// TODO: Figure out why it's still needed
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }

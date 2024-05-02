@@ -6,7 +6,7 @@
       "item": "rgbblocks:glowstone"
     },
     "S": {
-      "tag": "forge:stone"
+      "tag": "c:stones"
     }
   },
   "pattern": [
@@ -16,7 +16,6 @@
   ],
   "result": {
     "count": 8,
-    "item": "rgbblocks:antiblock",
-    "nbt": "{Damage:0,color:-1}"
+    "id": "rgbblocks:antiblock"
   }
 }

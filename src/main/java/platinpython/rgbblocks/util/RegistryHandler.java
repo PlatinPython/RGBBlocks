@@ -11,6 +11,7 @@ import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.util.registries.BlockEntityRegistry;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.CreativeTabRegistry;
+import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 import platinpython.rgbblocks.util.registries.EntityRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 import platinpython.rgbblocks.util.registries.RecipeSerializerRegistry;
@@ -32,6 +33,9 @@ public class RegistryHandler {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
         DeferredRegister.create(Registries.CREATIVE_MODE_TAB, RGBBlocks.MOD_ID);
 
+    public static final DeferredRegister.DataComponents DATA_COMPONENTS =
+        DeferredRegister.createDataComponents(RGBBlocks.MOD_ID);
+
     public static void register(IEventBus bus) {
         ITEMS.register(bus);
         BLOCKS.register(bus);
@@ -39,6 +43,7 @@ public class RegistryHandler {
         ENTITY_TYPES.register(bus);
         RECIPE_SERIALIZERS.register(bus);
         CREATIVE_MODE_TABS.register(bus);
+        DATA_COMPONENTS.register(bus);
 
         ItemRegistry.register();
         BlockRegistry.register();
@@ -46,5 +51,6 @@ public class RegistryHandler {
         EntityRegistry.register();
         RecipeSerializerRegistry.register();
         CreativeTabRegistry.register();
+        DataComponentRegistry.register();
     }
 }

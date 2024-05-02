@@ -1,12 +1,10 @@
 package platinpython.rgbblocks.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
@@ -15,7 +13,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.HitResult;
-import org.jspecify.annotations.Nullable;
 
 public class RGBCarpetBlock extends WoolCarpetBlock implements EntityBlock {
     public RGBCarpetBlock() {
@@ -25,17 +22,6 @@ public class RGBCarpetBlock extends WoolCarpetBlock implements EntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return RGBBlockUtils.newBlockEntity(pos, state);
-    }
-
-    @Override
-    public void setPlacedBy(
-        Level level,
-        BlockPos pos,
-        BlockState state,
-        @Nullable LivingEntity placer,
-        ItemStack stack
-    ) {
-        RGBBlockUtils.setPlacedBy(level, pos, stack);
     }
 
     @Override

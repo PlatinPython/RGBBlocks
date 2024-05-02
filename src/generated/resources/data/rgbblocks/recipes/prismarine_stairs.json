@@ -13,7 +13,6 @@
   ],
   "result": {
     "count": 4,
-    "item": "rgbblocks:prismarine_stairs",
-    "nbt": "{Damage:0,color:-1}"
+    "id": "rgbblocks:prismarine_stairs"
   }
 }

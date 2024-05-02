@@ -1,7 +1,7 @@
 package platinpython.rgbblocks.entity;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
+import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 import platinpython.rgbblocks.util.registries.EntityRegistry;
 
 public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntityWithComplexSpawn {
@@ -33,7 +34,7 @@ public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntity
 
     @Override
     public ItemEntity spawnAtLocation(ItemStack stack, float offset) {
-        stack.getOrCreateTag().putInt("color", color);
+        stack.set(DataComponentRegistry.COLOR, this.color);
         return super.spawnAtLocation(stack, offset);
     }
 
@@ -50,13 +51,13 @@ public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntity
     }
 
     @Override
-    public void writeSpawnData(FriendlyByteBuf buffer) {
+    public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
         buffer.writeInt(color);
         buffer.writeVarInt(Block.getId(blockState));
     }
 
     @Override
-    public void readSpawnData(FriendlyByteBuf buffer) {
+    public void readSpawnData(RegistryFriendlyByteBuf buffer) {
         color = buffer.readInt();
         blockState = Block.stateById(buffer.readVarInt());
     }

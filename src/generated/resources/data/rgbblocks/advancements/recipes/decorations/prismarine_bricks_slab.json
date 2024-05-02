@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "rgbblocks:prismarine_bricks"
-            ]
+            "items": "rgbblocks:prismarine_bricks"
           }
         ]
       },

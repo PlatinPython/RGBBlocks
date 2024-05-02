@@ -1,37 +1,42 @@
 package platinpython.rgbblocks.item;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.Block;
-import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
 import platinpython.rgbblocks.util.ClientUtils;
 import platinpython.rgbblocks.util.Color;
+import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 
 import java.util.List;
 
 public class RGBBlockItem extends BlockItem {
     public RGBBlockItem(Block blockIn) {
-        super(blockIn, new Item.Properties());
+        super(blockIn, new Item.Properties().component(DataComponentRegistry.COLOR, -1));
     }
 
     @Override
-    public ItemStack getDefaultInstance() {
-        ItemStack stack = new ItemStack(this);
-        CompoundTag compound = stack.getOrCreateTag();
-        compound.putInt("color", -1);
-        return stack;
+    public void verifyComponentsAfterLoad(ItemStack stack) {
+        super.verifyComponentsAfterLoad(stack);
+        if (stack.has(DataComponents.CUSTOM_DATA)) {
+            stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, customData -> customData.update(tag -> {
+                if (tag.contains("color")) {
+                    stack.set(DataComponentRegistry.COLOR, tag.getInt("color"));
+                    tag.remove("color");
+                }
+            }));
+        }
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
-        Color color = new Color(stack.getOrCreateTag().getInt("color"));
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
+        Color color = new Color(stack.getOrDefault(DataComponentRegistry.COLOR, -1));
         if (ClientUtils.hasShiftDown()) {
             MutableComponent red = Component.translatable("gui.rgbblocks.red").append(": " + color.getRed());
             MutableComponent green = Component.translatable("gui.rgbblocks.green").append(": " + color.getGreen());
