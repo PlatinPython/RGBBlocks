@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fml.ModList;
 import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
-import platinpython.rgbblocks.tileentity.RGBTileEntity;
+import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.util.ClientUtils;
 import platinpython.rgbblocks.util.Color;
 import platinpython.rgbblocks.util.compat.framedblocks.RGBBlocksFramedBlocks;
@@ -88,16 +88,16 @@ public class PaintBucketItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         BlockEntity tileEntity = context.getLevel().getBlockEntity(context.getClickedPos());
-        if (tileEntity instanceof RGBTileEntity rgbTileEntity) {
+        if (tileEntity instanceof RGBBlockEntity rgbBlockEntity) {
             if (context.getPlayer() != null && context.getPlayer().isShiftKeyDown()) {
-                context.getItemInHand().getOrCreateTag().putInt("color", rgbTileEntity.getColor());
+                context.getItemInHand().getOrCreateTag().putInt("color", rgbBlockEntity.getColor());
             } else {
                 if (!context.getItemInHand().hasTag()) {
                     return InteractionResult.PASS;
                 }
                 // noinspection DataFlowIssue
                 int color = context.getItemInHand().getTag().getInt("color");
-                if (!context.getPlayer().isCreative() && color != rgbTileEntity.getColor()) {
+                if (!context.getPlayer().isCreative() && color != rgbBlockEntity.getColor()) {
                     if (context.getItemInHand().getDamageValue() == context.getItemInHand().getMaxDamage() - 1) {
                         context.getPlayer().setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
                     } else {
@@ -105,7 +105,7 @@ public class PaintBucketItem extends Item {
                             .hurtAndBreak(1, context.getPlayer(), e -> e.broadcastBreakEvent(context.getHand()));
                     }
                 }
-                rgbTileEntity.setColor(color);
+                rgbBlockEntity.setColor(color);
                 context.getLevel()
                     .sendBlockUpdated(
                         context.getClickedPos(), tileEntity.getBlockState(), tileEntity.getBlockState(),

@@ -16,11 +16,11 @@ public class RGBGlassSlabBlock extends RGBSlabBlock {
     @Override
     public float @Nullable [] getBeaconColorMultiplier(
         BlockState state,
-        LevelReader world,
+        LevelReader level,
         BlockPos pos,
         BlockPos beaconPos
     ) {
-        return RGBBlockUtils.getBeaconColorMultiplier(state, world, pos, beaconPos);
+        return RGBBlockUtils.getBeaconColorMultiplier(level, pos);
     }
 
     @SuppressWarnings("deprecation")
@@ -31,7 +31,7 @@ public class RGBGlassSlabBlock extends RGBSlabBlock {
 
     @SuppressWarnings("deprecation")
     @Override
-    public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
+    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
         return 1.0F;
     }
 

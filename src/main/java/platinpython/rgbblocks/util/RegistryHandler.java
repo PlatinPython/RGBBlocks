@@ -16,7 +16,7 @@ import platinpython.rgbblocks.util.registries.CreativeTabRegistry;
 import platinpython.rgbblocks.util.registries.EntityRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 import platinpython.rgbblocks.util.registries.RecipeSerializerRegistry;
-import platinpython.rgbblocks.util.registries.TileEntityRegistry;
+import platinpython.rgbblocks.util.registries.BlockEntityRegistry;
 
 public class RegistryHandler {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, RGBBlocks.MOD_ID);
@@ -46,7 +46,7 @@ public class RegistryHandler {
 
         ItemRegistry.register();
         BlockRegistry.register();
-        TileEntityRegistry.register();
+        BlockEntityRegistry.register();
         EntityRegistry.register();
         RecipeSerializerRegistry.register();
         CreativeTabRegistry.register();

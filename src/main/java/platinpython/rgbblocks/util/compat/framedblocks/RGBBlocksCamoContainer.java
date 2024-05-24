@@ -6,19 +6,35 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 import platinpython.rgbblocks.item.RGBBlockItem;
+import platinpython.rgbblocks.util.Color;
 import xfacthd.framedblocks.api.camo.CamoContainer;
 import xfacthd.framedblocks.api.camo.ContainerType;
 import xfacthd.framedblocks.api.camo.EmptyCamoContainer;
 
 public class RGBBlocksCamoContainer extends CamoContainer {
     int color;
+    MapColor mapColor;
 
     protected RGBBlocksCamoContainer(BlockState state, int color) {
         super(state);
         this.color = color;
+        this.mapColor = Color.getNearestMapColor(this.color);
+    }
+
+    @Override
+    public MapColor getMapColor(BlockGetter level, BlockPos pos) {
+        return mapColor;
+    }
+
+    @Override
+    public float[] getBeaconColorMultiplier(LevelReader level, BlockPos pos, BlockPos beaconPos) {
+        return new Color(this.color).getRGBColorComponents();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package platinpython.rgbblocks.tileentity;
+package platinpython.rgbblocks.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -7,23 +7,30 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 import platinpython.rgbblocks.util.Color;
-import platinpython.rgbblocks.util.registries.TileEntityRegistry;
+import platinpython.rgbblocks.util.registries.BlockEntityRegistry;
 
-public class RGBTileEntity extends BlockEntity {
+public class RGBBlockEntity extends BlockEntity {
     private int color;
+    private MapColor mapColor = MapColor.NONE;
 
-    public RGBTileEntity(BlockPos pos, BlockState state) {
-        super(TileEntityRegistry.RGB.get(), pos, state);
+    public RGBBlockEntity(BlockPos pos, BlockState state) {
+        super(BlockEntityRegistry.RGB.get(), pos, state);
     }
 
     public void setColor(int color) {
         this.color = new Color(color).getRGB();
+        this.mapColor = Color.getNearestMapColor(this.color);
         setChanged();
     }
 
     public int getColor() {
         return color;
+    }
+
+    public MapColor getMapColor() {
+        return mapColor;
     }
 
     @Override

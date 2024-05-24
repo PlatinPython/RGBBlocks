@@ -3,8 +3,6 @@ package platinpython.rgbblocks.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -16,63 +14,54 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.material.MapColor;
 import org.jspecify.annotations.Nullable;
-import platinpython.rgbblocks.tileentity.RGBTileEntity;
+import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.util.Color;
-import platinpython.rgbblocks.util.registries.TileEntityRegistry;
+import platinpython.rgbblocks.util.registries.BlockEntityRegistry;
 
 public final class RGBBlockUtils {
     public static @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return TileEntityRegistry.RGB.get().create(pos, state);
+        return BlockEntityRegistry.RGB.get().create(pos, state);
     }
 
-    public static void setPlacedBy(
-        Level worldIn,
-        BlockPos pos,
-        BlockState state,
-        @Nullable LivingEntity placer,
-        ItemStack stack
-    ) {
-        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        if (stack.hasTag() && tileEntity instanceof RGBTileEntity rgbTileEntity) {
+    public static void setPlacedBy(Level level, BlockPos pos, ItemStack stack) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (stack.hasTag() && blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
             // noinspection DataFlowIssue
-            rgbTileEntity.setColor(stack.getTag().getInt("color"));
+            rgbBlockEntity.setColor(stack.getTag().getInt("color"));
         }
     }
 
-    public static ItemStack getCloneItemStack(
-        BlockState state,
-        HitResult target,
-        BlockGetter world,
-        BlockPos pos,
-        Player player
-    ) {
+    public static ItemStack getCloneItemStack(BlockState state, BlockGetter level, BlockPos pos) {
         ItemStack stack = new ItemStack(state.getBlock().asItem());
-        BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof RGBTileEntity) {
+        if (level.getBlockEntity(pos) instanceof RGBBlockEntity blockEntity) {
             CompoundTag tag = new CompoundTag();
-            tag.putInt("color", ((RGBTileEntity) tileEntity).getColor());
+            tag.putInt("color", blockEntity.getColor());
             stack.setTag(tag);
         }
         return stack;
     }
 
-    public static float @Nullable [] getBeaconColorMultiplier(
-        BlockState state,
-        LevelReader world,
-        BlockPos pos,
-        BlockPos beaconPos
-    ) {
-        BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof RGBTileEntity rgbTileEntity) {
-            return new Color(rgbTileEntity.getColor()).getRGBColorComponents();
+    public static MapColor getMapColor(BlockGetter level, BlockPos pos, MapColor defaultColor) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
+            return rgbBlockEntity.getMapColor();
+        } else {
+            return defaultColor;
+        }
+    }
+
+    public static float @Nullable [] getBeaconColorMultiplier(LevelReader level, BlockPos pos) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
+            return new Color(rgbBlockEntity.getColor()).getRGBColorComponents();
         } else {
             return null;
         }
     }
 
-    public static boolean blockSkipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
+    public static boolean blockSkipRendering(BlockState adjacentBlockState, Direction side) {
         if (adjacentBlockState.getBlock() instanceof RGBBlock) {
             return true;
         } else if (adjacentBlockState.getBlock() instanceof RGBGlassSlabBlock) {

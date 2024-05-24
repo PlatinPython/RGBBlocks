@@ -16,21 +16,21 @@ public class RGBGlassPaneBlock extends RGBIronBarsBlock {
     @Override
     public float @Nullable [] getBeaconColorMultiplier(
         BlockState state,
-        LevelReader world,
+        LevelReader level,
         BlockPos pos,
         BlockPos beaconPos
     ) {
-        return RGBBlockUtils.getBeaconColorMultiplier(state, world, pos, beaconPos);
+        return RGBBlockUtils.getBeaconColorMultiplier(level, pos);
     }
 
     @Override
     public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-        return RGBBlockUtils.blockSkipRendering(state, adjacentBlockState, side);
+        return RGBBlockUtils.blockSkipRendering(adjacentBlockState, side);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
+    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
         return 1.0F;
     }
 

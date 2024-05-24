@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import platinpython.rgbblocks.RGBBlocks;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
-import platinpython.rgbblocks.tileentity.RGBTileEntity;
+import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.util.Color;
 
 public class RGBBlockProvider implements IProbeInfoProvider {
@@ -26,14 +26,14 @@ public class RGBBlockProvider implements IProbeInfoProvider {
         BlockState state,
         IProbeHitData hitData
     ) {
-        BlockEntity tileEntity = world.getBlockEntity(hitData.getPos());
-        if (tileEntity instanceof RGBTileEntity) {
+        BlockEntity blockEntity = world.getBlockEntity(hitData.getPos());
+        if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
             if (mode == ProbeMode.NORMAL) {
-                info.text("#" + Integer.toHexString(((RGBTileEntity) tileEntity).getColor()).substring(2));
+                info.text("#" + Integer.toHexString(rgbBlockEntity.getColor()).substring(2));
             }
 
             if (mode == ProbeMode.EXTENDED) {
-                Color color = new Color(((RGBTileEntity) tileEntity).getColor());
+                Color color = new Color(rgbBlockEntity.getColor());
                 MutableComponent red = Component.translatable("gui.rgbblocks.red").append(": " + color.getRed());
                 MutableComponent green = Component.translatable("gui.rgbblocks.green").append(": " + color.getGreen());
                 MutableComponent blue = Component.translatable("gui.rgbblocks.blue").append(": " + color.getBlue());

@@ -6,7 +6,7 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
-import platinpython.rgbblocks.tileentity.RGBTileEntity;
+import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 
 public class RGBBlockColor implements BlockColor {
     public int getColor(
@@ -25,8 +25,8 @@ public class RGBBlockColor implements BlockColor {
                 return -1;
             }
         }
-        if (tileEntity instanceof RGBTileEntity rgbTileEntity) {
-            return rgbTileEntity.getColor();
+        if (tileEntity instanceof RGBBlockEntity rgbBlockEntity) {
+            return rgbBlockEntity.getColor();
         } else {
             return -1;
         }

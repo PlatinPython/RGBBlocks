@@ -36,7 +36,7 @@ import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.tileentity.RGBTileEntity;
+import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 
 import java.util.ArrayList;
@@ -317,7 +317,7 @@ public class AntiblockBakedModel implements BakedModel {
 
     @Override
     public ModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, ModelData modelData) {
-        if (!(getAntiblockAt(level, pos) instanceof RGBTileEntity blockEntity)) {
+        if (!(getAntiblockAt(level, pos) instanceof RGBBlockEntity blockEntity)) {
             return modelData;
         }
 
@@ -352,80 +352,80 @@ public class AntiblockBakedModel implements BakedModel {
         boolean downWest = false;
         boolean downWestColor = false;
 
-        if (getAntiblockAt(level, pos.north()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.north()) instanceof RGBBlockEntity otherBlockEntity) {
             north = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.east()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.east()) instanceof RGBBlockEntity otherBlockEntity) {
             east = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.south()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.south()) instanceof RGBBlockEntity otherBlockEntity) {
             south = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.west()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.west()) instanceof RGBBlockEntity otherBlockEntity) {
             west = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.above()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.above()) instanceof RGBBlockEntity otherBlockEntity) {
             up = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.below()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.below()) instanceof RGBBlockEntity otherBlockEntity) {
             down = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.above().north()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.above().north()) instanceof RGBBlockEntity otherBlockEntity) {
             upNorth = true;
             upNorthColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.above().east()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.above().east()) instanceof RGBBlockEntity otherBlockEntity) {
             upEast = true;
             upEastColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.above().south()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.above().south()) instanceof RGBBlockEntity otherBlockEntity) {
             upSouth = true;
             upSouthColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.above().west()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.above().west()) instanceof RGBBlockEntity otherBlockEntity) {
             upWest = true;
             upWestColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.north().east()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.north().east()) instanceof RGBBlockEntity otherBlockEntity) {
             northEast = true;
             northEastColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.south().east()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.south().east()) instanceof RGBBlockEntity otherBlockEntity) {
             southEast = true;
             southEastColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.south().west()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.south().west()) instanceof RGBBlockEntity otherBlockEntity) {
             southWest = true;
             southWestColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.north().west()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.north().west()) instanceof RGBBlockEntity otherBlockEntity) {
             northWest = true;
             northWestColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.below().north()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.below().north()) instanceof RGBBlockEntity otherBlockEntity) {
             downNorth = true;
             downNorthColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.below().east()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.below().east()) instanceof RGBBlockEntity otherBlockEntity) {
             downEast = true;
             downEastColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.below().south()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.below().south()) instanceof RGBBlockEntity otherBlockEntity) {
             downSouth = true;
             downSouthColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        if (getAntiblockAt(level, pos.below().west()) instanceof RGBTileEntity otherBlockEntity) {
+        if (getAntiblockAt(level, pos.below().west()) instanceof RGBBlockEntity otherBlockEntity) {
             downWest = true;
             downWestColor = otherBlockEntity.getColor() == blockEntity.getColor();
         }
-        boolean upNorthEast = getAntiblockAt(level, pos.above().north().east()) instanceof RGBTileEntity;
-        boolean upSouthEast = getAntiblockAt(level, pos.above().south().east()) instanceof RGBTileEntity;
-        boolean upSouthWest = getAntiblockAt(level, pos.above().south().west()) instanceof RGBTileEntity;
-        boolean upNorthWest = getAntiblockAt(level, pos.above().north().west()) instanceof RGBTileEntity;
-        boolean downNorthEast = getAntiblockAt(level, pos.below().north().east()) instanceof RGBTileEntity;
-        boolean downSouthEast = getAntiblockAt(level, pos.below().south().east()) instanceof RGBTileEntity;
-        boolean downSouthWest = getAntiblockAt(level, pos.below().south().west()) instanceof RGBTileEntity;
-        boolean downNorthWest = getAntiblockAt(level, pos.below().north().west()) instanceof RGBTileEntity;
+        boolean upNorthEast = getAntiblockAt(level, pos.above().north().east()) instanceof RGBBlockEntity;
+        boolean upSouthEast = getAntiblockAt(level, pos.above().south().east()) instanceof RGBBlockEntity;
+        boolean upSouthWest = getAntiblockAt(level, pos.above().south().west()) instanceof RGBBlockEntity;
+        boolean upNorthWest = getAntiblockAt(level, pos.above().north().west()) instanceof RGBBlockEntity;
+        boolean downNorthEast = getAntiblockAt(level, pos.below().north().east()) instanceof RGBBlockEntity;
+        boolean downSouthEast = getAntiblockAt(level, pos.below().south().east()) instanceof RGBBlockEntity;
+        boolean downSouthWest = getAntiblockAt(level, pos.below().south().west()) instanceof RGBBlockEntity;
+        boolean downNorthWest = getAntiblockAt(level, pos.below().north().west()) instanceof RGBBlockEntity;
 
         return modelData.derive()
             .with(

@@ -1,4 +1,4 @@
 @NullMarked
-package platinpython.rgbblocks.tileentity;
+package platinpython.rgbblocks.block.entity;
 
 import org.jspecify.annotations.NullMarked;

@@ -9,7 +9,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import platinpython.rgbblocks.tileentity.RGBTileEntity;
+import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 
 public class DispensePaintbucketBehaviour extends DefaultDispenseItemBehavior {
     @Override
@@ -17,16 +17,16 @@ public class DispensePaintbucketBehaviour extends DefaultDispenseItemBehavior {
         Direction dispenserFacing = source.getBlockState().getValue(DispenserBlock.FACING);
         BlockPos blockPos = source.getPos().relative(dispenserFacing);
         BlockEntity tileEntity = source.getLevel().getBlockEntity(blockPos);
-        if (tileEntity instanceof RGBTileEntity rgbTileEntity) {
+        if (tileEntity instanceof RGBBlockEntity rgbBlockEntity) {
             boolean broke = false;
-            if (itemStack.getOrCreateTag().getInt("color") != rgbTileEntity.getColor()) {
+            if (itemStack.getOrCreateTag().getInt("color") != rgbBlockEntity.getColor()) {
                 if (itemStack.getDamageValue() == itemStack.getMaxDamage() - 1) {
                     broke = true;
                 } else {
                     itemStack.hurt(1, source.getLevel().random, null);
                 }
             }
-            rgbTileEntity.setColor(itemStack.getOrCreateTag().getInt("color"));
+            rgbBlockEntity.setColor(itemStack.getOrCreateTag().getInt("color"));
             source.getLevel()
                 .sendBlockUpdated(
                     blockPos, tileEntity.getBlockState(), tileEntity.getBlockState(), Block.UPDATE_ALL_IMMEDIATE
