@@ -48,7 +48,7 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
         if (level.isEmptyBlock(pos.below()) || isFree(level.getBlockState(pos.below())) && pos.getY() >= 0) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(
@@ -64,9 +64,8 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.is(BlockRegistry.RGB_CONCRETE_POWDER.get()) && !newState.is(BlockRegistry.RGB_CONCRETE.get())) {
             if (state.hasBlockEntity() && (!state.is(newState.getBlock()) || !newState.hasBlockEntity())) {
                 level.removeBlockEntity(pos);

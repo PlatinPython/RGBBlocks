@@ -147,7 +147,7 @@ public class AntiblockBakedModel implements BakedModel {
         TextureAtlasSprite sprite = frameQuad.getSprite();
         TextureAtlasSprite ctmSprite = Minecraft.getInstance()
             .getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
-            .apply(new ResourceLocation(RGBBlocks.MOD_ID, "block/antiblock_ctm"));
+            .apply(ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "block/antiblock_ctm"));
 
         List<BakedQuad> quads = new ArrayList<>(bgQuads);
 
@@ -591,11 +591,9 @@ public class AntiblockBakedModel implements BakedModel {
             ModelBaker bakery,
             Function<Material, TextureAtlasSprite> spriteGetter,
             ModelState modelTransform,
-            ItemOverrides overrides,
-            ResourceLocation modelLocation
+            ItemOverrides overrides
         ) {
-            BakedModel bakedBase =
-                baseModel.bake(bakery, baseModel, spriteGetter, modelTransform, modelLocation, owner.isGui3d());
+            BakedModel bakedBase = baseModel.bake(bakery, baseModel, spriteGetter, modelTransform, owner.isGui3d());
             Map<Direction, BakedQuad> bgQuads = new EnumMap<>(Direction.class);
             Map<Direction, BakedQuad> frameQuads = new EnumMap<>(Direction.class);
 
@@ -607,9 +605,10 @@ public class AntiblockBakedModel implements BakedModel {
                 for (BakedQuad quad : quads) {
                     // noinspection resource
                     ResourceLocation name = quad.getSprite().contents().name();
-                    if (name.equals(new ResourceLocation(RGBBlocks.MOD_ID, "block/white"))) {
+                    if (name.equals(ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "block/white"))) {
                         bgQuads.put(side, quad);
-                    } else if (name.equals(new ResourceLocation(RGBBlocks.MOD_ID, "block/antiblock"))) {
+                    } else if (name
+                        .equals(ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "block/antiblock"))) {
                         frameQuads.put(side, quad);
                     }
                 }

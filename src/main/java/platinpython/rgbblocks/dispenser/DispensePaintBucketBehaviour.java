@@ -25,7 +25,7 @@ public class DispensePaintBucketBehaviour extends DefaultDispenseItemBehavior {
                 if (itemStack.getDamageValue() == itemStack.getMaxDamage() - 1) {
                     broke = true;
                 } else {
-                    itemStack.hurtAndBreak(1, source.level().random, null, () -> {});
+                    itemStack.hurtAndBreak(1, source.level(), null, item -> {});
                 }
             }
             rgbBlockEntity.setColor(itemStack.getOrDefault(DataComponentRegistry.COLOR, -1));

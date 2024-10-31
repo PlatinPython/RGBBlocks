@@ -11,6 +11,7 @@ public class ItemRegistry {
         RegistryHandler.ITEMS.register("paint_bucket", PaintBucketItem::new);
 
     public static void register() {
-        RegistryHandler.ITEMS.addAlias(new ResourceLocation(RGBBlocks.MOD_ID, "bucket_of_paint"), PAINT_BUCKET.getId());
+        RegistryHandler.ITEMS
+            .addAlias(ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "bucket_of_paint"), PAINT_BUCKET.getId());
     }
 }

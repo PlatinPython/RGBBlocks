@@ -8,11 +8,13 @@ import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
@@ -50,8 +52,11 @@ public class ModLootTableProvider extends LootTableProvider {
     }
 
     private static class Blocks extends BlockLootSubProvider {
-        protected Blocks() {
-            super(Collections.emptySet(), FeatureFlags.REGISTRY.allFlags());
+        private final HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup =
+            this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+
+        protected Blocks(HolderLookup.Provider lookupProvider) {
+            super(Collections.emptySet(), FeatureFlags.REGISTRY.allFlags(), lookupProvider);
         }
 
         @Override
@@ -72,20 +77,23 @@ public class ModLootTableProvider extends LootTableProvider {
             map.put(BlockRegistry.RGB_TERRACOTTA.get(), this::createSingleItemTable);
             map.put(BlockRegistry.RGB_TERRACOTTA_SLAB.get(), this::createSlabItemTable);
             map.put(BlockRegistry.RGB_TERRACOTTA_STAIRS.get(), this::createSingleItemTable);
-            map.put(BlockRegistry.RGB_GLASS.get(), Blocks::createSilkTouchOnlyTable);
+            map.put(BlockRegistry.RGB_GLASS.get(), this::createSilkTouchOnlyTable);
             map.put(BlockRegistry.RGB_GLASS_SLAB.get(), this::createSilkTouchOnlySlabItemTable);
-            map.put(BlockRegistry.RGB_GLASS_STAIRS.get(), Blocks::createSilkTouchOnlyTable);
-            map.put(BlockRegistry.RGB_GLASS_PANE.get(), Blocks::createSilkTouchOnlyTable);
+            map.put(BlockRegistry.RGB_GLASS_STAIRS.get(), this::createSilkTouchOnlyTable);
+            map.put(BlockRegistry.RGB_GLASS_PANE.get(), this::createSilkTouchOnlyTable);
             map.put(BlockRegistry.RGB_ANTIBLOCK.get(), this::createSingleItemTable);
             map.put(
                 BlockRegistry.RGB_GLOWSTONE.get(),
-                (block) -> createSilkTouchDispatchTable(
+                (block) -> this.createSilkTouchDispatchTable(
                     block,
-                    applyExplosionDecay(
+                    this.applyExplosionDecay(
                         block,
                         LootItem.lootTableItem(Items.GLOWSTONE_DUST)
                             .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F)))
-                            .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.FORTUNE))
+                            .apply(
+                                ApplyBonusCount
+                                    .addUniformBonusCount(enchantmentRegistryLookup.getOrThrow(Enchantments.FORTUNE))
+                            )
                             .apply(LimitCount.limitCount(IntRange.range(1, 4)))
                     )
                 )
@@ -102,13 +110,16 @@ public class ModLootTableProvider extends LootTableProvider {
             map.put(BlockRegistry.RGB_DARK_PRISMARINE_STAIRS.get(), this::createSingleItemTable);
             map.put(
                 BlockRegistry.RGB_SEA_LANTERN.get(),
-                (block) -> createSilkTouchDispatchTable(
+                (block) -> this.createSilkTouchDispatchTable(
                     block,
-                    applyExplosionDecay(
+                    this.applyExplosionDecay(
                         block,
                         LootItem.lootTableItem(Items.PRISMARINE_CRYSTALS)
                             .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F)))
-                            .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.FORTUNE))
+                            .apply(
+                                ApplyBonusCount
+                                    .addUniformBonusCount(enchantmentRegistryLookup.getOrThrow(Enchantments.FORTUNE))
+                            )
                             .apply(LimitCount.limitCount(IntRange.range(1, 5)))
                     )
                 )
@@ -129,19 +140,23 @@ public class ModLootTableProvider extends LootTableProvider {
                 .withPool(
                     LootPool.lootPool()
                         .when(
-                            MatchTool.toolMatches(
-                                ItemPredicate.Builder.item()
-                                    .withSubPredicate(
-                                        ItemSubPredicates.ENCHANTMENTS,
-                                        ItemEnchantmentsPredicate.enchantments(
-                                            List.of(
-                                                new EnchantmentPredicate(
-                                                    Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1)
+                            MatchTool
+                                .toolMatches(
+                                    ItemPredicate.Builder.item()
+                                        .withSubPredicate(
+                                            ItemSubPredicates.ENCHANTMENTS,
+                                            ItemEnchantmentsPredicate
+                                                .enchantments(
+                                                    List.of(
+                                                        new EnchantmentPredicate(
+                                                            enchantmentRegistryLookup
+                                                                .getOrThrow(Enchantments.SILK_TOUCH),
+                                                            MinMaxBounds.Ints.atLeast(1)
+                                                        )
+                                                    )
                                                 )
-                                            )
                                         )
-                                    )
-                            )
+                                )
                         )
                         .setRolls(ConstantValue.exactly(1))
                         .add(
@@ -171,25 +186,30 @@ public class ModLootTableProvider extends LootTableProvider {
         }
 
         private LootTable.Builder applyConditionalNbtCopy(LootTable.Builder table) {
-            return table.apply(
-                CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
-                    .include(DataComponentRegistry.COLOR.get())
-                    .when(
-                        MatchTool.toolMatches(
-                            ItemPredicate.Builder.item()
-                                .withSubPredicate(
-                                    ItemSubPredicates.ENCHANTMENTS,
-                                    ItemEnchantmentsPredicate.enchantments(
-                                        List.of(
-                                            new EnchantmentPredicate(
-                                                Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1)
-                                            )
+            return table
+                .apply(
+                    CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+                        .include(DataComponentRegistry.COLOR.get())
+                        .when(
+                            MatchTool
+                                .toolMatches(
+                                    ItemPredicate.Builder.item()
+                                        .withSubPredicate(
+                                            ItemSubPredicates.ENCHANTMENTS,
+                                            ItemEnchantmentsPredicate
+                                                .enchantments(
+                                                    List.of(
+                                                        new EnchantmentPredicate(
+                                                            enchantmentRegistryLookup
+                                                                .getOrThrow(Enchantments.SILK_TOUCH),
+                                                            MinMaxBounds.Ints.atLeast(1)
+                                                        )
+                                                    )
+                                                )
                                         )
-                                    )
                                 )
                         )
-                    )
-            );
+                );
         }
 
         @Override

@@ -1,18 +1,13 @@
 package platinpython.rgbblocks.util.compat.framedblocks;
 
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.util.Color;
 import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 import xfacthd.framedblocks.api.block.blockentity.FramedBlockEntity;
 import xfacthd.framedblocks.api.camo.CamoContainerFactory;
@@ -37,29 +32,17 @@ public class RGBBlocksFramedBlocks {
         BlockHitResult blockHitResult = new BlockHitResult(
             context.getClickLocation(), context.getClickedFace(), context.getClickedPos(), context.isInside()
         );
-        if (!(framedBlockEntity.getCamo(blockHitResult) instanceof RGBBlocksCamoContainer camoContainer)) {
+        if (context.getPlayer() == null) {
             return InteractionResult.PASS;
         }
-        if (context.getPlayer() != null && context.getPlayer().isShiftKeyDown()) {
-            context.getItemInHand().set(DataComponentRegistry.COLOR, camoContainer.color);
-        } else {
-            if (!context.getPlayer().getAbilities().instabuild
-                && context.getItemInHand().getOrDefault(DataComponentRegistry.COLOR, -1) != camoContainer.color) {
-                if (context.getItemInHand().getDamageValue() == context.getItemInHand().getMaxDamage() - 1) {
-                    context.getPlayer().setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
-                } else {
-                    context.getItemInHand()
-                        .hurtAndBreak(1, context.getPlayer(), LivingEntity.getSlotForHand(context.getHand()));
-                }
-            }
-            camoContainer.color = context.getItemInHand().getOrDefault(DataComponentRegistry.COLOR, -1);
-            camoContainer.mapColor = Color.getNearestMapColor(camoContainer.color);
-            context.getLevel()
-                .sendBlockUpdated(
-                    context.getClickedPos(), framedBlockEntity.getBlockState(), framedBlockEntity.getBlockState(),
-                    Block.UPDATE_ALL_IMMEDIATE
-                );
+        if (!(framedBlockEntity
+            .getCamo(blockHitResult, context.getPlayer()) instanceof RGBBlocksCamoContainer camoContainer)) {
+            return InteractionResult.PASS;
         }
+        if (!context.getPlayer().isShiftKeyDown()) {
+            return InteractionResult.PASS;
+        }
+        context.getItemInHand().set(DataComponentRegistry.COLOR, camoContainer.color);
         return InteractionResult.SUCCESS;
     }
 }

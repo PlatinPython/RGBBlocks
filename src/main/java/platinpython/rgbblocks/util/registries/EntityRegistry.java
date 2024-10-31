@@ -16,7 +16,7 @@ public class EntityRegistry {
                 .sized(0.98F, 0.98F)
                 .clientTrackingRange(10)
                 .updateInterval(20)
-                .build(new ResourceLocation(RGBBlocks.MOD_ID, "rgb_falling_block").toString())
+                .build(ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "rgb_falling_block").toString())
         );
 
     public static void register() {}

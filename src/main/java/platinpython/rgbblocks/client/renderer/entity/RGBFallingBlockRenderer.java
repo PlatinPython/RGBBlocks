@@ -44,6 +44,6 @@ public class RGBFallingBlockRenderer extends EntityRenderer<RGBFallingBlockEntit
 
     @Override
     public ResourceLocation getTextureLocation(RGBFallingBlockEntity fallingBlockEntity) {
-        return new ResourceLocation(RGBBlocks.MOD_ID, "concrete_powder");
+        return ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "concrete_powder");
     }
 }

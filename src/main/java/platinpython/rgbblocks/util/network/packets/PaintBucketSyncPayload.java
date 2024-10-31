@@ -14,7 +14,7 @@ import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 
 public record PaintBucketSyncPayload(int color, boolean isRGBSelected) implements CustomPacketPayload {
     public static final Type<PaintBucketSyncPayload> TYPE =
-        new Type<>(new ResourceLocation(RGBBlocks.MOD_ID, "paint_bucket_sync"));
+        new Type<>(ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "paint_bucket_sync"));
     public static final StreamCodec<ByteBuf, PaintBucketSyncPayload> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.INT, PaintBucketSyncPayload::color, ByteBufCodecs.BOOL, PaintBucketSyncPayload::isRGBSelected,
         PaintBucketSyncPayload::new

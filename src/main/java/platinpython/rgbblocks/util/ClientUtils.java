@@ -81,8 +81,10 @@ public class ClientUtils {
 
     @SubscribeEvent
     public static void registerModelStuff(ModelEvent.RegisterGeometryLoaders event) {
-        event
-            .register(new ResourceLocation(RGBBlocks.MOD_ID, "antiblock_model"), new AntiblockBakedModel.ModelLoader());
+        event.register(
+            ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "antiblock_model"),
+            new AntiblockBakedModel.ModelLoader()
+        );
     }
 
     public static void openColorSelectScreen(int color, boolean isRGBSelected) {

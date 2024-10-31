@@ -1,5 +1,6 @@
 package platinpython.rgbblocks.util.pack;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.NativeImage;
@@ -44,43 +45,40 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
     public static final String TEXTURE_DIRECTORY = "textures/";
     public static final String BLOCK_DIRECTORY = "block/";
     public static final Set<String> NAMESPACES = ImmutableSet.of(RGBBlocks.MOD_ID);
+    public static final ImmutableMap<String, String> MOD_TO_VANILLA_MAP = ImmutableMap.<String, String>builder()
+        .put("concrete", "white_concrete")
+        .put("concrete_powder", "white_concrete_powder")
+        .put("wool", "white_wool")
+        .put("planks", "birch_planks")
+        .put("terracotta", "white_terracotta")
+        .put("glass", "white_stained_glass")
+        .put("glass_pane_top", "white_stained_glass_pane_top")
+        .put("glowstone", "glowstone")
+        .put("redstone_lamp", "redstone_lamp")
+        .put("redstone_lamp_on", "redstone_lamp_on")
+        .put("prismarine", "prismarine")
+        .put("prismarine_bricks", "prismarine_bricks")
+        .put("dark_prismarine", "dark_prismarine")
+        .put("sea_lantern", "sea_lantern")
+        .build();
+    private static final ImmutableMap<ResourceLocation, ResourceLocation> TEXTURES = MOD_TO_VANILLA_MAP.entrySet()
+        .stream()
+        .map(
+            entry -> Pair.of(
+                ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, BLOCK_DIRECTORY + entry.getKey()),
+                ResourceLocation.withDefaultNamespace(BLOCK_DIRECTORY + entry.getValue())
+            )
+        )
+        .collect(ImmutableMap.toImmutableMap(Pair::getFirst, Pair::getSecond));
 
     private final PackMetadataSection packInfo;
     private Map<ResourceLocation, IoSupplier<InputStream>> resources = new HashMap<>();
-    private final Map<ResourceLocation, ResourceLocation> textures = new HashMap<>();
 
     public RGBBlocksPack() {
         super(LOCATION_INFO);
         this.packInfo = new PackMetadataSection(
             Component.translatable("rgbblocks.pack_description"),
             SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES)
-        );
-        fillTexturesMap();
-    }
-
-    private void fillTexturesMap() {
-        Map<String, String> map = new HashMap<>();
-
-        map.put("concrete", "white_concrete");
-        map.put("concrete_powder", "white_concrete_powder");
-        map.put("wool", "white_wool");
-        map.put("planks", "birch_planks");
-        map.put("terracotta", "white_terracotta");
-        map.put("glass", "white_stained_glass");
-        map.put("glass_pane_top", "white_stained_glass_pane_top");
-        map.put("glowstone", "glowstone");
-        map.put("redstone_lamp", "redstone_lamp");
-        map.put("redstone_lamp_on", "redstone_lamp_on");
-        map.put("prismarine", "prismarine");
-        map.put("prismarine_bricks", "prismarine_bricks");
-        map.put("dark_prismarine", "dark_prismarine");
-        map.put("sea_lantern", "sea_lantern");
-
-        map.forEach(
-            (modName, vanillaName) -> textures.put(
-                new ResourceLocation(RGBBlocks.MOD_ID, BLOCK_DIRECTORY + modName),
-                new ResourceLocation(BLOCK_DIRECTORY + vanillaName)
-            )
         );
     }
 
@@ -102,7 +100,7 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
     protected void gatherTextureData(ResourceManager manager, ProfilerFiller profiler) {
         Map<ResourceLocation, IoSupplier<InputStream>> resourceStreams = new HashMap<>();
 
-        textures.forEach(
+        TEXTURES.forEach(
             (
                 modLocation,
                 vanillaLocation
@@ -122,11 +120,11 @@ public class RGBBlocksPack extends AbstractPackResources implements PreparableRe
     }
 
     public static ResourceLocation makeTextureID(ResourceLocation id) {
-        return new ResourceLocation(id.getNamespace(), TEXTURE_DIRECTORY + id.getPath() + ".png");
+        return id.withPath(path -> TEXTURE_DIRECTORY + path + ".png");
     }
 
     public static ResourceLocation getMetadataLocation(ResourceLocation id) {
-        return new ResourceLocation(id.getNamespace(), id.getPath() + ".mcmeta");
+        return id.withPath(path -> path + ".mcmeta");
     }
 
     public Optional<Pair<NativeImage, Optional<IoSupplier<InputStream>>>> generateImage(

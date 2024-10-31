@@ -75,7 +75,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
             private @Nullable JsonObject baseModel;
 
             protected AntiblockLoaderBuilder(BlockModelBuilder parent, ExistingFileHelper existingFileHelper) {
-                super(new ResourceLocation(RGBBlocks.MOD_ID, "antiblock_model"), parent, existingFileHelper, false);
+                super(
+                    ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "antiblock_model"), parent,
+                    existingFileHelper, false
+                );
             }
 
             public AntiblockLoaderBuilder baseModel(JsonObject baseModel) {
@@ -97,7 +100,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlock(
             BlockRegistry.RGB_ANTIBLOCK.get(),
             models()
-                .withExistingParent(BlockRegistry.RGB_ANTIBLOCK.getId().getPath(), new ResourceLocation("block/block"))
+                .withExistingParent(
+                    BlockRegistry.RGB_ANTIBLOCK.getId().getPath(), ResourceLocation.withDefaultNamespace("block/block")
+                )
                 .customLoader(AntiblockLoaderBuilder::new)
                 .baseModel(
                     models()

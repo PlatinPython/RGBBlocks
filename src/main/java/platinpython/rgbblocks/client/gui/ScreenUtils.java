@@ -2,6 +2,7 @@ package platinpython.rgbblocks.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
@@ -14,10 +15,9 @@ public class ScreenUtils {
         RenderSystem.enableBlend();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder bufferbuilder = tesselator.getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         fillGradient(pPoseStack.last().pose(), bufferbuilder, x1, y1, x2, y2, colorFrom, colorTo);
-        tesselator.end();
+        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
         RenderSystem.disableBlend();
     }
 
@@ -39,9 +39,9 @@ public class ScreenUtils {
         int redB = colorB >> 16 & 0xFF;
         int greenB = colorB >> 8 & 0xFF;
         int blueB = colorB & 0xFF;
-        builder.vertex(matrix4f, (float) x2, (float) y1, (float) 0).color(redB, greenB, blueB, alphaB).endVertex();
-        builder.vertex(matrix4f, (float) x1, (float) y1, (float) 0).color(redA, greenA, blueA, alphaA).endVertex();
-        builder.vertex(matrix4f, (float) x1, (float) y2, (float) 0).color(redA, greenA, blueA, alphaA).endVertex();
-        builder.vertex(matrix4f, (float) x2, (float) y2, (float) 0).color(redB, greenB, blueB, alphaB).endVertex();
+        builder.addVertex(matrix4f, (float) x2, (float) y1, (float) 0).setColor(redB, greenB, blueB, alphaB);
+        builder.addVertex(matrix4f, (float) x1, (float) y1, (float) 0).setColor(redA, greenA, blueA, alphaA);
+        builder.addVertex(matrix4f, (float) x1, (float) y2, (float) 0).setColor(redA, greenA, blueA, alphaA);
+        builder.addVertex(matrix4f, (float) x2, (float) y2, (float) 0).setColor(redB, greenB, blueB, alphaB);
     }
 }

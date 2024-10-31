@@ -34,7 +34,7 @@ public class RegistryHandler {
         DeferredRegister.create(Registries.CREATIVE_MODE_TAB, RGBBlocks.MOD_ID);
 
     public static final DeferredRegister.DataComponents DATA_COMPONENTS =
-        DeferredRegister.createDataComponents(RGBBlocks.MOD_ID);
+        DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, RGBBlocks.MOD_ID);
 
     public static void register(IEventBus bus) {
         ITEMS.register(bus);

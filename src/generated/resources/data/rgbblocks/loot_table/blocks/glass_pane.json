@@ -19,7 +19,7 @@
             "predicates": {
               "minecraft:enchantments": [
                 {
-                  "enchantment": "minecraft:silk_touch",
+                  "enchantments": "minecraft:silk_touch",
                   "levels": {
                     "min": 1
                   }
@@ -32,11 +32,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "rgbblocks:glass"
+          "name": "rgbblocks:glass_pane"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "rgbblocks:blocks/glass"
+  "random_sequence": "rgbblocks:blocks/glass_pane"
 }

@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.material.MapColor;
 import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.block.entity.RGBBlockEntity;
-import platinpython.rgbblocks.util.Color;
 import platinpython.rgbblocks.util.registries.BlockEntityRegistry;
 import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 
@@ -41,10 +40,10 @@ public final class RGBBlockUtils {
         }
     }
 
-    public static float @Nullable [] getBeaconColorMultiplier(LevelReader level, BlockPos pos) {
+    public static @Nullable Integer getBeaconColorMultiplier(LevelReader level, BlockPos pos) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
-            return new Color(rgbBlockEntity.getColor()).getRGBColorComponents();
+            return rgbBlockEntity.getColor();
         } else {
             return null;
         }

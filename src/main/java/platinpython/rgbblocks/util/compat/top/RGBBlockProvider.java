@@ -56,6 +56,6 @@ public class RGBBlockProvider implements IProbeInfoProvider {
 
     @Override
     public ResourceLocation getID() {
-        return new ResourceLocation(RGBBlocks.MOD_ID, "block");
+        return ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "block");
     }
 }

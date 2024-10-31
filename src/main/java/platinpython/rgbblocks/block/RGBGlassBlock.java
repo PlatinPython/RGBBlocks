@@ -14,7 +14,7 @@ public class RGBGlassBlock extends RGBBlock {
     }
 
     @Override
-    public float @Nullable [] getBeaconColorMultiplier(
+    public @Nullable Integer getBeaconColorMultiplier(
         BlockState state,
         LevelReader level,
         BlockPos pos,
@@ -23,20 +23,18 @@ public class RGBGlassBlock extends RGBBlock {
         return RGBBlockUtils.getBeaconColorMultiplier(level, pos);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
+    protected boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
         return RGBBlockUtils.blockSkipRendering(adjacentBlockState, side);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
+    protected float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
         return 1.0F;
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+    protected boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
         return true;
     }
 }

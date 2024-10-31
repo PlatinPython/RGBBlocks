@@ -8,6 +8,7 @@ import net.minecraft.server.packs.PackType;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import platinpython.rgbblocks.RGBBlocks;
+import platinpython.rgbblocks.util.pack.RGBBlocksPack;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -33,52 +34,12 @@ public class DataGatherer {
     }
 
     private static void addVirtualPackContents(ExistingFileHelper existingFileHelper) {
-        existingFileHelper.trackGenerated(
-            new ResourceLocation(RGBBlocks.MOD_ID, "concrete"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_PREFIX
-        );
-        existingFileHelper.trackGenerated(
-            new ResourceLocation(RGBBlocks.MOD_ID, "concrete_powder"), PackType.CLIENT_RESOURCES, PATH_SUFFIX,
-            PATH_PREFIX
-        );
-        existingFileHelper.trackGenerated(
-            new ResourceLocation(RGBBlocks.MOD_ID, "wool"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_PREFIX
-        );
-        existingFileHelper.trackGenerated(
-            new ResourceLocation(RGBBlocks.MOD_ID, "planks"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_PREFIX
-        );
-        existingFileHelper.trackGenerated(
-            new ResourceLocation(RGBBlocks.MOD_ID, "terracotta"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_PREFIX
-        );
-        existingFileHelper.trackGenerated(
-            new ResourceLocation(RGBBlocks.MOD_ID, "glass"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_PREFIX
-        );
-        existingFileHelper.trackGenerated(
-            new ResourceLocation(RGBBlocks.MOD_ID, "glass_pane_top"), PackType.CLIENT_RESOURCES, PATH_SUFFIX,
-            PATH_PREFIX
-        );
-        existingFileHelper.trackGenerated(
-            new ResourceLocation(RGBBlocks.MOD_ID, "glowstone"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_PREFIX
-        );
-        existingFileHelper.trackGenerated(
-            new ResourceLocation(RGBBlocks.MOD_ID, "redstone_lamp"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_PREFIX
-        );
-        existingFileHelper.trackGenerated(
-            new ResourceLocation(RGBBlocks.MOD_ID, "redstone_lamp_on"), PackType.CLIENT_RESOURCES, PATH_SUFFIX,
-            PATH_PREFIX
-        );
-        existingFileHelper.trackGenerated(
-            new ResourceLocation(RGBBlocks.MOD_ID, "prismarine"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_PREFIX
-        );
-        existingFileHelper.trackGenerated(
-            new ResourceLocation(RGBBlocks.MOD_ID, "prismarine_bricks"), PackType.CLIENT_RESOURCES, PATH_SUFFIX,
-            PATH_PREFIX
-        );
-        existingFileHelper.trackGenerated(
-            new ResourceLocation(RGBBlocks.MOD_ID, "dark_prismarine"), PackType.CLIENT_RESOURCES, PATH_SUFFIX,
-            PATH_PREFIX
-        );
-        existingFileHelper.trackGenerated(
-            new ResourceLocation(RGBBlocks.MOD_ID, "sea_lantern"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_PREFIX
-        );
+        RGBBlocksPack.MOD_TO_VANILLA_MAP.keySet()
+            .forEach(
+                name -> existingFileHelper.trackGenerated(
+                    ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, name), PackType.CLIENT_RESOURCES,
+                    PATH_SUFFIX, PATH_PREFIX
+                )
+            );
     }
 }

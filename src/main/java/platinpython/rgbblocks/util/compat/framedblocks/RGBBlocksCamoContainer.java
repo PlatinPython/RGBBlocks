@@ -11,8 +11,11 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -20,7 +23,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.Color;
 import platinpython.rgbblocks.util.RegistryHandler;
@@ -36,8 +39,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class RGBBlocksCamoContainer extends AbstractBlockCamoContainer<RGBBlocksCamoContainer> {
-    int color;
-    MapColor mapColor;
+    final int color;
+    final MapColor mapColor;
 
     protected RGBBlocksCamoContainer(BlockState state, int color) {
         super(state);
@@ -51,8 +54,8 @@ public class RGBBlocksCamoContainer extends AbstractBlockCamoContainer<RGBBlocks
     }
 
     @Override
-    public float[] getBeaconColorMultiplier(LevelReader level, BlockPos pos, BlockPos beaconPos) {
-        return new Color(this.color).getRGBColorComponents();
+    public @Nullable Integer getBeaconColorMultiplier(LevelReader level, BlockPos pos, BlockPos beaconPos) {
+        return this.color;
     }
 
     @Override
@@ -91,7 +94,6 @@ public class RGBBlocksCamoContainer extends AbstractBlockCamoContainer<RGBBlocks
                 )
                 .apply(instance, RGBBlocksCamoContainer::new)
         );
-        @SuppressWarnings("deprecation")
         private static final StreamCodec<ByteBuf, RGBBlocksCamoContainer> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.idMapper(Block.BLOCK_STATE_REGISTRY), RGBBlocksCamoContainer::getState, ByteBufCodecs.INT,
             container -> container.color, RGBBlocksCamoContainer::new
@@ -168,6 +170,25 @@ public class RGBBlocksCamoContainer extends AbstractBlockCamoContainer<RGBBlocks
             ItemStack stack = new ItemStack(container.getState().getBlock());
             stack.set(DataComponentRegistry.COLOR, container.color);
             return stack;
+        }
+
+        @Override
+        public RGBBlocksCamoContainer handleInteraction(
+            Level level,
+            BlockPos pos,
+            Player player,
+            RGBBlocksCamoContainer camo,
+            ItemStack stack,
+            InteractionHand hand
+        ) {
+            if (!player.isCreative() && stack.getOrDefault(DataComponentRegistry.COLOR, -1) != camo.color) {
+                if (stack.getDamageValue() == stack.getMaxDamage() - 1) {
+                    player.setItemInHand(hand, new ItemStack(Items.BUCKET));
+                } else {
+                    player.getItemInHand(hand).hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+                }
+            }
+            return new RGBBlocksCamoContainer(camo.getState(), stack.getOrDefault(DataComponentRegistry.COLOR, -1));
         }
 
         @Override
