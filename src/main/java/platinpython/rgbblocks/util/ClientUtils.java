@@ -14,7 +14,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import platinpython.rgbblocks.RGBBlocks;
@@ -32,29 +31,27 @@ import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = RGBBlocks.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientUtils {
-    public static final RGBBlocksPack VIRTUAL_PACK = new RGBBlocksPack();
-
     @SubscribeEvent
     public static void addPackFinders(AddPackFindersEvent event) {
+        if (event.getPackType() != PackType.CLIENT_RESOURCES) {
+            return;
+        }
         event.addRepositorySource(
-            (infoConsumer) -> infoConsumer
+            infoConsumer -> infoConsumer
                 .accept(Pack.readMetaAndCreate(RGBBlocksPack.LOCATION_INFO, new Pack.ResourcesSupplier() {
+                    final PackResources PACK = new RGBBlocksPack();
+
                     @Override
-                    public PackResources openPrimary(PackLocationInfo p_326301_) {
-                        return VIRTUAL_PACK;
+                    public PackResources openPrimary(PackLocationInfo location) {
+                        return PACK;
                     }
 
                     @Override
-                    public PackResources openFull(PackLocationInfo p_326241_, Pack.Metadata p_325959_) {
-                        return VIRTUAL_PACK;
+                    public PackResources openFull(PackLocationInfo location, Pack.Metadata metadata) {
+                        return PACK;
                     }
                 }, PackType.CLIENT_RESOURCES, new PackSelectionConfig(true, Pack.Position.TOP, false)))
         );
-    }
-
-    @SubscribeEvent
-    public static void registerReloadListener(RegisterClientReloadListenersEvent event) {
-        event.registerReloadListener(VIRTUAL_PACK);
     }
 
     @SubscribeEvent
