@@ -68,6 +68,10 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+sourceSets.main.java {
+    exclude 'platinpython/rgbblocks/util/compat/cb/**'
+}
+
 repositories {
     maven { // TOP
         url "https://www.cursemaven.com/"
@@ -75,9 +79,9 @@ repositories {
             includeGroup "curse.maven"
         }
     }
-    maven { // C&B
-        url 'https://ldtteam.jfrog.io/ldtteam/modding/'
-    }
+//    maven { // C&B
+//        url 'https://ldtteam.jfrog.io/ldtteam/modding/'
+//    }
 }
 
 dependencies {
@@ -88,10 +92,10 @@ dependencies {
     implementation fg.deobf("curse.maven:the-one-probe-245211:4629624")
     implementation fg.deobf("curse.maven:framedblocks-441647:4657096")
 
-    compileOnly fg.deobf("com.communi-suggestu.scena:scena-core:1.0.98")
-    compileOnly fg.deobf("com.communi-suggestu.saecularia-caudices:saecularia-caudices-core:1.0.20")
-    compileOnly fg.deobf("mod.chiselsandbits:chisels-and-bits-api:1.4.148")
-    runtimeOnly fg.deobf("mod.chiselsandbits:chisels-and-bits-forge:1.4.148")
+//    compileOnly fg.deobf("com.communi-suggestu.scena:scena-core:1.0.98")
+//    compileOnly fg.deobf("com.communi-suggestu.saecularia-caudices:saecularia-caudices-core:1.0.20")
+//    compileOnly fg.deobf("mod.chiselsandbits:chisels-and-bits-api:1.4.148")
+//    runtimeOnly fg.deobf("mod.chiselsandbits:chisels-and-bits-forge:1.4.148")
 }
 
 jar {

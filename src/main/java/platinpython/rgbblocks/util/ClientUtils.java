@@ -1,5 +1,6 @@
 package platinpython.rgbblocks.util;
 
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -11,7 +12,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -31,25 +31,25 @@ import platinpython.rgbblocks.util.registries.ItemRegistry;
 
 @EventBusSubscriber(modid = RGBBlocks.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientUtils {
-    public static final RGBBlocksPack VIRTUAL_PACK = new RGBBlocksPack();
-
     @SubscribeEvent
     public static void addPackFinders(AddPackFindersEvent event) {
+        if (event.getPackType() != PackType.CLIENT_RESOURCES) {
+            return;
+        }
         event.addRepositorySource(
-            (infoConsumer) -> infoConsumer.accept(
+            infoConsumer -> infoConsumer.accept(
                 Pack.create(
-                    "rgbblocks_textures", Component.translatable("rgbblocks.pack_title"), true, id -> VIRTUAL_PACK,
+                    "rgbblocks_textures", Component.translatable("rgbblocks.pack_title"), true,
+                    id -> new RGBBlocksPack(),
                     new Pack.Info(
-                        Component.translatable("rgbblocks.pack_description"), 0, 0, FeatureFlagSet.of(), false
-                    ), PackType.CLIENT_RESOURCES, Pack.Position.TOP, true, PackSource.BUILT_IN
+                        Component.translatable("rgbblocks.pack_description"),
+                        SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA),
+                        SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES),
+                        FeatureFlagSet.of(), false
+                    ), PackType.CLIENT_RESOURCES, Pack.Position.TOP, false, PackSource.BUILT_IN
                 )
             )
         );
-    }
-
-    @SubscribeEvent
-    public static void registerReloadListener(RegisterClientReloadListenersEvent event) {
-        event.registerReloadListener(VIRTUAL_PACK);
     }
 
     @SubscribeEvent
