@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ConcretePowderBlock;
 import net.minecraft.world.level.block.EntityBlock;
@@ -50,7 +51,7 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
-        if (level.isEmptyBlock(pos.below()) || isFree(level.getBlockState(pos.below())) && pos.getY() >= 0) {
+        if (isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinBuildHeight()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             RGBFallingBlockEntity fallingBlockEntity = new RGBFallingBlockEntity(
                 level, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D,
@@ -59,7 +60,7 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
                     : state,
                 blockEntity instanceof RGBBlockEntity rgbBlockEntity ? rgbBlockEntity.getColor() : 0
             );
-            level.setBlock(pos, state.getFluidState().createLegacyBlock(), 3);
+            level.setBlock(pos, state.getFluidState().createLegacyBlock(), Block.UPDATE_ALL);
             level.addFreshEntity(fallingBlockEntity);
             this.falling(fallingBlockEntity);
         }
@@ -77,16 +78,16 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
     @Override
     public void onLand(
         Level level,
-        BlockPos blockPos,
-        BlockState blockBlockState,
-        BlockState entityBlockState,
-        FallingBlockEntity entity
+        BlockPos pos,
+        BlockState state,
+        BlockState replaceableState,
+        FallingBlockEntity fallingBlock
     ) {
-        super.onLand(level, blockPos, blockBlockState, entityBlockState, entity);
-        if (entity instanceof RGBFallingBlockEntity rgbFallingBlockEntity) {
-            RGBBlockEntity blockEntity = new RGBBlockEntity(blockPos, entityBlockState);
-            blockEntity.setColor(rgbFallingBlockEntity.getColor());
-            level.setBlockEntity(blockEntity);
+        super.onLand(level, pos, state, replaceableState, fallingBlock);
+        if (fallingBlock instanceof RGBFallingBlockEntity rgbFallingBlock) {
+            if (level.getBlockEntity(pos) instanceof RGBBlockEntity rgbBlockEntity) {
+                rgbBlockEntity.setColor(rgbFallingBlock.getColor());
+            }
         }
     }
 
