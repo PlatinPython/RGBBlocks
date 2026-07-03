@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.HitResult;
-import platinpython.rgbblocks.util.registries.BlockEntityRegistry;
+import org.jspecify.annotations.Nullable;
 
 public class RGBRedstoneLampBlock extends RedstoneLampBlock implements EntityBlock {
     public RGBRedstoneLampBlock() {
@@ -20,8 +20,8 @@ public class RGBRedstoneLampBlock extends RedstoneLampBlock implements EntityBlo
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return BlockEntityRegistry.RGB.get().create(pos, state);
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return RGBBlockUtils.newBlockEntity(pos, state);
     }
 
     @Override

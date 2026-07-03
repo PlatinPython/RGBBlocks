@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.HitResult;
-import platinpython.rgbblocks.util.registries.BlockEntityRegistry;
+import org.jspecify.annotations.Nullable;
 
 public class RGBSlabBlock extends SlabBlock implements EntityBlock {
     public RGBSlabBlock(Properties properties) {
@@ -19,8 +19,8 @@ public class RGBSlabBlock extends SlabBlock implements EntityBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return BlockEntityRegistry.RGB.get().create(pos, state);
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return RGBBlockUtils.newBlockEntity(pos, state);
     }
 
     @Override

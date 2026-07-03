@@ -39,34 +39,34 @@ public class ModBlockStateProvider extends BlockStateProvider {
             BlockRegistry.RGB_GLASS_PANE.get(),
             models()
                 .withExistingParent(
-                    BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_post",
+                    BlockRegistry.RGB_GLASS_PANE.getId() + "_post",
                     modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_post")
                 )
                 .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
                 .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
             models()
                 .withExistingParent(
-                    BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_side",
+                    BlockRegistry.RGB_GLASS_PANE.getId() + "_side",
                     modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_side")
                 )
                 .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
                 .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
             models()
                 .withExistingParent(
-                    BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_side_alt",
+                    BlockRegistry.RGB_GLASS_PANE.getId() + "_side_alt",
                     modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_side_alt")
                 )
                 .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))
                 .texture("edge", modLoc(ModelProvider.BLOCK_FOLDER + "/glass_pane_top")),
             models()
                 .withExistingParent(
-                    BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_noside",
+                    BlockRegistry.RGB_GLASS_PANE.getId() + "_noside",
                     modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_noside")
                 )
                 .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass")),
             models()
                 .withExistingParent(
-                    BlockRegistry.RGB_GLASS_PANE.getId().toString() + "_noside_alt",
+                    BlockRegistry.RGB_GLASS_PANE.getId() + "_noside_alt",
                     modLoc(ModelProvider.BLOCK_FOLDER + "/template_glass_pane_noside_alt")
                 )
                 .texture("pane", modLoc(ModelProvider.BLOCK_FOLDER + "/glass"))

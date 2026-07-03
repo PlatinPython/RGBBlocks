@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.HitResult;
+import org.jspecify.annotations.Nullable;
 
 public class RGBCarpetBlock extends WoolCarpetBlock implements EntityBlock {
     public RGBCarpetBlock() {
@@ -20,7 +21,7 @@ public class RGBCarpetBlock extends WoolCarpetBlock implements EntityBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return RGBBlockUtils.newBlockEntity(pos, state);
     }
 

@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.HitResult;
+import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.entity.RGBFallingBlockEntity;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
@@ -27,7 +28,7 @@ public class RGBConcretePowderBlock extends ConcretePowderBlock implements Entit
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return RGBBlockUtils.newBlockEntity(pos, state);
     }
 

@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
+import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 import platinpython.rgbblocks.util.registries.EntityRegistry;
 
@@ -33,7 +34,7 @@ public class RGBFallingBlockEntity extends FallingBlockEntity implements IEntity
     }
 
     @Override
-    public ItemEntity spawnAtLocation(ItemStack stack, float offset) {
+    public @Nullable ItemEntity spawnAtLocation(ItemStack stack, float offset) {
         stack.set(DataComponentRegistry.COLOR, this.color);
         return super.spawnAtLocation(stack, offset);
     }
