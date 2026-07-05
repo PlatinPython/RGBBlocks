@@ -1,6 +1,5 @@
 {
-  "parent": "rgbblocks:block/block",
-  "render_type": "minecraft:translucent",
+  "parent": "rgbblocks:block/cube_all",
   "textures": {
     "all": "rgbblocks:block/glass"
   }

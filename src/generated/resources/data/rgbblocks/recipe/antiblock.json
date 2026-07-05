@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "G": {
-      "item": "rgbblocks:glowstone"
-    },
-    "S": {
-      "tag": "c:stones"
-    }
+    "G": "rgbblocks:glowstone",
+    "S": "#c:stones"
   },
   "pattern": [
     "SSS",

@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "rgbblocks:block/concrete_powder"
-    }
+    "": [
+      {
+        "model": "rgbblocks:block/concrete_powder"
+      },
+      {
+        "model": "rgbblocks:block/concrete_powder",
+        "y": 90
+      },
+      {
+        "model": "rgbblocks:block/concrete_powder",
+        "y": 180
+      },
+      {
+        "model": "rgbblocks:block/concrete_powder",
+        "y": 270
+      }
+    ]
   }
 }

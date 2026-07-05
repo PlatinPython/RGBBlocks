@@ -2,15 +2,10 @@
   "type": "rgbblocks:crafting_shapeless_durability_aware_paint_bucket",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "minecraft:planks"
-    },
-    {
-      "item": "rgbblocks:paint_bucket"
-    }
+    "#minecraft:planks",
+    "rgbblocks:paint_bucket"
   ],
   "result": {
-    "count": 1,
     "id": "rgbblocks:planks"
   }
 }

@@ -1,11 +1,6 @@
 package platinpython.rgbblocks.data;
 
-import net.minecraft.advancements.critereon.EnchantmentPredicate;
-import net.minecraft.advancements.critereon.ItemEnchantmentsPredicate;
-import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.advancements.critereon.ItemSubPredicates;
-import net.minecraft.advancements.critereon.MinMaxBounds;
-import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -28,8 +23,8 @@ import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.LimitCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import platinpython.rgbblocks.util.RegistryHandler;
@@ -84,7 +79,7 @@ public class ModLootTableProvider extends LootTableProvider {
             map.put(BlockRegistry.RGB_ANTIBLOCK.get(), this::createSingleItemTable);
             map.put(
                 BlockRegistry.RGB_GLOWSTONE.get(),
-                (block) -> this.createSilkTouchDispatchTable(
+                block -> this.createSilkTouchDispatchTable(
                     block,
                     this.applyExplosionDecay(
                         block,
@@ -110,7 +105,7 @@ public class ModLootTableProvider extends LootTableProvider {
             map.put(BlockRegistry.RGB_DARK_PRISMARINE_STAIRS.get(), this::createSingleItemTable);
             map.put(
                 BlockRegistry.RGB_SEA_LANTERN.get(),
-                (block) -> this.createSilkTouchDispatchTable(
+                block -> this.createSilkTouchDispatchTable(
                     block,
                     this.applyExplosionDecay(
                         block,
@@ -139,28 +134,10 @@ public class ModLootTableProvider extends LootTableProvider {
             return LootTable.lootTable()
                 .withPool(
                     LootPool.lootPool()
-                        .when(
-                            MatchTool
-                                .toolMatches(
-                                    ItemPredicate.Builder.item()
-                                        .withSubPredicate(
-                                            ItemSubPredicates.ENCHANTMENTS,
-                                            ItemEnchantmentsPredicate
-                                                .enchantments(
-                                                    List.of(
-                                                        new EnchantmentPredicate(
-                                                            enchantmentRegistryLookup
-                                                                .getOrThrow(Enchantments.SILK_TOUCH),
-                                                            MinMaxBounds.Ints.atLeast(1)
-                                                        )
-                                                    )
-                                                )
-                                        )
-                                )
-                        )
+                        .when(this.hasSilkTouch())
                         .setRolls(ConstantValue.exactly(1))
                         .add(
-                            applyExplosionDecay(
+                            this.applyExplosionDecay(
                                 block,
                                 LootItem.lootTableItem(block)
                                     .apply(
@@ -180,36 +157,17 @@ public class ModLootTableProvider extends LootTableProvider {
 
         private LootTable.Builder applyNbtCopy(LootTable.Builder table) {
             return table.apply(
-                CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+                CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
                     .include(DataComponentRegistry.COLOR.get())
             );
         }
 
         private LootTable.Builder applyConditionalNbtCopy(LootTable.Builder table) {
-            return table
-                .apply(
-                    CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
-                        .include(DataComponentRegistry.COLOR.get())
-                        .when(
-                            MatchTool
-                                .toolMatches(
-                                    ItemPredicate.Builder.item()
-                                        .withSubPredicate(
-                                            ItemSubPredicates.ENCHANTMENTS,
-                                            ItemEnchantmentsPredicate
-                                                .enchantments(
-                                                    List.of(
-                                                        new EnchantmentPredicate(
-                                                            enchantmentRegistryLookup
-                                                                .getOrThrow(Enchantments.SILK_TOUCH),
-                                                            MinMaxBounds.Ints.atLeast(1)
-                                                        )
-                                                    )
-                                                )
-                                        )
-                                )
-                        )
-                );
+            return table.apply(
+                CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
+                    .include(DataComponentRegistry.COLOR.get())
+                    .when(this.hasSilkTouch())
+            );
         }
 
         @Override

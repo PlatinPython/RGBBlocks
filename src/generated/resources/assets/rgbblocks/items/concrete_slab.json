@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "rgbblocks:block/concrete_slab",
+    "tints": [
+      {
+        "type": "rgbblocks:color"
+      }
+    ]
+  }
+}

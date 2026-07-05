@@ -16,17 +16,16 @@ import net.minecraft.world.level.material.MapColor;
 import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.util.registries.BlockEntityRegistry;
-import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 
 public final class RGBBlockUtils {
-    public static @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public static BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return BlockEntityRegistry.RGB.get().create(pos, state);
     }
 
     public static ItemStack getCloneItemStack(BlockState state, LevelReader level, BlockPos pos) {
         ItemStack stack = new ItemStack(state.getBlock().asItem());
         if (level.getBlockEntity(pos) instanceof RGBBlockEntity blockEntity) {
-            stack.set(DataComponentRegistry.COLOR, blockEntity.getColor());
+            stack.applyComponents(blockEntity.collectComponents());
         }
         return stack;
     }

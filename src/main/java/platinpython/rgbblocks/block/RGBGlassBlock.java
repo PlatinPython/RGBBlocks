@@ -4,13 +4,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class RGBGlassBlock extends RGBBlock {
-    public RGBGlassBlock() {
-        super(Properties.ofFullCopy(Blocks.GLASS));
+    public RGBGlassBlock(Properties properties) {
+        super(properties);
     }
 
     @Override
@@ -34,7 +33,7 @@ public class RGBGlassBlock extends RGBBlock {
     }
 
     @Override
-    protected boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+    protected boolean propagatesSkylightDown(BlockState state) {
         return true;
     }
 }

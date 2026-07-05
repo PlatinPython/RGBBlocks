@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "rgbblocks:block/glass_stairs",
+    "tints": [
+      {
+        "type": "rgbblocks:color"
+      }
+    ]
+  }
+}

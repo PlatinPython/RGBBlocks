@@ -1,10 +1,9 @@
 package platinpython.rgbblocks.client.gui.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSliderButton;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import platinpython.rgbblocks.client.gui.ScreenUtils;
@@ -84,86 +83,82 @@ public class ColorSlider extends AbstractSliderButton {
     }
 
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
         if (this.visible) {
             Minecraft minecraft = Minecraft.getInstance();
-            guiGraphics.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, 0xFF000000);
+            graphics.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, 0xFF000000);
             if (minecraft.screen instanceof ColorSelectScreen screen) {
                 switch (type) {
                     case RED:
-                        renderRedBackground(guiGraphics.pose(), screen);
+                        renderRedBackground(graphics, screen);
                         break;
                     case GREEN:
-                        renderGreenBackground(guiGraphics.pose(), screen);
+                        renderGreenBackground(graphics, screen);
                         break;
                     case BLUE:
-                        renderBlueBackground(guiGraphics.pose(), screen);
+                        renderBlueBackground(graphics, screen);
                         break;
                     case HUE:
-                        renderHueBackground(guiGraphics.pose(), screen);
+                        renderHueBackground(graphics, screen);
                         break;
                     case SATURATION:
-                        renderSaturationBackground(guiGraphics.pose(), screen);
+                        renderSaturationBackground(graphics, screen);
                         break;
                     case BRIGHTNESS:
-                        renderBrightnessBackground(guiGraphics.pose(), screen);
+                        renderBrightnessBackground(graphics, screen);
                         break;
                 }
             }
 
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.enableDepthTest();
-            guiGraphics.blitSprite(
-                this.getHandleSprite(), (int) (this.getX() + (this.value * (this.width - 8))), this.getY(), 8,
-                this.getHeight()
+            graphics.blitSprite(
+                RenderPipelines.GUI_TEXTURED, this.getHandleSprite(),
+                (int) (this.getX() + (this.value * (this.width - 8))), this.getY(), 8, this.getHeight()
             );
 
-            guiGraphics.drawCenteredString(
+            graphics.centeredText(
                 minecraft.font, this.getMessage(), this.getX() + this.width / 2, this.getY() - this.height / 10 * 7,
                 getFGColor()
             );
         }
     }
 
-    private void renderRedBackground(PoseStack matrixStack, ColorSelectScreen screen) {
+    private void renderRedBackground(GuiGraphicsExtractor graphics, ColorSelectScreen screen) {
         if (screen.greenSlider == null || screen.blueSlider == null) {
             return;
         }
         int leftColor = new Color(0x00, screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB();
         int rightColor = new Color(0xFF, screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB();
         ScreenUtils.fillGradient(
-            matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
+            graphics, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
             leftColor, rightColor
         );
     }
 
-    private void renderGreenBackground(PoseStack matrixStack, ColorSelectScreen screen) {
+    private void renderGreenBackground(GuiGraphicsExtractor graphics, ColorSelectScreen screen) {
         if (screen.redSlider == null || screen.blueSlider == null) {
             return;
         }
         int leftColor = new Color(screen.redSlider.getValueInt(), 0x00, screen.blueSlider.getValueInt()).getRGB();
         int rightColor = new Color(screen.redSlider.getValueInt(), 0xFF, screen.blueSlider.getValueInt()).getRGB();
         ScreenUtils.fillGradient(
-            matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
+            graphics, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
             leftColor, rightColor
         );
     }
 
-    private void renderBlueBackground(PoseStack matrixStack, ColorSelectScreen screen) {
+    private void renderBlueBackground(GuiGraphicsExtractor graphics, ColorSelectScreen screen) {
         if (screen.redSlider == null || screen.greenSlider == null) {
             return;
         }
         int leftColor = new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), 0x00).getRGB();
         int rightColor = new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), 0xFF).getRGB();
         ScreenUtils.fillGradient(
-            matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
+            graphics, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
             leftColor, rightColor
         );
     }
 
-    private void renderHueBackground(PoseStack matrixStack, ColorSelectScreen screen) {
+    private void renderHueBackground(GuiGraphicsExtractor graphics, ColorSelectScreen screen) {
         if (screen.saturationSlider == null || screen.brightnessSlider == null) {
             return;
         }
@@ -174,32 +169,32 @@ public class ColorSlider extends AbstractSliderButton {
             (float) (screen.brightnessSlider.getValueInt() / ColorSelectScreen.MAX_VALUE_SB)
         );
         ScreenUtils.fillGradient(
-            matrixStack, lerp.apply(0), this.getY() + 1, lerp.apply(17), this.getY() + this.height - 1, color.apply(0),
+            graphics, lerp.apply(0), this.getY() + 1, lerp.apply(17), this.getY() + this.height - 1, color.apply(0),
             color.apply(17)
         );
         ScreenUtils.fillGradient(
-            matrixStack, lerp.apply(17), this.getY() + 1, lerp.apply(34), this.getY() + this.height - 1,
-            color.apply(17), color.apply(34)
+            graphics, lerp.apply(17), this.getY() + 1, lerp.apply(34), this.getY() + this.height - 1, color.apply(17),
+            color.apply(34)
         );
         ScreenUtils.fillGradient(
-            matrixStack, lerp.apply(34), this.getY() + 1, lerp.apply(50), this.getY() + this.height - 1,
-            color.apply(34), color.apply(50)
+            graphics, lerp.apply(34), this.getY() + 1, lerp.apply(50), this.getY() + this.height - 1, color.apply(34),
+            color.apply(50)
         );
         ScreenUtils.fillGradient(
-            matrixStack, lerp.apply(50), this.getY() + 1, lerp.apply(66), this.getY() + this.height - 1,
-            color.apply(50), color.apply(66)
+            graphics, lerp.apply(50), this.getY() + 1, lerp.apply(66), this.getY() + this.height - 1, color.apply(50),
+            color.apply(66)
         );
         ScreenUtils.fillGradient(
-            matrixStack, lerp.apply(66), this.getY() + 1, lerp.apply(82), this.getY() + this.height - 1,
-            color.apply(66), color.apply(82)
+            graphics, lerp.apply(66), this.getY() + 1, lerp.apply(82), this.getY() + this.height - 1, color.apply(66),
+            color.apply(82)
         );
         ScreenUtils.fillGradient(
-            matrixStack, lerp.apply(82), this.getY() + 1, lerp.apply(100), this.getY() + this.height - 1,
-            color.apply(82), color.apply(100)
+            graphics, lerp.apply(82), this.getY() + 1, lerp.apply(100), this.getY() + this.height - 1, color.apply(82),
+            color.apply(100)
         );
     }
 
-    private void renderSaturationBackground(PoseStack matrixStack, ColorSelectScreen screen) {
+    private void renderSaturationBackground(GuiGraphicsExtractor graphics, ColorSelectScreen screen) {
         if (screen.hueSlider == null || screen.brightnessSlider == null) {
             return;
         }
@@ -212,12 +207,12 @@ public class ColorSlider extends AbstractSliderButton {
             (float) (screen.brightnessSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB)
         );
         ScreenUtils.fillGradient(
-            matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
+            graphics, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
             leftColor, rightColor
         );
     }
 
-    private void renderBrightnessBackground(PoseStack matrixStack, ColorSelectScreen screen) {
+    private void renderBrightnessBackground(GuiGraphicsExtractor graphics, ColorSelectScreen screen) {
         if (screen.hueSlider == null || screen.saturationSlider == null) {
             return;
         }
@@ -230,7 +225,7 @@ public class ColorSlider extends AbstractSliderButton {
             (float) (screen.saturationSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB), 1.0f
         );
         ScreenUtils.fillGradient(
-            matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
+            graphics, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
             leftColor, rightColor
         );
     }

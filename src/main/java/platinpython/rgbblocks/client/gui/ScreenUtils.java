@@ -1,47 +1,82 @@
 package platinpython.rgbblocks.client.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import net.minecraft.client.renderer.GameRenderer;
-import org.joml.Matrix4f;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.gui.render.TextureSetup;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
+import org.joml.Matrix3x2fc;
+import org.jspecify.annotations.Nullable;
 
 public class ScreenUtils {
-    public static void fillGradient(PoseStack pPoseStack, int x1, int y1, int x2, int y2, int colorFrom, int colorTo) {
-        RenderSystem.enableBlend();
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        fillGradient(pPoseStack.last().pose(), bufferbuilder, x1, y1, x2, y2, colorFrom, colorTo);
-        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
-        RenderSystem.disableBlend();
-    }
-
-    private static void fillGradient(
-        Matrix4f matrix4f,
-        BufferBuilder builder,
+    public static void fillGradient(
+        GuiGraphicsExtractor graphics,
+        int x0,
+        int y0,
         int x1,
         int y1,
-        int x2,
-        int y2,
-        int colorA,
-        int colorB
+        int colorFrom,
+        int colorTo
     ) {
-        int alphaA = colorA >> 24 & 0xFF;
-        int redA = colorA >> 16 & 0xFF;
-        int greenA = colorA >> 8 & 0xFF;
-        int blueA = colorA & 0xFF;
-        int alphaB = colorB >> 24 & 0xFF;
-        int redB = colorB >> 16 & 0xFF;
-        int greenB = colorB >> 8 & 0xFF;
-        int blueB = colorB & 0xFF;
-        builder.addVertex(matrix4f, (float) x2, (float) y1, (float) 0).setColor(redB, greenB, blueB, alphaB);
-        builder.addVertex(matrix4f, (float) x1, (float) y1, (float) 0).setColor(redA, greenA, blueA, alphaA);
-        builder.addVertex(matrix4f, (float) x1, (float) y2, (float) 0).setColor(redA, greenA, blueA, alphaA);
-        builder.addVertex(matrix4f, (float) x2, (float) y2, (float) 0).setColor(redB, greenB, blueB, alphaB);
+        graphics.submitGuiElementRenderState(
+            new ColoredRectangleRenderState(
+                RenderPipelines.GUI, TextureSetup.noTexture(), graphics.pose(), x0, y0, x1, y1, colorFrom, colorTo,
+                graphics.peekScissorStack()
+            )
+        );
+    }
+
+    public record ColoredRectangleRenderState(
+        RenderPipeline pipeline,
+        TextureSetup textureSetup,
+        Matrix3x2fc pose,
+        int x0,
+        int y0,
+        int x1,
+        int y1,
+        int col1,
+        int col2,
+        @Nullable ScreenRectangle scissorArea,
+        @Nullable ScreenRectangle bounds
+    ) implements GuiElementRenderState {
+        public ColoredRectangleRenderState(
+            RenderPipeline pipeline,
+            TextureSetup textureSetup,
+            Matrix3x2fc pose,
+            int x0,
+            int y0,
+            int x1,
+            int y1,
+            int col1,
+            int col2,
+            @Nullable ScreenRectangle scissorArea
+        ) {
+            this(
+                pipeline, textureSetup, pose, x0, y0, x1, y1, col1, col2, scissorArea,
+                getBounds(x0, y0, x1, y1, pose, scissorArea)
+            );
+        }
+
+        @Override
+        public void buildVertices(VertexConsumer vertexConsumer) {
+            vertexConsumer.addVertexWith2DPose(this.pose(), this.x0(), this.y0()).setColor(this.col1());
+            vertexConsumer.addVertexWith2DPose(this.pose(), this.x0(), this.y1()).setColor(this.col1());
+            vertexConsumer.addVertexWith2DPose(this.pose(), this.x1(), this.y1()).setColor(this.col2());
+            vertexConsumer.addVertexWith2DPose(this.pose(), this.x1(), this.y0()).setColor(this.col2());
+        }
+
+        private static @Nullable ScreenRectangle getBounds(
+            int x0,
+            int y0,
+            int x1,
+            int y1,
+            Matrix3x2fc pose,
+            @Nullable ScreenRectangle scissorArea
+        ) {
+            ScreenRectangle bounds = new ScreenRectangle(x0, y0, x1 - x0, y1 - y0).transformMaxBounds(pose);
+            return scissorArea != null ? scissorArea.intersection(bounds) : bounds;
+        }
     }
 }

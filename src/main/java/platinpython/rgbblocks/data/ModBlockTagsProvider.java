@@ -1,27 +1,20 @@
 package platinpython.rgbblocks.data;
 
+import io.github.xfacthd.framedblocks.api.util.FramedConstants;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
-import xfacthd.framedblocks.api.util.Utils;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 public class ModBlockTagsProvider extends BlockTagsProvider {
-    public ModBlockTagsProvider(
-        PackOutput output,
-        CompletableFuture<HolderLookup.Provider> lookupProvider,
-        ExistingFileHelper existingFileHelper
-    ) {
-        super(output, lookupProvider, RGBBlocks.MOD_ID, existingFileHelper);
+    public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider, RGBBlocks.MOD_ID);
     }
 
     @Override
@@ -53,7 +46,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             );
         this.tag(BlockTags.MINEABLE_WITH_SHOVEL).add(BlockRegistry.RGB_CONCRETE_POWDER.get());
 
-        this.tag(Utils.BE_WHITELIST)
-            .add(RegistryHandler.BLOCKS.getEntries().stream().map(Supplier::get).toArray(Block[]::new));
+        this.tag(FramedConstants.Tags.BE_WHITELIST)
+            .addAll(BlockFamilies.getAllFamilies().map(BlockFamily::getBaseBlock));
     }
 }

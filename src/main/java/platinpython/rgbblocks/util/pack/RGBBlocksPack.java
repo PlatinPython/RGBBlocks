@@ -7,26 +7,32 @@ import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.AbstractPackResources;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import net.minecraft.server.packs.metadata.MetadataSectionType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.IoSupplier;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.InclusiveRange;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.jarcontents.JarContents;
 import org.jspecify.annotations.Nullable;
+import org.lwjgl.stb.STBImage;
 import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.util.Color;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.channels.Channels;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,50 +63,50 @@ public class RGBBlocksPack extends AbstractPackResources {
         .put("dark_prismarine", "dark_prismarine")
         .put("sea_lantern", "sea_lantern")
         .build();
-    private static final ImmutableMap<ResourceLocation, ResourceLocation> TEXTURES = MOD_TO_VANILLA_MAP.entrySet()
+    private static final ImmutableMap<Identifier, Identifier> TEXTURES = MOD_TO_VANILLA_MAP.entrySet()
         .stream()
         .flatMap(RGBBlocksPack::makeIDs)
         .collect(ImmutableMap.toImmutableMap(Map.Entry::getKey, Map.Entry::getValue));
 
     private final PackMetadataSection packInfo;
-    private final HashMap<ResourceLocation, IoSupplier<InputStream>> resources = new HashMap<>();
+    private final HashMap<Identifier, IoSupplier<InputStream>> resources = new HashMap<>();
 
     public RGBBlocksPack() {
         super(LOCATION_INFO);
         this.packInfo = new PackMetadataSection(
             Component.translatable("rgbblocks.pack_description"),
-            SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES)
+            new InclusiveRange<>(SharedConstants.getCurrentVersion().packVersion(PackType.CLIENT_RESOURCES))
         );
     }
 
-    private static Stream<Map.Entry<ResourceLocation, ResourceLocation>> makeIDs(Map.Entry<String, String> entry) {
-        Map.Entry<ResourceLocation, ResourceLocation> paths = Map.entry(
-            ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, BLOCK_DIRECTORY + entry.getKey()),
-            ResourceLocation.withDefaultNamespace(BLOCK_DIRECTORY + entry.getValue())
+    private static Stream<Map.Entry<Identifier, Identifier>> makeIDs(Map.Entry<String, String> entry) {
+        Map.Entry<Identifier, Identifier> paths = Map.entry(
+            Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, BLOCK_DIRECTORY + entry.getKey()),
+            Identifier.withDefaultNamespace(BLOCK_DIRECTORY + entry.getValue())
         );
-        Map.Entry<ResourceLocation, ResourceLocation> texture =
+        Map.Entry<Identifier, Identifier> texture =
             Map.entry(makeTextureID(paths.getKey()), makeTextureID(paths.getValue()));
         return Stream
             .of(texture, Map.entry(getMetadataLocation(texture.getKey()), getMetadataLocation(texture.getValue())));
     }
 
-    private static ResourceLocation makeTextureID(ResourceLocation id) {
+    private static Identifier makeTextureID(Identifier id) {
         return id.withPath(path -> TEXTURE_DIRECTORY + path + ".png");
     }
 
-    private static ResourceLocation getMetadataLocation(ResourceLocation id) {
+    private static Identifier getMetadataLocation(Identifier id) {
         return id.withSuffix(".mcmeta");
     }
 
     private @Nullable IoSupplier<InputStream> computeImage(
-        ResourceLocation modLocation,
-        ResourceLocation vanillaLocation,
+        Identifier modLocation,
+        Identifier vanillaLocation,
         ResourceManager manager
     ) {
         try (InputStream inputStream = manager.getResourceOrThrow(vanillaLocation).open()) {
             NativeImage image = NativeImage.read(inputStream);
-            NativeImage transformedImage = this.transformImage(image);
-            return () -> new ByteArrayInputStream(transformedImage.asByteArray());
+            NativeImage transformedImage = image.mappedCopy(ARGB::greyscale);
+            return () -> new ByteArrayInputStream(nativeImageToBytes(transformedImage));
         } catch (IOException e) {
             RGBBlocks.LOGGER.error("Error while generating {}", modLocation, e);
             return null;
@@ -108,8 +114,8 @@ public class RGBBlocksPack extends AbstractPackResources {
     }
 
     private IoSupplier<InputStream> computeMetadata(
-        ResourceLocation modLocation,
-        ResourceLocation vanillaLocation,
+        Identifier modLocation,
+        Identifier vanillaLocation,
         ResourceManager manager
     ) {
         return manager.getResource(vanillaLocation).<IoSupplier<InputStream>>map(resource -> {
@@ -126,26 +132,26 @@ public class RGBBlocksPack extends AbstractPackResources {
         }).orElse(() -> new ByteArrayInputStream("{}".getBytes()));
     }
 
-    private NativeImage transformImage(NativeImage image) {
-        for (int x = 0; x < image.getWidth(); x++) {
-            for (int y = 0; y < image.getHeight(); y++) {
-                int oldColor = image.getPixelRGBA(x, y);
-                float[] hsb = Color.RGBtoHSB(oldColor & 0xFF, (oldColor >> 8) & 0xFF, (oldColor >> 16) & 0xFF);
-                int newColor = Color.HSBtoRGB(0, 0, hsb[2]);
-                image.setPixelRGBA(
-                    x, y,
-                    ((oldColor >> 24) & 0xFF) << 24 | (newColor & 0xFF) << 16 | ((newColor >> 8) & 0xFF) << 8
-                        | (newColor >> 16) & 0xFF
-                );
+    private static byte[] nativeImageToBytes(NativeImage image) throws IOException {
+        byte[] bytes;
+        try (
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            WritableByteChannel writableByteChannel = Channels.newChannel(byteArrayOutputStream)
+        ) {
+            if (!image.writeToChannel(writableByteChannel)) {
+                throw new IOException("Could not write image to byte array: " + STBImage.stbi_failure_reason());
             }
+
+            bytes = byteArrayOutputStream.toByteArray();
         }
-        return image;
+
+        return bytes;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getMetadataSection(MetadataSectionSerializer<T> serializer) {
-        return serializer == PackMetadataSection.TYPE ? (T) this.packInfo : null;
+    public @Nullable <T> T getMetadataSection(MetadataSectionType<T> metadataSerializer) {
+        return metadataSerializer == PackMetadataSection.CLIENT_TYPE ? (T) this.packInfo : null;
     }
 
     @Override
@@ -154,7 +160,12 @@ public class RGBBlocksPack extends AbstractPackResources {
             if (!name.equals("pack.png")) {
                 continue;
             }
-            return IoSupplier.create(ModList.get().getModFileById(RGBBlocks.MOD_ID).getFile().findResource("logo.png"));
+            JarContents contents = ModList.get().getModFileById(RGBBlocks.MOD_ID).getFile().getContents();
+            if (!contents.containsFile("logo.png")) {
+                return null;
+            }
+            // noinspection DataFlowIssue
+            return () -> contents.get("logo.png").open();
         }
         return null;
     }
@@ -168,7 +179,7 @@ public class RGBBlocksPack extends AbstractPackResources {
     }
 
     @Override
-    public @Nullable IoSupplier<InputStream> getResource(PackType type, ResourceLocation id) {
+    public @Nullable IoSupplier<InputStream> getResource(PackType type, Identifier id) {
         if (TEXTURES.containsKey(id)) {
             ResourceManager manager = Minecraft.getInstance().getResourceManager();
             IoSupplier<InputStream> streamSupplier;

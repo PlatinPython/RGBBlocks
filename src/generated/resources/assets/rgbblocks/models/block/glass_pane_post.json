@@ -1,7 +1,13 @@
 {
   "parent": "rgbblocks:block/template_glass_pane_post",
   "textures": {
-    "edge": "rgbblocks:block/glass_pane_top",
-    "pane": "rgbblocks:block/glass"
+    "edge": {
+      "force_translucent": true,
+      "sprite": "rgbblocks:block/glass_pane_top"
+    },
+    "pane": {
+      "force_translucent": true,
+      "sprite": "rgbblocks:block/glass"
+    }
   }
 }

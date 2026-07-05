@@ -1,7 +1,8 @@
 {
   "parent": "rgbblocks:block/inner_stairs",
-  "render_type": "minecraft:solid",
   "textures": {
-    "all": "rgbblocks:block/planks"
+    "bottom": "rgbblocks:block/planks",
+    "side": "rgbblocks:block/planks",
+    "top": "rgbblocks:block/planks"
   }
 }

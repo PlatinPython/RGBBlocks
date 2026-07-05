@@ -6,18 +6,16 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.WoolCarpetBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.phys.HitResult;
 import org.jspecify.annotations.Nullable;
 
 public class RGBCarpetBlock extends WoolCarpetBlock implements EntityBlock {
-    public RGBCarpetBlock() {
-        super(DyeColor.WHITE, Properties.ofFullCopy(Blocks.WHITE_CARPET));
+    public RGBCarpetBlock(Properties properties) {
+        super(DyeColor.WHITE, properties);
     }
 
     @Override
@@ -27,10 +25,10 @@ public class RGBCarpetBlock extends WoolCarpetBlock implements EntityBlock {
 
     @Override
     public ItemStack getCloneItemStack(
-        BlockState state,
-        HitResult target,
         LevelReader level,
         BlockPos pos,
+        BlockState state,
+        boolean includeData,
         Player player
     ) {
         return RGBBlockUtils.getCloneItemStack(state, level, pos);

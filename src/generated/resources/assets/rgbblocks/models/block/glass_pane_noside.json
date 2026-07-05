@@ -1,6 +1,9 @@
 {
   "parent": "rgbblocks:block/template_glass_pane_noside",
   "textures": {
-    "pane": "rgbblocks:block/glass"
+    "pane": {
+      "force_translucent": true,
+      "sprite": "rgbblocks:block/glass"
+    }
   }
 }

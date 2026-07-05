@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.phys.HitResult;
 import org.jspecify.annotations.Nullable;
 
 public class RGBBlock extends Block implements EntityBlock {
@@ -25,10 +24,10 @@ public class RGBBlock extends Block implements EntityBlock {
 
     @Override
     public ItemStack getCloneItemStack(
-        BlockState state,
-        HitResult target,
         LevelReader level,
         BlockPos pos,
+        BlockState state,
+        boolean includeData,
         Player player
     ) {
         return RGBBlockUtils.getCloneItemStack(state, level, pos);

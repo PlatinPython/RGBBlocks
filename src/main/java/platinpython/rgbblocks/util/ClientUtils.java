@@ -1,8 +1,7 @@
 package platinpython.rgbblocks.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackSelectionConfig;
@@ -13,23 +12,20 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.client.colorhandlers.PaintBucketItemColor;
-import platinpython.rgbblocks.client.colorhandlers.RGBBlockColor;
-import platinpython.rgbblocks.client.colorhandlers.RGBBlockItemColor;
+import platinpython.rgbblocks.client.colorhandlers.RGBBlockTintSource;
+import platinpython.rgbblocks.client.colorhandlers.RGBItemTintSource;
 import platinpython.rgbblocks.client.gui.screen.ColorSelectScreen;
-import platinpython.rgbblocks.client.model.AntiblockBakedModel;
 import platinpython.rgbblocks.client.renderer.entity.RGBFallingBlockRenderer;
 import platinpython.rgbblocks.util.pack.RGBBlocksPack;
 import platinpython.rgbblocks.util.registries.EntityRegistry;
-import platinpython.rgbblocks.util.registries.ItemRegistry;
 
+import java.util.List;
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = RGBBlocks.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = RGBBlocks.MOD_ID, value = Dist.CLIENT)
 public class ClientUtils {
     @SubscribeEvent
     public static void addPackFinders(AddPackFindersEvent event) {
@@ -60,35 +56,27 @@ public class ClientUtils {
     }
 
     @SubscribeEvent
-    public static void registerColorHandlers(RegisterColorHandlersEvent.Item event) {
+    public static void registerColorHandlers(RegisterColorHandlersEvent.ItemTintSources event) {
+        event.register(Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, "color"), RGBItemTintSource.MAP_CODEC);
+    }
+
+    @SubscribeEvent
+    public static void registerColorHandlers(RegisterColorHandlersEvent.BlockTintSources event) {
         event.register(
-            new RGBBlockItemColor(),
+            List.of(new RGBBlockTintSource()),
             RegistryHandler.BLOCKS.getEntries().stream().map(Supplier::get).toArray(Block[]::new)
         );
-
-        event.register(new PaintBucketItemColor(), ItemRegistry.PAINT_BUCKET.get());
     }
 
-    @SubscribeEvent
-    public static void registerColorHandlers(RegisterColorHandlersEvent.Block event) {
-        event.register(
-            new RGBBlockColor(), RegistryHandler.BLOCKS.getEntries().stream().map(Supplier::get).toArray(Block[]::new)
-        );
-    }
-
-    @SubscribeEvent
-    public static void registerModelStuff(ModelEvent.RegisterGeometryLoaders event) {
-        event.register(
-            ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "antiblock_model"),
-            new AntiblockBakedModel.ModelLoader()
-        );
-    }
+    // @SubscribeEvent
+    // public static void registerModelStuff(ModelEvent.RegisterGeometryLoaders event) {
+    // event.register(
+    // ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "antiblock_model"),
+    // new AntiblockBakedModel.ModelLoader()
+    // );
+    // }
 
     public static void openColorSelectScreen(int color, boolean isRGBSelected) {
         Minecraft.getInstance().setScreen(new ColorSelectScreen(color, isRGBSelected));
-    }
-
-    public static boolean hasShiftDown() {
-        return Screen.hasShiftDown();
     }
 }

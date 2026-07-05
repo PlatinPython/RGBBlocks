@@ -21,3 +21,4 @@ build
 eclipse
 runs
 libs
+src/generated/**/.cache

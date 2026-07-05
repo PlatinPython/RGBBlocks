@@ -1,46 +1,73 @@
 package platinpython.rgbblocks.item.crafting;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
-import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import platinpython.rgbblocks.item.PaintBucketItem;
 import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 import platinpython.rgbblocks.util.registries.RecipeSerializerRegistry;
 
 import java.util.List;
-import java.util.function.Function;
 
 public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
+    public static final MapCodec<ShapelessDurabilityAwarePaintBucketRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(
+        instance -> instance
+            .group(
+                CommonInfo.MAP_CODEC.forGetter(recipe -> recipe.commonInfo),
+                CraftingBookInfo.MAP_CODEC.forGetter(recipe -> recipe.bookInfo),
+                ItemStackTemplate.CODEC.fieldOf("result").forGetter(ShapelessRecipe::result),
+                Codec
+                    .lazyInitialized(
+                        () -> Ingredient.CODEC
+                            .listOf(1, ShapedRecipePattern.getMaxHeight() * ShapedRecipePattern.getMaxWidth())
+                    )
+                    .fieldOf("ingredients")
+                    .forGetter(recipe -> recipe.ingredients)
+            )
+            .apply(instance, ShapelessDurabilityAwarePaintBucketRecipe::new)
+    );
+    public static final StreamCodec<RegistryFriendlyByteBuf, ShapelessDurabilityAwarePaintBucketRecipe> STREAM_CODEC =
+        StreamCodec.composite(
+            // spotless:off
+            CommonInfo.STREAM_CODEC, recipe -> recipe.commonInfo,
+            CraftingBookInfo.STREAM_CODEC, recipe -> recipe.bookInfo,
+            ItemStackTemplate.STREAM_CODEC, ShapelessRecipe::result,
+            Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()), recipe -> recipe.ingredients,
+            ShapelessDurabilityAwarePaintBucketRecipe::new
+            // spotless:on
+        );
+
+    private final List<Ingredient> ingredients;
+
     public ShapelessDurabilityAwarePaintBucketRecipe(
-        String group,
-        CraftingBookCategory category,
-        ItemStack result,
-        NonNullList<Ingredient> ingredients
+        CommonInfo commonInfo,
+        CraftingBookInfo bookInfo,
+        ItemStackTemplate result,
+        List<Ingredient> ingredients
     ) {
-        super(group, category, result, ingredients);
+        super(commonInfo, bookInfo, result, ingredients);
+        this.ingredients = ingredients;
     }
 
+    @SuppressWarnings({
+        "unchecked", "rawtypes"
+    })
     @Override
-    public RecipeSerializer<?> getSerializer() {
-        return RecipeSerializerRegistry.SHAPELESS_DURABILITY_AWARE_PAINT_BUCKET_RECIPE.get();
+    public RecipeSerializer<ShapelessRecipe> getSerializer() {
+        return (RecipeSerializer) RecipeSerializerRegistry.SHAPELESS_DURABILITY_AWARE_PAINT_BUCKET_RECIPE.get();
     }
 
     @Override
@@ -76,59 +103,16 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
+    public ItemStack assemble(CraftingInput input) {
         int color = 0;
-        for (int i = 0; i < craftingInput.size(); i++) {
-            if (craftingInput.getItem(i).getItem() instanceof PaintBucketItem) {
-                color = craftingInput.getItem(i).getOrDefault(DataComponentRegistry.COLOR, -1);
+        for (int i = 0; i < input.size(); i++) {
+            if (input.getItem(i).getItem() instanceof PaintBucketItem) {
+                color = input.getItem(i).getOrDefault(DataComponentRegistry.COLOR, -1);
                 break;
             }
         }
-        ItemStack result = super.assemble(craftingInput, provider);
+        ItemStack result = super.assemble(input);
         result.set(DataComponentRegistry.COLOR, color);
         return result;
-    }
-
-    public static class Serializer implements RecipeSerializer<ShapelessDurabilityAwarePaintBucketRecipe> {
-        private static final MapCodec<ShapelessDurabilityAwarePaintBucketRecipe> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> instance.group(
-                Codec.STRING.optionalFieldOf("group", "").forGetter(ShapelessRecipe::getGroup),
-                CraftingBookCategory.CODEC.fieldOf("category")
-                    .orElse(CraftingBookCategory.MISC)
-                    .forGetter(ShapelessRecipe::category),
-                ItemStack.STRICT_CODEC.fieldOf("result")
-                    .forGetter(recipe -> recipe.getResultItem(RegistryAccess.EMPTY)),
-                Ingredient.CODEC_NONEMPTY.listOf().comapFlatMap(list -> {
-                    if (list.isEmpty()) {
-                        return DataResult.error(() -> "No ingredients for shapeless recipe");
-                    }
-                    return list.size() > ShapedRecipePattern.getMaxHeight() * ShapedRecipePattern.getMaxWidth()
-                        ? DataResult.error(
-                            () -> "Too many ingredients for shapeless recipe. The maximum is: %s"
-                                .formatted(ShapedRecipePattern.getMaxHeight() * ShapedRecipePattern.getMaxWidth())
-                        )
-                        : DataResult.success(NonNullList.of(Ingredient.EMPTY, list.toArray(Ingredient[]::new)));
-                }, Function.identity()).fieldOf("ingredients").forGetter(ShapelessRecipe::getIngredients)
-            ).apply(instance, ShapelessDurabilityAwarePaintBucketRecipe::new)
-        );
-
-        private static final StreamCodec<RegistryFriendlyByteBuf, ShapelessDurabilityAwarePaintBucketRecipe> STREAM_CODEC =
-            StreamCodec.composite(
-                ByteBufCodecs.STRING_UTF8, ShapelessRecipe::getGroup,
-                NeoForgeStreamCodecs.enumCodec(CraftingBookCategory.class), CraftingRecipe::category,
-                ItemStack.STREAM_CODEC, recipe -> recipe.getResultItem(RegistryAccess.EMPTY),
-                Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()).map(NonNullList::copyOf, List::copyOf),
-                ShapelessRecipe::getIngredients, ShapelessDurabilityAwarePaintBucketRecipe::new
-            );
-
-        @Override
-        public MapCodec<ShapelessDurabilityAwarePaintBucketRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ShapelessDurabilityAwarePaintBucketRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
     }
 }

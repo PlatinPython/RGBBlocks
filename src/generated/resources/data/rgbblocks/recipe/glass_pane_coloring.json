@@ -2,15 +2,10 @@
   "type": "rgbblocks:crafting_shapeless_durability_aware_paint_bucket",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "rgbblocks:glass_pane"
-    },
-    {
-      "item": "rgbblocks:paint_bucket"
-    }
+    "rgbblocks:glass_pane",
+    "rgbblocks:paint_bucket"
   ],
   "result": {
-    "count": 1,
     "id": "rgbblocks:glass_pane"
   }
 }

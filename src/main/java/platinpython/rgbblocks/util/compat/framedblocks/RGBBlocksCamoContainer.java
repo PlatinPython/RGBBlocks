@@ -4,39 +4,34 @@ import com.google.common.base.Objects;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.xfacthd.framedblocks.api.camo.CamoContainerClientHandler;
+import io.github.xfacthd.framedblocks.api.camo.TriggerRegistrar;
+import io.github.xfacthd.framedblocks.api.camo.block.AbstractBlockCamoContainer;
+import io.github.xfacthd.framedblocks.api.camo.block.AbstractBlockCamoContainerFactory;
+import io.github.xfacthd.framedblocks.api.camo.block.BlockCamoContent;
+import io.github.xfacthd.framedblocks.api.util.FramedConstants;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 import org.jspecify.annotations.Nullable;
-import platinpython.rgbblocks.item.RGBBlockItem;
 import platinpython.rgbblocks.util.Color;
-import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.registries.DataComponentRegistry;
-import xfacthd.framedblocks.api.camo.TriggerRegistrar;
-import xfacthd.framedblocks.api.camo.block.AbstractBlockCamoContainer;
-import xfacthd.framedblocks.api.camo.block.AbstractBlockCamoContainerFactory;
-import xfacthd.framedblocks.api.util.CamoMessageVerbosity;
-import xfacthd.framedblocks.api.util.ConfigView;
-import xfacthd.framedblocks.api.util.Utils;
-
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public class RGBBlocksCamoContainer extends AbstractBlockCamoContainer<RGBBlocksCamoContainer> {
     final int color;
@@ -59,12 +54,17 @@ public class RGBBlocksCamoContainer extends AbstractBlockCamoContainer<RGBBlocks
     }
 
     @Override
-    public int getTintColor(BlockAndTintGetter level, BlockPos pos, int tintIndex) {
-        return color;
+    public CamoContainerClientHandler<BlockCamoContent, RGBBlocksCamoContainer> getClientHandler() {
+        return RGBBlocksCamoContainerClientHandler.INSTANCE;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public int hashCode() {
+        return Objects.hashCode(this.content.getState(), this.color);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object o) {
         if (this == o) {
             return true;
         }
@@ -73,11 +73,6 @@ public class RGBBlocksCamoContainer extends AbstractBlockCamoContainer<RGBBlocks
         }
         RGBBlocksCamoContainer that = (RGBBlocksCamoContainer) o;
         return color == that.color && mapColor == that.mapColor && content.equals(that.content);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(this.content.getState(), this.color);
     }
 
     @Override
@@ -98,8 +93,6 @@ public class RGBBlocksCamoContainer extends AbstractBlockCamoContainer<RGBBlocks
             ByteBufCodecs.idMapper(Block.BLOCK_STATE_REGISTRY), RGBBlocksCamoContainer::getState, ByteBufCodecs.INT,
             container -> container.color, RGBBlocksCamoContainer::new
         );
-        public static final Component MSG_BLOCK_ENTITY = Utils.translate("msg", "camo.block_entity");
-        public static final Component MSG_NON_SOLID = Utils.translate("msg", "camo.non_solid");
 
         @Override
         protected RGBBlocksCamoContainer createContainer(
@@ -107,9 +100,11 @@ public class RGBBlocksCamoContainer extends AbstractBlockCamoContainer<RGBBlocks
             Level level,
             BlockPos pos,
             Player player,
-            ItemStack stack
+            ItemAccess itemAccess
         ) {
-            return new RGBBlocksCamoContainer(state, stack.getOrDefault(DataComponentRegistry.COLOR, -1));
+            return new RGBBlocksCamoContainer(
+                state, itemAccess.getResource().getOrDefault(DataComponentRegistry.COLOR, -1)
+            );
         }
 
         @Override
@@ -122,7 +117,7 @@ public class RGBBlocksCamoContainer extends AbstractBlockCamoContainer<RGBBlocks
             Level level,
             BlockPos pos,
             Player player,
-            ItemStack stack,
+            ItemAccess itemAccess,
             RGBBlocksCamoContainer container
         ) {
             return this.dropCamo(container);
@@ -130,34 +125,20 @@ public class RGBBlocksCamoContainer extends AbstractBlockCamoContainer<RGBBlocks
 
         @Override
         protected boolean isValidBlock(BlockState state, BlockGetter level, BlockPos pos, @Nullable Player player) {
-            if (state.is(Utils.BLOCK_BLACKLIST)) {
-                displayValidationMessage(player, MSG_BLACKLISTED, CamoMessageVerbosity.DEFAULT);
-                return false;
-            }
-            if (state.hasBlockEntity() && !ConfigView.Server.INSTANCE.allowBlockEntities()
-                && !state.is(Utils.BE_WHITELIST)) {
-                displayValidationMessage(player, MSG_BLOCK_ENTITY, CamoMessageVerbosity.DEFAULT);
-                return false;
-            }
-            if (!state.isSolidRender(level, pos) && !state.is(Utils.FRAMEABLE)) {
-                displayValidationMessage(player, MSG_NON_SOLID, CamoMessageVerbosity.DETAILED);
-                return false;
-            }
-            return RegistryHandler.BLOCKS.getEntries()
-                .stream()
-                .map(Supplier::get)
-                .anyMatch(Predicate.isEqual(state.getBlock()));
+            return RGBBlocksFramedBlocks.VALID_BLOCKS.get().contains(state.getBlock());
         }
 
         @Override
-        protected void writeToNetwork(CompoundTag tag, RGBBlocksCamoContainer container) {
-            tag.putInt("state", Block.getId(container.getState()));
-            tag.putInt("color", container.color);
+        protected void writeToNetwork(ValueOutput output, RGBBlocksCamoContainer container) {
+            output.putInt("state", Block.getId(container.getState()));
+            output.putInt("color", container.color);
         }
 
         @Override
-        protected RGBBlocksCamoContainer readFromNetwork(CompoundTag tag) {
-            return new RGBBlocksCamoContainer(Block.stateById(tag.getInt("state")), tag.getInt("color"));
+        protected RGBBlocksCamoContainer readFromNetwork(ValueInput input) {
+            return new RGBBlocksCamoContainer(
+                Block.stateById(input.getIntOr("state", -1)), input.getIntOr("color", -1)
+            );
         }
 
         @Override
@@ -185,7 +166,7 @@ public class RGBBlocksCamoContainer extends AbstractBlockCamoContainer<RGBBlocks
                 if (stack.getDamageValue() == stack.getMaxDamage() - 1) {
                     player.setItemInHand(hand, new ItemStack(Items.BUCKET));
                 } else {
-                    player.getItemInHand(hand).hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+                    player.getItemInHand(hand).hurtAndBreak(1, player, hand);
                 }
             }
             return new RGBBlocksCamoContainer(camo.getState(), stack.getOrDefault(DataComponentRegistry.COLOR, -1));
@@ -203,8 +184,11 @@ public class RGBBlocksCamoContainer extends AbstractBlockCamoContainer<RGBBlocks
 
         @Override
         public void registerTriggerItems(TriggerRegistrar registrar) {
-            registrar.registerApplicationPredicate(stack -> stack.getItem() instanceof RGBBlockItem);
-            registrar.registerRemovalItem(Utils.FRAMED_HAMMER.value());
+            RGBBlocksFramedBlocks.VALID_BLOCKS.get()
+                .stream()
+                .map(ItemLike::asItem)
+                .forEach(registrar::registerApplicationItem);
+            registrar.registerRemovalItem(FramedConstants.Objects.FRAMED_HAMMER.value());
         }
     }
 }

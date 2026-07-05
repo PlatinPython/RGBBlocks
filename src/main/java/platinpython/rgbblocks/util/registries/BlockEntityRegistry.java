@@ -9,16 +9,13 @@ import platinpython.rgbblocks.util.RegistryHandler;
 import java.util.function.Supplier;
 
 public class BlockEntityRegistry {
-    @SuppressWarnings("DataFlowIssue")
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RGBBlockEntity>> RGB =
         RegistryHandler.BLOCK_ENTITY_TYPES.register(
             "rgb",
-            () -> BlockEntityType.Builder
-                .of(
-                    RGBBlockEntity::new,
-                    RegistryHandler.BLOCKS.getEntries().stream().map(Supplier::get).toArray(Block[]::new)
-                )
-                .build(null)
+            () -> new BlockEntityType<>(
+                RGBBlockEntity::new,
+                RegistryHandler.BLOCKS.getEntries().stream().map(Supplier::get).toArray(Block[]::new)
+            )
         );
 
     public static void register() {}

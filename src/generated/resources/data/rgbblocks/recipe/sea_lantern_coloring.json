@@ -2,15 +2,10 @@
   "type": "rgbblocks:crafting_shapeless_durability_aware_paint_bucket",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "rgbblocks:sea_lantern"
-    },
-    {
-      "item": "rgbblocks:paint_bucket"
-    }
+    "rgbblocks:sea_lantern",
+    "rgbblocks:paint_bucket"
   ],
   "result": {
-    "count": 1,
     "id": "rgbblocks:sea_lantern"
   }
 }

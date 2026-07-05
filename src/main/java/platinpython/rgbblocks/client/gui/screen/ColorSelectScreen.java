@@ -1,11 +1,11 @@
 package platinpython.rgbblocks.client.gui.screen;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.client.gui.widget.ColorSlider;
 import platinpython.rgbblocks.client.gui.widget.SliderType;
@@ -16,22 +16,22 @@ import java.util.Locale;
 import java.util.function.UnaryOperator;
 
 public class ColorSelectScreen extends Screen {
-    private final double red, green, blue;
-    public @Nullable ColorSlider redSlider, greenSlider, blueSlider;
-    private final double hue, saturation, brightness;
-    public @Nullable ColorSlider hueSlider, saturationSlider, brightnessSlider;
-    public @Nullable EditBox hexBox;
-
-    public final int WIDGET_HEIGHT = 20;
-    public final int SLIDER_WIDTH = 310;
-    public final int BUTTON_WIDTH = 98;
-    public final int BOX_WIDTH = 50;
-    public final int SPACING = WIDGET_HEIGHT + 5;
+    public final static int WIDGET_HEIGHT = 20;
+    public final static int SLIDER_WIDTH = 310;
+    public final static int BUTTON_WIDTH = 98;
+    public final static int BOX_WIDTH = 50;
+    public final static int SPACING = WIDGET_HEIGHT + 5;
 
     public static final double MIN_VALUE = 0.0D;
     public static final double MAX_VALUE_RGB = 255.0D;
     public static final double MAX_VALUE_HUE = 360.0D;
     public static final double MAX_VALUE_SB = 100.0D;
+
+    private final double red, green, blue;
+    public @Nullable ColorSlider redSlider, greenSlider, blueSlider;
+    private final double hue, saturation, brightness;
+    public @Nullable ColorSlider hueSlider, saturationSlider, brightnessSlider;
+    public @Nullable EditBox hexBox;
 
     private boolean isRGBSelected;
 
@@ -173,21 +173,16 @@ public class ColorSelectScreen extends Screen {
                 textToWrite = textToWrite.contains("#") ? textToWrite.substring(1) : textToWrite;
                 textToWrite = textToWrite.toUpperCase(Locale.ENGLISH);
                 super.insertText(textToWrite);
-                Color color = new Color(Integer.parseInt(formatter.apply(getValue()), 16));
-                redSlider.setValueInt(color.getRed());
-                greenSlider.setValueInt(color.getGreen());
-                blueSlider.setValueInt(color.getBlue());
-                int cursorPosition = this.getCursorPosition();
-                this.setValue("#" + (getValue().contains("#") ? getValue().substring(1) : getValue()));
-                if (this.getCursorPosition() != cursorPosition) {
-                    this.setHighlightPos(cursorPosition);
-                }
-                this.setCursorPosition(cursorPosition);
+                this.updateValues();
             }
 
             @Override
             public void deleteChars(int pNum) {
                 super.deleteChars(pNum);
+                this.updateValues();
+            }
+
+            private void updateValues() {
                 Color color = new Color(Integer.parseInt(formatter.apply(getValue()), 16));
                 redSlider.setValueInt(color.getRed());
                 greenSlider.setValueInt(color.getGreen());
@@ -285,20 +280,19 @@ public class ColorSelectScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(this.width / 2F, this.height / 2F - WIDGET_HEIGHT / 2F - 2 * SPACING - 15, 0);
-        guiGraphics.fill(-SLIDER_WIDTH / 2, -WIDGET_HEIGHT, SLIDER_WIDTH / 2, WIDGET_HEIGHT, 0xFF000000);
-        guiGraphics
-            .fill(-SLIDER_WIDTH / 2 + 1, -WIDGET_HEIGHT + 1, SLIDER_WIDTH / 2 - 1, WIDGET_HEIGHT - 1, getColor());
-        guiGraphics.pose().popPose();
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractRenderState(graphics, mouseX, mouseY, a);
+        graphics.pose().pushMatrix();
+        graphics.pose().translate(this.width / 2F, this.height / 2F - WIDGET_HEIGHT / 2F - 2 * SPACING - 15);
+        graphics.fill(-SLIDER_WIDTH / 2, -WIDGET_HEIGHT, SLIDER_WIDTH / 2, WIDGET_HEIGHT, 0xFF000000);
+        graphics
+            .fill(-SLIDER_WIDTH / 2 + 1, -WIDGET_HEIGHT + 1, SLIDER_WIDTH / 2 - 1, WIDGET_HEIGHT - 1, this.getColor());
+        graphics.pose().popMatrix();
     }
 
     @Override
     public void onClose() {
-        PacketDistributor.sendToServer(new PaintBucketSyncPayload(getColor(), isRGBSelected));
+        ClientPacketDistributor.sendToServer(new PaintBucketSyncPayload(this.getColor(), isRGBSelected));
         super.onClose();
     }
 }

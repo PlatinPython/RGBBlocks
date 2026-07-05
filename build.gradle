@@ -1,8 +1,6 @@
 plugins {
     id 'java-library'
-    id 'eclipse'
-    id 'idea'
-    id 'net.neoforged.gradle.userdev' version '7.0.165'
+    id 'net.neoforged.gradle.userdev' version '7.1.38'
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
@@ -10,7 +8,7 @@ version = "${minecraft_version}-${mod_version}"
 group = 'platinpython.rgbblocks'
 base.archivesName = 'RGB Blocks'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 
@@ -26,20 +24,30 @@ runs {
     }
 
     client {
-        systemProperty 'forge.enabledGameTestNamespaces', 'rgbblocks'
+        systemProperty 'neoforge.enabledGameTestNamespaces', 'rgbblocks'
     }
 
     server {
-        systemProperty 'forge.enabledGameTestNamespaces', 'rgbblocks'
-        programArgument '--nogui'
+        systemProperty 'neoforge.enabledGameTestNamespaces', 'rgbblocks'
+        argument '--nogui'
     }
 
-    data {
-        programArguments.addAll '--mod', 'rgbblocks', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    clientData {
+        arguments.addAll '--mod', 'rgbblocks', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+
+    exclude 'src/generated/**/.cache'
+}
+
+sourceSets.main.java {
+    exclude 'platinpython/rgbblocks/util/compat/top/**'
+
+    exclude 'platinpython/rgbblocks/client/model/**'
+}
 
 repositories {
     maven {
@@ -51,13 +59,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'net.neoforged:neoforge:21.1.73'
+    implementation 'net.neoforged:neoforge:26.1.2.76'
 
     compileOnly 'org.jspecify:jspecify:1.0.0'
 
-    implementation 'curse.maven:the-one-probe-245211:5836106'
+//    implementation 'curse.maven:the-one-probe-245211:5836106'
 
-    implementation 'curse.maven:framedblocks-441647:5863919'
+    implementation 'curse.maven:framedblocks-441647:8255890'
 }
 
 jar {
@@ -74,9 +82,12 @@ jar {
     }
 }
 
-// TODO: Figure out why it's still needed
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.BIN
 }
 
 apply from: rootProject.file('codeformat/spotless-rules.gradle')

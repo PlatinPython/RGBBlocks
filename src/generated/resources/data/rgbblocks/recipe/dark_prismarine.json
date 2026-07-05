@@ -2,15 +2,10 @@
   "type": "rgbblocks:crafting_shapeless_durability_aware_paint_bucket",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:dark_prismarine"
-    },
-    {
-      "item": "rgbblocks:paint_bucket"
-    }
+    "minecraft:dark_prismarine",
+    "rgbblocks:paint_bucket"
   ],
   "result": {
-    "count": 1,
     "id": "rgbblocks:dark_prismarine"
   }
 }

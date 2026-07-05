@@ -2,21 +2,12 @@
   "type": "rgbblocks:crafting_shapeless_no_return",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:dyes/red"
-    },
-    {
-      "tag": "c:dyes/green"
-    },
-    {
-      "tag": "c:dyes/blue"
-    },
-    {
-      "item": "minecraft:water_bucket"
-    }
+    "#c:dyes/red",
+    "#c:dyes/green",
+    "#c:dyes/blue",
+    "minecraft:water_bucket"
   ],
   "result": {
-    "count": 1,
     "id": "rgbblocks:paint_bucket"
   }
 }

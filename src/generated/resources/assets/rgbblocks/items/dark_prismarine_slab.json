@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "rgbblocks:block/dark_prismarine_slab",
+    "tints": [
+      {
+        "type": "rgbblocks:color"
+      }
+    ]
+  }
+}

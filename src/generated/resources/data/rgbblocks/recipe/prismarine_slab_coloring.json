@@ -2,15 +2,10 @@
   "type": "rgbblocks:crafting_shapeless_durability_aware_paint_bucket",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "rgbblocks:prismarine_slab"
-    },
-    {
-      "item": "rgbblocks:paint_bucket"
-    }
+    "rgbblocks:prismarine_slab",
+    "rgbblocks:paint_bucket"
   ],
   "result": {
-    "count": 1,
     "id": "rgbblocks:prismarine_slab"
   }
 }

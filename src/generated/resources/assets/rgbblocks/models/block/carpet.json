@@ -1,6 +1,6 @@
 {
   "parent": "rgbblocks:block/thin_block",
   "textures": {
-    "all": "rgbblocks:block/wool"
+    "wool": "rgbblocks:block/wool"
   }
 }

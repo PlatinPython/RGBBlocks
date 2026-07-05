@@ -1,6 +1,5 @@
 {
-  "parent": "rgbblocks:block/block",
-  "render_type": "minecraft:solid",
+  "parent": "rgbblocks:block/cube_all",
   "textures": {
     "all": "rgbblocks:block/planks"
   }

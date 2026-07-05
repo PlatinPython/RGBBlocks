@@ -2,18 +2,15 @@ package platinpython.rgbblocks;
 
 import net.minecraft.world.level.block.DispenserBlock;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import platinpython.rgbblocks.data.DataGatherer;
 import platinpython.rgbblocks.dispenser.DispensePaintBucketBehaviour;
 import platinpython.rgbblocks.util.RegistryHandler;
 import platinpython.rgbblocks.util.compat.framedblocks.RGBBlocksFramedBlocks;
-import platinpython.rgbblocks.util.compat.top.TOPMain;
 import platinpython.rgbblocks.util.network.NetworkHandler;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
@@ -25,7 +22,7 @@ public class RGBBlocks {
 
     public RGBBlocks(IEventBus bus) {
         bus.addListener(this::setup);
-        bus.addListener(this::enqueueIMC);
+        // bus.addListener(this::enqueueIMC);
         bus.addListener(DataGatherer::onGatherData);
         bus.addListener(NetworkHandler::register);
 
@@ -42,9 +39,9 @@ public class RGBBlocks {
         );
     }
 
-    public void enqueueIMC(final InterModEnqueueEvent event) {
-        if (ModList.get().isLoaded("theoneprobe")) {
-            InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPMain::new);
-        }
-    }
+    // public void enqueueIMC(final InterModEnqueueEvent event) {
+    // if (ModList.get().isLoaded("theoneprobe")) {
+    // InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPMain::new);
+    // }
+    // }
 }

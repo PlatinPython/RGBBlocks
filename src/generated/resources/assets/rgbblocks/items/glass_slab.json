@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "rgbblocks:block/glass_slab",
+    "tints": [
+      {
+        "type": "rgbblocks:color"
+      }
+    ]
+  }
+}

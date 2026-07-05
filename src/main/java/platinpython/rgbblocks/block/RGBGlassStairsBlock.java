@@ -4,13 +4,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
+import platinpython.rgbblocks.util.registries.BlockRegistry;
 
 public class RGBGlassStairsBlock extends RGBStairsBlock {
-    public RGBGlassStairsBlock(BlockState state) {
-        super(state, Properties.ofFullCopy(Blocks.GLASS));
+    public RGBGlassStairsBlock(Properties properties) {
+        super(BlockRegistry.RGB_GLASS.get().defaultBlockState(), properties);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class RGBGlassStairsBlock extends RGBStairsBlock {
     }
 
     @Override
-    protected boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+    protected boolean propagatesSkylightDown(BlockState state) {
         return true;
     }
 }

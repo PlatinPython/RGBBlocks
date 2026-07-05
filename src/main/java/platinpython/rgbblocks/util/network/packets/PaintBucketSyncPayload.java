@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.handling.IPayloadHandler;
@@ -14,7 +14,7 @@ import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 
 public record PaintBucketSyncPayload(int color, boolean isRGBSelected) implements CustomPacketPayload {
     public static final Type<PaintBucketSyncPayload> TYPE =
-        new Type<>(ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "paint_bucket_sync"));
+        new Type<>(Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, "paint_bucket_sync"));
     public static final StreamCodec<ByteBuf, PaintBucketSyncPayload> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.INT, PaintBucketSyncPayload::color, ByteBufCodecs.BOOL, PaintBucketSyncPayload::isRGBSelected,
         PaintBucketSyncPayload::new
