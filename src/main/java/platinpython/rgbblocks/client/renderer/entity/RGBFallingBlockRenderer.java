@@ -18,13 +18,6 @@ public class RGBFallingBlockRenderer extends EntityRenderer<RGBFallingBlockEntit
         super(context);
         this.shadowRadius = 0.5F;
     }
-    // private final ItemRenderer itemRenderer;
-
-    // public RGBFallingBlockRenderer(Context context) {
-    // super(context);
-    // this.shadowRadius = 0.5f;
-    // this.itemRenderer = context.getItemRenderer();
-    // }
 
     public boolean shouldRender(RGBFallingBlockEntity entity, Frustum culler, double camX, double camY, double camZ) {
         return super.shouldRender(entity, culler, camX, camY, camZ)
@@ -67,29 +60,4 @@ public class RGBFallingBlockRenderer extends EntityRenderer<RGBFallingBlockEntit
         }
         state.color = entity.getColor();
     }
-
-    // @Override
-    // public void render(
-    // RGBFallingBlockEntity fallingBlockEntity,
-    // float entityYaw,
-    // float partialTicks,
-    // PoseStack poseStack,
-    // MultiBufferSource buffer,
-    // int packedLight
-    // ) {
-    // poseStack.pushPose();
-    // poseStack.translate(0.0D, 0.5D, 0.0D);
-    // ItemStack stack = new ItemStack(fallingBlockEntity.getBlockState().getBlock());
-    // stack.set(DataComponentRegistry.COLOR, fallingBlockEntity.getColor());
-    // itemRenderer.renderStatic(
-    // stack, ItemDisplayContext.NONE, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null,
-    // fallingBlockEntity.getId()
-    // );
-    // poseStack.popPose();
-    // }
-    //
-    // @Override
-    // public ResourceLocation getTextureLocation(RGBFallingBlockEntity fallingBlockEntity) {
-    // return ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "concrete_powder");
-    // }
 }

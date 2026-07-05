@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import platinpython.rgbblocks.block.entity.RGBBlockEntity;
+import platinpython.rgbblocks.client.renderer.entity.state.RGBFallingBlockRenderState;
 
 public class RGBBlockTintSource implements BlockTintSource {
     @Override
@@ -14,6 +15,9 @@ public class RGBBlockTintSource implements BlockTintSource {
 
     @Override
     public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+        if (level instanceof RGBFallingBlockRenderState.RGBMovingBlockRenderState renderState) {
+            return renderState.color();
+        }
         if (level.getBlockEntity(pos) instanceof RGBBlockEntity blockEntity) {
             return blockEntity.getColor();
         }
