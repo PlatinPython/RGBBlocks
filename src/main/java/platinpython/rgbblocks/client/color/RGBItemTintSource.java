@@ -1,4 +1,4 @@
-package platinpython.rgbblocks.client.colorhandlers;
+package platinpython.rgbblocks.client.color;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.color.item.ItemTintSource;

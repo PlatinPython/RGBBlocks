@@ -1,4 +1,4 @@
-package platinpython.rgbblocks.client.colorhandlers;
+package platinpython.rgbblocks.client.color;
 
 import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
@@ -15,6 +15,9 @@ public class RGBBlockTintSource implements BlockTintSource {
     @Override
     public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
         if (level.getBlockEntity(pos) instanceof RGBBlockEntity blockEntity) {
+            return blockEntity.getColor();
+        }
+        if (level.getBlockEntity(pos.below()) instanceof RGBBlockEntity blockEntity) {
             return blockEntity.getColor();
         }
         return this.color(state);

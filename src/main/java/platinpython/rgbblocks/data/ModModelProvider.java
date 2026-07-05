@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jspecify.annotations.Nullable;
 import platinpython.rgbblocks.RGBBlocks;
-import platinpython.rgbblocks.client.colorhandlers.RGBItemTintSource;
+import platinpython.rgbblocks.client.color.RGBItemTintSource;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 
